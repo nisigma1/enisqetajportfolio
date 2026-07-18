@@ -20,9 +20,7 @@ export function Hero() {
         <div className="hero-actions"><a className="button button-primary" href="#work">View selected work <b>↓</b></a><a className="button button-quiet" href="#contact">Start a conversation ↗</a></div>
       </div>
       <picture className="hero-portrait">
-        <source media="(max-width: 560px)" srcSet="/images/enis/enis-mobile.webp" />
-        <source media="(max-width: 960px)" srcSet="/images/enis/enis-tablet.webp" />
-        <img src="/images/enis/enis-desktop.webp" alt="Portrait of Enis Qetaj" width="1200" height="1500" fetchPriority="high" decoding="async" />
+        <img src="/images/enis/enis-original.jpeg" alt="Portrait of Enis Qetaj" width="1365" height="2048" fetchPriority="high" decoding="async" />
       </picture>
       <ul className="hero-roles" aria-label="Professional roles"><li>Crypto Trader</li><li>Financial Markets Researcher</li><li>AI Product Builder</li></ul>
       <p className="hero-coordinate"><span>01</span> Context changes the picture.</p>
