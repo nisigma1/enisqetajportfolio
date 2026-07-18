@@ -54,11 +54,15 @@ export function Work() {
   return <section id="work" className="work section" aria-labelledby="work-title">
     <div className="work-heading"><div><Eyebrow>03 / Selected proof</Eyebrow><h2 id="work-title">A real booking journey, built for a real business.</h2></div><p>Barber Brothers is a live web experience with a direct path from service discovery to appointment booking.</p></div>
     <div className="work-visuals">
-      <figure className="work-main"><img src="/images/barber/space-1.webp" alt="Barber Brothers interior in Fushë Kosovë" width="1023" height="1534" loading="lazy" decoding="async" /><figcaption>Barber Brothers / Fushë Kosovë</figcaption></figure>
-      <div className="work-product"><div className="product-address"><span>barberbrothers.style</span><span>Live experience</span></div><img src="/images/barber/hero-logo.webp" alt="Barber Brothers logo in the live web experience" width="720" height="480" loading="lazy" decoding="async" /><p>Premium service.<br />No waiting.</p><span>Service / barber / date / time</span></div>
+      <figure className="work-main"><img src="/images/barber/space-1.webp" alt="Barber Brothers interior in Fushë Kosovë" width="1023" height="1534" loading="lazy" decoding="async" /><figcaption><span>Barber Brothers</span><span>Interior / Fushë Kosovë</span></figcaption></figure>
+      <div className="work-product">
+        <div className="product-address"><span>barberbrothers.style</span><span>Live booking experience</span></div>
+        <div className="product-browser" aria-hidden="true"><div className="product-browser-bar"><span /><span /><span /><b>Book now</b></div><div className="product-browser-body"><small>BARBER BROTHERS</small><strong>Choose your<br />appointment.</strong><div><span>Service</span><span>Barber</span><span>Date &amp; time</span></div></div></div>
+        <div className="product-copy"><p>Premium service.<br />No waiting.</p><span>Service / barber / date / time</span></div>
+      </div>
       <aside className="work-note"><Eyebrow>What it needed</Eyebrow><p>{barberProject.description}</p><ul>{barberProject.knownFeatures.map((feature) => <li key={feature}>{feature}</li>)}</ul></aside>
     </div>
-    <div className="booking-story"><figure><img src="/images/barber/space-2.webp" alt="Barber Brothers chair and interior detail" width="1024" height="1461" loading="lazy" decoding="async" /></figure><div><Eyebrow>Booking, without friction</Eyebrow><h3>Choose the service. Choose the barber. Find the time.</h3><p>The booking flow stays focused so the next step is always obvious.</p><a className="button button-inverse" href={barberProject.url} target="_blank" rel="noreferrer">Visit live site ↗</a></div><figure><img src="/images/barber/space-3.webp" alt="Barber Brothers exterior entrance" width="1024" height="1024" loading="lazy" decoding="async" /></figure></div>
+    <div className="booking-story"><figure className="booking-image"><img src="/images/barber/space-2.webp" alt="Barber Brothers chair and interior detail" width="1024" height="1461" loading="lazy" decoding="async" /><figcaption>Designed for the room, not a template.</figcaption></figure><div className="booking-copy"><Eyebrow>Booking, without friction</Eyebrow><h3>Choose the service. Choose the barber. Find the time.</h3><p>The booking flow stays focused so the next step is always obvious.</p><a className="button button-inverse" href={barberProject.url} target="_blank" rel="noreferrer">Visit live site ↗</a></div><figure className="booking-detail"><img src="/images/barber/space-3.webp" alt="Barber Brothers exterior entrance" width="1024" height="1024" loading="lazy" decoding="async" /><figcaption>Fushë Kosovë</figcaption></figure></div>
   </section>;
 }
 

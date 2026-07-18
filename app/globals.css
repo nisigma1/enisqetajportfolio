@@ -187,4 +187,79 @@ html[data-theme="dark"] .theme-toggle-orb { color: var(--accent-contrast); }
 
 @media (max-width: 360px) { .masthead-name { gap: 6px; }.masthead-name span { width: 26px; height: 26px; }.hero-roles li { font-size: 10px; }.hero-copy { padding-inline: 18px; }.hero-actions { flex-direction: column; align-items: stretch; }.button { width: 100%; }.mobile-navigation-foot { flex-direction: column; align-items: flex-start; } }
 
+/* Editorial proof layout: assets keep intentional, wide crops at every breakpoint. */
+.wider-lens { border: 1px solid rgba(255,255,255,.12); border-radius: 8px; }
+.lens-field { min-height: 580px; background: radial-gradient(circle at 50% 50%, #24352d 0, #161b18 44%, #101311 100%); }
+.lens-field::before { background-size: 48px 48px; opacity: .16; }
+.field-price { width: 126px; height: 126px; box-shadow: 0 0 0 16px rgba(49,91,232,.08), 0 0 48px rgba(49,91,232,.36); }
+.field-structure { inset: 26% 23% 21%; }
+.field-result { font-size: clamp(28px, 3vw, 46px); }
+.lens-panel { background: linear-gradient(180deg, #20241f, #191d19); }
+.lens-reading { min-height: 300px; }
+.lens-tabs button { min-height: 64px; transition: background .2s var(--ease), color .2s var(--ease); }
+
+.work-visuals { grid-template-columns: minmax(0, 1.08fr) minmax(360px, .92fr); align-items: start; }
+.work-main { grid-row: span 2; overflow: hidden; border-radius: 6px; background: #151614; }
+.work-main img { min-height: 0; aspect-ratio: 4 / 5; object-position: 50% 42%; }
+.work-main figcaption { display: flex; justify-content: space-between; gap: 16px; margin: 0; padding: 13px 15px; background: #1d211d; color: rgba(255,255,255,.66); }
+.work-main figcaption span:first-child { color: #f7f4eb; font-weight: 610; }
+.work-product { min-height: 0; gap: clamp(20px, 3vw, 36px); padding: clamp(22px, 3.5vw, 46px); border-radius: 6px; background: linear-gradient(145deg, #eae5d8, #d9d2c3); }
+.product-browser { width: 100%; overflow: hidden; border: 1px solid rgba(14,16,14,.18); border-radius: 5px; background: #111311; box-shadow: 0 18px 40px rgba(18,20,17,.22); }
+.product-browser-bar { display: flex; align-items: center; gap: 5px; min-height: 38px; padding: 0 12px; border-bottom: 1px solid rgba(255,255,255,.12); }
+.product-browser-bar span { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.38); }
+.product-browser-bar b { margin-left: auto; padding: 6px 9px; border-radius: 2px; background: #dec67e; color: #171817; font-size: 9px; letter-spacing: .04em; }
+.product-browser-body { display: grid; gap: 24px; min-height: 236px; padding: clamp(22px, 3vw, 36px); background: linear-gradient(135deg, #171a17, #252a24); color: #f7f4eb; }
+.product-browser-body small { color: #dec67e; font-size: 10px; letter-spacing: .14em; }
+.product-browser-body strong { font-size: clamp(30px, 3.6vw, 48px); font-weight: 610; line-height: .88; letter-spacing: -.06em; }
+.product-browser-body > div { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+.product-browser-body > div span { padding: 10px 7px; border: 1px solid rgba(255,255,255,.17); color: rgba(255,255,255,.76); font-size: 10px; }
+.product-copy { display: flex; justify-content: space-between; align-items: end; gap: 18px; }
+.work-product p { margin: 0; font-size: clamp(34px, 3.6vw, 58px); }
+.work-product > span, .product-copy > span { margin: 0; color: #65645d; font-size: 11px; }
+.work-note { max-width: 52ch; padding: clamp(10px, 2vw, 28px) 0 0; }
+.booking-story { grid-template-columns: minmax(0, .92fr) minmax(290px, 1.08fr) minmax(0, .72fr); gap: clamp(24px, 4vw, 64px); align-items: center; }
+.booking-story figure { aspect-ratio: 16 / 11; overflow: hidden; border-radius: 6px; background: #151614; }
+.booking-story img, .booking-story figure:last-child img { height: 100%; aspect-ratio: auto; object-position: center; }
+.booking-story figcaption { padding: 11px 13px; color: rgba(255,255,255,.56); font-size: 10px; }
+.booking-copy { padding-block: 18px; }
+.booking-detail { align-self: end; }
+
+@media (max-width: 900px) {
+  .wider-lens { grid-template-columns: 1fr; }
+  .lens-field { min-height: 380px; }
+  .lens-panel { min-height: 0; }
+  .work-visuals { grid-template-columns: 1fr 1fr; }
+  .work-main { grid-row: span 1; }
+  .work-note { grid-column: 1 / -1; }
+  .booking-story { grid-template-columns: 1fr 1fr; }
+  .booking-story .booking-detail { display: block; }
+  .booking-copy { grid-column: 1 / -1; grid-row: 2; }
+}
+
+@media (max-width: 600px) {
+  .wider-lens { display: flex; flex-direction: column; border-radius: 5px; }
+  .lens-panel { order: 1; }
+  .lens-field { order: 2; min-height: 250px; }
+  .lens-reading { min-height: 0; padding: 28px 22px; }
+  .lens-reading h3 { font-size: 52px; }
+  .lens-tabs { grid-template-columns: repeat(3, 1fr); }
+  .lens-tabs button { min-height: 58px; padding: 9px; }
+  .lens-tabs button > strong { font-size: 11px; }
+  .field-price { width: 78px; height: 78px; box-shadow: 0 0 0 10px rgba(49,91,232,.08), 0 0 32px rgba(49,91,232,.28); }
+  .work-visuals { display: flex; flex-direction: column; gap: 18px; }
+  .work-main, .work-product, .work-note { width: 100%; }
+  .work-main img { aspect-ratio: 4 / 3; object-position: 50% 35%; }
+  .work-main figcaption { padding: 11px 12px; }
+  .work-product { padding: 20px; }
+  .product-browser-body { min-height: 215px; padding: 24px; }
+  .product-copy { display: block; }
+  .product-copy > span { display: block; margin-top: 16px; }
+  .work-note { padding-top: 18px; }
+  .booking-story { display: flex; flex-direction: column; gap: 22px; }
+  .booking-story figure, .booking-story figure.booking-image, .booking-story figure.booking-detail, .booking-copy { width: 100%; max-width: none; }
+  .booking-story figure.booking-image, .booking-story figure.booking-detail { display: block; }
+  .booking-story figure { aspect-ratio: 4 / 3; }
+  .booking-copy { padding: 8px 0 16px; }
+}
+
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; } }
