@@ -37,12 +37,10 @@ export function ContactForm() {
       <label><span>Email</span><input name="email" type="email" inputMode="email" autoComplete="email" required /></label>
       <label className="wide"><span>What are you working on?</span><input name="project" type="text" minLength={3} required /></label>
       <label className="wide"><span>Message</span><textarea name="message" rows={5} minLength={20} required /></label>
-      <label className="wide"><span>Budget <small>Optional</small></span><select name="budget" defaultValue=""><option value="">Not decided</option><option>Under €2,000</option><option>€2,000–€5,000</option><option>€5,000–€10,000</option><option>€10,000+</option></select></label>
       <label className="form-honeypot" aria-hidden="true"><span>Website</span><input name="website" tabIndex={-1} autoComplete="off" /></label>
-      <div className="form-actions wide"><button className="action-link action-link-dark" type="submit" disabled={state === "loading"}>{state === "loading" ? "Preparing…" : "Start a conversation"}<span>↗</span></button><button className="quiet-action" type="button" onClick={copyEmail}>Copy email</button></div>
+      <div className="form-actions wide"><button className="form-submit" type="submit" disabled={state === "loading"}>{state === "loading" ? "Preparing…" : "Start a conversation"}<span>↗</span></button><button className="quiet-action" type="button" onClick={copyEmail}>Copy email</button></div>
       {message && <div className={`form-status wide ${state === "error" ? "error" : ""}`} role={state === "error" ? "alert" : "status"}>{message}{state === "success" && <a href={mailto}>Continue in email ↗</a>}</div>}
-      <p className="form-privacy wide">Nothing is stored. The form validates your note and prepares a private email.</p>
+      <p className="form-privacy wide">The form validates your note and prepares a private email. Nothing is stored.</p>
     </form>
   );
 }
-

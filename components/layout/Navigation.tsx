@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { navigation } from "@/data/site";
+import { ThemeToggle } from "@/components/layout/ThemeToggle";
 
 export function Navigation() {
   const [open, setOpen] = useState(false);
@@ -50,16 +51,15 @@ export function Navigation() {
         <nav className="masthead-nav" aria-label="Primary navigation">
           {navigation.map((item) => <a key={item.label} href={item.href} aria-current={active === item.href.slice(1) ? "location" : undefined}>{item.label}</a>)}
         </nav>
-        <p className="masthead-place">Kosovo / Available</p>
-        <button ref={triggerRef} className="menu-button" type="button" onClick={() => setOpen(true)} aria-expanded={open} aria-controls="mobile-navigation">Menu <span>↗</span></button>
+        <div className="masthead-actions"><p className="masthead-place"><i /> Kosovo</p><ThemeToggle /><button ref={triggerRef} className="menu-button" type="button" onClick={() => setOpen(true)} aria-expanded={open} aria-controls="mobile-navigation">Menu <span>+</span></button></div>
       </header>
       {open && (
         <div ref={menuRef} id="mobile-navigation" className="mobile-navigation" role="dialog" aria-modal="true" aria-label="Site navigation">
-          <div className="mobile-navigation-top"><span>Enis Qetaj / Index</span><button type="button" onClick={() => setOpen(false)}>Close ×</button></div>
+          <div className="mobile-navigation-top"><span>Enis Qetaj / Kosovo</span><div><ThemeToggle /><button type="button" onClick={() => setOpen(false)}>Close ×</button></div></div>
           <nav aria-label="Mobile navigation">
             {navigation.map((item, index) => <a key={item.label} href={item.href} onClick={() => setOpen(false)} aria-current={active === item.href.slice(1) ? "location" : undefined}><small>0{index + 1}</small>{item.label}</a>)}
           </nav>
-          <div className="mobile-navigation-foot"><a href="mailto:enisqeta5@gmail.com">enisqeta5@gmail.com</a><span>Crypto / Markets / Products</span></div>
+          <div className="mobile-navigation-foot"><a href="mailto:enisqeta5@gmail.com">enisqeta5@gmail.com</a><span>Markets / Research / Digital products</span></div>
         </div>
       )}
     </>

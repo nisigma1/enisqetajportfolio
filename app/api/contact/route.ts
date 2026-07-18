@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-type Payload = { name?: unknown; email?: unknown; project?: unknown; message?: unknown; budget?: unknown; website?: unknown };
+type Payload = { name?: unknown; email?: unknown; project?: unknown; message?: unknown; website?: unknown };
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const clean = (value: unknown, max: number) => typeof value === "string" ? value.trim().slice(0, max) : "";
 
@@ -13,12 +13,10 @@ export async function POST(request: Request) {
   const email = clean(body.email, 200);
   const project = clean(body.project, 240);
   const message = clean(body.message, 4000);
-  const budget = clean(body.budget, 100);
   if (name.length < 2 || !emailPattern.test(email) || project.length < 3 || message.length < 20) {
     return NextResponse.json({ ok: false, message: "Add your name, a valid email, what you are working on and a message of at least 20 characters." }, { status: 422 });
   }
   const subject = encodeURIComponent(`${project} — note from ${name}`);
-  const bodyText = encodeURIComponent([`Name: ${name}`, `Email: ${email}`, `Working on: ${project}`, `Budget: ${budget || "Not decided"}`, "", message].join("\n"));
+  const bodyText = encodeURIComponent([`Name: ${name}`, `Email: ${email}`, `Working on: ${project}`, "", message].join("\n"));
   return NextResponse.json({ ok: true, message: "Your note is ready. Continue in email to send it to Enis.", mailto: `mailto:enisqeta5@gmail.com?subject=${subject}&body=${bodyText}` });
 }
-

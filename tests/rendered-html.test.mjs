@@ -16,11 +16,11 @@ test("server-renders the complete identity homepage", async () => {
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   const html = await response.text();
-  assert.match(html, /Enis Qetaj — Perspective Changes the Picture/);
-  assert.match(html, /I turn a wider view of markets, people and products into clear, useful digital work/);
+  assert.match(html, /Enis Qetaj — Markets, Research &amp; Product Systems/);
+  assert.match(html, /I study the forces around a decision/);
   assert.equal((html.match(/alt="Portrait of Enis Qetaj"/g) ?? []).length, 1);
   assert.match(html, /Barber Brothers/);
-  assert.match(html, /A chart is only/);
+  assert.match(html, /A price is a signal/);
   assert.match(html, /Malera Studio/);
   assert.match(html, /\+383 44 857 227/);
   assert.match(html, /application\/ld\+json/);

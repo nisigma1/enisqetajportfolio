@@ -1,8 +1,8 @@
 export const navigation = [
   { label: "Index", href: "#index" },
   { label: "About", href: "#about" },
-  { label: "Work", href: "#work" },
   { label: "Markets", href: "#markets" },
+  { label: "Work", href: "#work" },
   { label: "Build", href: "#build" },
   { label: "Contact", href: "#contact" },
 ] as const;
@@ -21,21 +21,21 @@ export const identity = {
 } as const;
 
 export const marketLayers = [
-  { name: "Price", question: "What is happening?", note: "Price is the first visible signal—not the conclusion." },
-  { name: "Structure", question: "How is the market behaving?", note: "Trend, momentum, positioning and important levels add shape." },
-  { name: "Fundamentals", question: "What supports or weakens it?", note: "Adoption, token dynamics and the underlying project change the reading." },
-  { name: "Liquidity", question: "Where is capital moving?", note: "Financial conditions help explain when risk can expand or contract." },
-  { name: "Macro", question: "What environment surrounds it?", note: "Rates, inflation and monetary policy set the wider conditions." },
-  { name: "Geopolitics", question: "What could change the context?", note: "Trade, conflict, energy and policy can redraw the map quickly." },
-  { name: "On-chain", question: "What does activity reveal?", note: "Blockchain flows add another view of positioning and behavior." },
+  { name: "Price", question: "What is visible?", note: "Price is the first observation. Useful, immediate—and incomplete.", context: "One signal" },
+  { name: "Structure", question: "How is it behaving?", note: "Trend, momentum, positioning and important levels give the observation shape.", context: "Behavior" },
+  { name: "Fundamentals", question: "What supports it?", note: "Adoption, token dynamics and the underlying project change what the movement can mean.", context: "Underlying conditions" },
+  { name: "Liquidity", question: "Where is capital moving?", note: "Financial conditions help explain when risk can expand, contract or rotate.", context: "Capital flow" },
+  { name: "Macro", question: "What environment surrounds it?", note: "Rates, inflation, growth and monetary policy widen the frame beyond one asset.", context: "Economic environment" },
+  { name: "Geopolitics", question: "What can redraw the map?", note: "Trade, conflict, energy and policy can change the context quickly.", context: "External forces" },
+  { name: "On-chain", question: "What does network activity add?", note: "Flows and behavior recorded on-chain complete another part of the wider picture.", context: "Network behavior" },
 ] as const;
 
 export const problems = [
-  { problem: "I need a better digital presence.", group: "Presence", forms: "Website, digital identity, landing page", response: "Make the offer easier to understand and harder to forget." },
-  { problem: "I have an idea, but not a product.", group: "Product", forms: "Web application, AI tool, prototype", response: "Define the real use case before deciding what to build." },
-  { problem: "I repeat the same workflow every day.", group: "Automation", forms: "Automation, bot, connected workflow", response: "Remove repetition while keeping the process visible and controllable." },
-  { problem: "I need a custom tool.", group: "Product", forms: "Custom application, internal platform", response: "Shape the tool around the work instead of forcing the work into generic software." },
-  { problem: "I need information presented clearly.", group: "Financial interfaces", forms: "Dashboard, research interface, decision tool", response: "Turn scattered inputs into a view people can actually use." },
+  { problem: "I need a digital presence that actually explains the value.", group: "Digital presence", forms: "Website / digital identity", response: "Start with the audience and the decision they need to make, then give the message a focused form." },
+  { problem: "I have an idea but it is not a usable product yet.", group: "Product idea", forms: "AI tool / web application", response: "Find the smallest useful version, define the flow, and make the interaction earn its place." },
+  { problem: "The same work keeps repeating across my day.", group: "Repetitive work", forms: "Automation / bot", response: "Map the handoffs first. The goal is less friction, not a black box nobody trusts." },
+  { problem: "I need a tool made for a very specific job.", group: "Custom tool", forms: "Purpose-built application", response: "Turn the real workflow into an interface that feels obvious to the people doing the work." },
+  { problem: "The information is there, but it is hard to use.", group: "Complex information", forms: "Trading / research interface", response: "Create hierarchy, context and a view that helps people connect the right signals." },
 ] as const;
 
 export const barberProject = {
@@ -49,8 +49,7 @@ export const barberProject = {
 
 export const malera = {
   name: "Malera Studio",
-  url: "https://www.malera.studio/",
+  url: "https://malera.studio/",
   line: "A small creative studio building digital products, brands and experiences from Kosovo.",
   services: "Websites, mobile apps, video content and AI tools.",
 } as const;
-
