@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element -- Local responsive assets avoid an image runtime. */
 import Link from "next/link";
 import { identity, barberProject, malera } from "@/data/site";
-import { PerspectiveLens } from "@/components/markets/PerspectiveLens";
 import { BuildNavigator } from "@/components/build/BuildNavigator";
 import { ContactForm } from "@/components/forms/ContactForm";
 
@@ -39,14 +38,6 @@ export function About() {
       <article><span>Building</span><h3>Giving useful ideas a working form.</h3><p>AI applications, websites, web products, bots, automation and interfaces for research or decisions.</p></article>
       <article><span>Learning</span><h3>Marketing, then finance.</h3><p>Bachelor&apos;s degree in Marketing. First year of a Master&apos;s degree in Banking and Finance. Football remains the off-screen reset.</p></article>
     </div>
-  </section>;
-}
-
-export function Markets() {
-  return <section id="markets" className="markets section" aria-labelledby="markets-title">
-    <div className="markets-heading"><div><Eyebrow>02 / Context lens</Eyebrow><h2 id="markets-title">A price is a signal. Not the whole situation.</h2></div><p>Add context one layer at a time. The shape of the decision changes as the frame expands.</p></div>
-    <PerspectiveLens />
-    <p className="market-disclaimer">Research and educational context only. Not financial advice.</p>
   </section>;
 }
 
