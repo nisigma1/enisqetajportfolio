@@ -1,32 +1,30 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import { headers } from "next/headers";
+import { Archivo, Newsreader } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
-const instrumentSerif = Instrument_Serif({ variable: "--font-instrument-serif", subsets: ["latin"], weight: "400" });
+const archivo = Archivo({ variable: "--font-archivo", subsets: ["latin"], display: "swap" });
+const newsreader = Newsreader({ variable: "--font-newsreader", subsets: ["latin"], display: "swap", style: ["normal", "italic"] });
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://enisqetaj.com"),
-  title: "Enis Qetaj — Crypto Trader, Financial Markets Researcher and AI Builder",
-  description: "Personal portfolio of Enis Qetaj, focused on cryptocurrency trading, financial markets research, macroeconomics, geopolitics and AI-powered digital products.",
-  alternates: { canonical: "/" },
-  icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
-  openGraph: {
-    type: "website",
-    title: "Enis Qetaj — Markets, Research and Intelligent Systems",
-    description: "Crypto trader and markets researcher connecting analysis, macroeconomics and geopolitics with AI-powered digital products.",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Enis Qetaj — Analyzing signals, building systems" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Enis Qetaj — Markets, Research and Intelligent Systems",
-    description: "Analyzing signals. Building systems.",
-    images: ["/og.png"],
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const requestHeaders = await headers();
+  const host = requestHeaders.get("host") || "enis-qetaj-signal.enis-qetaj.chatgpt.site";
+  const protocol = requestHeaders.get("x-forwarded-proto") || (host.startsWith("localhost") ? "http" : "https");
+  const base = new URL(`${protocol}://${host}`);
+  const title = "Enis Qetaj — Markets, Products and Independent Work";
+  const description = "Enis Qetaj is a crypto trader, financial markets researcher and AI product builder from Kosovo.";
+  return {
+    metadataBase: base,
+    title,
+    description,
+    alternates: { canonical: new URL("/", base) },
+    icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
+    openGraph: { type: "website", url: base, title, description, images: [{ url: new URL("/og.png", base), width: 1200, height: 630, alt: "Enis Qetaj — Reading markets, making things" }] },
+    twitter: { card: "summary_large_image", title, description, images: [new URL("/og.png", base)] },
+  };
+}
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable}`}>{children}</body></html>;
+  return <html lang="en"><body className={`${archivo.variable} ${newsreader.variable}`}>{children}</body></html>;
 }
 

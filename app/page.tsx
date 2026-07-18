@@ -1,8 +1,6 @@
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
-import { Hero } from "@/components/sections/Hero";
-import { EngineSection, ProfileSection, CapabilitiesSection, MarketsSection, BuildSection } from "@/components/sections/CoreSections";
-import { WorkSection, ResearchSection, ServicesSection, ProcessSection, EducationSection, BeyondSection, ContactSection } from "@/components/sections/PortfolioSections";
+import { Hero, About, Markets, Work, Build, Contact } from "@/components/sections/DefinitiveSections";
 
 export default function Home() {
   const personSchema = {
@@ -10,32 +8,12 @@ export default function Home() {
     "@type": "Person",
     name: "Enis Qetaj",
     email: "mailto:enisqeta5@gmail.com",
+    telephone: "+38344857227",
     address: { "@type": "PostalAddress", addressCountry: "XK" },
     jobTitle: ["Crypto Trader", "Financial Markets Researcher", "AI Product Builder"],
-    knowsAbout: ["Cryptocurrency trading", "Financial markets", "Macroeconomics", "Geopolitics", "Artificial intelligence", "Digital products"],
+    knowsAbout: ["Cryptocurrency markets", "Financial markets", "Macroeconomics", "Global liquidity", "Geopolitics", "Artificial intelligence", "Digital products"],
+    worksFor: { "@type": "Organization", name: "Malera Studio", url: "https://www.malera.studio/" },
   };
-  return (
-    <>
-      <a className="skip-link" href="#main">Skip to content</a>
-      <Navigation />
-      <main id="main">
-        <Hero />
-        <EngineSection />
-        <ProfileSection />
-        <CapabilitiesSection />
-        <MarketsSection />
-        <BuildSection />
-        <WorkSection />
-        <ResearchSection />
-        <ServicesSection />
-        <ProcessSection />
-        <EducationSection />
-        <BeyondSection />
-        <ContactSection />
-      </main>
-      <Footer />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
-    </>
-  );
+  return <><a className="skip-link" href="#main">Skip to content</a><Navigation /><main id="main"><Hero /><About /><Markets /><Work /><Build /><Contact /></main><Footer /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} /></>;
 }
 
