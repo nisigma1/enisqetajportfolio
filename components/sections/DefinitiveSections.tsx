@@ -1,43 +1,50 @@
-/* eslint-disable @next/next/no-img-element -- Art-directed, pre-compressed local crops are intentionally server-first. */
+/* eslint-disable @next/next/no-img-element -- Local, art-directed WebP assets keep imagery server-first and predictable. */
 import Link from "next/link";
 import { identity, barberProject, malera, problems } from "@/data/site";
 import { PerspectiveLens } from "@/components/markets/PerspectiveLens";
 import { ContactForm } from "@/components/forms/ContactForm";
 
+function SectionBar({ index, label, note, light = false }: { index: string; label: string; note: string; light?: boolean }) {
+  return <header className={`section-bar${light ? " section-bar-light" : ""}`}><span>{index}</span><strong>{label}</strong><p>{note}</p></header>;
+}
+
 export function Hero() {
   return (
-    <section id="index" className="cover" aria-labelledby="cover-title">
-      <div className="cover-rule" aria-hidden="true" />
-      <p className="cover-issue">Independent portfolio<br />Issue 01 / 2026</p>
-      <p className="cover-roles">Crypto Trader<br />Markets Researcher<br />AI Product Builder</p>
-      <h1 id="cover-title"><span>Enis</span><span>Qetaj</span></h1>
-      <picture className="cover-portrait">
-        <source media="(max-width: 560px)" srcSet="/images/enis/enis-mobile.webp" />
-        <source media="(max-width: 960px)" srcSet="/images/enis/enis-tablet.webp" />
-        <img src="/images/enis/enis-desktop.webp" alt="Enis Qetaj" width="1200" height="1500" fetchPriority="high" />
-      </picture>
-      <div className="cover-thought"><span>01 / A personal note</span><p>I spend a lot of time trying to understand why things move. Then I build.</p></div>
-      <a className="cover-action" href="#work"><span>View work</span><b>↓</b></a>
-      <p className="cover-place">Based in Kosovo<br /><i /> Available for select projects</p>
+    <section id="index" className="identity-hero" aria-labelledby="identity-title">
+      <div className="hero-context"><span>Independent portfolio · Kosovo</span><span><i /> Available for selected projects</span></div>
+      <div className="hero-stage hero-stage-v2">
+        <div className="hero-identity">
+          <p>Markets · Research · Digital products</p>
+          <h1 id="identity-title" className="hero-name"><span>Enis</span><span>Qetaj</span></h1>
+        </div>
+        <picture className="hero-portrait">
+          <source media="(max-width: 560px)" srcSet="/images/enis/enis-mobile.webp" />
+          <source media="(max-width: 960px)" srcSet="/images/enis/enis-tablet.webp" />
+          <img src="/images/enis/enis-desktop.webp" alt="Portrait of Enis Qetaj" width="1200" height="1500" fetchPriority="high" decoding="async" />
+        </picture>
+        <div className="hero-roles"><span>Professional identity</span><ul>{identity.roles.map((role) => <li key={role}>{role}</li>)}</ul></div>
+        <div className="hero-intro"><p>I turn a wider view of markets, people and products into clear, useful digital work.</p><span>Enis Qetaj / Independent freelancer</span></div>
+        <div className="hero-actions"><a className="primary-action" href="#work">View selected work <span>↓</span></a><a className="text-action" href="#contact">Start a conversation ↗</a></div>
+      </div>
+      <p className="hero-signature">Perspective changes the picture.</p>
     </section>
   );
 }
 
 export function About() {
   return (
-    <section id="about" className="about chapter" aria-labelledby="about-title">
-      <header className="chapter-head"><span>02 / About</span><p>Person before profile.</p></header>
-      <div className="about-opening"><h2 id="about-title">Markets taught me<br />to <em>look twice.</em></h2><p>What moves first is rarely the whole explanation.</p></div>
-      <div className="about-fragments">
-        <article className="fragment fragment-intro"><span>A</span><p>Enis Qetaj is from Kosovo. He trades cryptocurrency markets and follows the wider financial forces around them.</p></article>
-        <figure className="fragment-photo"><img src="/images/enis/enis-close.webp" alt="Close editorial crop of Enis Qetaj" width="800" height="800" loading="lazy" decoding="async" /><figcaption>Real person / real work</figcaption></figure>
-        <article className="fragment fragment-method"><span>B</span><p>His reading moves between technical structure, fundamentals, global liquidity, macroeconomics, geopolitics and on-chain activity.</p></article>
-        <article className="fragment fragment-making"><span>C</span><p>He also uses AI to turn ideas into websites, applications, bots and working systems.</p></article>
-        <div className="fragment-education">
-          {identity.education.map((item) => <div key={item.subject}><span>{item.degree}</span><strong>{item.subject}</strong><p>{item.status}</p></div>)}
-        </div>
-        <p className="fragment-character">Ambitious enough to keep moving.<br />Curious enough to keep changing his mind.</p>
-        <div className="football-note" aria-label="Outside work, Enis follows football"><i /><i /><i /><i /><i /><small>4—3—3 / after hours</small></div>
+    <section id="about" className="about-section section-shell" aria-labelledby="about-title">
+      <SectionBar index="01" label="About" note="A person, not a profile summary." />
+      <div className="about-lead"><h2 id="about-title">One person.<br />Two ways of <em>looking closer.</em></h2><p>Enis Qetaj is from Kosovo. His work moves between understanding markets and turning useful ideas into working digital form.</p></div>
+      <div className="story-flow">
+        <article><h3>Markets</h3><p>Crypto is the starting point. The reading extends into technical structure, fundamentals, global liquidity, macroeconomics, monetary policy, geopolitics and on-chain activity.</p></article>
+        <article><h3>Building</h3><p>The same questions carry into products: what is the real problem, what context is missing, and what form would make the answer useful?</p></article>
+        <article><h3>Character</h3><p>Ambitious, analytical and independent. Curious enough to keep learning—and to change his mind when the wider picture changes.</p></article>
+      </div>
+      <div className="education-ledger">
+        <p>Education</p>
+        {identity.education.map((item) => <article key={item.subject}><span>{item.degree}</span><h3>{item.subject}</h3><p>{item.status}</p></article>)}
+        <aside><span>Outside the work</span><p>Football. A different kind of structure, movement and perspective.</p></aside>
       </div>
     </section>
   );
@@ -45,67 +52,86 @@ export function About() {
 
 export function Markets() {
   return (
-    <section id="markets" className="markets chapter" aria-labelledby="markets-title">
-      <header className="chapter-head"><span>03 / Markets</span><p>How Enis looks at markets.</p></header>
-      <div className="markets-intro"><h2 id="markets-title">Price is the beginning.<br /><em>Not the whole story.</em></h2><p>A single signal can be useful. A wider view makes it meaningful.</p></div>
+    <section id="markets" className="markets-section section-shell" aria-labelledby="markets-title">
+      <SectionBar index="02" label="Markets" note="How Enis widens the frame." />
+      <div className="markets-lead"><div><span>The wider lens</span><h2 id="markets-title">A chart is only<br />the <em>beginning.</em></h2></div><p>Move from one visible signal to a connected view of structure, capital, policy and behavior. No fake market data—only the relationships Enis considers.</p></div>
       <PerspectiveLens />
-      <p className="markets-note">Research and educational content only. Not financial advice.</p>
+      <p className="market-disclaimer">Research and educational context only. Not financial advice.</p>
     </section>
   );
 }
 
 export function Work() {
   return (
-    <section id="work" className="work chapter" aria-labelledby="work-title">
-      <header className="chapter-head chapter-head-light"><span>04 / Selected work</span><p>One real product, shown properly.</p></header>
-      <div className="work-title-wrap"><p>Web Experience / Booking</p><h2 id="work-title"><span>Barber</span><span>Brothers</span></h2><a className="project-live" href={barberProject.url} target="_blank" rel="noreferrer">Visit live site <span>↗</span></a></div>
-      <div className="project-spread">
-        <figure className="project-image project-image-main"><img src="/images/barber/space-1.webp" alt="Barber Brothers interior with geometric ceiling lights" width="1023" height="1534" loading="lazy" decoding="async" /><figcaption>Brotherspace / Fushë Kosovë</figcaption></figure>
-        <div className="project-copy"><p>{barberProject.description}</p><ul>{barberProject.knownFeatures.map((feature) => <li key={feature}>{feature}</li>)}</ul></div>
-        <figure className="project-image project-image-detail"><img src="/images/barber/space-2.webp" alt="Barber Brothers chair and interior detail" width="1024" height="1461" loading="lazy" decoding="async" /><figcaption>Controlled detail / real space</figcaption></figure>
-        <div className="booking-fragment" aria-label="A factual summary of the live booking journey"><span>Live booking journey</span><ol><li>Choose service</li><li>Choose barber</li><li>Choose date</li><li>Choose time</li><li>Confirm details</li></ol><a href="https://barberbrothers.style/booking" target="_blank" rel="noreferrer">Open booking ↗</a></div>
-        <figure className="project-image project-image-exterior"><img src="/images/barber/space-3.webp" alt="Exterior entrance of Barber Brothers" width="1024" height="1024" loading="lazy" decoding="async" /><figcaption>Entrance / the physical brand</figcaption></figure>
-        <figure className="project-mark"><img src="/images/barber/hero-logo.webp" alt="Barber Brothers brand mark" width="720" height="480" loading="lazy" decoding="async" /></figure>
+    <section id="work" className="work-section section-shell" aria-labelledby="work-title">
+      <SectionBar index="03" label="Selected work" note="Proof before decoration." light />
+      <div className="case-heading"><div><span>01 / Live project</span><h2 id="work-title">Barber Brothers</h2><p>{barberProject.category}</p></div><a className="project-action" href={barberProject.url} target="_blank" rel="noreferrer">Visit live site <span>↗</span></a></div>
+
+      <div className="product-proof">
+        <figure className="project-primary"><img src="/images/barber/space-1.webp" alt="Barber Brothers interior in Fushë Kosovë" width="1023" height="1534" loading="lazy" decoding="async" /><figcaption>Brotherspace / Fushë Kosovë</figcaption></figure>
+        <div className="live-product" aria-label="Verified extract from the live Barber Brothers website">
+          <div className="live-product-bar"><span>barberbrothers.style</span><span>Live product extract</span></div>
+          <div className="live-product-body">
+            <img src="/images/barber/hero-logo.webp" alt="Barber Brothers" width="720" height="480" loading="lazy" decoding="async" />
+            <span>N°01 / Fushë Kosovë / 09:30—20:30</span>
+            <h3>Premium service.<br />No waiting.</h3>
+            <p>Precision cuts. Real appointments. No phone calls.</p>
+            <a href="https://barberbrothers.style/booking" target="_blank" rel="noreferrer">Book appointment ↗</a>
+          </div>
+        </div>
+        <div className="case-context"><p>{barberProject.description}</p><ul>{barberProject.knownFeatures.map((feature) => <li key={feature}>{feature}</li>)}</ul></div>
       </div>
-      <div className="project-close"><p>Have something similar in mind?</p><a href="#contact">Tell me about it <span>↘</span></a></div>
-      <div className="more-work"><span>Next</span><p>More work is being documented.</p><Link href="/work">Open the archive ↗</Link></div>
+
+      <div className="booking-proof">
+        <div className="booking-interface" aria-label="Verified structure of the live Barber Brothers booking flow">
+          <div className="booking-interface-head"><span>Live booking flow</span><span>No account / no phone call</span></div>
+          <h3>Book online</h3>
+          <div className="booking-steps"><span className="current">01 Service</span><span>02 Barber</span><span>03 Date</span><span>04 Time</span><span>05 Details</span></div>
+          <div className="service-options" aria-label="Services shown on the live booking page"><p className="selected">Haircut <span>5€ · 30 min</span></p><p>Beard trim <span>2€ · 30 min</span></p><p>All-in-One Combo <span>15€ · 60 min</span></p></div>
+          <div className="booking-summary"><span>Next step</span><strong>Choose barber</strong><a href="https://barberbrothers.style/booking" target="_blank" rel="noreferrer">Open live booking ↗</a></div>
+        </div>
+        <figure className="project-detail"><img src="/images/barber/space-2.webp" alt="Barber Brothers chair and interior detail" width="1024" height="1461" loading="lazy" decoding="async" /><figcaption>Physical identity / real space</figcaption></figure>
+        <figure className="project-exterior"><img src="/images/barber/space-3.webp" alt="Exterior entrance of Barber Brothers" width="1024" height="1024" loading="lazy" decoding="async" /><figcaption>Entrance / Fushë Kosovë</figcaption></figure>
+      </div>
+      <div className="work-conversion"><p>Have something that needs the same clarity between identity and function?</p><a href="#contact">Tell me what you are working on <span>↘</span></a></div>
+      <div className="future-work"><span>Next</span><p>More work is being documented.</p><Link href="/work">Open the work archive ↗</Link></div>
     </section>
   );
 }
 
 export function Build() {
+  const process = ["Understand", "Shape", "Design", "Build", "Refine"];
   return (
-    <section id="build" className="build chapter" aria-labelledby="build-title">
-      <header className="chapter-head"><span>05 / Build</span><p>Start with the problem.</p></header>
-      <div className="build-intro"><h2 id="build-title">The useful form<br />comes <em>second.</em></h2><p>A website, bot or AI tool is only useful when it solves the right thing.</p></div>
-      <div className="problem-map">
-        {problems.map((item, index) => (
-          <details key={item.problem} open={index === 0}>
-            <summary><span>0{index + 1}</span><strong>“{item.problem}”</strong><i>Open</i></summary>
-            <div><small>{item.group}</small><p>{item.response}</p><dl><dt>Useful forms</dt><dd>{item.forms}</dd></dl></div>
-          </details>
-        ))}
+    <section id="build" className="build-section section-shell" aria-labelledby="build-title">
+      <SectionBar index="04" label="Build" note="Start with the human problem." />
+      <div className="build-lead"><h2 id="build-title">The technology<br />comes <em>after the need.</em></h2><p>A website, application, bot or AI tool is only useful when it makes a real situation clearer, faster or easier.</p></div>
+      <div className="problem-list">
+        {problems.map((item, index) => <details key={item.problem} open={index === 0}><summary><span>0{index + 1}</span><strong>{item.problem}</strong><i>View response</i></summary><div><p>{item.response}</p><dl><dt>Useful form</dt><dd>{item.forms}</dd></dl></div></details>)}
       </div>
-      <div className="malera-transition">
-        <div className="malera-kicker"><span>Personal work</span><i /> <span>Studio practice</span></div>
-        <p className="malera-overline">The professional extension</p>
-        <h3>Malera<br />Studio</h3>
-        <div className="malera-copy"><p>{malera.line}</p><p>{malera.services}</p><a className="action-link action-link-light" href={malera.url} target="_blank" rel="noreferrer">Visit Malera Studio <span>↗</span></a></div>
-      </div>
-      <div className="build-cta"><p>Have a problem worth shaping?</p><a href="#contact">Discuss a project <span>↓</span></a></div>
+      <div className="build-process"><p>How the work moves</p><ol>{process.map((step, index) => <li key={step}><span>0{index + 1}</span>{step}</li>)}</ol></div>
+    </section>
+  );
+}
+
+export function Malera() {
+  return (
+    <section id="studio" className="studio-section section-shell" aria-labelledby="studio-title">
+      <SectionBar index="05" label="Malera Studio" note="The professional building practice." light />
+      <div className="studio-relationship"><div><span>Enis Qetaj</span><p>Person<br />Markets<br />Research<br />Independent identity</p></div><i aria-hidden="true" /><div><span>Malera Studio</span><p>Websites<br />Applications<br />AI tools<br />Automation</p></div></div>
+      <div className="studio-main"><div><span>Built from Kosovo</span><h2 id="studio-title">Malera<br />Studio</h2></div><div className="studio-copy"><p>{malera.line}</p><p>{malera.services}</p><a className="studio-action" href={malera.url} target="_blank" rel="noreferrer">Visit Malera Studio <span>↗</span></a></div></div>
+      <div className="studio-clarity"><p>Enis is the person and perspective.</p><p>Malera is the vehicle for professional digital product work.</p></div>
     </section>
   );
 }
 
 export function Contact() {
   return (
-    <section id="contact" className="contact chapter" aria-labelledby="contact-title">
-      <header className="chapter-head"><span>06 / Contact</span><p>Person to person.</p></header>
-      <div className="contact-grid">
-        <div className="contact-intro"><p className="contact-available"><i /> Available for select projects</p><h2 id="contact-title">Have something<br /><em>worth talking about?</em></h2><p>Send a short note. If it makes sense, we can take it from there.</p></div>
+    <section id="contact" className="contact-section section-shell" aria-labelledby="contact-title">
+      <SectionBar index="06" label="Contact" note="Human to human." />
+      <div className="contact-layout">
+        <div className="contact-intro"><p className="availability"><i /> Available for selected freelance projects</p><h2 id="contact-title">Have something<br /><em>interesting in mind?</em></h2><p>Send a short note. If Enis can help, the next step can be a simple conversation.</p><div className="direct-links"><a href={`mailto:${identity.email}`}>{identity.email}</a><a href={identity.phoneHref}>{identity.phone}</a><a href={malera.url} target="_blank" rel="noreferrer">Malera Studio ↗</a></div></div>
         <ContactForm />
       </div>
-      <div className="contact-direct"><div><span>Enis Qetaj</span><p>Crypto Trader<br />Financial Markets Researcher<br />AI Product Builder</p></div><div><span>Direct</span><a href={`mailto:${identity.email}`}>{identity.email}</a><a href={identity.phoneHref}>{identity.phone}</a></div><div><span>Studio</span><a href={malera.url} target="_blank" rel="noreferrer">Malera Studio ↗</a></div></div>
     </section>
   );
 }

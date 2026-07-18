@@ -16,10 +16,11 @@ test("server-renders the complete identity homepage", async () => {
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   const html = await response.text();
-  assert.match(html, /Enis Qetaj — Markets, Products and Independent Work/);
-  assert.match(html, /I spend a lot of time trying to understand why things move/);
+  assert.match(html, /Enis Qetaj — Perspective Changes the Picture/);
+  assert.match(html, /I turn a wider view of markets, people and products into clear, useful digital work/);
+  assert.equal((html.match(/alt="Portrait of Enis Qetaj"/g) ?? []).length, 1);
   assert.match(html, /Barber Brothers/);
-  assert.match(html, /Price is the beginning/);
+  assert.match(html, /A chart is only/);
   assert.match(html, /Malera Studio/);
   assert.match(html, /\+383 44 857 227/);
   assert.match(html, /application\/ld\+json/);
@@ -37,7 +38,7 @@ test("renders every public route", async () => {
 
 test("contact endpoint validates input and returns a mail fallback", async () => {
   const worker = await getWorker();
-  const valid = await worker.fetch(new Request("http://localhost/api/contact", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ name: "Test User", email: "test@example.com", project: "A booking website", budget: "Discuss", message: "A sufficiently detailed project description for validation.", website: "" }) }), env, ctx);
+  const valid = await worker.fetch(new Request("http://localhost/api/contact", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ name: "Test User", email: "test@example.com", project: "A booking website", message: "A sufficiently detailed project description for validation.", website: "" }) }), env, ctx);
   assert.equal(valid.status, 200);
   assert.match((await valid.json()).mailto, /^mailto:enisqeta5@gmail\.com/);
 
