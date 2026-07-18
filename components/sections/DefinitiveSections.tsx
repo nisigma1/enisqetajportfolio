@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element -- Local responsive assets avoid an image runtime. */
 import Link from "next/link";
 import { identity, barberProject, malera } from "@/data/site";
+import { PerspectiveLens } from "@/components/markets/PerspectiveLens";
 import { BuildNavigator } from "@/components/build/BuildNavigator";
 import { ContactForm } from "@/components/forms/ContactForm";
 
@@ -39,6 +40,10 @@ export function About() {
       <article><span>Learning</span><h3>Marketing, then finance.</h3><p>Bachelor&apos;s degree in Marketing. First year of a Master&apos;s degree in Banking and Finance. Football remains the off-screen reset.</p></article>
     </div>
   </section>;
+}
+
+export function Markets() {
+  return <section id="markets" className="markets context-section" aria-labelledby="markets-title"><div className="context-lens-shell"><header className="context-editorial"><Eyebrow>02 / Context lens</Eyebrow><h2 id="markets-title">Price is where the question starts.</h2><p>Build the picture one layer at a time. The meaning of a move changes as its context becomes visible.</p><div><span>Markets move.</span><strong>Context explains why.</strong></div></header><PerspectiveLens /></div><p className="context-disclaimer">Research and education only. Not financial advice.</p></section>;
 }
 
 export function Work() {

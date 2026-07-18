@@ -1,6 +1,6 @@
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
-import { Hero, About, Work, Build, Malera, Contact } from "@/components/sections/DefinitiveSections";
+import { Hero, About, Markets, Work, Build, Malera, Contact } from "@/components/sections/DefinitiveSections";
 
 export default function Home() {
   const structuredData = {
@@ -44,5 +44,5 @@ export default function Home() {
     ],
   };
 
-  return <><a className="skip-link" href="#main">Skip to content</a><Navigation /><main id="main"><Hero /><About /><Work /><Build /><Malera /><Contact /></main><Footer /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} /></>;
+  return <><a className="skip-link" href="#main">Skip to content</a><Navigation /><main id="main"><Hero /><About /><Markets /><Work /><Build /><Malera /><Contact /></main><Footer /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} /></>;
 }
