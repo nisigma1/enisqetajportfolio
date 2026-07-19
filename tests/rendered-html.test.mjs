@@ -20,7 +20,8 @@ test("server-renders the complete identity homepage", async () => {
   assert.match(html, /I study the forces around a decision/);
   assert.equal((html.match(/alt="Portrait of Enis Qetaj"/g) ?? []).length, 1);
   assert.match(html, /Barber Brothers/);
-  assert.match(html, /Price is where the question starts/);
+  assert.match(html, /A price is a/);
+  assert.match(html, /Never the whole situation/);
   assert.match(html, /href="#markets"/);
   assert.match(html, /On-chain/);
   assert.match(html, /Malera Studio/);
