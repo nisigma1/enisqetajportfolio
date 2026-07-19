@@ -53,3 +53,18 @@ export const malera = {
   line: "A small creative studio building digital products, brands and experiences from Kosovo.",
   services: "Websites, mobile apps, video content and AI tools.",
 } as const;
+
+export const media = {
+  portrait: {
+    role: "IDENTITY_PORTRAIT",
+    desktop: { src: "/images/enis/enis-desktop.webp", width: 1200, height: 1500, objectPosition: "50% 48%" },
+    tablet: { src: "/images/enis/enis-tablet.webp", width: 900, height: 1200, objectPosition: "50% 45%" },
+    mobile: { src: "/images/enis/enis-mobile.webp", width: 750, height: 1000, objectPosition: "50% 42%" },
+  },
+  barber: {
+    identity: { src: "/images/barber/hero-logo.webp", width: 720, height: 480, role: "PROJECT_IDENTITY", display: "contain" },
+    interior: { src: "/images/barber/space-1.webp", width: 1023, height: 1534, role: "EDITORIAL_PORTRAIT", display: "cover", objectPosition: "50% 42%" },
+    chair: { src: "/images/barber/space-2.webp", width: 1024, height: 1461, role: "EDITORIAL_PORTRAIT", display: "cover", objectPosition: "52% 44%" },
+    exterior: { src: "/images/barber/space-3.webp", width: 1024, height: 1024, role: "EDITORIAL_LANDSCAPE", display: "cover", objectPosition: "50% 50%" },
+  },
+} as const;
