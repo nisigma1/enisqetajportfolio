@@ -1,10 +1,11 @@
 export const navigation = [
-  { label: "Index", href: "#index" },
-  { label: "About", href: "#about" },
-  { label: "Markets", href: "#markets" },
-  { label: "Work", href: "#work" },
-  { label: "Build", href: "#build" },
-  { label: "Contact", href: "#contact" },
+  { label: "Index", href: "#index", number: "01" },
+  { label: "About", href: "#about", number: "02" },
+  { label: "Markets", href: "#markets", number: "03" },
+  { label: "Work", href: "#work", number: "04" },
+  { label: "Studio", href: "#studio", number: "05" },
+  { label: "Build", href: "#build", number: "06" },
+  { label: "Contact", href: "#contact", number: "07" },
 ] as const;
 
 export const identity = {
