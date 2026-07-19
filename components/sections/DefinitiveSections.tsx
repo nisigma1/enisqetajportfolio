@@ -41,7 +41,7 @@ export function About() {
 }
 
 export function Markets() {
-  return <section id="markets" className="markets context-section" aria-labelledby="markets-title"><div className="context-lens-shell"><header className="context-editorial"><Eyebrow>02 / Context lens</Eyebrow><h2 id="markets-title">A price is a <em>signal.</em> Never the whole situation.</h2><p>Markets move for many reasons. Add context one layer at a time to see what price alone cannot.</p><div><span>The practice</span><strong>One signal becomes a clearer view.</strong></div></header><PerspectiveLens /></div><p className="context-disclaimer">Research and education only. Not financial advice.</p></section>;
+  return <section id="markets" className="markets context-section" aria-labelledby="markets-title"><div className="context-lens-shell"><header className="context-editorial"><Eyebrow>02 / Context lens</Eyebrow><h2 id="markets-title">A price is a <em>signal.</em> Not the whole <strong>situation.</strong></h2><p>Markets move for many reasons. Add context one layer at a time to see what price alone cannot.</p><div><span>The practice</span><strong>One signal becomes a clearer view.</strong></div></header><PerspectiveLens /></div><p className="context-disclaimer">Research and education only. Not financial advice.</p></section>;
 }
 
 export function Work() {

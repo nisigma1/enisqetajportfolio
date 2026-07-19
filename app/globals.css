@@ -232,6 +232,14 @@ html[data-theme="light"] .context-detail { background: linear-gradient(180deg, r
 @media (max-width: 1100px) { .context-lens-shell { grid-template-columns: minmax(260px, .82fr) minmax(400px, 1.18fr); }.context-detail { grid-column: 1 / -1; grid-template-columns: 1fr 1.15fr; grid-template-rows: auto auto; gap: 0 36px; border-top: 1px solid rgba(255,255,255,.1); border-left: 0; }.context-detail-top { grid-column: 1 / -1; }.context-reading { padding-top: 28px; }.context-indicators { padding-top: 28px; }.context-controls { grid-column: 1 / -1; }.context-index { grid-column: 1 / -1; grid-template-columns: repeat(7, 1fr); margin: 0 -34px -34px; }.context-index button { min-height: 64px; grid-template-columns: 1fr; padding: 8px; text-align: center; }.context-index button strong { font-size: 11px; } }
 @media (max-width: 700px) { .context-section { padding: 70px var(--gutter); }.context-lens-shell { display: flex; flex-direction: column; min-height: 0; border-radius: 6px; }.context-editorial { order: 1; padding: 34px 24px 30px; border-right: 0; border-bottom: 1px solid rgba(255,255,255,.1); }.context-editorial h2 { max-width: 10ch; font-size: clamp(45px, 14vw, 68px); }.context-editorial > div { margin-top: 16px; }.context-detail { order: 2; display: block; padding: 26px 22px 0; border-top: 0; }.context-detail-top { margin-bottom: 6px; }.context-reading { padding: 22px 0; }.context-reading h3 { font-size: 50px; }.context-reading h4 { font-size: 20px; }.context-indicators { padding: 22px 0; }.context-controls { padding: 20px 0; }.context-controls button { min-height: 50px; }.context-index { display: none; }.context-visual { order: 3; min-height: 430px; padding: 20px 14px; border-top: 1px solid rgba(255,255,255,.1); }.context-orbit { width: min(100%, 360px); }.orbit-layer { font-size: 10px; }.orbit-layer b { font-size: 8px; }.orbit-layer-2 { inset: 16% 12% auto auto; }.orbit-layer-3 { inset: 43% 1% auto auto; }.orbit-layer-4 { inset: auto 10% 20% auto; }.orbit-layer-5 { inset: auto auto 9% 45%; }.orbit-layer-6 { inset: auto auto 27% 3%; }.orbit-layer-7 { inset: 25% auto auto 4%; }.orbit-active-note { font-size: 23px; }.context-disclaimer { margin-top: 12px; } }
 
+/* Context Lens: the research panel reads as a real control surface, not a poster. */
+.context-editorial h2 strong { display: block; color: #d8ad67; font-weight: inherit; font-style: italic; }
+.context-detail { grid-template-rows: auto auto auto auto auto 1fr; }
+.context-reading > p:first-child { color: #9bb3ff; font-size: 10px; font-weight: 650; letter-spacing: .23em; text-transform: uppercase; }
+.context-cta { width: 100%; min-height: 64px; display: flex; align-items: center; justify-content: space-between; margin: 20px 0 0; padding: 0 20px; border: 1px solid rgba(178,194,255,.12); border-radius: 12px; background: linear-gradient(135deg, rgba(255,255,255,.035), rgba(126,151,255,.09)); color: rgba(247,244,235,.86); cursor: pointer; font: inherit; font-size: 13px; text-align: left; transition: border-color .2s var(--ease), background .2s var(--ease), transform .2s var(--ease); }
+.context-cta span { color: #a9bcff; font-size: 22px; font-weight: 300; }.context-cta:hover { border-color: rgba(143,169,255,.65); background: rgba(111,139,255,.14); transform: translateY(-1px); }.context-cta:focus-visible { outline: 2px solid #9bb3ff; outline-offset: 3px; }
+html[data-theme="light"] .context-editorial h2 strong { color: #a26e27; } html[data-theme="light"] .context-cta { border-color: rgba(23,24,23,.14); background: rgba(255,255,255,.6); color: #171817; }
+
 /* Editorial proof layout: assets keep intentional, wide crops at every breakpoint. */
 .wider-lens { border: 1px solid rgba(255,255,255,.12); border-radius: 8px; }
 .lens-field { min-height: 580px; background: radial-gradient(circle at 50% 50%, #24352d 0, #161b18 44%, #101311 100%); }
@@ -332,4 +340,13 @@ html[data-theme="light"] .context-detail { background: linear-gradient(180deg, r
   }
 
   .context-controls { display: flex; }
+}
+
+@media (max-width: 1100px) {
+  .context-cta { grid-column: 1 / -1; }
+}
+
+@media (max-width: 700px) {
+  .context-cta { min-height: 58px; margin-top: 16px; border-radius: 9px; }
+  .context-editorial h2 strong { display: inline; }
 }

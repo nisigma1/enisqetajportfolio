@@ -13,7 +13,7 @@ const layers = [
 ] as const;
 
 export function PerspectiveLens() {
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState(6);
   const tabs = useRef<Array<HTMLButtonElement | null>>([]);
   const current = layers[active];
 
@@ -45,9 +45,10 @@ export function PerspectiveLens() {
 
     <div className="context-detail">
       <div className="context-detail-top"><strong>{String(active + 1).padStart(2, "0")} / 07</strong><div className="context-arrow-controls"><button type="button" onClick={() => select(active - 1)} aria-label="Previous context layer">←</button><button type="button" onClick={() => select(active + 1)} aria-label="Next context layer">→</button></div></div>
-      <div id="context-layer-panel" className="context-reading" role="tabpanel" aria-live="polite" aria-labelledby={`context-layer-${active}`}><p>{String(active + 1).padStart(2, "0")} / {current.name}</p><h3>{current.name}</h3><h4>{current.question}</h4><span /><p>{current.summary}</p></div>
+      <div id="context-layer-panel" className="context-reading" role="tabpanel" aria-live="polite" aria-labelledby={`context-layer-${active}`}><p>Active layer</p><h3>{current.name}</h3><h4>{current.question}</h4><span /><p>{current.summary}</p></div>
       <div className="context-indicators"><span>What I look for</span><ul>{current.indicators.map((indicator) => <li key={indicator}>{indicator}</li>)}</ul></div>
       <div className="context-controls"><button type="button" onClick={() => select(active - 1)} aria-label="Previous context layer">← Previous</button><button type="button" onClick={() => select(active + 1)} aria-label="Next context layer">Next →</button></div>
+      <button type="button" className="context-cta" onClick={() => select(active === layers.length - 1 ? 0 : active + 1)}>See the full context <span>→</span></button>
       <div className="context-index" role="tablist" aria-label="Market context layers">{layers.map((layer, index) => <button ref={(node) => { tabs.current[index] = node; }} id={`context-layer-${index}`} key={layer.name} type="button" role="tab" aria-selected={active === index} aria-controls="context-layer-panel" tabIndex={active === index ? 0 : -1} onClick={() => select(index)} onKeyDown={(event) => onKeyDown(event, index)}><span>{String(index + 1).padStart(2, "0")}</span><strong>{layer.name}</strong></button>)}</div>
     </div>
   </>;
