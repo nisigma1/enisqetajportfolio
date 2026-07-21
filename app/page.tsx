@@ -1,48 +1,113 @@
+import type { Metadata } from "next";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
-import { Hero, About, Markets, Work, Build, Malera, Contact } from "@/components/sections/DefinitiveSections";
+import {
+  About,
+  Build,
+  Contact,
+  Hero,
+  Malera,
+  Markets,
+  Work,
+} from "@/components/sections/DefinitiveSections";
+import {
+  barberProject,
+  buildCapabilities,
+  identity,
+  malera,
+  marketInterests,
+  siteConfig,
+} from "@/data/site";
+
+export const metadata: Metadata = {
+  title: "Markets, Research & Digital Products",
+  description: siteConfig.description,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: "/",
+    siteName: siteConfig.name,
+    title: siteConfig.title,
+    description: siteConfig.description,
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "Enis Qetaj — markets, research and digital products",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.title,
+    description: siteConfig.description,
+    images: ["/og.png"],
+  },
+};
 
 export default function Home() {
+  const personId = `${siteConfig.url}/#enis-qetaj`;
+  const studioId = `${siteConfig.url}/#malera-studio`;
+  const projectId = `${siteConfig.url}/#barber-brothers`;
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "Person",
-        "@id": "/#enis-qetaj",
-        name: "Enis Qetaj",
-        email: "mailto:enisqeta5@gmail.com",
-        telephone: "+38344857227",
-        address: { "@type": "PostalAddress", addressCountry: "XK" },
-        jobTitle: ["Crypto Trader", "Financial Markets Researcher", "AI Product Builder", "Independent Freelancer"],
-        knowsAbout: ["Cryptocurrency markets", "Financial markets", "Macroeconomics", "Global liquidity", "Geopolitics", "Artificial intelligence", "Digital products"],
-        worksFor: { "@id": "/#malera-studio" },
+        "@id": personId,
+        name: identity.name,
+        url: siteConfig.url,
+        email: identity.email,
+        telephone: identity.phone,
+        address: {
+          "@type": "PostalAddress",
+          addressCountry: "XK",
+        },
+        jobTitle: identity.roles,
+        knowsAbout: [...marketInterests, ...buildCapabilities],
+        affiliation: { "@id": studioId },
       },
       {
-        "@type": "CreativeWork",
-        "@id": "/#barber-brothers",
-        name: "Barber Brothers — Web Experience and Booking",
-        url: "https://barberbrothers.style/",
-        creator: { "@id": "/#enis-qetaj" },
-        description: "A customer-facing web experience and direct booking journey for Barber Brothers in Fushë Kosovë.",
+        "@type": "WebSite",
+        "@id": projectId,
+        name: barberProject.title,
+        url: barberProject.url,
+        creator: { "@id": personId },
+        inLanguage: ["sq", "en"],
+        description: barberProject.description,
       },
       {
         "@type": "Organization",
-        "@id": "/#malera-studio",
-        name: "Malera Studio",
-        url: "https://malera.studio/",
-        description: "A small creative studio building websites, applications, video content and AI tools.",
-      },
-      {
-        "@type": "ItemList",
-        name: "Digital product services",
-        itemListElement: ["Digital presence", "Product shaping", "Workflow automation", "Information design"].map((name, index) => ({
-          "@type": "ListItem",
-          position: index + 1,
-          item: { "@type": "Service", name, provider: { "@id": "/#enis-qetaj" } },
-        })),
+        "@id": studioId,
+        name: malera.name,
+        url: malera.url,
       },
     ],
   };
 
-  return <><a className="skip-link" href="#main">Skip to content</a><Navigation /><main id="main"><Hero /><About /><Markets /><Work /><Malera /><Build /><Contact /></main><Footer /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} /></>;
+  return (
+    <>
+      <a className="skip-link" href="#main">
+        Skip to content
+      </a>
+      <Navigation />
+      <main id="main">
+        <Hero />
+        <About />
+        <Markets />
+        <Work />
+        <Build />
+        <Malera />
+        <Contact />
+      </main>
+      <Footer />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+        }}
+      />
+    </>
+  );
 }

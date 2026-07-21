@@ -1,57 +1,88 @@
 "use client";
 
-import { KeyboardEvent, useRef, useState } from "react";
-
-const layers = [
-  { name: "Price", question: "What is visible right now?", summary: "Price is the first observation. Useful, immediate—and never the full explanation.", indicators: ["Trend", "Momentum", "Key levels"], context: "The visible signal" },
-  { name: "Structure", question: "How is the market behaving?", summary: "Range, break, momentum and positioning give the first observation a shape.", indicators: ["Range", "Breaks", "Positioning"], context: "Behavior around price" },
-  { name: "Fundamentals", question: "What supports the move?", summary: "Adoption, utility and token dynamics help separate reaction from a change in the underlying story.", indicators: ["Adoption", "Utility", "Token dynamics"], context: "Underlying conditions" },
-  { name: "Liquidity", question: "Where is capital moving?", summary: "Flows and financial conditions explain when risk can expand, contract or rotate.", indicators: ["Flows", "Capital", "Conditions"], context: "Capital in motion" },
-  { name: "Macro", question: "What environment surrounds it?", summary: "Rates, inflation and policy widen the frame beyond any one asset or market narrative.", indicators: ["Rates", "Inflation", "Policy"], context: "The economic environment" },
-  { name: "Geopolitics", question: "What can redraw the map?", summary: "Trade, energy, conflict and regulation can reframe risk even when the chart looks unchanged.", indicators: ["Energy", "Trade", "Regulation"], context: "External forces" },
-  { name: "On-chain", question: "What does network activity add?", summary: "Flows, holder behavior and network use add a behavioral layer that price alone cannot reveal.", indicators: ["Flows", "Holder behavior", "Network use"], context: "A wider, connected view" },
-] as const;
+import { KeyboardEvent, useId, useRef, useState } from "react";
+import { marketLayers } from "@/data/site";
 
 export function PerspectiveLens() {
   const [active, setActive] = useState(0);
-  const tabs = useRef<Array<HTMLButtonElement | null>>([]);
-  const current = layers[active];
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const panelId = useId();
+  const current = marketLayers[active];
 
   function select(index: number, focus = false) {
-    const next = (index + layers.length) % layers.length;
+    const next = Math.max(0, Math.min(marketLayers.length - 1, index));
     setActive(next);
-    if (focus) tabs.current[next]?.focus();
+    if (focus) tabRefs.current[next]?.focus();
   }
 
-  function onKeyDown(event: KeyboardEvent<HTMLButtonElement>, index: number) {
-    if (["ArrowRight", "ArrowDown"].includes(event.key)) { event.preventDefault(); select(index + 1, true); }
-    if (["ArrowLeft", "ArrowUp"].includes(event.key)) { event.preventDefault(); select(index - 1, true); }
-    if (event.key === "Home") { event.preventDefault(); select(0, true); }
-    if (event.key === "End") { event.preventDefault(); select(layers.length - 1, true); }
+  function onTabKeyDown(event: KeyboardEvent<HTMLButtonElement>, index: number) {
+    let next: number | null = null;
+    if (event.key === "ArrowRight" || event.key === "ArrowDown") next = Math.min(index + 1, marketLayers.length - 1);
+    if (event.key === "ArrowLeft" || event.key === "ArrowUp") next = Math.max(index - 1, 0);
+    if (event.key === "Home") next = 0;
+    if (event.key === "End") next = marketLayers.length - 1;
+    if (next !== null) { event.preventDefault(); select(next, true); }
   }
 
-  return <div className={`lens-workspace lens-step-${active}`}>
-    <div className="context-visual" aria-label={`Wider lens model: ${current.name} is active`}>
-      <div className="context-visual-meta"><span>Context expands</span><strong>{String(active + 1).padStart(2, "0")} / 07</strong></div>
-      <div className="context-orbit" aria-hidden="true">
-        <span className="orbit-axis orbit-axis-horizontal" />
-        <span className="orbit-axis orbit-axis-vertical" />
-        <span className="orbit-core"><small>01</small>Price</span>
-        {layers.slice(1).map((layer, index) => {
-          const layerIndex = index + 1;
-          return <span key={layer.name} className={`orbit-layer orbit-layer-${layerIndex + 1} ${layerIndex <= active ? "is-revealed" : ""} ${layerIndex === active ? "is-current" : ""}`}><b>{String(layerIndex + 1).padStart(2, "0")}</b><i>{layer.name}</i></span>;
-        })}
+  return (
+    <div className={`lens lens-stage-${active + 1}`} style={{ "--lens-progress": active } as React.CSSProperties}>
+      <div className="lens-aperture" role="img" aria-label={`Context frame with ${current.name} active`}>
+        <div className="lens-aperture-meta"><span>Context expansion</span><strong>{String(active + 1).padStart(2, "0")} / 07</strong></div>
+        <div className="lens-field" aria-hidden="true">
+          <span className="lens-signal">Price</span>
+          {marketLayers.slice(1).map((layer, index) => {
+            const layerIndex = index + 1;
+            return <span key={layer.name} className={`lens-context lens-context-${layerIndex + 1} ${layerIndex <= active ? "is-visible" : ""}`}>{layer.name}</span>;
+          })}
+          <span className="lens-window" />
+        </div>
+        <p className="lens-aperture-caption">Seven layers. One more coherent view.</p>
       </div>
-      <p className="context-visual-caption"><span>{current.name}</span>{current.context}</p>
-    </div>
 
-    <div className="context-detail">
-      <div className="context-detail-top"><strong>{String(active + 1).padStart(2, "0")} / 07</strong><div className="context-arrow-controls"><button type="button" onClick={() => select(active - 1)} aria-label="Previous context layer">←</button><button type="button" onClick={() => select(active + 1)} aria-label="Next context layer">→</button></div></div>
-      <div id="context-layer-panel" className="context-reading" role="tabpanel" aria-live="polite" aria-labelledby={`context-layer-${active}`}><p>Active layer</p><h3>{current.name}</h3><h4>{current.question}</h4><span /><p>{current.summary}</p></div>
-      <div className="context-indicators"><span>What Enis looks for</span><ul>{current.indicators.map((indicator) => <li key={indicator}>{indicator}</li>)}</ul></div>
-      <button type="button" className="context-cta" onClick={() => select(active === layers.length - 1 ? 0 : active + 1)}>{active === layers.length - 1 ? "Return to price" : "Add the next layer"}<span>→</span></button>
-    </div>
+      <p className="visually-hidden" aria-live="polite" aria-atomic="true">
+        Active market context layer: {current.name}, {active + 1} of {marketLayers.length}.
+      </p>
+      <section className="lens-reading">
+        <div className="lens-reading-meta"><span>Active layer</span><strong>{String(active + 1).padStart(2, "0")} of 07</strong></div>
+        {marketLayers.map((layer, index) => (
+          <article key={layer.name} id={`${panelId}-${index}`} role="tabpanel" aria-labelledby={`${panelId}-tab-${index}`} hidden={index !== active}>
+            <h3>{layer.name}</h3>
+            <h4>{layer.question}</h4>
+            <p>{layer.note}</p>
+            <div><span>What I examine</span><ul>{layer.indicators.map((indicator) => <li key={indicator}>{indicator}</li>)}</ul></div>
+            <blockquote>{layer.change}</blockquote>
+          </article>
+        ))}
+        <div className="lens-controls">
+          <button type="button" onClick={() => select(active - 1)} disabled={active === 0}><span aria-hidden="true">←</span> Previous</button>
+          <button type="button" onClick={() => select(active + 1)} disabled={active === marketLayers.length - 1}>{active === marketLayers.length - 1 ? "Full context" : "Add context"} <span aria-hidden="true">→</span></button>
+        </div>
+      </section>
 
-    <div className="context-index" role="tablist" aria-label="Market context layers">{layers.map((layer, index) => <button ref={(node) => { tabs.current[index] = node; }} id={`context-layer-${index}`} key={layer.name} type="button" role="tab" aria-selected={active === index} aria-controls="context-layer-panel" tabIndex={active === index ? 0 : -1} onClick={() => select(index)} onKeyDown={(event) => onKeyDown(event, index)}><span>{String(index + 1).padStart(2, "0")}</span><strong>{layer.name}</strong></button>)}</div>
-  </div>;
+      <div className="lens-index" role="tablist" aria-label="Market context layers">
+        {marketLayers.map((layer, index) => (
+          <button
+            ref={(node) => { tabRefs.current[index] = node; }}
+            id={`${panelId}-tab-${index}`}
+            key={layer.name}
+            type="button"
+            role="tab"
+            aria-selected={active === index}
+            aria-controls={`${panelId}-${index}`}
+            tabIndex={active === index ? 0 : -1}
+            onClick={() => select(index)}
+            onKeyDown={(event) => onTabKeyDown(event, index)}
+          >
+            <span>{String(index + 1).padStart(2, "0")}</span><strong>{layer.name}</strong>
+          </button>
+        ))}
+      </div>
+
+      <label className="lens-select">Jump to layer
+        <select value={active} onChange={(event) => select(Number(event.target.value))}>
+          {marketLayers.map((layer, index) => <option key={layer.name} value={index}>{String(index + 1).padStart(2, "0")} — {layer.name}</option>)}
+        </select>
+      </label>
+    </div>
+  );
 }

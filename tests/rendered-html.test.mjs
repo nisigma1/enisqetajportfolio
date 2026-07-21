@@ -7,45 +7,154 @@ async function getWorker() {
   return (await import(workerUrl.href)).default;
 }
 
-const env = { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } };
+const env = {
+  ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) },
+};
 const ctx = { waitUntil() {}, passThroughOnException() {} };
+const publicOrigin = "https://enis-qetaj-signal.enis-qetaj.chatgpt.site";
 
 test("server-renders the complete identity homepage", async () => {
   const worker = await getWorker();
-  const response = await worker.fetch(new Request("http://localhost/", { headers: { accept: "text/html" } }), env, ctx);
+  const response = await worker.fetch(
+    new Request("http://localhost/", { headers: { accept: "text/html" } }),
+    env,
+    ctx,
+  );
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
+
   const html = await response.text();
-  assert.match(html, /Enis Qetaj — Markets, Research &amp; Product Systems/);
+  assert.match(html, /Markets, Research &amp; Digital Products — Enis Qetaj/);
+  assert.match(
+    html,
+    new RegExp(`rel="canonical" href="${publicOrigin.replaceAll(".", "\\.")}/"`),
+  );
   assert.match(html, /I study the forces around a decision/);
   assert.equal((html.match(/alt="Portrait of Enis Qetaj"/g) ?? []).length, 1);
   assert.match(html, /Barber Brothers/);
-  assert.match(html, /Price begins the question/);
-  assert.match(html, /Context changes the answer/);
-  assert.match(html, /Add the next layer/);
+  assert.match(html, /A price is a/);
+  assert.match(html, /Not the whole situation/);
+  assert.match(html, /Add context/);
   assert.match(html, /href="#markets"/);
   assert.match(html, /On-chain/);
   assert.match(html, /Malera Studio/);
   assert.match(html, /\+383 44 857 227/);
   assert.match(html, /application\/ld\+json/);
+  assert.doesNotMatch(html, /Football|C:\/Users|C:%5CUsers|\.vinext\/fonts/i);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton|Starter Project/);
+
+  const primaryNavigation = html.match(
+    /<nav class="masthead-nav"[\s\S]*?<\/nav>/,
+  )?.[0];
+  assert.ok(primaryNavigation, "primary navigation is present");
+  assert.equal((primaryNavigation.match(/<a\b/g) ?? []).length, 6);
+  for (const label of ["Index", "About", "Markets", "Work", "Build", "Contact"]) {
+    assert.match(primaryNavigation, new RegExp(`>${label}<`));
+  }
+  assert.doesNotMatch(primaryNavigation, />Studio</);
 });
 
-test("renders every public route", async () => {
+test("renders indexed public routes with route-specific canonicals", async () => {
   const worker = await getWorker();
-  for (const [route, expected] of [["/work", "One real project"], ["/research", "Price is the beginning"], ["/contact", "worth talking about"]]) {
-    const response = await worker.fetch(new Request(`http://localhost${route}`, { headers: { accept: "text/html" } }), env, ctx);
+  for (const [route, expected] of [
+    ["/work", "Real work"],
+    ["/contact", "Bring the context"],
+  ]) {
+    const response = await worker.fetch(
+      new Request(`http://localhost${route}`, { headers: { accept: "text/html" } }),
+      env,
+      ctx,
+    );
     assert.equal(response.status, 200, route);
-    assert.match(await response.text(), new RegExp(expected), route);
+    const html = await response.text();
+    assert.match(html, new RegExp(expected), route);
+    assert.match(
+      html,
+      new RegExp(
+        `rel="canonical" href="${publicOrigin.replaceAll(".", "\\.")}${route}"`,
+      ),
+      route,
+    );
   }
+});
+
+test("publishes project metadata and correct intrinsic media dimensions", async () => {
+  const worker = await getWorker();
+  const response = await worker.fetch(
+    new Request("http://localhost/work/barber-brothers", {
+      headers: { accept: "text/html" },
+    }),
+    env,
+    ctx,
+  );
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Barber Brothers — Selected Work — Enis Qetaj/);
+  assert.match(
+    html,
+    new RegExp(
+      `rel="canonical" href="${publicOrigin.replaceAll(".", "\\.")}/work/barber-brothers"`,
+    ),
+  );
+  assert.match(html, /width="1023" height="1537"/);
+  assert.match(html, /width="1086" height="1448"/);
+  assert.match(html, /width="1200" height="960"/);
+});
+
+test("keeps the unfinished research archive out of search discovery", async () => {
+  const worker = await getWorker();
+  const research = await worker.fetch(
+    new Request("http://localhost/research", { headers: { accept: "text/html" } }),
+    env,
+    ctx,
+  );
+  assert.equal(research.status, 200);
+  assert.match(await research.text(), /name="robots" content="noindex, follow"/);
+
+  const sitemap = await worker.fetch(
+    new Request("http://localhost/sitemap.xml"),
+    env,
+    ctx,
+  );
+  assert.equal(sitemap.status, 200);
+  const xml = await sitemap.text();
+  assert.doesNotMatch(xml, /\/research/);
+  assert.match(xml, /\/work\/barber-brothers/);
 });
 
 test("contact endpoint validates input and returns a mail fallback", async () => {
   const worker = await getWorker();
-  const valid = await worker.fetch(new Request("http://localhost/api/contact", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ name: "Test User", email: "test@example.com", project: "A booking website", message: "A sufficiently detailed project description for validation.", website: "" }) }), env, ctx);
+  const valid = await worker.fetch(
+    new Request("http://localhost/api/contact", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        name: "Test User",
+        email: "test@example.com",
+        project: "A booking website",
+        message: "A sufficiently detailed project description for validation.",
+        website: "",
+      }),
+    }),
+    env,
+    ctx,
+  );
   assert.equal(valid.status, 200);
   assert.match((await valid.json()).mailto, /^mailto:enisqeta5@gmail\.com/);
 
-  const invalid = await worker.fetch(new Request("http://localhost/api/contact", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ name: "X", email: "bad", project: "No", message: "short" }) }), env, ctx);
+  const invalid = await worker.fetch(
+    new Request("http://localhost/api/contact", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        name: "X",
+        email: "bad",
+        project: "No",
+        message: "short",
+      }),
+    }),
+    env,
+    ctx,
+  );
   assert.equal(invalid.status, 422);
 });

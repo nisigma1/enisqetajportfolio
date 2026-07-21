@@ -1,6 +1,58 @@
-import Link from "next/link";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ContactForm } from "@/components/forms/ContactForm";
-export const metadata: Metadata = { title: "Contact — Enis Qetaj", description: "Send Enis Qetaj a short note about a project or collaboration." };
-export default function ContactPage() { return <main className="inner-page"><header><Link href="/">EQ / Index</Link><span>Contact</span></header><section className="contact-page-grid"><div><p>Available for select projects</p><h1>Have something<br /><em>worth talking about?</em></h1><a href="mailto:enisqeta5@gmail.com">enisqeta5@gmail.com</a><a href="tel:+38344857227">+383 44 857 227</a></div><ContactForm /></section></main>; }
+import { identity, siteConfig } from "@/data/site";
 
+const description =
+  "Start a conversation with Enis Qetaj about a digital product, website, automation or research interface.";
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description,
+  alternates: { canonical: "/contact" },
+  openGraph: {
+    type: "website",
+    url: "/contact",
+    siteName: siteConfig.name,
+    title: "Contact — Enis Qetaj",
+    description,
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "Start a conversation with Enis Qetaj",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact — Enis Qetaj",
+    description,
+    images: ["/og.png"],
+  },
+};
+
+export default function ContactPage() {
+  return (
+    <main className="inner-page">
+      <header>
+        <Link href="/">EQ / Index</Link>
+        <span>Contact</span>
+      </header>
+      <section className="contact-page-grid">
+        <div>
+          <p>{identity.availability}</p>
+          <h1>
+            Bring the context.
+            <br />
+            <em>We’ll find the useful form.</em>
+          </h1>
+          <a href={identity.emailHref}>{identity.email}</a>
+          <a href={identity.phoneHref}>{identity.phone}</a>
+        </div>
+        <ContactForm />
+      </section>
+    </main>
+  );
+}
