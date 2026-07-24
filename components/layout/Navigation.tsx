@@ -1,6 +1,8 @@
 "use client";
 
 import { MouseEvent, useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { navigation } from "@/data/site";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 
@@ -14,8 +16,17 @@ type InertSnapshot = {
 };
 
 export function Navigation() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("index");
+  const routeActive = pathname.startsWith("/research")
+    ? "research"
+    : pathname.startsWith("/work")
+      ? "work"
+      : pathname.startsWith("/contact")
+        ? "contact"
+        : "index";
+  const currentActive = pathname === "/" ? active : routeActive;
   const triggerRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -23,6 +34,8 @@ export function Navigation() {
   const pendingTargetRef = useRef<string | null>(null);
 
   useEffect(() => {
+    if (pathname !== "/") return;
+
     const sections = primaryNavigation
       .map((item) => document.getElementById(item.href.slice(1)))
       .filter((section): section is HTMLElement => Boolean(section));
@@ -39,7 +52,7 @@ export function Navigation() {
 
     sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     if (!open) return;
@@ -136,6 +149,7 @@ export function Navigation() {
   }
 
   function followMobileLink(event: MouseEvent<HTMLAnchorElement>, target: string) {
+    if (window.location.pathname !== "/") return;
     event.preventDefault();
     pendingTargetRef.current = target;
     setOpen(false);
@@ -144,20 +158,20 @@ export function Navigation() {
   return (
     <>
       <header className="masthead">
-        <a className="masthead-name" href="#index" aria-label="Enis Qetaj, back to index">
+        <Link className="masthead-name" href="/#index" aria-label="Enis Qetaj, back to index">
           <span aria-hidden="true">EQ</span>
           Enis Qetaj
-        </a>
+        </Link>
 
         <nav className="masthead-nav" aria-label="Primary navigation">
           {primaryNavigation.map((item) => (
-            <a
+            <Link
               key={item.label}
-              href={item.href}
-              aria-current={active === item.href.slice(1) ? "location" : undefined}
+              href={`/${item.href}`}
+              aria-current={currentActive === item.href.slice(1) ? "location" : undefined}
             >
               {item.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
@@ -198,14 +212,14 @@ export function Navigation() {
 
           <nav aria-label="Mobile navigation">
             {primaryNavigation.map((item) => (
-              <a
+              <Link
                 key={item.label}
-                href={item.href}
+                href={`/${item.href}`}
                 onClick={(event) => followMobileLink(event, item.href.slice(1))}
-                aria-current={active === item.href.slice(1) ? "location" : undefined}
+                aria-current={currentActive === item.href.slice(1) ? "location" : undefined}
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
           </nav>
 

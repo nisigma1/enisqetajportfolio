@@ -24,7 +24,7 @@ test("server-renders the complete identity homepage", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
-  assert.match(html, /Research, Markets &amp; Digital Products — Enis Qetaj/);
+  assert.match(html, /Markets, Research, Geopolitics &amp; Digital Products — Enis Qetaj/);
   assert.match(
     html,
     new RegExp(`rel="canonical" href="${publicOrigin.replaceAll(".", "\\.")}/"`),
@@ -32,16 +32,21 @@ test("server-renders the complete identity homepage", async () => {
   assert.match(html, /I research what moves markets/);
   assert.equal((html.match(/alt="Portrait of Enis Qetaj"/g) ?? []).length, 1);
   assert.match(html, /Barber Brothers/);
-  assert.match(html, /A price is a/);
-  assert.match(html, /Not the whole situation/);
-  assert.match(html, /Context Atlas/);
-  assert.match(html, /href="#markets"/);
+  assert.match(html, /A signal is only the beginning/);
+  assert.match(html, /Evidence Ladder/);
+  assert.match(html, /Signal/);
+  assert.match(html, /Context/);
+  assert.match(html, /Decision/);
+  assert.match(html, /href="\/#markets"/);
   assert.match(html, /On-chain/);
+  assert.match(html, /Research and Analysis/);
+  assert.match(html, /Macroeconomics and Geopolitics/);
   assert.match(html, /Malera Studio/);
   assert.match(html, /\+383 44 857 227/);
   assert.match(html, /application\/ld\+json/);
   assert.doesNotMatch(html, /Football|C:\/Users|C:%5CUsers|\.vinext\/fonts/i);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton|Starter Project/);
+  assert.doesNotMatch(html, /Context Atlas|atlas-stage|No live notes are listed yet/);
 
   const primaryNavigation = html.match(
     /<nav class="masthead-nav"[\s\S]*?<\/nav>/,
@@ -75,6 +80,8 @@ test("renders indexed public routes with route-specific canonicals", async () =>
       ),
       route,
     );
+    assert.match(html, /class="masthead"/, `${route} uses the shared masthead`);
+    assert.match(html, /class="site-footer"/, `${route} uses the shared footer`);
   }
 });
 
@@ -111,7 +118,9 @@ test("publishes the research framework without inventing research notes", async 
   assert.equal(research.status, 200);
   const researchHtml = await research.text();
   assert.match(researchHtml, /name="robots" content="index, follow"/);
-  assert.match(researchHtml, /No live notes are listed yet/);
+  assert.match(researchHtml, /Evidence before narrative/);
+  assert.match(researchHtml, /Research and educational content only/);
+  assert.doesNotMatch(researchHtml, /No live notes are listed yet/);
 
   const sitemap = await worker.fetch(
     new Request("http://localhost/sitemap.xml"),

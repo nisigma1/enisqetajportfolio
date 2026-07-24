@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import { Navigation } from "@/components/layout/Navigation";
-import { Footer } from "@/components/layout/Footer";
 import {
   About,
   Build,
@@ -20,7 +18,7 @@ import {
 } from "@/data/site";
 
 export const metadata: Metadata = {
-  title: "Research, Markets & Digital Products",
+  title: "Markets, Research, Geopolitics & Digital Products",
   description: siteConfig.description,
   alternates: { canonical: "/" },
   openGraph: {
@@ -34,7 +32,7 @@ export const metadata: Metadata = {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "Enis Qetaj — markets, research and digital products",
+        alt: "Enis Qetaj — markets, research, geopolitics and digital products",
       },
     ],
   },
@@ -69,7 +67,7 @@ export default function Home() {
         affiliation: { "@id": studioId },
       },
       {
-        "@type": "WebSite",
+        "@type": "WebApplication",
         "@id": projectId,
         name: barberProject.title,
         url: barberProject.url,
@@ -88,10 +86,6 @@ export default function Home() {
 
   return (
     <>
-      <a className="skip-link" href="#main">
-        Skip to content
-      </a>
-      <Navigation />
       <main id="main">
         <Hero />
         <About />
@@ -101,7 +95,6 @@ export default function Home() {
         <Malera />
         <Contact />
       </main>
-      <Footer />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

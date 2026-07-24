@@ -1,9 +1,9 @@
 export const siteConfig = {
   name: "Enis Qetaj",
   url: "https://enis-qetaj-signal.enis-qetaj.chatgpt.site",
-  title: "Enis Qetaj — Markets, Research & Digital Products",
+  title: "Enis Qetaj — Markets, Research, Geopolitics & Digital Products",
   description:
-    "Enis Qetaj studies financial markets and builds useful digital products, research tools and automation from Kosovo.",
+    "Enis Qetaj researches crypto markets, financial markets, macroeconomics and geopolitics, then builds useful digital products from Kosovo.",
 } as const;
 
 export const navigation = [
@@ -26,6 +26,8 @@ export const identity = {
   roles: [
     "Crypto Trader",
     "Financial Markets Researcher",
+    "Research and Analysis",
+    "Macroeconomics and Geopolitics",
     "AI Product Builder",
     "Independent Freelancer",
   ],
@@ -52,50 +54,58 @@ export const marketInterests = [
   "Global liquidity",
   "Monetary policy",
   "Geopolitics",
+  "Energy",
+  "International trade",
+  "Regulation",
+  "Strategic resources",
   "On-chain research",
   "Market narratives",
+  "Cross-source research and synthesis",
 ] as const;
 
 export const researchMethod = [
   {
     number: "01",
-    title: "Frame the question",
-    note: "Define what needs explaining before collecting more information.",
+    title: "Question",
+    note: "Define what needs to be understood before collecting more information.",
   },
   {
     number: "02",
-    title: "Gather credible sources",
-    note: "Start with primary material and trace claims back to their origin.",
+    title: "Sources",
+    note: "Gather credible evidence and trace important claims back to their origin.",
   },
   {
     number: "03",
-    title: "Compare signals",
-    note: "Read market, macro, geopolitical and on-chain evidence together.",
+    title: "Cross-check",
+    note: "Compare where sources and signals agree, conflict or leave a gap.",
   },
   {
     number: "04",
-    title: "Cross-check contradictions",
-    note: "Look for what does not fit. Tension often reveals the real question.",
+    title: "Interpretation",
+    note: "Connect market, macro, geopolitical and on-chain evidence without overstating certainty.",
   },
   {
     number: "05",
-    title: "Separate signal from narrative",
-    note: "Distinguish observable conditions from the story built around them.",
+    title: "Limitations",
+    note: "State what remains uncertain, missing or dependent on changing conditions.",
   },
   {
     number: "06",
-    title: "Synthesize implications",
-    note: "Turn connected evidence into a clearer view, without pretending certainty.",
+    title: "Implications",
+    note: "Explain what the connected evidence could mean and what may change the situation.",
   },
 ] as const;
 
 export const researchDomains = [
+  "Cryptocurrency markets",
+  "Technical & fundamental analysis",
   "Market structure",
   "Liquidity & monetary policy",
-  "Macro conditions",
+  "Macroeconomics",
   "Energy & strategic resources",
   "Trade, conflict & regulation",
   "On-chain behavior",
+  "Market narratives",
 ] as const;
 
 export const buildCapabilities = [

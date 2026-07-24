@@ -230,7 +230,7 @@ export function ContactForm() {
 
       <div className="form-actions wide">
         <button className="form-submit" type="submit" disabled={state === "loading"}>
-          {state === "loading" ? "Preparing…" : "Prepare email"}
+          {state === "loading" ? "Preparing…" : "Prepare email draft"}
           <span aria-hidden="true">↗</span>
         </button>
         <button className="quiet-action" type="button" onClick={copyEmail}>Copy email</button>

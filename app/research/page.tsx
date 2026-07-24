@@ -1,32 +1,53 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { researchDomains, researchMethod, siteConfig } from "@/data/site";
+import { researchDomains, researchMethod } from "@/data/site";
 
 export const metadata: Metadata = {
-  title: "Research Framework",
-  description: "The evidence-led research framework behind Enis Qetaj’s work across markets, macro, geopolitics and on-chain behavior.",
+  title: "Research Practice",
+  description: "The evidence-led research practice Enis Qetaj uses across markets, macroeconomics, geopolitics and on-chain behavior.",
   alternates: { canonical: "/research" },
 };
 
 export default function ResearchPage() {
   return (
-    <main className="inner-page research-page">
-      <header><Link href="/">EQ / Index</Link><span>Research framework</span></header>
-      <section className="inner-hero">
-        <p>Research practice / {siteConfig.name}</p>
-        <h1>Build the question.<br /><em>Then widen the evidence.</em></h1>
-        <p>This archive is intentionally quiet until a note is ready to be sourced, argued and published with the care it needs.</p>
+    <main id="main" className="route-page research-route">
+      <header className="route-hero">
+        <p>Research practice / Enis Qetaj</p>
+        <h1>Build the question.<br />Then widen the evidence.</h1>
+        <div>
+          <p>Research is presented here as a working method—not as a fabricated publication archive.</p>
+          <span>Markets / Macro / Geopolitics / On-chain</span>
+        </div>
+      </header>
+
+      <section className="route-section route-method" aria-labelledby="method-title">
+        <div>
+          <p>01 / Method</p>
+          <h2 id="method-title">Evidence before narrative.</h2>
+        </div>
+        <ol>
+          {researchMethod.map((step) => (
+            <li key={step.number}>
+              <span>{step.number}</span>
+              <h3>{step.title}</h3>
+              <p>{step.note}</p>
+            </li>
+          ))}
+        </ol>
       </section>
-      <section className="research-page-grid" aria-labelledby="method-title">
-        <div><p id="method-title">Method</p><strong>Evidence before narrative.</strong></div>
-        <ol>{researchMethod.map((step) => <li key={step.number}><span>{step.number}</span><h2>{step.title}</h2><p>{step.note}</p></li>)}</ol>
-      </section>
-      <section className="research-page-domains" aria-labelledby="domains-title">
-        <p id="domains-title">Domains in view</p>
+
+      <section className="route-section route-domains" aria-labelledby="domains-title">
+        <div>
+          <p>02 / Fields of inquiry</p>
+          <h2 id="domains-title">The situation is larger than one signal.</h2>
+        </div>
         <ul>{researchDomains.map((domain) => <li key={domain}>{domain}</li>)}</ul>
       </section>
-      <p className="research-page-close">No live notes are listed yet. When they are, each will distinguish observed evidence, uncertainty and interpretation.</p>
-      <Link className="text-link" href="/#markets">Explore the Context Atlas <span aria-hidden="true">↓</span></Link>
+
+      <section className="route-callout">
+        <p>Research and educational content only. Not financial advice.</p>
+        <Link className="button button--primary" href="/#markets">Explore the Evidence Ladder <span aria-hidden="true">↓</span></Link>
+      </section>
     </main>
   );
 }

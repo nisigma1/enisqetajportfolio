@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { siteConfig } from "@/data/site";
+import { Navigation } from "@/components/layout/Navigation";
+import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -25,7 +27,7 @@ export const metadata: Metadata = {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "Enis Qetaj — markets, research and digital products",
+        alt: "Enis Qetaj — markets, research, geopolitics and digital products",
       },
     ],
   },
@@ -60,7 +62,12 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body>{children}</body>
+      <body>
+        <a className="skip-link" href="#main">Skip to content</a>
+        <Navigation />
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }
