@@ -7,12 +7,12 @@ export const siteConfig = {
 } as const;
 
 export const navigation = [
-  { label: "Index", href: "#index" },
-  { label: "Research", href: "#research" },
-  { label: "Markets", href: "#markets" },
-  { label: "Work", href: "#work" },
-  { label: "Build", href: "#build" },
-  { label: "Contact", href: "#contact" },
+  { label: "Index", href: "/" },
+  { label: "Research", href: "/research" },
+  { label: "Markets", href: "/markets" },
+  { label: "Work", href: "/work" },
+  { label: "Build", href: "/build" },
+  { label: "Contact", href: "/contact" },
 ] as const;
 
 export const identity = {

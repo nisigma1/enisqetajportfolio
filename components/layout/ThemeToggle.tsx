@@ -1,6 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import { useRouteTransition } from "@/components/transition/RouteTransitionContext";
 
 type Theme = "light" | "dark";
 
@@ -26,6 +27,7 @@ function subscribe(onChange: () => void) {
 }
 
 export function ThemeToggle() {
+  const { isTransitioning } = useRouteTransition();
   const theme = useSyncExternalStore(subscribe, currentTheme, () => "light");
   const nextTheme = theme === "dark" ? "light" : "dark";
 
@@ -42,6 +44,7 @@ export function ThemeToggle() {
       onClick={toggleTheme}
       aria-label={`Switch to ${nextTheme} theme`}
       title={`Switch to ${nextTheme} theme`}
+      disabled={isTransitioning}
     >
       <span className="theme-toggle-track" aria-hidden="true">
         <svg className="theme-toggle-orb theme-toggle-sun" viewBox="0 0 24 24" focusable="false">

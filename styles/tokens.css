@@ -40,10 +40,14 @@
   --motion-fast: 160ms;
   --motion-base: 260ms;
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --transition-ease: cubic-bezier(0.76, 0, 0.24, 1);
+  --transition-cover-duration: 300ms;
+  --transition-reveal-duration: 320ms;
 
   --z-masthead: 50;
   --z-menu: 100;
   --z-skip: 200;
+  --z-transition: 500;
 }
 
 @media (max-width: 599px) {

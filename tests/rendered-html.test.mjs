@@ -37,7 +37,7 @@ test("server-renders the complete identity homepage", async () => {
   assert.match(html, /Signal/);
   assert.match(html, /Context/);
   assert.match(html, /Decision/);
-  assert.match(html, /href="\/#markets"/);
+  assert.match(html, /href="\/markets"/);
   assert.match(html, /On-chain/);
   assert.match(html, /Research and Analysis/);
   assert.match(html, /Macroeconomics and Geopolitics/);
@@ -62,7 +62,10 @@ test("server-renders the complete identity homepage", async () => {
 test("renders indexed public routes with route-specific canonicals", async () => {
   const worker = await getWorker();
   for (const [route, expected] of [
+    ["/research", "Build the question"],
+    ["/markets", "A signal is only"],
     ["/work", "Real work"],
+    ["/build", "Start with the need"],
     ["/contact", "Bring the context"],
   ]) {
     const response = await worker.fetch(
@@ -130,6 +133,8 @@ test("publishes the research framework without inventing research notes", async 
   assert.equal(sitemap.status, 200);
   const xml = await sitemap.text();
   assert.match(xml, /\/research/);
+  assert.match(xml, /\/markets/);
+  assert.match(xml, /\/build/);
   assert.match(xml, /\/work\/barber-brothers/);
 });
 

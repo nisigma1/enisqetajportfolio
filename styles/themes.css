@@ -14,6 +14,12 @@
   --focus-ring: #315df2;
   --status: #315df2;
   --shadow: 0 24px 64px rgba(24, 26, 21, 0.12);
+  --nav-text: #5b5e56;
+  --nav-text-active: #151712;
+  --nav-bracket: #315df2;
+  --transition-tile: #ddd7c9;
+  --transition-backing: #d5cebf;
+  --transition-focus: #151712;
 }
 
 :root[data-theme="dark"] {
@@ -32,4 +38,10 @@
   --focus-ring: #a2b5ff;
   --status: #8fa8ff;
   --shadow: 0 28px 72px rgba(0, 0, 0, 0.34);
+  --nav-text: #a7aaa1;
+  --nav-text-active: #f0ede4;
+  --nav-bracket: #aab9f5;
+  --transition-tile: #171a15;
+  --transition-backing: #0d0f0c;
+  --transition-focus: #f0ede4;
 }

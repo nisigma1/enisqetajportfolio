@@ -1,8 +1,6 @@
 import { navigation } from "@/data/site";
 import Link from "next/link";
-
-const primaryLabels = new Set(["Index", "Research", "Markets", "Work", "Build", "Contact"]);
-const primaryNavigation = navigation.filter((item) => primaryLabels.has(item.label));
+import { TransitionLink } from "@/components/transition/TransitionLink";
 
 export function Footer() {
   return (
@@ -12,7 +10,9 @@ export function Footer() {
         <span>Context first. Then build.</span>
       </div>
       <nav aria-label="Footer navigation">
-        {primaryNavigation.map((item) => <Link key={item.label} href={`/${item.href}`}>{item.label}</Link>)}
+        {navigation.map((item) => (
+          <TransitionLink key={item.label} href={item.href}>{item.label}</TransitionLink>
+        ))}
       </nav>
       <div className="footer-meta">
         <span>© {new Date().getFullYear()}</span>

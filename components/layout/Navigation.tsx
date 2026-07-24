@@ -1,13 +1,12 @@
 "use client";
 
-import { MouseEvent, useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { navigation } from "@/data/site";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
-
-const primaryLabels = new Set(["Index", "Research", "Markets", "Work", "Build", "Contact"]);
-const primaryNavigation = navigation.filter((item) => primaryLabels.has(item.label));
+import { TransitionLink } from "@/components/transition/TransitionLink";
+import { useRouteTransition } from "@/components/transition/RouteTransitionContext";
+import { activeRouteForPathname } from "@/lib/route-transition.mjs";
 
 type InertSnapshot = {
   element: HTMLElement;
@@ -15,44 +14,30 @@ type InertSnapshot = {
   ariaHidden: string | null;
 };
 
+function NavLabel({ children }: { children: string }) {
+  return (
+    <span className="nav-label">
+      {children}
+      <span className="nav-corners" aria-hidden="true">
+        <i className="nav-corner nav-corner--tl" />
+        <i className="nav-corner nav-corner--tr" />
+        <i className="nav-corner nav-corner--br" />
+        <i className="nav-corner nav-corner--bl" />
+      </span>
+    </span>
+  );
+}
+
 export function Navigation() {
   const pathname = usePathname();
+  const { isTransitioning } = useRouteTransition();
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState("index");
-  const routeActive = pathname.startsWith("/research")
-    ? "research"
-    : pathname.startsWith("/work")
-      ? "work"
-      : pathname.startsWith("/contact")
-        ? "contact"
-        : "index";
-  const currentActive = pathname === "/" ? active : routeActive;
+  const currentActive = activeRouteForPathname(pathname);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
-  const pendingTargetRef = useRef<string | null>(null);
-
-  useEffect(() => {
-    if (pathname !== "/") return;
-
-    const sections = primaryNavigation
-      .map((item) => document.getElementById(item.href.slice(1)))
-      .filter((section): section is HTMLElement => Boolean(section));
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible) setActive(visible.target.id);
-      },
-      { rootMargin: "-18% 0px -62%", threshold: [0, 0.15, 0.4] },
-    );
-
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
-  }, [pathname]);
+  const transitionFromMenuRef = useRef(false);
 
   useEffect(() => {
     if (!open) return;
@@ -70,7 +55,6 @@ export function Navigation() {
     document.body.style.position = "fixed";
     document.body.style.top = `-${scrollY}px`;
     document.body.style.width = "100%";
-
     closeRef.current?.focus();
 
     document.querySelectorAll<HTMLElement>("main, footer, .masthead").forEach((element) => {
@@ -96,7 +80,7 @@ export function Navigation() {
         menuRef.current?.querySelectorAll<HTMLElement>(
           'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
         ) ?? [],
-      ).filter((element) => !element.hasAttribute("hidden"));
+      );
 
       if (!focusable.length) {
         event.preventDefault();
@@ -126,15 +110,8 @@ export function Navigation() {
       document.body.style.position = bodyStyle.position;
       document.body.style.top = bodyStyle.top;
       document.body.style.width = bodyStyle.width;
-      const targetId = pendingTargetRef.current;
-      pendingTargetRef.current = null;
-      if (targetId) {
-        window.history.pushState(null, "", `#${targetId}`);
-        const target = document.getElementById(targetId);
-        target?.scrollIntoView({ block: "start" });
-        target?.setAttribute("tabindex", "-1");
-        target?.focus({ preventScroll: true });
-      } else {
+
+      if (!transitionFromMenuRef.current) {
         window.scrollTo({ top: scrollY, behavior: "instant" });
         previousFocusRef.current?.focus();
       }
@@ -142,37 +119,50 @@ export function Navigation() {
   }, [open]);
 
   function openMenu() {
+    transitionFromMenuRef.current = false;
     previousFocusRef.current = document.activeElement instanceof HTMLElement
       ? document.activeElement
       : triggerRef.current;
     setOpen(true);
   }
 
-  function followMobileLink(event: MouseEvent<HTMLAnchorElement>, target: string) {
-    if (window.location.pathname !== "/") return;
-    event.preventDefault();
-    pendingTargetRef.current = target;
+  function closeMenuForTransition() {
+    transitionFromMenuRef.current = true;
+    previousFocusRef.current = null;
+    setOpen(false);
+  }
+
+  function closeMenuNormally() {
+    transitionFromMenuRef.current = false;
     setOpen(false);
   }
 
   return (
     <>
       <header className="masthead">
-        <Link className="masthead-name" href="/#index" aria-label="Enis Qetaj, back to index">
+        <TransitionLink
+          className="masthead-name"
+          href="/"
+          aria-label="Enis Qetaj, back to index"
+        >
           <span aria-hidden="true">EQ</span>
           Enis Qetaj
-        </Link>
+        </TransitionLink>
 
         <nav className="masthead-nav" aria-label="Primary navigation">
-          {primaryNavigation.map((item) => (
-            <Link
-              key={item.label}
-              href={`/${item.href}`}
-              aria-current={currentActive === item.href.slice(1) ? "location" : undefined}
-            >
-              {item.label}
-            </Link>
-          ))}
+          {navigation.map((item) => {
+            const key = item.label.toLowerCase();
+            return (
+              <TransitionLink
+                key={item.label}
+                className="transition-nav-link"
+                href={item.href}
+                aria-current={currentActive === key ? "page" : undefined}
+              >
+                <NavLabel>{item.label}</NavLabel>
+              </TransitionLink>
+            );
+          })}
         </nav>
 
         <div className="masthead-actions">
@@ -185,6 +175,7 @@ export function Navigation() {
             onClick={openMenu}
             aria-expanded={open}
             aria-controls="mobile-navigation"
+            disabled={isTransitioning}
           >
             Menu <span aria-hidden="true">+</span>
           </button>
@@ -204,23 +195,29 @@ export function Navigation() {
             <span id="mobile-navigation-title">Enis Qetaj / Kosovo</span>
             <div>
               <ThemeToggle />
-              <button ref={closeRef} type="button" onClick={() => setOpen(false)}>
+              <button ref={closeRef} type="button" onClick={closeMenuNormally}>
                 Close <span aria-hidden="true">×</span>
               </button>
             </div>
           </div>
 
           <nav aria-label="Mobile navigation">
-            {primaryNavigation.map((item) => (
-              <Link
-                key={item.label}
-                href={`/${item.href}`}
-                onClick={(event) => followMobileLink(event, item.href.slice(1))}
-                aria-current={currentActive === item.href.slice(1) ? "location" : undefined}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {navigation.map((item) => {
+              const key = item.label.toLowerCase();
+              return (
+                <TransitionLink
+                  key={item.label}
+                  className="transition-nav-link"
+                  href={item.href}
+                  onTransitionStart={closeMenuForTransition}
+                  onTransitionBypass={closeMenuNormally}
+                  aria-current={currentActive === key ? "page" : undefined}
+                >
+                  <NavLabel>{item.label}</NavLabel>
+                  <span className="mobile-navigation__arrow" aria-hidden="true">→</span>
+                </TransitionLink>
+              );
+            })}
           </nav>
 
           <div className="mobile-navigation-foot">

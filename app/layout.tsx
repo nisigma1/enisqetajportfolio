@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { siteConfig } from "@/data/site";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
+import { RouteTransitionProvider } from "@/components/transition/RouteTransitionProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -63,10 +64,12 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body>
-        <a className="skip-link" href="#main">Skip to content</a>
-        <Navigation />
-        {children}
-        <Footer />
+        <RouteTransitionProvider>
+          <a className="skip-link" href="#main">Skip to content</a>
+          <Navigation />
+          {children}
+          <Footer />
+        </RouteTransitionProvider>
       </body>
     </html>
   );
