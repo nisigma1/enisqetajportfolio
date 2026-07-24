@@ -5,84 +5,121 @@ import { marketLayers } from "@/data/site";
 
 export function PerspectiveLens() {
   const [active, setActive] = useState(0);
-  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
-  const panelId = useId();
+  const buttonRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const uid = useId();
   const current = marketLayers[active];
 
   function select(index: number, focus = false) {
     const next = Math.max(0, Math.min(marketLayers.length - 1, index));
     setActive(next);
-    if (focus) tabRefs.current[next]?.focus();
+    if (focus) buttonRefs.current[next]?.focus();
   }
 
-  function onTabKeyDown(event: KeyboardEvent<HTMLButtonElement>, index: number) {
-    let next: number | null = null;
-    if (event.key === "ArrowRight" || event.key === "ArrowDown") next = Math.min(index + 1, marketLayers.length - 1);
-    if (event.key === "ArrowLeft" || event.key === "ArrowUp") next = Math.max(index - 1, 0);
-    if (event.key === "Home") next = 0;
-    if (event.key === "End") next = marketLayers.length - 1;
-    if (next !== null) { event.preventDefault(); select(next, true); }
+  function onKeyDown(event: KeyboardEvent<HTMLButtonElement>, index: number) {
+    const keyMap: Record<string, number> = {
+      ArrowRight: Math.min(index + 1, marketLayers.length - 1),
+      ArrowDown: Math.min(index + 1, marketLayers.length - 1),
+      ArrowLeft: Math.max(index - 1, 0),
+      ArrowUp: Math.max(index - 1, 0),
+      Home: 0,
+      End: marketLayers.length - 1,
+    };
+    if (keyMap[event.key] === undefined) return;
+    event.preventDefault();
+    select(keyMap[event.key], true);
   }
 
   return (
-    <div className={`lens lens-stage-${active + 1}`} style={{ "--lens-progress": active } as React.CSSProperties}>
-      <div className="lens-aperture" role="img" aria-label={`Context frame with ${current.name} active`}>
-        <div className="lens-aperture-meta"><span>Context expansion</span><strong>{String(active + 1).padStart(2, "0")} / 07</strong></div>
-        <div className="lens-field" aria-hidden="true">
-          <span className="lens-signal">Price</span>
+    <div
+      className={`atlas atlas-stage-${active + 1}`}
+      style={{ "--atlas-stage": active + 1 } as React.CSSProperties}
+    >
+      <div className="atlas-visual" aria-hidden="true">
+        <div className="atlas-caption">
+          <span>Context expansion</span>
+          <strong>{String(active + 1).padStart(2, "0")} / 07</strong>
+        </div>
+        <div className="atlas-field">
+          <span className="atlas-observation">Price</span>
+          <span className="atlas-axis atlas-axis-x" />
+          <span className="atlas-axis atlas-axis-y" />
           {marketLayers.slice(1).map((layer, index) => {
             const layerIndex = index + 1;
-            return <span key={layer.name} className={`lens-context lens-context-${layerIndex + 1} ${layerIndex <= active ? "is-visible" : ""}`}>{layer.name}</span>;
+            return (
+              <span
+                key={layer.id}
+                className={`atlas-frame atlas-frame-${layerIndex + 1} ${
+                  layerIndex <= active ? "is-visible" : ""
+                } ${layer.id === "geopolitics" ? "is-external" : ""}`}
+              >
+                <i>{layer.number}</i>
+                <b>{layer.name}</b>
+              </span>
+            );
           })}
-          <span className="lens-window" />
+          <span className="atlas-geopolitics">
+            <b>External forces enter the frame</b>
+            <i>Policy · conflict · trade · energy · resources · regulation</i>
+          </span>
         </div>
-        <p className="lens-aperture-caption">Seven layers. One more coherent view.</p>
+        <p>One observation becomes a connected field of evidence.</p>
       </div>
 
-      <p className="visually-hidden" aria-live="polite" aria-atomic="true">
-        Active market context layer: {current.name}, {active + 1} of {marketLayers.length}.
-      </p>
-      <section className="lens-reading">
-        <div className="lens-reading-meta"><span>Active layer</span><strong>{String(active + 1).padStart(2, "0")} of 07</strong></div>
+      <section className="atlas-reading" aria-live="polite">
+        <div className="atlas-reading-head">
+          <span>Active layer</span>
+          <strong>{current.number} / 07</strong>
+        </div>
         {marketLayers.map((layer, index) => (
-          <article key={layer.name} id={`${panelId}-${index}`} role="tabpanel" aria-labelledby={`${panelId}-tab-${index}`} hidden={index !== active}>
+          <article
+            key={layer.id}
+            id={`${uid}-panel-${index}`}
+            role="tabpanel"
+            aria-labelledby={`${uid}-tab-${index}`}
+            hidden={index !== active}
+          >
+            <p>{layer.context}</p>
             <h3>{layer.name}</h3>
             <h4>{layer.question}</h4>
             <p>{layer.note}</p>
-            <div><span>What I examine</span><ul>{layer.indicators.map((indicator) => <li key={indicator}>{indicator}</li>)}</ul></div>
+            <div>
+              <span>Evidence I examine</span>
+              <ul>
+                {layer.indicators.map((indicator) => <li key={indicator}>{indicator}</li>)}
+              </ul>
+            </div>
             <blockquote>{layer.change}</blockquote>
           </article>
         ))}
-        <div className="lens-controls">
-          <button type="button" onClick={() => select(active - 1)} disabled={active === 0}><span aria-hidden="true">←</span> Previous</button>
-          <button type="button" onClick={() => select(active + 1)} disabled={active === marketLayers.length - 1}>{active === marketLayers.length - 1 ? "Full context" : "Add context"} <span aria-hidden="true">→</span></button>
+        <div className="atlas-mobile-controls">
+          <button type="button" onClick={() => select(active - 1)} disabled={active === 0}>
+            <span aria-hidden="true">←</span> Previous
+          </button>
+          <button type="button" onClick={() => select(active + 1)} disabled={active === 6}>
+            Next <span aria-hidden="true">→</span>
+          </button>
         </div>
       </section>
 
-      <div className="lens-index" role="tablist" aria-label="Market context layers">
+      <div className="atlas-index" role="tablist" aria-label="Context layers">
         {marketLayers.map((layer, index) => (
           <button
-            ref={(node) => { tabRefs.current[index] = node; }}
-            id={`${panelId}-tab-${index}`}
-            key={layer.name}
+            key={layer.id}
+            ref={(node) => { buttonRefs.current[index] = node; }}
+            id={`${uid}-tab-${index}`}
             type="button"
             role="tab"
             aria-selected={active === index}
-            aria-controls={`${panelId}-${index}`}
+            aria-controls={`${uid}-panel-${index}`}
             tabIndex={active === index ? 0 : -1}
             onClick={() => select(index)}
-            onKeyDown={(event) => onTabKeyDown(event, index)}
+            onKeyDown={(event) => onKeyDown(event, index)}
           >
-            <span>{String(index + 1).padStart(2, "0")}</span><strong>{layer.name}</strong>
+            <span>{layer.number}</span>
+            <strong>{layer.name}</strong>
           </button>
         ))}
       </div>
-
-      <label className="lens-select">Jump to layer
-        <select value={active} onChange={(event) => select(Number(event.target.value))}>
-          {marketLayers.map((layer, index) => <option key={layer.name} value={index}>{String(index + 1).padStart(2, "0")} — {layer.name}</option>)}
-        </select>
-      </label>
     </div>
   );
 }

@@ -20,7 +20,7 @@ import {
 } from "@/data/site";
 
 export const metadata: Metadata = {
-  title: "Markets, Research & Digital Products",
+  title: "Research, Markets & Digital Products",
   description: siteConfig.description,
   alternates: { canonical: "/" },
   openGraph: {

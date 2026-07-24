@@ -4,7 +4,7 @@ import { MouseEvent, useEffect, useRef, useState } from "react";
 import { navigation } from "@/data/site";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 
-const primaryLabels = new Set(["Index", "About", "Markets", "Work", "Build", "Contact"]);
+const primaryLabels = new Set(["Index", "Research", "Markets", "Work", "Build", "Contact"]);
 const primaryNavigation = navigation.filter((item) => primaryLabels.has(item.label));
 
 type InertSnapshot = {

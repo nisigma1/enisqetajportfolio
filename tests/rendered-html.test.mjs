@@ -24,17 +24,17 @@ test("server-renders the complete identity homepage", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
-  assert.match(html, /Markets, Research &amp; Digital Products — Enis Qetaj/);
+  assert.match(html, /Research, Markets &amp; Digital Products — Enis Qetaj/);
   assert.match(
     html,
     new RegExp(`rel="canonical" href="${publicOrigin.replaceAll(".", "\\.")}/"`),
   );
-  assert.match(html, /I study the forces around a decision/);
+  assert.match(html, /I research what moves markets/);
   assert.equal((html.match(/alt="Portrait of Enis Qetaj"/g) ?? []).length, 1);
   assert.match(html, /Barber Brothers/);
   assert.match(html, /A price is a/);
   assert.match(html, /Not the whole situation/);
-  assert.match(html, /Add context/);
+  assert.match(html, /Context Atlas/);
   assert.match(html, /href="#markets"/);
   assert.match(html, /On-chain/);
   assert.match(html, /Malera Studio/);
@@ -48,7 +48,7 @@ test("server-renders the complete identity homepage", async () => {
   )?.[0];
   assert.ok(primaryNavigation, "primary navigation is present");
   assert.equal((primaryNavigation.match(/<a\b/g) ?? []).length, 6);
-  for (const label of ["Index", "About", "Markets", "Work", "Build", "Contact"]) {
+  for (const label of ["Index", "Research", "Markets", "Work", "Build", "Contact"]) {
     assert.match(primaryNavigation, new RegExp(`>${label}<`));
   }
   assert.doesNotMatch(primaryNavigation, />Studio</);
@@ -101,7 +101,7 @@ test("publishes project metadata and correct intrinsic media dimensions", async 
   assert.match(html, /width="1200" height="960"/);
 });
 
-test("keeps the unfinished research archive out of search discovery", async () => {
+test("publishes the research framework without inventing research notes", async () => {
   const worker = await getWorker();
   const research = await worker.fetch(
     new Request("http://localhost/research", { headers: { accept: "text/html" } }),
@@ -109,7 +109,9 @@ test("keeps the unfinished research archive out of search discovery", async () =
     ctx,
   );
   assert.equal(research.status, 200);
-  assert.match(await research.text(), /name="robots" content="noindex, follow"/);
+  const researchHtml = await research.text();
+  assert.match(researchHtml, /name="robots" content="index, follow"/);
+  assert.match(researchHtml, /No live notes are listed yet/);
 
   const sitemap = await worker.fetch(
     new Request("http://localhost/sitemap.xml"),
@@ -118,7 +120,7 @@ test("keeps the unfinished research archive out of search discovery", async () =
   );
   assert.equal(sitemap.status, 200);
   const xml = await sitemap.text();
-  assert.doesNotMatch(xml, /\/research/);
+  assert.match(xml, /\/research/);
   assert.match(xml, /\/work\/barber-brothers/);
 });
 

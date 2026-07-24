@@ -1,6 +1,6 @@
 import { navigation } from "@/data/site";
 
-const primaryLabels = new Set(["Index", "About", "Markets", "Work", "Build", "Contact"]);
+const primaryLabels = new Set(["Index", "Research", "Markets", "Work", "Build", "Contact"]);
 const primaryNavigation = navigation.filter((item) => primaryLabels.has(item.label));
 
 export function Footer() {

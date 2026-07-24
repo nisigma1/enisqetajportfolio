@@ -14,6 +14,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${siteConfig.url}/research`,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
       url: `${siteConfig.url}/work/${barberProject.slug}`,
       changeFrequency: "monthly",
       priority: 0.8,

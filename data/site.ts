@@ -8,7 +8,7 @@ export const siteConfig = {
 
 export const navigation = [
   { label: "Index", href: "#index" },
-  { label: "About", href: "#about" },
+  { label: "Research", href: "#research" },
   { label: "Markets", href: "#markets" },
   { label: "Work", href: "#work" },
   { label: "Build", href: "#build" },
@@ -54,6 +54,48 @@ export const marketInterests = [
   "Geopolitics",
   "On-chain research",
   "Market narratives",
+] as const;
+
+export const researchMethod = [
+  {
+    number: "01",
+    title: "Frame the question",
+    note: "Define what needs explaining before collecting more information.",
+  },
+  {
+    number: "02",
+    title: "Gather credible sources",
+    note: "Start with primary material and trace claims back to their origin.",
+  },
+  {
+    number: "03",
+    title: "Compare signals",
+    note: "Read market, macro, geopolitical and on-chain evidence together.",
+  },
+  {
+    number: "04",
+    title: "Cross-check contradictions",
+    note: "Look for what does not fit. Tension often reveals the real question.",
+  },
+  {
+    number: "05",
+    title: "Separate signal from narrative",
+    note: "Distinguish observable conditions from the story built around them.",
+  },
+  {
+    number: "06",
+    title: "Synthesize implications",
+    note: "Turn connected evidence into a clearer view, without pretending certainty.",
+  },
+] as const;
+
+export const researchDomains = [
+  "Market structure",
+  "Liquidity & monetary policy",
+  "Macro conditions",
+  "Energy & strategic resources",
+  "Trade, conflict & regulation",
+  "On-chain behavior",
 ] as const;
 
 export const buildCapabilities = [
@@ -198,7 +240,55 @@ export const barberProject = {
     "Customer details and booking summary",
   ],
   bookingSteps: ["Service", "Barber", "Date", "Time", "Customer details"],
+  chapters: [
+    "Business context",
+    "Product idea",
+    "Customer journey",
+    "Interface detail",
+    "Real environment",
+    "Responsive experience",
+    "Live product",
+  ],
 } as const;
+
+export const projectMedia = [
+  {
+    id: "barber-place",
+    role: "REAL_ENVIRONMENT",
+    src: "/images/barber/space-3.webp",
+    width: 1200,
+    height: 960,
+    aspectRatio: "5 / 4",
+    display: "cover",
+    mobileDisplay: "cover",
+    focalPoint: "50% 50%",
+    alt: "Barber Brothers exterior in Fushë Kosovë",
+  },
+  {
+    id: "barber-interior",
+    role: "EDITORIAL_PORTRAIT",
+    src: "/images/barber/space-1.webp",
+    width: 1023,
+    height: 1537,
+    aspectRatio: "1023 / 1537",
+    display: "cover",
+    mobileDisplay: "cover",
+    focalPoint: "50% 42%",
+    alt: "Interior of Barber Brothers in Fushë Kosovë",
+  },
+  {
+    id: "barber-detail",
+    role: "INTERFACE_CONTEXT",
+    src: "/images/barber/space-2.webp",
+    width: 1086,
+    height: 1448,
+    aspectRatio: "3 / 4",
+    display: "cover",
+    mobileDisplay: "cover",
+    focalPoint: "52% 44%",
+    alt: "Barber chair and interior detail at Barber Brothers",
+  },
+] as const;
 
 export const malera = {
   name: "Malera Studio",
