@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProjectMedia } from "@/components/media/ProjectMedia";
+import { ActionMark } from "@/components/ui/ActionMark";
 import { barberProject, media, siteConfig } from "@/data/site";
 
 type ProjectPageProps = { params: Promise<{ slug: string }> };
@@ -45,7 +46,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         <div>
           <p>{barberProject.description}</p>
           <a className="button button--primary" href={barberProject.url} target="_blank" rel="noopener noreferrer">
-            Visit live site <span aria-hidden="true">↗</span>
+            Visit live site <ActionMark direction="external" />
             <span className="visually-hidden"> (opens in a new tab)</span>
           </a>
         </div>
@@ -111,9 +112,9 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         </div>
         <div>
           <a className="button button--primary" href={barberProject.url} target="_blank" rel="noopener noreferrer">
-            Visit Barber Brothers <span aria-hidden="true">↗</span>
+            Visit Barber Brothers <ActionMark direction="external" />
           </a>
-          <Link className="button button--quiet" href="/contact">Start a conversation <span aria-hidden="true">→</span></Link>
+          <Link className="button button--quiet" href="/contact">Start a conversation <ActionMark direction="forward" /></Link>
         </div>
       </section>
     </main>

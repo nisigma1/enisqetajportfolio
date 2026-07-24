@@ -44,6 +44,9 @@ test("server-renders the complete identity homepage", async () => {
   assert.match(html, /Malera Studio/);
   assert.match(html, /\+383 44 857 227/);
   assert.match(html, /application\/ld\+json/);
+  assert.match(html, /action-mark/);
+  assert.doesNotMatch(html, /[↖↗↘↙←→↑↓]/);
+  assert.doesNotMatch(html, />EQ</);
   assert.doesNotMatch(html, /Football|C:\/Users|C:%5CUsers|\.vinext\/fonts/i);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton|Starter Project/);
   assert.doesNotMatch(html, /Context Atlas|atlas-stage|No live notes are listed yet/);

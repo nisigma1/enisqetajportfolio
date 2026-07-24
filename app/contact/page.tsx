@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/forms/ContactForm";
+import { ActionMark } from "@/components/ui/ActionMark";
 import { identity, malera, siteConfig } from "@/data/site";
 
 const description = "Start a conversation with Enis Qetaj about a digital product, website, automation or research interface.";
@@ -30,7 +31,7 @@ export default function ContactPage() {
           <strong>{identity.name}</strong>
           <a href={identity.emailHref}>{identity.email}</a>
           <a href={identity.phoneHref}>{identity.phone}</a>
-          <a href={malera.url} target="_blank" rel="noreferrer">Malera Studio <span aria-hidden="true">↗</span></a>
+          <a href={malera.url} target="_blank" rel="noreferrer">Malera Studio <ActionMark direction="external" /></a>
           <small>This form prepares an email draft. It does not send or store your message.</small>
         </aside>
         <ContactForm />

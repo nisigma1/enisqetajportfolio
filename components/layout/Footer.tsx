@@ -1,6 +1,7 @@
 import { navigation } from "@/data/site";
 import Link from "next/link";
 import { TransitionLink } from "@/components/transition/TransitionLink";
+import { ActionMark } from "@/components/ui/ActionMark";
 
 export function Footer() {
   return (
@@ -18,7 +19,7 @@ export function Footer() {
         <span>© {new Date().getFullYear()}</span>
         <span>Kosovo</span>
         <a href="mailto:enisqeta5@gmail.com">enisqeta5@gmail.com</a>
-        <Link href="/#index">Back to top <span aria-hidden="true">↑</span></Link>
+        <Link href="/#index">Back to top <ActionMark direction="up" /></Link>
       </div>
     </footer>
   );

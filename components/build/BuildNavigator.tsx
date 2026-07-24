@@ -29,9 +29,9 @@ export function BuildNavigator() {
         </div>
         <div className="transformation-path" aria-label="How the need becomes a product">
           <p><span>Understand</span><strong>{current.need}</strong></p>
-          <i aria-hidden="true">→</i>
+          <i className="transformation-path__connector" aria-hidden="true" />
           <p><span>Shape</span><strong>{current.reframe}</strong></p>
-          <i aria-hidden="true">→</i>
+          <i className="transformation-path__connector" aria-hidden="true" />
           <p><span>Build</span><strong>{current.forms}</strong></p>
         </div>
         <p className="transformation-result"><span>Useful form</span>{current.response}</p>

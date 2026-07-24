@@ -2,6 +2,7 @@
 
 import { KeyboardEvent, useId, useRef, useState } from "react";
 import { marketLayers } from "@/data/site";
+import { ActionMark } from "@/components/ui/ActionMark";
 
 const layerDetails = {
   price: {
@@ -79,7 +80,7 @@ export function EvidenceLadder() {
     <section className="evidence-ladder" aria-label="Evidence Ladder">
       <div className="evidence-ladder__frame">
         <header className="evidence-ladder__header">
-          <p>Signal <span aria-hidden="true">→</span> Context <span aria-hidden="true">→</span> Decision</p>
+          <p>Signal <span aria-hidden="true">/</span> Context <span aria-hidden="true">/</span> Decision</p>
           <strong>{String(active + 1).padStart(2, "0")} / 07</strong>
         </header>
 
@@ -145,11 +146,11 @@ export function EvidenceLadder() {
 
         <footer className="evidence-ladder__controls">
           <button type="button" onClick={() => select(active - 1)} disabled={active === 0}>
-            <span aria-hidden="true">←</span> Previous
+            <ActionMark direction="back" /> Previous
           </button>
           <p><span style={{ width: `${((active + 1) / marketLayers.length) * 100}%` }} /></p>
           <button type="button" onClick={() => select(active + 1)} disabled={active === marketLayers.length - 1}>
-            Next <span aria-hidden="true">→</span>
+            Next <ActionMark direction="forward" />
           </button>
         </footer>
       </div>

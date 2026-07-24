@@ -7,6 +7,7 @@ import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { TransitionLink } from "@/components/transition/TransitionLink";
 import { useRouteTransition } from "@/components/transition/RouteTransitionContext";
 import { activeRouteForPathname } from "@/lib/route-transition.mjs";
+import { ActionMark } from "@/components/ui/ActionMark";
 
 type InertSnapshot = {
   element: HTMLElement;
@@ -145,8 +146,7 @@ export function Navigation() {
           href="/"
           aria-label="Enis Qetaj, back to index"
         >
-          <span aria-hidden="true">EQ</span>
-          Enis Qetaj
+          <span className="masthead-name__wordmark">Enis Qetaj</span>
         </TransitionLink>
 
         <nav className="masthead-nav" aria-label="Primary navigation">
@@ -214,7 +214,7 @@ export function Navigation() {
                   aria-current={currentActive === key ? "page" : undefined}
                 >
                   <NavLabel>{item.label}</NavLabel>
-                  <span className="mobile-navigation__arrow" aria-hidden="true">→</span>
+                  <ActionMark direction="forward" className="mobile-navigation__arrow" />
                 </TransitionLink>
               );
             })}

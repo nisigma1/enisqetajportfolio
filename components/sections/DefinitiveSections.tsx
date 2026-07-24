@@ -13,6 +13,7 @@ import { EvidenceLadder } from "@/components/markets/PerspectiveLens";
 import { BuildNavigator } from "@/components/build/BuildNavigator";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { ProjectMedia } from "@/components/media/ProjectMedia";
+import { ActionMark } from "@/components/ui/ActionMark";
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return <p className="section-label">{children}</p>;
@@ -29,19 +30,19 @@ export function Hero() {
   return (
     <section id="index" className="dispatch-hero" aria-labelledby="identity-title">
       <div className="dispatch-hero__meta">
-        <p>Kosovo / Independent research & product practice</p>
-        <p><span aria-hidden="true" /> Available for selected freelance projects</p>
+        <p>Kosovo <span>/</span> Independent practice</p>
+        <p><span aria-hidden="true" /> Open for selected projects</p>
       </div>
 
       <div className="dispatch-hero__identity">
-        <p className="dispatch-hero__issue">The Research Dispatch <span>Issue 01 / 2026</span></p>
-        <h1 id="identity-title">Enis Qetaj</h1>
+        <p className="dispatch-hero__issue"><span>The Research Dispatch</span><span>01 / 2026</span></p>
+        <h1 id="identity-title"><span>Enis</span><span>Qetaj</span></h1>
         <p className="dispatch-hero__thesis">
           I research what moves markets—from structure and liquidity to macro and geopolitics—then build useful digital products from what becomes clear.
         </p>
         <div className="dispatch-hero__actions">
-          <a className="button button--primary" href="#work">View selected work <span aria-hidden="true">↓</span></a>
-          <a className="button button--quiet" href="#research">Explore research <span aria-hidden="true">↓</span></a>
+          <a className="button button--primary" href="#work">View selected work <ActionMark direction="down" /></a>
+          <a className="button button--quiet" href="#research">Explore research <ActionMark direction="down" /></a>
         </div>
       </div>
 
@@ -110,7 +111,7 @@ export function About() {
 
       <div className="research-practice__note">
         <p>Research and educational content only. Not financial advice.</p>
-        <Link href="/research">Open the research practice <span aria-hidden="true">↗</span></Link>
+        <Link href="/research">Open the research practice <ActionMark direction="forward" /></Link>
       </div>
     </section>
   );
@@ -175,7 +176,7 @@ export function Work() {
             ))}
           </ol>
           <a className="button button--primary" href={`${barberProject.url}booking`} target="_blank" rel="noreferrer">
-            Open live booking <span aria-hidden="true">↗</span>
+            Open live booking <ActionMark direction="external" />
             <span className="visually-hidden"> (opens in a new tab)</span>
           </a>
         </article>
@@ -193,10 +194,10 @@ export function Work() {
           <p>The live experience supports Albanian and English, service and barber selection, date and time choice, customer details and a booking summary.</p>
           <div>
             <a className="button button--primary" href={barberProject.url} target="_blank" rel="noreferrer">
-              Visit live site <span aria-hidden="true">↗</span>
+              Visit live site <ActionMark direction="external" />
               <span className="visually-hidden"> (opens in a new tab)</span>
             </a>
-            <Link className="button button--quiet" href={`/work/${barberProject.slug}`}>Read the case study <span aria-hidden="true">→</span></Link>
+            <Link className="button button--quiet" href={`/work/${barberProject.slug}`}>Read the case study <ActionMark direction="forward" /></Link>
           </div>
         </article>
       </div>
@@ -235,7 +236,10 @@ export function Malera() {
           <strong>Enis Qetaj</strong>
           <p>Research, markets, geopolitics and independent perspective.</p>
         </div>
-        <i aria-hidden="true">→</i>
+        <div className="malera-practice__bridge" aria-hidden="true">
+          <span>Expands into</span>
+          <i />
+        </div>
         <div>
           <span>Practice</span>
           <strong>Malera Studio</strong>
@@ -247,7 +251,7 @@ export function Malera() {
         <div>
           <p>{malera.line}</p>
           <a className="button button--quiet" href={malera.url} target="_blank" rel="noreferrer">
-            Visit Malera Studio <span aria-hidden="true">↗</span>
+            Visit Malera Studio <ActionMark direction="external" />
             <span className="visually-hidden"> (opens in a new tab)</span>
           </a>
         </div>
@@ -272,7 +276,7 @@ export function Contact() {
           <p>{identity.location}<br />Independent practice</p>
           <a href={identity.emailHref}>{identity.email}</a>
           <a href={identity.phoneHref}>{identity.phone}</a>
-          <a href={malera.url} target="_blank" rel="noreferrer">Malera Studio <span aria-hidden="true">↗</span></a>
+          <a href={malera.url} target="_blank" rel="noreferrer">Malera Studio <ActionMark direction="external" /></a>
           <small>The form prepares an email draft. Nothing is sent or stored by this site.</small>
         </aside>
         <ContactForm />
@@ -282,5 +286,5 @@ export function Contact() {
 }
 
 export function QuietArchive() {
-  return <Link className="button button--quiet" href="/work">Selected archive <span aria-hidden="true">↗</span></Link>;
+  return <Link className="button button--quiet" href="/work">Selected archive <ActionMark direction="forward" /></Link>;
 }

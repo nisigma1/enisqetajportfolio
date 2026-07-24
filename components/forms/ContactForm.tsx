@@ -1,6 +1,7 @@
 "use client";
 
 import { FocusEvent, FormEvent, useState } from "react";
+import { ActionMark } from "@/components/ui/ActionMark";
 
 type FormState = "idle" | "loading" | "ready" | "error";
 type FieldName = "name" | "email" | "project" | "message";
@@ -231,7 +232,7 @@ export function ContactForm() {
       <div className="form-actions wide">
         <button className="form-submit" type="submit" disabled={state === "loading"}>
           {state === "loading" ? "Preparing…" : "Prepare email draft"}
-          <span aria-hidden="true">↗</span>
+          <ActionMark direction="forward" />
         </button>
         <button className="quiet-action" type="button" onClick={copyEmail}>Copy email</button>
       </div>
@@ -243,7 +244,7 @@ export function ContactForm() {
         >
           <span>{statusMessage}</span>
           {state === "ready" && mailto && (
-            <a href={mailto}>Continue in email <span aria-hidden="true">↗</span></a>
+            <a href={mailto}>Continue in email <ActionMark direction="external" /></a>
           )}
           {state === "error" && (
             <a href={`mailto:${emailAddress}`}>Email Enis directly</a>

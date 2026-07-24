@@ -60,6 +60,11 @@
   background: var(--status);
 }
 
+.dispatch-hero__meta p:first-child > span {
+  margin-inline: 0.35rem;
+  color: var(--accent);
+}
+
 .dispatch-hero__identity {
   grid-column: 1 / 13;
   display: grid;
@@ -75,12 +80,15 @@
   color: var(--text-primary);
 }
 
-.dispatch-hero__issue span {
+.dispatch-hero__issue span:last-child {
   color: var(--accent);
 }
 
 .dispatch-hero h1 {
   grid-column: 1 / 13;
+  display: flex;
+  align-items: baseline;
+  gap: 0.18em;
   max-width: 100%;
   font-family: var(--font-identity);
   font-size: var(--text-identity);
@@ -119,7 +127,7 @@
 }
 
 .author-artifact::before {
-  content: "AUTHOR FILE / EQ";
+  content: "PORTRAIT / 2026";
   position: absolute;
   z-index: 1;
   inset: var(--space-5) var(--space-5) auto auto;
@@ -647,9 +655,24 @@
   line-height: 1.25;
 }
 
-.transformation-path i {
-  color: var(--accent);
-  font-style: normal;
+.transformation-path__connector {
+  position: relative;
+  display: block;
+  width: 2.5rem;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.72;
+}
+
+.transformation-path__connector::after {
+  content: "";
+  position: absolute;
+  inset: 50% 0 auto auto;
+  width: 0.32rem;
+  height: 0.32rem;
+  border-radius: 50%;
+  background: var(--accent);
+  transform: translate(50%, -50%);
 }
 
 .transformation-result {
@@ -703,11 +726,31 @@
   background: var(--background);
 }
 
-.malera-practice__relationship > i {
+.malera-practice__bridge {
+  position: relative;
+  display: grid;
+  width: clamp(5rem, 8vw, 8rem);
   align-self: center;
-  color: var(--accent);
-  font-size: 2rem;
-  font-style: normal;
+  place-items: center;
+  color: var(--text-muted);
+}
+
+.malera-practice__bridge span {
+  position: relative;
+  z-index: 1;
+  padding: 0.35rem 0.55rem;
+  background: var(--surface);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+}
+
+.malera-practice__bridge i {
+  position: absolute;
+  inset: 50% 0 auto;
+  height: 1px;
+  background: var(--border-strong);
 }
 
 .malera-practice__relationship span {
@@ -809,6 +852,9 @@
 
 .contact-chapter__layout aside a,
 .route-contact aside a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
   border-bottom: var(--border-width) solid var(--border);
 }
 
@@ -1224,8 +1270,9 @@
 
   .dispatch-hero {
     grid-template-columns: 1fr;
-    gap: var(--space-5);
-    padding-top: var(--space-3);
+    gap: 0;
+    padding-top: 0;
+    padding-bottom: clamp(4rem, 18vw, 6rem);
   }
 
   .dispatch-hero__meta,
@@ -1237,9 +1284,20 @@
   }
 
   .dispatch-hero__meta {
-    align-items: flex-start;
-    flex-direction: column;
-    padding-bottom: var(--space-4);
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    gap: 0.45rem;
+    padding-block: 1.1rem;
+    line-height: 1.3;
+  }
+
+  .dispatch-hero__meta p {
+    min-width: 0;
+  }
+
+  .dispatch-hero__meta p:last-child {
+    justify-self: start;
   }
 
   .dispatch-hero__identity {
@@ -1249,39 +1307,78 @@
   .dispatch-hero__issue {
     grid-column: 1;
     grid-row: 2;
+    margin-top: 1.4rem;
+    padding-bottom: 0.8rem;
+    border-bottom: var(--border-width) solid var(--border);
   }
 
   .dispatch-hero h1 {
     grid-column: 1;
     grid-row: 3;
-    max-width: 8ch;
-    font-size: var(--text-identity);
-    line-height: 0.82;
+    display: grid;
+    gap: 0;
+    max-width: none;
+    margin-top: 1.45rem;
+    font-size: clamp(4.35rem, 20.5vw, 5.6rem);
+    line-height: 0.76;
     white-space: normal;
+  }
+
+  .dispatch-hero h1 span:last-child {
+    justify-self: end;
   }
 
   .dispatch-hero__thesis {
     grid-column: 1;
     grid-row: 4;
-    max-width: 30ch;
-    padding-top: var(--space-3);
+    max-width: 31ch;
+    margin-top: 2.15rem;
+    padding-top: 1.25rem;
+    border-top: var(--border-width) solid var(--border-strong);
+    font-size: clamp(1.15rem, 5.2vw, 1.35rem);
+    line-height: 1.3;
   }
 
   .dispatch-hero__actions {
     grid-column: 1;
     grid-row: 5;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2);
+    margin-top: 1.5rem;
+  }
+
+  .dispatch-hero__actions .button {
+    min-height: 3.75rem;
+    padding: 0.85rem;
+    line-height: 1.15;
   }
 
   .author-artifact {
     grid-row: 6;
-    margin-top: var(--space-3);
+    margin-top: 2.25rem;
+    padding: 0;
+    border: 0;
+    border-top: var(--border-width) solid var(--border-strong);
+    background: transparent;
     transform: none;
+  }
+
+  .author-artifact::before {
+    inset: 0.8rem 0.8rem auto auto;
+    background: color-mix(in srgb, var(--background) 88%, transparent);
+    backdrop-filter: blur(8px);
   }
 
   .author-artifact img {
     max-height: none;
-    aspect-ratio: 3 / 4;
-    object-position: 50% 42%;
+    margin-top: 0.75rem;
+    aspect-ratio: 4 / 5;
+    object-position: 50% 45%;
+  }
+
+  .author-artifact figcaption {
+    padding-inline: 0.1rem;
   }
 
   .dispatch-hero__proof {
@@ -1410,8 +1507,15 @@
     min-height: auto;
   }
 
-  .transformation-path i {
-    transform: rotate(90deg);
+  .transformation-path__connector {
+    width: 1px;
+    height: 2rem;
+    margin-left: var(--space-3);
+  }
+
+  .transformation-path__connector::after {
+    inset: auto 50% 0 auto;
+    transform: translate(50%, 50%);
   }
 
   .build-process {
@@ -1427,9 +1531,14 @@
     min-height: 15rem;
   }
 
-  .malera-practice__relationship > i {
+  .malera-practice__bridge {
+    width: 100%;
+    min-height: 4rem;
     justify-self: center;
-    transform: rotate(90deg);
+  }
+
+  .malera-practice__bridge i {
+    inset: 50% 0 auto;
   }
 
   .contact-chapter__intro,
@@ -1461,8 +1570,12 @@
 }
 
 @media (max-width: 399px) {
-  .dispatch-hero__issue span {
-    display: none;
+  .dispatch-hero h1 {
+    font-size: clamp(4rem, 21vw, 5rem);
+  }
+
+  .dispatch-hero__actions {
+    grid-template-columns: 1fr;
   }
 
   .dispatch-hero__proof {

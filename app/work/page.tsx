@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ProjectMedia } from "@/components/media/ProjectMedia";
+import { ActionMark } from "@/components/ui/ActionMark";
 import { barberProject, media, siteConfig } from "@/data/site";
 
 const description = "Selected digital work by Enis Qetaj, beginning with the live Barber Brothers customer and booking experience.";
@@ -39,7 +40,7 @@ export default function WorkArchive() {
           <p>{barberProject.category}</p>
           <h2>{barberProject.title}</h2>
           <p>{barberProject.description}</p>
-          <Link className="button button--primary" href={`/work/${barberProject.slug}`}>Open case study <span aria-hidden="true">→</span></Link>
+          <Link className="button button--primary" href={`/work/${barberProject.slug}`}>Open case study <ActionMark direction="forward" /></Link>
         </div>
       </article>
     </main>

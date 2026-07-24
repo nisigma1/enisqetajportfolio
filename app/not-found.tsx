@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ActionMark } from "@/components/ui/ActionMark";
 
 export const metadata: Metadata = {
   title: "Page not found",
@@ -11,7 +12,7 @@ export default function NotFound() {
     <main id="main" className="route-page not-found">
       <p>404 / Wrong turn</p>
       <h1>Nothing lives<br />on this page.</h1>
-      <Link className="button button--primary" href="/">Return to the index <span aria-hidden="true">→</span></Link>
+      <Link className="button button--primary" href="/">Return to the index <ActionMark direction="forward" /></Link>
     </main>
   );
 }

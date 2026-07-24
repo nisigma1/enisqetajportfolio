@@ -17,21 +17,32 @@
   justify-self: start;
   display: inline-flex;
   align-items: center;
-  gap: var(--space-3);
   min-height: 2.75rem;
   font-size: var(--text-ui);
   font-weight: 700;
 }
 
-.masthead-name > span {
-  display: grid;
-  width: 2.1rem;
-  height: 2.1rem;
-  place-items: center;
-  background: var(--text-primary);
-  color: var(--background);
-  font-size: 0.62rem;
-  letter-spacing: -0.03em;
+.masthead-name__wordmark {
+  position: relative;
+  letter-spacing: -0.025em;
+}
+
+.masthead-name__wordmark::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 -0.35rem;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.28;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--motion-fast) var(--ease);
+}
+
+.masthead-name:hover .masthead-name__wordmark::after,
+.masthead-name:focus-visible .masthead-name__wordmark::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 
 .masthead-nav {
@@ -243,6 +254,123 @@
   color: var(--background);
 }
 
+.action-mark {
+  position: relative;
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 0.95rem;
+  height: 0.95rem;
+  color: currentColor;
+  vertical-align: -0.12em;
+  transition: transform var(--motion-fast) var(--ease);
+}
+
+.button .action-mark,
+.form-submit .action-mark {
+  margin-left: auto;
+}
+
+.action-mark::before,
+.action-mark::after {
+  content: "";
+  position: absolute;
+  display: block;
+}
+
+.action-mark::before {
+  top: 50%;
+  left: 0.1rem;
+  width: 0.7rem;
+  height: 1px;
+  background: currentColor;
+  transform: translateY(-50%);
+}
+
+.action-mark::after {
+  top: 0.25rem;
+  right: 0.08rem;
+  width: 0.38rem;
+  height: 0.38rem;
+  border-top: 1px solid currentColor;
+  border-right: 1px solid currentColor;
+}
+
+.action-mark--forward::after {
+  transform: rotate(45deg);
+}
+
+.action-mark--back::after {
+  right: auto;
+  left: 0.08rem;
+  transform: rotate(-135deg);
+}
+
+.action-mark--down::before {
+  top: 0.08rem;
+  left: 50%;
+  width: 1px;
+  height: 0.7rem;
+  transform: translateX(-50%);
+}
+
+.action-mark--down::after {
+  top: auto;
+  right: 0.26rem;
+  bottom: 0.08rem;
+  transform: rotate(135deg);
+}
+
+.action-mark--up::before {
+  top: auto;
+  bottom: 0.08rem;
+  left: 50%;
+  width: 1px;
+  height: 0.7rem;
+  transform: translateX(-50%);
+}
+
+.action-mark--up::after {
+  top: 0.08rem;
+  right: 0.26rem;
+  transform: rotate(-45deg);
+}
+
+.action-mark--external::before {
+  top: 55%;
+  left: 0.08rem;
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+.action-mark--external::after {
+  top: 0.08rem;
+  right: 0.08rem;
+}
+
+a:hover .action-mark--external,
+button:hover .action-mark--external {
+  transform: translate(0.1rem, -0.1rem);
+}
+
+a:hover .action-mark--forward,
+button:hover .action-mark--forward {
+  transform: translateX(0.12rem);
+}
+
+a:hover .action-mark--back,
+button:hover .action-mark--back {
+  transform: translateX(-0.12rem);
+}
+
+a:hover .action-mark--down,
+button:hover .action-mark--down {
+  transform: translateY(0.12rem);
+}
+
+a:hover .action-mark--up,
+button:hover .action-mark--up {
+  transform: translateY(-0.12rem);
+}
+
 .mobile-navigation {
   position: fixed;
   inset: 0;
@@ -291,13 +419,6 @@
   font-family: var(--font-editorial);
   font-size: clamp(2rem, 10vw, 4rem);
   line-height: 1;
-}
-
-.mobile-navigation nav a::after {
-  content: "→";
-  color: var(--accent);
-  font-family: var(--font-ui);
-  font-size: 1rem;
 }
 
 .mobile-navigation-foot {
@@ -412,6 +533,13 @@
   cursor: pointer;
 }
 
+.form-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+}
+
 .quiet-action {
   background: transparent;
 }
@@ -424,6 +552,12 @@
   padding: var(--space-4);
   border: var(--border-width) solid var(--border);
   background: var(--surface);
+}
+
+.form-status a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
 }
 
 .form-status a {
@@ -472,8 +606,6 @@
 
 .mobile-navigation__arrow {
   color: var(--accent);
-  font-family: var(--font-ui);
-  font-size: 1rem;
 }
 
 .mobile-navigation nav .nav-corners {

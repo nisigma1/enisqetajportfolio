@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { researchDomains, researchMethod } from "@/data/site";
+import { ActionMark } from "@/components/ui/ActionMark";
 
 export const metadata: Metadata = {
   title: "Research Practice",
@@ -46,7 +47,7 @@ export default function ResearchPage() {
 
       <section className="route-callout">
         <p>Research and educational content only. Not financial advice.</p>
-        <Link className="button button--primary" href="/#markets">Explore the Evidence Ladder <span aria-hidden="true">↓</span></Link>
+        <Link className="button button--primary" href="/#markets">Explore the Evidence Ladder <ActionMark direction="down" /></Link>
       </section>
     </main>
   );
