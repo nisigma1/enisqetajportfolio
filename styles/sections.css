@@ -31,10 +31,37 @@
 
 /* Research Dispatch hero */
 .dispatch-hero {
+  position: relative;
+  isolation: isolate;
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: var(--space-5);
+  overflow: hidden;
   padding: var(--space-5) var(--gutter) clamp(4rem, 8vw, 7rem);
+}
+
+.dispatch-hero__pixel-canvas {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.38;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    black 10%,
+    black 76%,
+    transparent 100%
+  );
+}
+
+.dispatch-hero > :not(.dispatch-hero__pixel-canvas) {
+  position: relative;
+  z-index: 1;
+}
+
+[data-theme="light"] .dispatch-hero__pixel-canvas {
+  opacity: 0.22;
 }
 
 .dispatch-hero__meta {

@@ -766,3 +766,15 @@ html[data-route-transition="active"] {
     margin-left: 0;
   }
 }
+.pixel-canvas {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.pixel-canvas__surface {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

@@ -14,6 +14,7 @@ import { BuildNavigator } from "@/components/build/BuildNavigator";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { ProjectMedia } from "@/components/media/ProjectMedia";
 import { ActionMark } from "@/components/ui/ActionMark";
+import { PixelCanvas } from "@/components/ui/PixelCanvas";
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return <p className="section-label">{children}</p>;
@@ -29,6 +30,14 @@ export function Hero() {
 
   return (
     <section id="index" className="dispatch-hero" aria-labelledby="identity-title">
+      <PixelCanvas
+        className="dispatch-hero__pixel-canvas"
+        gap={8}
+        speed={0.02}
+        variant="trail"
+        aria-hidden="true"
+      />
+
       <div className="dispatch-hero__meta">
         <p>Kosovo <span>/</span> Independent practice</p>
         <p><span aria-hidden="true" /> Open for selected projects</p>
