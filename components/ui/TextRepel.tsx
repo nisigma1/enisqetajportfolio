@@ -13,6 +13,7 @@ import {
   useEffect,
   useId,
   useRef,
+  useState,
   type FocusEvent,
   type HTMLAttributes,
   type KeyboardEvent,
@@ -33,14 +34,19 @@ interface TextRepelProps
   damping?: number;
   mass?: number;
   keyboardInteractive?: boolean;
+  disableOnCoarsePointer?: boolean;
+}
+
+interface PointerPosition {
+  x: number;
+  y: number;
 }
 
 interface RepelLetterProps {
   character: string;
   className?: string;
   containerRef: RefObject<HTMLSpanElement | null>;
-  pointerX: MotionValue<number>;
-  pointerY: MotionValue<number>;
+  pointer: MotionValue<PointerPosition>;
   radius: number;
   strength: number;
   mode: TextRepelMode;
@@ -56,12 +62,16 @@ function joinClassNames(...classNames: Array<string | undefined>) {
   return classNames.filter(Boolean).join(" ");
 }
 
+function clampToBounds(value: number, minimum: number, maximum: number) {
+  if (minimum > maximum) return 0;
+  return Math.max(minimum, Math.min(maximum, value));
+}
+
 function RepelLetter({
   character,
   className,
   containerRef,
-  pointerX,
-  pointerY,
+  pointer,
   radius,
   strength,
   mode,
@@ -73,6 +83,10 @@ function RepelLetter({
   const letterRef = useRef<HTMLSpanElement>(null);
   const originX = useMotionValue(0);
   const originY = useMotionValue(0);
+  const minimumX = useMotionValue(0);
+  const maximumX = useMotionValue(0);
+  const minimumY = useMotionValue(0);
+  const maximumY = useMotionValue(0);
   const radiusValue = useMotionValue(radius);
   const strengthValue = useMotionValue(strength);
   const directionValue = useMotionValue(mode === "repel" ? 1 : -1);
@@ -112,7 +126,19 @@ function RepelLetter({
 
     originX.set(nextOriginX);
     originY.set(nextOriginY);
-  }, [containerRef, originX, originY]);
+    minimumX.set(containerRect.left - letterRect.left);
+    maximumX.set(containerRect.right - letterRect.right);
+    minimumY.set(containerRect.top - letterRect.top);
+    maximumY.set(containerRect.bottom - letterRect.bottom);
+  }, [
+    containerRef,
+    maximumX,
+    maximumY,
+    minimumX,
+    minimumY,
+    originX,
+    originY,
+  ]);
 
   useEffect(() => {
     measureOrigin();
@@ -137,107 +163,88 @@ function RepelLetter({
     };
   }, [containerRef, measureOrigin]);
 
-  const forceX = useTransform(
+  const force = useTransform(
     [
-      pointerX,
-      pointerY,
+      pointer,
       originX,
       originY,
+      minimumX,
+      maximumX,
+      minimumY,
+      maximumY,
       radiusValue,
       strengthValue,
       directionValue,
       enabledValue,
     ],
     ([
-      x,
-      y,
+      pointerPosition,
       letterX,
       letterY,
+      minX,
+      maxX,
+      minY,
+      maxY,
       currentRadius,
       currentStrength,
       currentDirection,
       isEnabled,
     ]) => {
       if (!isEnabled) {
-        return 0;
+        return { x: 0, y: 0 };
       }
 
-      const deltaX = letterX - x;
-      const deltaY = letterY - y;
+      const deltaX = letterX - pointerPosition.x;
+      const deltaY = letterY - pointerPosition.y;
       const distance = Math.hypot(deltaX, deltaY);
 
       if (distance === 0 || distance >= currentRadius) {
-        return 0;
+        return { x: 0, y: 0 };
       }
 
       const falloff = (1 - distance / currentRadius) ** 2;
-
-      return (
+      const nextX =
         (deltaX / distance) *
         falloff *
         currentStrength *
-        currentDirection
-      );
-    },
-  );
-
-  const forceY = useTransform(
-    [
-      pointerX,
-      pointerY,
-      originX,
-      originY,
-      radiusValue,
-      strengthValue,
-      directionValue,
-      enabledValue,
-    ],
-    ([
-      x,
-      y,
-      letterX,
-      letterY,
-      currentRadius,
-      currentStrength,
-      currentDirection,
-      isEnabled,
-    ]) => {
-      if (!isEnabled) {
-        return 0;
-      }
-
-      const deltaX = letterX - x;
-      const deltaY = letterY - y;
-      const distance = Math.hypot(deltaX, deltaY);
-
-      if (distance === 0 || distance >= currentRadius) {
-        return 0;
-      }
-
-      const falloff = (1 - distance / currentRadius) ** 2;
-
-      return (
+        currentDirection;
+      const nextY =
         (deltaY / distance) *
         falloff *
         currentStrength *
-        currentDirection
-      );
+        currentDirection;
+
+      return {
+        x: clampToBounds(nextX, minX, maxX),
+        y: clampToBounds(nextY, minY, maxY),
+      };
     },
   );
 
+  const forceX = useTransform(force, (value) => value.x);
+  const forceY = useTransform(force, (value) => value.y);
+
   const springConfig = { stiffness, damping, mass };
-  const x = useSpring(forceX, springConfig);
-  const y = useSpring(forceY, springConfig);
+  const springX = useSpring(forceX, springConfig);
+  const springY = useSpring(forceY, springConfig);
+  const x = useTransform(
+    [springX, minimumX, maximumX],
+    ([value, min, max]) => clampToBounds(value, min, max),
+  );
+  const y = useTransform(
+    [springY, minimumY, maximumY],
+    ([value, min, max]) => clampToBounds(value, min, max),
+  );
   const rotate = useTransform(x, (value) => value * 0.3);
 
   return (
     <span
       ref={letterRef}
-      className={joinClassNames("text-repel__letter", className)}
+      className="text-repel__letter"
       aria-hidden="true"
     >
       <motion.span
-        className="text-repel__glyph"
+        className={joinClassNames("text-repel__glyph", className)}
         style={{ x, y, rotate }}
       >
         {character}
@@ -257,6 +264,7 @@ export function TextRepel({
   damping = 14,
   mass = 0.4,
   keyboardInteractive = true,
+  disableOnCoarsePointer = true,
   tabIndex,
   onPointerDown,
   onPointerMove,
@@ -269,46 +277,72 @@ export function TextRepel({
   ...props
 }: TextRepelProps) {
   const containerRef = useRef<HTMLSpanElement>(null);
-  const pointerX = useMotionValue(INACTIVE_POINTER);
-  const pointerY = useMotionValue(INACTIVE_POINTER);
+  const pointer = useMotionValue<PointerPosition>({
+    x: INACTIVE_POINTER,
+    y: INACTIVE_POINTER,
+  });
   const reducedMotion = useReducedMotion() ?? false;
   const instructionsId = useId();
   const keyboardPointer = useRef<{ x: number; y: number } | null>(null);
+  const settleTimer = useRef<number>(0);
+  const [coarsePointer, setCoarsePointer] = useState(false);
+  const [active, setActive] = useState(false);
+  const disabled =
+    reducedMotion || (disableOnCoarsePointer && coarsePointer);
+  const keyboardEnabled = keyboardInteractive && !disabled;
 
   const reset = useCallback(() => {
+    const currentPointer = pointer.get();
     const isAlreadyReset =
       keyboardPointer.current === null &&
-      pointerX.get() === INACTIVE_POINTER &&
-      pointerY.get() === INACTIVE_POINTER;
+      currentPointer.x === INACTIVE_POINTER &&
+      currentPointer.y === INACTIVE_POINTER;
 
     if (isAlreadyReset) {
       return;
     }
 
     keyboardPointer.current = null;
-    pointerX.set(INACTIVE_POINTER);
-    pointerY.set(INACTIVE_POINTER);
-  }, [pointerX, pointerY]);
+    pointer.set({ x: INACTIVE_POINTER, y: INACTIVE_POINTER });
+    window.clearTimeout(settleTimer.current);
+    settleTimer.current = window.setTimeout(() => setActive(false), 650);
+  }, [pointer]);
 
   useEffect(() => {
-    if (reducedMotion) {
+    if (disabled) {
       reset();
     }
-  }, [reducedMotion, reset]);
+  }, [disabled, reset]);
+
+  useEffect(() => {
+    const query = window.matchMedia("(pointer: coarse)");
+    const update = () => setCoarsePointer(query.matches);
+    update();
+    query.addEventListener("change", update);
+
+    return () => {
+      window.clearTimeout(settleTimer.current);
+      query.removeEventListener("change", update);
+    };
+  }, []);
 
   const setPointerFromClientPosition = useCallback(
     (clientX: number, clientY: number) => {
       const container = containerRef.current;
 
-      if (!container || reducedMotion) {
+      if (!container || disabled) {
         return;
       }
 
       const bounds = container.getBoundingClientRect();
-      pointerX.set(clientX - bounds.left);
-      pointerY.set(clientY - bounds.top);
+      window.clearTimeout(settleTimer.current);
+      setActive(true);
+      pointer.set({
+        x: clientX - bounds.left,
+        y: clientY - bounds.top,
+      });
     },
-    [pointerX, pointerY, reducedMotion],
+    [disabled, pointer],
   );
 
   useEffect(() => {
@@ -375,7 +409,11 @@ export function TextRepel({
       "ArrowDown",
     ].includes(event.key);
 
-    if (!container || reducedMotion || (!isArrowKey && !["Enter", " ", "Escape"].includes(event.key))) {
+    if (
+      !container ||
+      !keyboardEnabled ||
+      (!isArrowKey && !["Enter", " ", "Escape"].includes(event.key))
+    ) {
       onKeyDown?.(event);
       return;
     }
@@ -408,8 +446,9 @@ export function TextRepel({
     next.x = Math.max(0, Math.min(bounds.width, next.x));
     next.y = Math.max(0, Math.min(bounds.height, next.y));
     keyboardPointer.current = next;
-    pointerX.set(next.x);
-    pointerY.set(next.y);
+    window.clearTimeout(settleTimer.current);
+    setActive(true);
+    pointer.set(next);
     onKeyDown?.(event);
   };
 
@@ -421,9 +460,17 @@ export function TextRepel({
       className={joinClassNames("text-repel", className)}
       data-text-repel=""
       data-reduced-motion={reducedMotion ? "true" : undefined}
-      aria-label={text}
-      aria-describedby={keyboardInteractive ? instructionsId : undefined}
-      tabIndex={keyboardInteractive ? (tabIndex ?? 0) : tabIndex}
+      data-active={active ? "true" : undefined}
+      data-coarse-pointer={coarsePointer ? "true" : undefined}
+      aria-label={keyboardEnabled ? text : undefined}
+      aria-describedby={keyboardEnabled ? instructionsId : undefined}
+      tabIndex={
+        keyboardEnabled
+          ? (tabIndex ?? 0)
+          : keyboardInteractive
+            ? -1
+            : tabIndex
+      }
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
@@ -434,6 +481,10 @@ export function TextRepel({
       onKeyDown={handleKeyDown}
       {...props}
     >
+      {!keyboardEnabled ? (
+        <span className="visually-hidden">{text}</span>
+      ) : null}
+
       {tokens.map((token, tokenIndex) =>
         /^\s+$/.test(token) ? (
           <span
@@ -455,22 +506,21 @@ export function TextRepel({
                 character={character}
                 className={letterClassName}
                 containerRef={containerRef}
-                pointerX={pointerX}
-                pointerY={pointerY}
+                pointer={pointer}
                 radius={radius}
                 strength={strength}
                 mode={mode}
                 stiffness={stiffness}
                 damping={damping}
                 mass={mass}
-                disabled={reducedMotion}
+                disabled={disabled}
               />
             ))}
           </span>
         ),
       )}
 
-      {keyboardInteractive ? (
+      {keyboardEnabled ? (
         <span id={instructionsId} className="visually-hidden">
           Use the arrow keys to move the repulsion point. Press Escape to reset.
         </span>

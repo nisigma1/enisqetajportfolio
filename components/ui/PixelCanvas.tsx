@@ -1,9 +1,9 @@
 "use client";
 
 import {
-  HTMLAttributes,
-  useCallback,
+  type HTMLAttributes,
   useEffect,
+  useMemo,
   useRef,
 } from "react";
 
@@ -18,18 +18,37 @@ interface PixelCanvasProps extends HTMLAttributes<HTMLDivElement> {
   noFocus?: boolean;
   /** Pixel rendering style. */
   variant?: "default" | "trail" | "glow";
+  /** Keep a slow ambient trail visible on coarse-pointer devices. */
+  ambientOnTouch?: boolean;
 }
 
-interface Pixel {
-  x: number;
-  y: number;
-  size: number;
+interface RgbColor {
+  r: number;
+  g: number;
+  b: number;
+}
+
+interface ActivePixel {
+  column: number;
+  row: number;
   intensity: number;
   targetIntensity: number;
   colorPhase: number;
 }
 
-function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
+interface CanvasDimensions {
+  width: number;
+  height: number;
+  columns: number;
+  rows: number;
+  dpr: number;
+}
+
+const DEFAULT_COLORS = ["#315df2", "#5f7cff", "#819cff", "#aab9f5"];
+const INACTIVE_POINTER = -10_000;
+const FRAME_DURATION = 1000 / 60;
+
+function hexToRgb(hex: string): RgbColor | null {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
     ? {
@@ -40,106 +59,354 @@ function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
     : null;
 }
 
-function lerpColor(color1: string, color2: string, amount: number): string {
-  const start = hexToRgb(color1);
-  const end = hexToRgb(color2);
-  if (!start || !end) return color1;
+function roundedPixel(
+  context: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  size: number,
+) {
+  if (typeof context.roundRect === "function") {
+    context.beginPath();
+    context.roundRect(x, y, size, size, size * 0.3);
+    context.fill();
+    return;
+  }
 
-  const r = Math.round(start.r + (end.r - start.r) * amount);
-  const g = Math.round(start.g + (end.g - start.g) * amount);
-  const b = Math.round(start.b + (end.b - start.b) * amount);
-  return `rgb(${r}, ${g}, ${b})`;
+  context.fillRect(x, y, size, size);
+}
+
+function normalizedLerp(base: number, deltaTime: number) {
+  const clampedBase = Math.max(0, Math.min(0.999, base));
+  return 1 - Math.pow(1 - clampedBase, deltaTime / FRAME_DURATION);
 }
 
 export function PixelCanvas({
   className,
   gap = 6,
   speed = 0.02,
-  colors = ["#e879f9", "#a78bfa", "#38bdf8", "#22d3ee"],
+  colors = DEFAULT_COLORS,
   noFocus = false,
   variant = "default",
+  ambientOnTouch = true,
   ...props
 }: PixelCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const pixelsRef = useRef<Pixel[][]>([]);
-  const pointerRef = useRef({ x: -1000, y: -1000 });
+  const activePixelsRef = useRef<Map<number, ActivePixel>>(new Map());
+  const pointerRef = useRef({
+    x: INACTIVE_POINTER,
+    y: INACTIVE_POINTER,
+    active: false,
+  });
   const animationRef = useRef<number>(0);
-  const lastTimeRef = useRef<number>(0);
+  const resizeFrameRef = useRef<number>(0);
+  const runningRef = useRef(false);
+  const dimensionsRef = useRef<CanvasDimensions>({
+    width: 1,
+    height: 1,
+    columns: 1,
+    rows: 1,
+    dpr: 1,
+  });
 
-  const getColorFromIntensity = useCallback(
-    (intensity: number, phase: number) => {
-      if (colors.length === 0) return "#ffffff";
-      if (colors.length === 1) return colors[0]!;
-
-      const amount = (phase + intensity) % 1;
-      const index = Math.floor(amount * (colors.length - 1));
-      const nextIndex = Math.min(index + 1, colors.length - 1);
-      const localAmount = (amount * (colors.length - 1)) % 1;
-      const color1 = colors[index];
-      const color2 = colors[nextIndex];
-
-      if (!color1) return "#ffffff";
-      if (!color2) return color1;
-      return lerpColor(color1, color2, localAmount);
-    },
-    [colors],
-  );
+  const palette = useMemo(() => {
+    const parsed = colors.map(hexToRgb).filter((color): color is RgbColor =>
+      Boolean(color),
+    );
+    return parsed.length > 0 ? parsed : [{ r: 255, g: 255, b: 255 }];
+  }, [colors]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
     if (!canvas || !container) return;
 
-    const context = canvas.getContext("2d", { alpha: true });
+    const context = canvas.getContext("2d", {
+      alpha: true,
+      desynchronized: true,
+    });
     if (!context) return;
 
-    let columns = 0;
-    let rows = 0;
-    let visible = true;
     const pixelSize = Math.max(gap, 4);
-    const mobileExperience =
-      window.matchMedia("(pointer: coarse)").matches ||
-      window.innerWidth <= 767;
-    const reduceMotion = window.matchMedia(
+    const reducedMotionQuery = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
-    ).matches;
+    );
+    const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
 
-    const initializePixels = () => {
+    let disposed = false;
+    let isVisible = true;
+    let reducedMotion = reducedMotionQuery.matches;
+    let coarsePointer = coarsePointerQuery.matches;
+    let lastTimestamp = performance.now();
+
+    const resetPointer = () => {
+      pointerRef.current = {
+        x: INACTIVE_POINTER,
+        y: INACTIVE_POINTER,
+        active: false,
+      };
+    };
+
+    const colorFor = (intensity: number, phase: number) => {
+      if (palette.length === 1) {
+        const color = palette[0]!;
+        return `rgb(${color.r}, ${color.g}, ${color.b})`;
+      }
+
+      const amount = (phase + intensity) % 1;
+      const position = amount * (palette.length - 1);
+      const index = Math.floor(position);
+      const nextIndex = Math.min(index + 1, palette.length - 1);
+      const localAmount = position - index;
+      const start = palette[index]!;
+      const end = palette[nextIndex]!;
+      const r = Math.round(start.r + (end.r - start.r) * localAmount);
+      const g = Math.round(start.g + (end.g - start.g) * localAmount);
+      const b = Math.round(start.b + (end.b - start.b) * localAmount);
+      return `rgb(${r}, ${g}, ${b})`;
+    };
+
+    const drawStaticFrame = () => {
+      const { width, height, columns, rows } = dimensionsRef.current;
+      context.clearRect(0, 0, width, height);
+      context.fillStyle = `rgba(${palette[0]!.r}, ${palette[0]!.g}, ${palette[0]!.b}, 0.1)`;
+
+      const centerColumn = Math.floor(columns * 0.55);
+      const centerRow = Math.floor(rows * 0.28);
+      const radiusInCells = Math.max(4, Math.round(76 / pixelSize));
+
+      for (
+        let column = Math.max(0, centerColumn - radiusInCells);
+        column <= Math.min(columns - 1, centerColumn + radiusInCells);
+        column += 2
+      ) {
+        for (
+          let row = Math.max(0, centerRow - radiusInCells);
+          row <= Math.min(rows - 1, centerRow + radiusInCells);
+          row += 2
+        ) {
+          const dx = column - centerColumn;
+          const dy = row - centerRow;
+          if (Math.hypot(dx, dy) > radiusInCells) continue;
+          context.fillRect(
+            column * pixelSize,
+            row * pixelSize,
+            Math.max(1, pixelSize - 1),
+            Math.max(1, pixelSize - 1),
+          );
+        }
+      }
+    };
+
+    const initializeCanvas = () => {
       const rect = container.getBoundingClientRect();
+      const width = Math.max(1, Math.round(rect.width));
+      const height = Math.max(1, Math.round(rect.height));
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const width = Math.max(1, rect.width);
-      const height = Math.max(1, rect.height);
+      const columns = Math.max(1, Math.ceil(width / pixelSize));
+      const rows = Math.max(1, Math.ceil(height / pixelSize));
+      const previous = dimensionsRef.current;
 
+      if (
+        previous.width === width &&
+        previous.height === height &&
+        previous.dpr === dpr &&
+        previous.columns === columns &&
+        previous.rows === rows
+      ) {
+        return;
+      }
+
+      dimensionsRef.current = { width, height, columns, rows, dpr };
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
+      activePixelsRef.current.clear();
 
-      columns = Math.ceil(width / pixelSize);
-      rows = Math.ceil(height / pixelSize);
-
-      const nextPixels: Pixel[][] = [];
-      for (let column = 0; column < columns; column += 1) {
-        const pixelColumn: Pixel[] = [];
-        for (let row = 0; row < rows; row += 1) {
-          const existing = pixelsRef.current[column]?.[row];
-          pixelColumn.push({
-            x: column * pixelSize,
-            y: row * pixelSize,
-            size: pixelSize - 1,
-            intensity: existing?.intensity ?? 0,
-            targetIntensity: 0,
-            colorPhase: existing?.colorPhase ?? Math.random(),
-          });
-        }
-        nextPixels.push(pixelColumn);
+      if (reducedMotion) {
+        drawStaticFrame();
       }
-      pixelsRef.current = nextPixels;
     };
 
+    const scheduleResize = () => {
+      window.cancelAnimationFrame(resizeFrameRef.current);
+      resizeFrameRef.current = window.requestAnimationFrame(() => {
+        initializeCanvas();
+        scheduleDraw();
+      });
+    };
+
+    const renderPixel = (
+      pixel: ActivePixel,
+      intensity: number,
+      color: string,
+    ) => {
+      const x = pixel.column * pixelSize;
+      const y = pixel.row * pixelSize;
+      const size = Math.max(1, pixelSize - 1);
+
+      if (variant === "glow" && intensity > 0.2) {
+        for (let pass = 2; pass > 0; pass -= 1) {
+          const glowSize = size + pass * 4;
+          const glowOffset = (glowSize - size) / 2;
+          context.globalAlpha = (intensity * 0.12) / pass;
+          context.fillStyle = color;
+          context.fillRect(
+            x - glowOffset,
+            y - glowOffset,
+            glowSize,
+            glowSize,
+          );
+        }
+      }
+
+      context.globalAlpha = intensity * 0.78;
+      context.fillStyle = color;
+
+      if (variant === "trail") {
+        roundedPixel(context, x, y, size);
+      } else {
+        context.fillRect(x, y, size, size);
+      }
+    };
+
+    const draw = (timestamp: number) => {
+      runningRef.current = false;
+      if (disposed || !isVisible || document.visibilityState === "hidden") {
+        return;
+      }
+
+      const deltaTime = Math.max(
+        1,
+        Math.min(timestamp - lastTimestamp, FRAME_DURATION * 4),
+      );
+      lastTimestamp = timestamp;
+
+      const { width, height, columns, rows } = dimensionsRef.current;
+      context.clearRect(0, 0, width, height);
+
+      let pointerX = pointerRef.current.x;
+      let pointerY = pointerRef.current.y;
+      const ambient =
+        coarsePointer &&
+        ambientOnTouch &&
+        !noFocus &&
+        !pointerRef.current.active;
+
+      if (ambient) {
+        const visibleHeight = Math.min(
+          height,
+          window.visualViewport?.height ?? window.innerHeight,
+        );
+        pointerX = width * (0.5 + Math.sin(timestamp * 0.00042) * 0.34);
+        pointerY =
+          visibleHeight * (0.31 + Math.cos(timestamp * 0.00031) * 0.13);
+      }
+
+      const hasPointer = pointerRef.current.active || ambient;
+      const radius = variant === "glow" ? 116 : coarsePointer ? 96 : 82;
+      const activePixels = activePixelsRef.current;
+
+      for (const pixel of activePixels.values()) {
+        pixel.targetIntensity = 0;
+      }
+
+      if (hasPointer) {
+        const minimumColumn = Math.max(
+          0,
+          Math.floor((pointerX - radius) / pixelSize),
+        );
+        const maximumColumn = Math.min(
+          columns - 1,
+          Math.ceil((pointerX + radius) / pixelSize),
+        );
+        const minimumRow = Math.max(
+          0,
+          Math.floor((pointerY - radius) / pixelSize),
+        );
+        const maximumRow = Math.min(
+          rows - 1,
+          Math.ceil((pointerY + radius) / pixelSize),
+        );
+
+        for (
+          let column = minimumColumn;
+          column <= maximumColumn;
+          column += 1
+        ) {
+          for (let row = minimumRow; row <= maximumRow; row += 1) {
+            const centerX = column * pixelSize + pixelSize / 2;
+            const centerY = row * pixelSize + pixelSize / 2;
+            const distance = Math.hypot(
+              pointerX - centerX,
+              pointerY - centerY,
+            );
+            if (distance >= radius) continue;
+
+            const key = column * rows + row;
+            const pixel = activePixels.get(key) ?? {
+              column,
+              row,
+              intensity: 0,
+              targetIntensity: 0,
+              colorPhase:
+                ((column * 37 + row * 17) % 101) / 101,
+            };
+            pixel.targetIntensity = Math.pow(1 - distance / radius, 1.5);
+            activePixels.set(key, pixel);
+          }
+        }
+      }
+
+      const attack = normalizedLerp(0.3, deltaTime);
+      const decay = normalizedLerp(speed, deltaTime);
+
+      for (const [key, pixel] of activePixels) {
+        const interpolation =
+          pixel.targetIntensity > pixel.intensity ? attack : decay;
+        pixel.intensity +=
+          (pixel.targetIntensity - pixel.intensity) * interpolation;
+        pixel.colorPhase =
+          (pixel.colorPhase + 0.001 * (deltaTime / FRAME_DURATION)) % 1;
+
+        if (pixel.intensity <= 0.008 && pixel.targetIntensity === 0) {
+          activePixels.delete(key);
+          continue;
+        }
+
+        renderPixel(
+          pixel,
+          pixel.intensity,
+          colorFor(pixel.intensity, pixel.colorPhase),
+        );
+      }
+
+      context.globalAlpha = 1;
+
+      if (hasPointer || activePixels.size > 0) {
+        scheduleDraw();
+      }
+    };
+
+    function scheduleDraw() {
+      if (
+        disposed ||
+        reducedMotion ||
+        !isVisible ||
+        document.visibilityState === "hidden" ||
+        runningRef.current
+      ) {
+        return;
+      }
+
+      runningRef.current = true;
+      animationRef.current = window.requestAnimationFrame(draw);
+    }
+
     const updatePointer = (clientX: number, clientY: number) => {
+      if (noFocus || reducedMotion || !isVisible) return;
       const rect = container.getBoundingClientRect();
       const isInside =
         clientX >= rect.left &&
@@ -148,177 +415,142 @@ export function PixelCanvas({
         clientY <= rect.bottom;
 
       pointerRef.current = isInside
-        ? { x: clientX - rect.left, y: clientY - rect.top }
-        : { x: -1000, y: -1000 };
+        ? {
+            x: clientX - rect.left,
+            y: clientY - rect.top,
+            active: true,
+          }
+        : {
+            x: INACTIVE_POINTER,
+            y: INACTIVE_POINTER,
+            active: false,
+          };
+      scheduleDraw();
     };
 
     const onPointerMove = (event: PointerEvent) => {
       updatePointer(event.clientX, event.clientY);
     };
 
-    const onPointerDown = (event: PointerEvent) => {
-      updatePointer(event.clientX, event.clientY);
-    };
-
-    const onPointerLeave = () => {
-      pointerRef.current = { x: -1000, y: -1000 };
-    };
-
-    const onTouchMove = (event: TouchEvent) => {
-      const touch = event.touches[0];
-      if (touch) updatePointer(touch.clientX, touch.clientY);
-    };
-
-    const onTouchStart = (event: TouchEvent) => {
-      const touch = event.touches[0];
-      if (touch) updatePointer(touch.clientX, touch.clientY);
-    };
-
-    const draw = (timestamp: number) => {
-      const deltaTime = Math.min(timestamp - lastTimeRef.current, 64);
-      lastTimeRef.current = timestamp;
-
-      if (visible) {
-        const rect = container.getBoundingClientRect();
-        context.clearRect(0, 0, rect.width, rect.height);
-
-        let pointerX = pointerRef.current.x;
-        let pointerY = pointerRef.current.y;
-
-        // Touch devices have no persistent hover state. Keep the same trail
-        // animation visible with a slow ambient pointer until the visitor
-        // touches the hero, at which point their finger takes control.
-        if (
-          mobileExperience &&
-          pointerX < 0 &&
-          pointerY < 0
-        ) {
-          const horizontalPhase = timestamp * 0.00042;
-          const verticalPhase = timestamp * 0.00031;
-          pointerX =
-            rect.width * (0.5 + Math.sin(horizontalPhase) * 0.36);
-          pointerY =
-            rect.height * (0.26 + Math.cos(verticalPhase) * 0.16);
-        }
-
-        const radius = variant === "glow" ? 120 : mobileExperience ? 104 : 80;
-        const glowPasses = variant === "glow" ? 2 : 1;
-
-        for (let column = 0; column < columns; column += 1) {
-          const pixelColumn = pixelsRef.current[column];
-          if (!pixelColumn) continue;
-
-          for (let row = 0; row < rows; row += 1) {
-            const pixel = pixelColumn[row];
-            if (!pixel) continue;
-
-            const centerX = pixel.x + pixel.size / 2;
-            const centerY = pixel.y + pixel.size / 2;
-            const dx = pointerX - centerX;
-            const dy = pointerY - centerY;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-
-            pixel.targetIntensity =
-              distance < radius ? Math.pow(1 - distance / radius, 1.5) : 0;
-
-            const interpolation =
-              pixel.targetIntensity > pixel.intensity ? 0.3 : speed;
-            pixel.intensity +=
-              (pixel.targetIntensity - pixel.intensity) * interpolation;
-            pixel.colorPhase =
-              (pixel.colorPhase + 0.001 * (deltaTime / 16)) % 1;
-
-            if (pixel.intensity <= 0.01) continue;
-            const color = getColorFromIntensity(
-              pixel.intensity,
-              pixel.colorPhase,
-            );
-
-            if (variant === "glow" && pixel.intensity > 0.2) {
-              for (let pass = glowPasses; pass > 0; pass -= 1) {
-                const glowSize = pixel.size + pass * 4;
-                const glowOffset = (glowSize - pixel.size) / 2;
-                context.globalAlpha = (pixel.intensity * 0.15) / pass;
-                context.fillStyle = color;
-                context.fillRect(
-                  pixel.x - glowOffset,
-                  pixel.y - glowOffset,
-                  glowSize,
-                  glowSize,
-                );
-              }
-            }
-
-            context.globalAlpha = pixel.intensity * 0.9;
-            context.fillStyle = color;
-
-            if (variant === "trail") {
-              context.beginPath();
-              context.roundRect(
-                pixel.x,
-                pixel.y,
-                pixel.size,
-                pixel.size,
-                pixel.size * 0.3,
-              );
-              context.fill();
-            } else {
-              context.fillRect(
-                pixel.x,
-                pixel.y,
-                pixel.size,
-                pixel.size,
-              );
-            }
-          }
-        }
-
-        context.globalAlpha = 1;
+    const onPointerEnd = (event: PointerEvent) => {
+      if (event.pointerType !== "mouse") {
+        resetPointer();
       }
-
-      animationRef.current = window.requestAnimationFrame(draw);
+      scheduleDraw();
     };
 
-    const resizeObserver = new ResizeObserver(initializePixels);
+    const onWindowBlur = () => {
+      resetPointer();
+      scheduleDraw();
+    };
+
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        window.cancelAnimationFrame(animationRef.current);
+        runningRef.current = false;
+      } else {
+        lastTimestamp = performance.now();
+        scheduleDraw();
+      }
+    };
+
+    const onReducedMotionChange = (
+      event: MediaQueryListEvent,
+    ) => {
+      reducedMotion = event.matches;
+      resetPointer();
+      activePixelsRef.current.clear();
+      window.cancelAnimationFrame(animationRef.current);
+      runningRef.current = false;
+
+      if (reducedMotion) {
+        drawStaticFrame();
+      } else {
+        context.clearRect(
+          0,
+          0,
+          dimensionsRef.current.width,
+          dimensionsRef.current.height,
+        );
+        lastTimestamp = performance.now();
+        scheduleDraw();
+      }
+    };
+
+    const onCoarsePointerChange = (event: MediaQueryListEvent) => {
+      coarsePointer = event.matches;
+      resetPointer();
+      scheduleDraw();
+    };
+
+    const resizeObserver = new ResizeObserver(scheduleResize);
     const visibilityObserver = new IntersectionObserver(([entry]) => {
-      visible = entry?.isIntersecting ?? true;
+      isVisible = entry?.isIntersecting ?? true;
+
+      if (!isVisible) {
+        window.cancelAnimationFrame(animationRef.current);
+        runningRef.current = false;
+      } else {
+        lastTimestamp = performance.now();
+        scheduleDraw();
+      }
     });
 
-    initializePixels();
+    initializeCanvas();
     resizeObserver.observe(container);
     visibilityObserver.observe(container);
 
-    if (!reduceMotion) {
-      lastTimeRef.current = performance.now();
-      animationRef.current = window.requestAnimationFrame(draw);
+    if (!noFocus) {
+      window.addEventListener("pointerdown", onPointerMove, { passive: true });
+      window.addEventListener("pointermove", onPointerMove, { passive: true });
+      window.addEventListener("pointerup", onPointerEnd, { passive: true });
+      window.addEventListener("pointercancel", onPointerEnd, {
+        passive: true,
+      });
+      window.addEventListener("blur", onWindowBlur);
     }
 
-    if (!noFocus && !reduceMotion) {
-      window.addEventListener("pointerdown", onPointerDown, { passive: true });
-      window.addEventListener("pointermove", onPointerMove, { passive: true });
-      window.addEventListener("pointerleave", onPointerLeave);
-      window.addEventListener("touchstart", onTouchStart, { passive: true });
-      window.addEventListener("touchmove", onTouchMove, { passive: true });
-      window.addEventListener("touchend", onPointerLeave);
+    window.addEventListener("resize", scheduleResize, { passive: true });
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    reducedMotionQuery.addEventListener("change", onReducedMotionChange);
+    coarsePointerQuery.addEventListener("change", onCoarsePointerChange);
+
+    if (reducedMotion) {
+      drawStaticFrame();
+    } else if (coarsePointer && ambientOnTouch && !noFocus) {
+      scheduleDraw();
     }
 
     return () => {
+      disposed = true;
       window.cancelAnimationFrame(animationRef.current);
+      window.cancelAnimationFrame(resizeFrameRef.current);
+      runningRef.current = false;
       resizeObserver.disconnect();
       visibilityObserver.disconnect();
-      window.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("pointerdown", onPointerMove);
       window.removeEventListener("pointermove", onPointerMove);
-      window.removeEventListener("pointerleave", onPointerLeave);
-      window.removeEventListener("touchstart", onTouchStart);
-      window.removeEventListener("touchmove", onTouchMove);
-      window.removeEventListener("touchend", onPointerLeave);
+      window.removeEventListener("pointerup", onPointerEnd);
+      window.removeEventListener("pointercancel", onPointerEnd);
+      window.removeEventListener("blur", onWindowBlur);
+      window.removeEventListener("resize", scheduleResize);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      reducedMotionQuery.removeEventListener(
+        "change",
+        onReducedMotionChange,
+      );
+      coarsePointerQuery.removeEventListener(
+        "change",
+        onCoarsePointerChange,
+      );
     };
   }, [
+    ambientOnTouch,
     gap,
-    speed,
     noFocus,
+    palette,
+    speed,
     variant,
-    getColorFromIntensity,
   ]);
 
   const classes = ["pixel-canvas", className].filter(Boolean).join(" ");

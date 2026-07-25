@@ -43,7 +43,15 @@
   display: inline-block;
   transform-origin: 50% 72%;
   backface-visibility: hidden;
+  will-change: auto;
+}
+
+.text-repel[data-active="true"] .text-repel__glyph {
   will-change: transform;
+}
+
+.text-repel[data-coarse-pointer="true"] {
+  touch-action: auto;
 }
 
 .text-repel:focus {

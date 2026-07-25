@@ -3,6 +3,8 @@ import { siteConfig } from "@/data/site";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
 import { RouteTransitionProvider } from "@/components/transition/RouteTransitionProvider";
+import "@fontsource-variable/manrope";
+import "@fontsource-variable/newsreader";
 import "./globals.css";
 
 export const metadata: Metadata = {

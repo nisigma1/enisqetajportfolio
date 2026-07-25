@@ -33,9 +33,11 @@ export function Hero() {
     <section id="index" className="dispatch-hero" aria-labelledby="identity-title">
       <PixelCanvas
         className="dispatch-hero__pixel-canvas"
-        gap={8}
-        speed={0.02}
+        gap={9}
+        speed={0.018}
         variant="trail"
+        colors={["#315df2", "#5f7cff", "#819cff", "#aab9f5"]}
+        ambientOnTouch
         aria-hidden="true"
       />
 
@@ -44,53 +46,59 @@ export function Hero() {
         <p><span aria-hidden="true" /> Open for selected projects</p>
       </div>
 
-      <div className="dispatch-hero__identity">
-        <p className="dispatch-hero__issue"><span>The Research Dispatch</span><span>01 / 2026</span></p>
-        <h1 id="identity-title">
-          <TextRepel
-            text="Enis Qetaj"
-            className="dispatch-hero__repel"
-            radius={190}
-            strength={68}
-            stiffness={180}
-            damping={14}
-            mass={0.4}
-          />
-        </h1>
-        <p className="dispatch-hero__thesis">
-          I research what moves markets—from structure and liquidity to macro and geopolitics—then build useful digital products from what becomes clear.
-        </p>
-        <div className="dispatch-hero__actions">
-          <a className="button button--primary" href="#work">View selected work <ActionMark direction="down" /></a>
-          <a className="button button--quiet" href="#research">Explore research <ActionMark direction="down" /></a>
+      <div className="dispatch-hero__primary">
+        <div className="dispatch-hero__identity">
+          <p className="dispatch-hero__issue"><span>The Research Dispatch</span><span>01 / 2026</span></p>
+          <h1 id="identity-title">
+            <TextRepel
+              text="Enis Qetaj"
+              className="dispatch-hero__repel"
+              radius={168}
+              strength={46}
+              stiffness={190}
+              damping={16}
+              mass={0.38}
+              keyboardInteractive={false}
+            />
+          </h1>
+        </div>
+
+        <figure className="author-artifact">
+          <picture>
+            <source media="(max-width: 767px)" srcSet={media.portrait.mobile.src} width={media.portrait.mobile.width} height={media.portrait.mobile.height} />
+            <source media="(max-width: 1023px)" srcSet={media.portrait.tablet.src} width={media.portrait.tablet.width} height={media.portrait.tablet.height} />
+            <img
+              src={media.portrait.desktop.src}
+              alt="Portrait of Enis Qetaj"
+              width={media.portrait.desktop.width}
+              height={media.portrait.desktop.height}
+              sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1023px) 48vw, 44vw"
+              fetchPriority="high"
+              decoding="async"
+            />
+          </picture>
+          <figcaption>
+            <span>Author / researcher / builder</span>
+            <span>Kosovo, 2026</span>
+          </figcaption>
+        </figure>
+
+        <div className="dispatch-hero__pitch">
+          <p className="dispatch-hero__thesis">
+            I research what moves markets—from structure and liquidity to macro and geopolitics—then build useful digital products from what becomes clear.
+          </p>
+          <div className="dispatch-hero__actions">
+            <a className="button button--primary" href="#work">View selected work <ActionMark direction="down" /></a>
+            <a className="button button--quiet" href="#research">Explore research <ActionMark direction="down" /></a>
+          </div>
         </div>
       </div>
 
-      <figure className="author-artifact">
-        <picture>
-          <source media="(max-width: 599px)" srcSet={media.portrait.mobile.src} width={media.portrait.mobile.width} height={media.portrait.mobile.height} />
-          <source media="(max-width: 1023px)" srcSet={media.portrait.tablet.src} width={media.portrait.tablet.width} height={media.portrait.tablet.height} />
-          <img
-            src={media.portrait.desktop.src}
-            alt="Portrait of Enis Qetaj"
-            width={media.portrait.desktop.width}
-            height={media.portrait.desktop.height}
-            sizes="(max-width: 599px) calc(100vw - 32px), (max-width: 1023px) 44vw, 34vw"
-            fetchPriority="high"
-            decoding="sync"
-          />
-        </picture>
-        <figcaption>
-          <span>Author / researcher / builder</span>
-          <span>Kosovo, 2026</span>
-        </figcaption>
-      </figure>
-
-      <div className="dispatch-hero__proof" aria-label="Core professional focus">
+      <ol className="dispatch-hero__proof" aria-label="Core professional focus">
         {focus.map(([number, label]) => (
-          <p key={number}><span>{number}</span><strong>{label}</strong></p>
+          <li key={number}><span>{number}</span><strong>{label}</strong></li>
         ))}
-      </div>
+      </ol>
 
       <p className="dispatch-hero__principle">Context changes the decision.</p>
     </section>
