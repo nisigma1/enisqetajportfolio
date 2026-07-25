@@ -51,7 +51,9 @@
 }
 
 .text-repel[data-coarse-pointer="true"] {
-  touch-action: auto;
+  /* Preserve vertical scrolling while still receiving pointer events for a
+     press-and-drag interaction on touch devices. */
+  touch-action: pan-y;
 }
 
 .text-repel:focus {

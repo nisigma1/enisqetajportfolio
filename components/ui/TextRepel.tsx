@@ -264,7 +264,9 @@ export function TextRepel({
   damping = 14,
   mass = 0.4,
   keyboardInteractive = true,
-  disableOnCoarsePointer = true,
+  // A touch screen is a first-class input, not a reduced feature set. Keep the
+  // interaction available on phones unless a caller explicitly opts out.
+  disableOnCoarsePointer = false,
   tabIndex,
   onPointerDown,
   onPointerMove,
@@ -308,6 +310,13 @@ export function TextRepel({
     settleTimer.current = window.setTimeout(() => setActive(false), 650);
   }, [pointer]);
 
+  const resetAfterTouch = useCallback(() => {
+    // A tap has no hover state. Holding the force point briefly makes the
+    // letter movement visible before the springs settle back to their origin.
+    window.clearTimeout(settleTimer.current);
+    settleTimer.current = window.setTimeout(reset, 520);
+  }, [reset]);
+
   useEffect(() => {
     if (disabled) {
       reset();
@@ -349,7 +358,13 @@ export function TextRepel({
     const handleWindowPointerMove = (event: PointerEvent) => {
       const container = containerRef.current;
 
-      if (container && !event.composedPath().includes(container)) {
+      // Touch drags can be retargeted outside the heading while scrolling.
+      // Only mouse hover should clear the field immediately.
+      if (
+        event.pointerType === "mouse" &&
+        container &&
+        !event.composedPath().includes(container)
+      ) {
         reset();
       }
     };
@@ -364,6 +379,9 @@ export function TextRepel({
   }, [reset]);
 
   const handlePointerDown = (event: ReactPointerEvent<HTMLSpanElement>) => {
+    if (event.pointerType !== "mouse") {
+      event.currentTarget.setPointerCapture?.(event.pointerId);
+    }
     setPointerFromClientPosition(event.clientX, event.clientY);
     onPointerDown?.(event);
   };
@@ -374,7 +392,9 @@ export function TextRepel({
   };
 
   const handlePointerLeave = (event: ReactPointerEvent<HTMLSpanElement>) => {
-    reset();
+    if (event.pointerType === "mouse") {
+      reset();
+    }
     onPointerLeave?.(event);
   };
 
@@ -385,7 +405,8 @@ export function TextRepel({
 
   const handlePointerUp = (event: ReactPointerEvent<HTMLSpanElement>) => {
     if (event.pointerType !== "mouse") {
-      reset();
+      event.currentTarget.releasePointerCapture?.(event.pointerId);
+      resetAfterTouch();
     }
     onPointerUp?.(event);
   };

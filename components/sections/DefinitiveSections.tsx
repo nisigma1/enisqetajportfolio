@@ -59,6 +59,7 @@ export function Hero() {
               damping={16}
               mass={0.38}
               keyboardInteractive={false}
+              disableOnCoarsePointer={false}
             />
           </h1>
         </div>
