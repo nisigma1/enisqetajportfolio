@@ -37,10 +37,13 @@ test("server-renders the complete identity homepage", async () => {
   assert.match(html, /<ol class="dispatch-hero__proof" aria-label="Core professional focus">/);
   assert.match(html, /Barber Brothers/);
   assert.match(html, /A signal is only the beginning/);
-  assert.match(html, /Evidence Ladder/);
-  assert.match(html, /Signal/);
+  assert.match(html, /Context circuit/);
+  assert.match(html, /One signal\. A wider decision/);
+  assert.match(html, /Research/);
+  assert.match(html, /Markets/);
+  assert.match(html, /Build/);
   assert.match(html, /Context/);
-  assert.match(html, /Decision/);
+  assert.match(html, /wider decision/);
   assert.match(html, /href="\/markets"/);
   assert.match(html, /On-chain/);
   assert.match(html, /Research and Analysis/);

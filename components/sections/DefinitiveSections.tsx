@@ -9,7 +9,7 @@ import {
   researchDomains,
   researchMethod,
 } from "@/data/site";
-import { EvidenceLadder } from "@/components/markets/PerspectiveLens";
+import { ContextCircuit } from "@/components/markets/ContextCircuit";
 import { BuildNavigator } from "@/components/build/BuildNavigator";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { ProjectMedia } from "@/components/media/ProjectMedia";
@@ -150,14 +150,14 @@ export function Markets() {
   return (
     <section id="markets" className="site-section markets-practice" aria-labelledby="markets-title">
       <div className="section-intro markets-practice__intro">
-        <SectionLabel>02 / Evidence ladder</SectionLabel>
+        <SectionLabel>02 / Context circuit</SectionLabel>
         <h2 id="markets-title">A signal is only the beginning.</h2>
         <div>
           <p className="body-large">Price makes a move visible. Context changes what that move can mean.</p>
-          <p>Move through seven evidence layers to see how an isolated observation becomes a more responsible interpretation.</p>
+          <p>Research, markets and product building use the same discipline: connect the signal to the context before acting.</p>
         </div>
       </div>
-      <EvidenceLadder />
+      <ContextCircuit />
     </section>
   );
 }
