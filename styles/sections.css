@@ -86,17 +86,21 @@
 
 .dispatch-hero h1 {
   grid-column: 1 / 13;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: baseline;
-  gap: 0.18em;
   max-width: 100%;
   font-family: var(--font-identity);
   font-size: var(--text-identity);
   font-weight: 800;
-  letter-spacing: -0.085em;
+  letter-spacing: -0.055em;
   line-height: 0.78;
   text-transform: uppercase;
   white-space: nowrap;
+}
+
+.dispatch-hero h1 span:last-child {
+  justify-self: end;
 }
 
 .dispatch-hero__thesis {
@@ -717,7 +721,7 @@
   margin-top: var(--space-8);
 }
 
-.malera-practice__relationship > div {
+.malera-practice__relationship > div:not(.malera-practice__bridge) {
   display: grid;
   min-height: 20rem;
   align-content: space-between;
@@ -730,6 +734,8 @@
   position: relative;
   display: grid;
   width: clamp(5rem, 8vw, 8rem);
+  min-height: 0;
+  padding: 0;
   align-self: center;
   place-items: center;
   color: var(--text-muted);
@@ -1316,6 +1322,7 @@
     grid-column: 1;
     grid-row: 3;
     display: grid;
+    grid-template-columns: 1fr;
     gap: 0;
     max-width: none;
     margin-top: 1.45rem;
@@ -1527,8 +1534,14 @@
     grid-template-columns: 1fr;
   }
 
-  .malera-practice__relationship > div {
+  .malera-practice__relationship > div:not(.malera-practice__bridge) {
     min-height: 15rem;
+  }
+
+  .malera-practice__relationship > div.malera-practice__bridge {
+    min-height: 4rem;
+    border: 0;
+    background: transparent;
   }
 
   .malera-practice__bridge {
