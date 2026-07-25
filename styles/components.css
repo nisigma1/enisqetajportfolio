@@ -13,6 +13,56 @@
   transform: translateY(0);
 }
 
+.text-repel {
+  position: relative;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  cursor: default;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.text-repel__word {
+  display: inline-flex;
+  align-items: baseline;
+  white-space: nowrap;
+}
+
+.text-repel__space {
+  flex: 0 0 0.24em;
+}
+
+.text-repel__letter {
+  position: relative;
+  display: inline-block;
+}
+
+.text-repel__glyph {
+  display: inline-block;
+  transform-origin: 50% 72%;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.text-repel:focus {
+  outline: none;
+}
+
+.text-repel:focus-visible {
+  border-radius: 0.04em;
+  outline: max(2px, 0.015em) solid var(--accent);
+  outline-offset: 0.075em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text-repel__glyph {
+    transform: none !important;
+    will-change: auto;
+  }
+}
+
 .masthead-name {
   justify-self: start;
   display: inline-flex;

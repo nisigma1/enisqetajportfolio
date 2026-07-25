@@ -120,9 +120,7 @@
 
 .dispatch-hero h1 {
   grid-column: 1 / 13;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: baseline;
+  display: block;
   max-width: 100%;
   font-family: var(--font-identity);
   font-size: var(--text-identity);
@@ -133,7 +131,18 @@
   white-space: nowrap;
 }
 
-.dispatch-hero h1 span:last-child {
+.dispatch-hero__repel {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: baseline;
+  width: 100%;
+}
+
+.dispatch-hero__repel .text-repel__space {
+  display: none;
+}
+
+.dispatch-hero__repel .text-repel__word:last-of-type {
   justify-self: end;
 }
 
@@ -1377,9 +1386,7 @@
   .dispatch-hero h1 {
     grid-column: 1;
     grid-row: 3;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0;
+    display: block;
     max-width: none;
     margin-top: 1.45rem;
     font-size: clamp(4.35rem, 20.5vw, 5.6rem);
@@ -1387,7 +1394,12 @@
     white-space: normal;
   }
 
-  .dispatch-hero h1 span:last-child {
+  .dispatch-hero__repel {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .dispatch-hero__repel .text-repel__word:last-of-type {
     justify-self: end;
   }
 

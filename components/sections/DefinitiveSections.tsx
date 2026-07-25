@@ -15,6 +15,7 @@ import { ContactForm } from "@/components/forms/ContactForm";
 import { ProjectMedia } from "@/components/media/ProjectMedia";
 import { ActionMark } from "@/components/ui/ActionMark";
 import { PixelCanvas } from "@/components/ui/PixelCanvas";
+import { TextRepel } from "@/components/ui/TextRepel";
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return <p className="section-label">{children}</p>;
@@ -45,7 +46,17 @@ export function Hero() {
 
       <div className="dispatch-hero__identity">
         <p className="dispatch-hero__issue"><span>The Research Dispatch</span><span>01 / 2026</span></p>
-        <h1 id="identity-title"><span>Enis</span><span>Qetaj</span></h1>
+        <h1 id="identity-title">
+          <TextRepel
+            text="Enis Qetaj"
+            className="dispatch-hero__repel"
+            radius={190}
+            strength={68}
+            stiffness={180}
+            damping={14}
+            mass={0.4}
+          />
+        </h1>
         <p className="dispatch-hero__thesis">
           I research what moves markets—from structure and liquidity to macro and geopolitics—then build useful digital products from what becomes clear.
         </p>
