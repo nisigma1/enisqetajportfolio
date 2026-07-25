@@ -1,7 +1,10 @@
 :root {
-  --font-identity: Arial, Helvetica, sans-serif;
-  --font-editorial: Georgia, "Times New Roman", serif;
-  --font-ui: Arial, Helvetica, sans-serif;
+  /* A compact, editorial pairing: neutral grotesk for navigation and a
+     high-contrast old-style serif for the voice. The system fallbacks keep
+     first paint fast while preserving the intended rhythm on every device. */
+  --font-identity: "Inter", "Helvetica Neue", "Segoe UI", Arial, sans-serif;
+  --font-editorial: "Iowan Old Style", "Baskerville", "Times New Roman", serif;
+  --font-ui: "Inter", "Helvetica Neue", "Segoe UI", Arial, sans-serif;
 
   --text-identity: clamp(4rem, 11vw, 11.5rem);
   --text-display: clamp(2.9rem, 7vw, 7.2rem);

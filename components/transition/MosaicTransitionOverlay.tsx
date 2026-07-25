@@ -17,7 +17,7 @@ type MosaicTransitionOverlayProps = {
   onRevealComplete: (requestId: number) => void;
 };
 
-const MAX_WAVE_DELAY = 240;
+const MAX_WAVE_DELAY = 150;
 
 function readViewport(): TransitionGrid {
   if (typeof window === "undefined") return gridForViewport(1366, 768);

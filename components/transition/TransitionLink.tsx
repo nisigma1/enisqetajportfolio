@@ -39,7 +39,10 @@ export function TransitionLink({
 
     if (!shouldIntercept || isTransitioning) {
       onTransitionBypass?.();
-      if (isTransitioning && shouldIntercept) event.preventDefault();
+      // Never swallow a click while another transition is winding down. Let
+      // Next's native link handling complete the navigation instead of
+      // leaving the visitor on the previous route (the old behaviour made the
+      // Index logo appear to jump back to Markets or do nothing).
       return;
     }
 
