@@ -46,6 +46,13 @@
   inset: 0;
   pointer-events: none;
   opacity: 0.38;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    black 10%,
+    black 76%,
+    transparent 100%
+  );
   mask-image: linear-gradient(
     to bottom,
     transparent 0,
@@ -1292,6 +1299,28 @@
 }
 
 @media (max-width: 767px) {
+  .dispatch-hero__pixel-canvas {
+    opacity: 0.62;
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0,
+      black 5%,
+      black 88%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0,
+      black 5%,
+      black 88%,
+      transparent 100%
+    );
+  }
+
+  [data-theme="light"] .dispatch-hero__pixel-canvas {
+    opacity: 0.38;
+  }
+
   .route-market-lens__intro,
   .route-build-matrix ol {
     grid-template-columns: 1fr;

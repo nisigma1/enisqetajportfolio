@@ -98,6 +98,9 @@ export function PixelCanvas({
     let rows = 0;
     let visible = true;
     const pixelSize = Math.max(gap, 4);
+    const mobileExperience =
+      window.matchMedia("(pointer: coarse)").matches ||
+      window.innerWidth <= 767;
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
@@ -153,11 +156,20 @@ export function PixelCanvas({
       updatePointer(event.clientX, event.clientY);
     };
 
+    const onPointerDown = (event: PointerEvent) => {
+      updatePointer(event.clientX, event.clientY);
+    };
+
     const onPointerLeave = () => {
       pointerRef.current = { x: -1000, y: -1000 };
     };
 
     const onTouchMove = (event: TouchEvent) => {
+      const touch = event.touches[0];
+      if (touch) updatePointer(touch.clientX, touch.clientY);
+    };
+
+    const onTouchStart = (event: TouchEvent) => {
       const touch = event.touches[0];
       if (touch) updatePointer(touch.clientX, touch.clientY);
     };
@@ -170,7 +182,26 @@ export function PixelCanvas({
         const rect = container.getBoundingClientRect();
         context.clearRect(0, 0, rect.width, rect.height);
 
-        const radius = variant === "glow" ? 120 : 80;
+        let pointerX = pointerRef.current.x;
+        let pointerY = pointerRef.current.y;
+
+        // Touch devices have no persistent hover state. Keep the same trail
+        // animation visible with a slow ambient pointer until the visitor
+        // touches the hero, at which point their finger takes control.
+        if (
+          mobileExperience &&
+          pointerX < 0 &&
+          pointerY < 0
+        ) {
+          const horizontalPhase = timestamp * 0.00042;
+          const verticalPhase = timestamp * 0.00031;
+          pointerX =
+            rect.width * (0.5 + Math.sin(horizontalPhase) * 0.36);
+          pointerY =
+            rect.height * (0.26 + Math.cos(verticalPhase) * 0.16);
+        }
+
+        const radius = variant === "glow" ? 120 : mobileExperience ? 104 : 80;
         const glowPasses = variant === "glow" ? 2 : 1;
 
         for (let column = 0; column < columns; column += 1) {
@@ -183,8 +214,8 @@ export function PixelCanvas({
 
             const centerX = pixel.x + pixel.size / 2;
             const centerY = pixel.y + pixel.size / 2;
-            const dx = pointerRef.current.x - centerX;
-            const dy = pointerRef.current.y - centerY;
+            const dx = pointerX - centerX;
+            const dy = pointerY - centerY;
             const distance = Math.sqrt(dx * dx + dy * dy);
 
             pixel.targetIntensity =
@@ -263,8 +294,10 @@ export function PixelCanvas({
     }
 
     if (!noFocus && !reduceMotion) {
+      window.addEventListener("pointerdown", onPointerDown, { passive: true });
       window.addEventListener("pointermove", onPointerMove, { passive: true });
       window.addEventListener("pointerleave", onPointerLeave);
+      window.addEventListener("touchstart", onTouchStart, { passive: true });
       window.addEventListener("touchmove", onTouchMove, { passive: true });
       window.addEventListener("touchend", onPointerLeave);
     }
@@ -273,8 +306,10 @@ export function PixelCanvas({
       window.cancelAnimationFrame(animationRef.current);
       resizeObserver.disconnect();
       visibilityObserver.disconnect();
+      window.removeEventListener("pointerdown", onPointerDown);
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerleave", onPointerLeave);
+      window.removeEventListener("touchstart", onTouchStart);
       window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("touchend", onPointerLeave);
     };
