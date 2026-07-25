@@ -37,7 +37,6 @@ export function Hero() {
         speed={0.018}
         variant="trail"
         colors={["#315df2", "#5f7cff", "#819cff", "#aab9f5"]}
-        ambientOnTouch
         aria-hidden="true"
       />
 

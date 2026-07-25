@@ -459,7 +459,7 @@
 .context-circuit__trace {
   stroke: var(--border-strong);
   stroke-width: 1px;
-  opacity: 0.72;
+  opacity: 0.48;
 }
 
 .context-circuit__pulse {
@@ -476,12 +476,10 @@
 .context-circuit__node {
   position: absolute;
   display: grid;
-  width: min(9.7rem, 20%);
-  min-height: 4.6rem;
-  grid-template-columns: auto 1fr;
-  gap: 0.1rem 0.55rem;
-  align-items: center;
-  padding: 0.55rem;
+  width: 2.65rem;
+  height: 2.65rem;
+  place-items: center;
+  padding: 0;
   border: 0;
   background: transparent;
   color: var(--text-primary);
@@ -496,9 +494,8 @@
 
 .context-circuit__node-icon {
   display: grid;
-  width: 2.35rem;
-  height: 2.35rem;
-  grid-row: span 2;
+  width: 2.65rem;
+  height: 2.65rem;
   place-items: center;
   border: var(--border-width) solid var(--border-strong);
   border-radius: var(--radius-small);
@@ -518,7 +515,26 @@
 }
 
 .context-circuit__node strong { font-size: var(--text-ui); line-height: 1.05; }
-.context-circuit__node small { color: var(--text-muted); font-size: var(--text-meta); }
+.context-circuit__node strong {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 50%;
+  width: max-content;
+  max-width: 7rem;
+  color: var(--text-primary);
+  font-size: clamp(0.58rem, 0.75vw, 0.7rem);
+  line-height: 1.1;
+  text-align: center;
+  transform: translateX(-50%);
+}
+.context-circuit__node small {
+  position: absolute;
+  top: calc(100% + 1.55rem);
+  left: 50%;
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+  transform: translateX(-50%);
+}
 
 .context-circuit__details {
   display: grid;

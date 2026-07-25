@@ -46,7 +46,7 @@ const modes: CircuitMode[] = [
       { id: "structure", label: "Structure", description: "Read participation, key levels and the quality of the move.", icon: "⌗", status: "evidence" },
       { id: "fundamentals", label: "Fundamentals", description: "Test the asset or sector conditions behind the narrative.", icon: "◫", status: "evidence" },
       { id: "liquidity", label: "Liquidity", description: "Place the move inside capital conditions and risk appetite.", icon: "≈", status: "context" },
-      { id: "macro", label: "Macro & geopolitics", description: "Include rates, growth, policy, trade and strategic forces.", icon: "◎", status: "context" },
+      { id: "macro", label: "Macro / geo", description: "Include rates, growth, policy, trade and strategic forces.", icon: "◎", status: "context" },
       { id: "on-chain", label: "On-chain", description: "Add flows, balances and recorded network behavior where relevant.", icon: "⌘", status: "evidence" },
       { id: "thesis", label: "Thesis", description: "Form a conditional view with explicit evidence and invalidation points.", icon: "◆", status: "outcome" },
     ],
@@ -67,8 +67,12 @@ const modes: CircuitMode[] = [
   },
 ];
 
-const positions = [
-  [9, 51], [27, 25], [47, 25], [67, 25], [67, 75], [86, 51], [91, 77],
+const sixNodeLayout = [
+  [10, 50], [27, 28], [45, 28], [63, 28], [63, 72], [86, 50],
+] as const;
+
+const sevenNodeLayout = [
+  [10, 50], [26, 28], [43, 28], [60, 28], [44, 72], [64, 72], [86, 50],
 ] as const;
 
 function circuitPath([fromX, fromY]: readonly number[], [toX, toY]: readonly number[]) {
@@ -98,6 +102,7 @@ export function ContextCircuit() {
   const uid = useId();
   const mode = useMemo(() => modes.find((item) => item.id === modeId) ?? modes[1], [modeId]);
   const activeNode = mode.nodes[activeIndex] ?? mode.nodes[0];
+  const layout = mode.nodes.length === 7 ? sevenNodeLayout : sixNodeLayout;
   const shouldAnimate = inView && visible && !reducedMotion;
 
   useEffect(() => {
@@ -158,7 +163,7 @@ export function ContextCircuit() {
             {mode.nodes.slice(0, -1).map((_, index) => {
               const active = index < activeIndex;
               const current = index === activeIndex - 1;
-              const path = circuitPath(positions[index], positions[index + 1]);
+              const path = circuitPath(layout[index], layout[index + 1]);
               return (
                 <g key={`${mode.id}-${index}`}>
                   <path className="context-circuit__trace" d={path} />
@@ -187,7 +192,7 @@ export function ContextCircuit() {
                   data-active={selected || undefined}
                   data-dimmed={diminished || undefined}
                   onClick={() => setActiveIndex(index)}
-                  style={{ left: `${positions[index][0]}%`, top: `${positions[index][1]}%` }}
+                  style={{ left: `${layout[index][0]}%`, top: `${layout[index][1]}%` }}
                 >
                   <span aria-hidden="true" className="context-circuit__node-icon">{node.icon}</span>
                   <strong>{node.label}</strong>
