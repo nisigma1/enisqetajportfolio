@@ -302,7 +302,7 @@ export function Contact() {
           <span>Direct contact</span>
           <strong>{identity.name}</strong>
           <p>{identity.location}<br />Independent practice</p>
-          <a href={identity.emailHref}>{identity.email}</a>
+          <a href={identity.emailHref} target="_blank" rel="noreferrer">{identity.email}</a>
           <a href={identity.phoneHref}>{identity.phone}</a>
           <a href={malera.url} target="_blank" rel="noreferrer">Malera Studio <ActionMark direction="external" /></a>
           <small>The form prepares an email draft. Nothing is sent or stored by this site.</small>

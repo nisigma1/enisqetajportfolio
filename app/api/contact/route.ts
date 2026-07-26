@@ -13,6 +13,7 @@ type FieldErrors = Partial<Record<FieldName, string>>;
 
 const maxRequestBytes = 16_384;
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const gmailComposeUrl = "https://mail.google.com/mail/?view=cm&fs=1&to=enisqeta5%40gmail.com";
 
 function stringValue(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
@@ -84,7 +85,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       ok: true,
       message: "Your draft is ready. Continue in email to review and send it.",
-      mailto: "mailto:enisqeta5@gmail.com",
+      mailto: gmailComposeUrl,
     });
   }
 
@@ -112,6 +113,6 @@ export async function POST(request: Request) {
   return NextResponse.json({
     ok: true,
     message: "Your draft is ready. Continue in email to review and send it. Nothing has been sent or stored.",
-    mailto: `mailto:enisqeta5@gmail.com?subject=${subject}&body=${body}`,
+    mailto: `${gmailComposeUrl}&su=${subject}&body=${body}`,
   });
 }

@@ -15,6 +15,7 @@ type ApiResponse = {
 };
 
 const emailAddress = "enisqeta5@gmail.com";
+const gmailComposeHref = "https://mail.google.com/mail/?view=cm&fs=1&to=enisqeta5%40gmail.com";
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function validateField(name: FieldName, value: string): string | undefined {
@@ -244,10 +245,10 @@ export function ContactForm() {
         >
           <span>{statusMessage}</span>
           {state === "ready" && mailto && (
-            <a href={mailto}>Continue in email <ActionMark direction="external" /></a>
+            <a href={mailto} target="_blank" rel="noreferrer">Continue in Gmail <ActionMark direction="external" /></a>
           )}
           {state === "error" && (
-            <a href={`mailto:${emailAddress}`}>Email Enis directly</a>
+            <a href={gmailComposeHref} target="_blank" rel="noreferrer">Email Enis in Gmail</a>
           )}
         </div>
       )}

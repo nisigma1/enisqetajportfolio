@@ -19,7 +19,7 @@ export const identity = {
   name: "Enis Qetaj",
   location: "Kosovo",
   email: "enisqeta5@gmail.com",
-  emailHref: "mailto:enisqeta5@gmail.com",
+  emailHref: "https://mail.google.com/mail/?view=cm&fs=1&to=enisqeta5%40gmail.com",
   phone: "+383 44 857 227",
   phoneHref: "tel:+38344857227",
   availability: "Available for selected freelance work",

@@ -29,7 +29,7 @@ export default function ContactPage() {
         <aside>
           <p>Direct contact</p>
           <strong>{identity.name}</strong>
-          <a href={identity.emailHref}>{identity.email}</a>
+          <a href={identity.emailHref} target="_blank" rel="noreferrer">{identity.email}</a>
           <a href={identity.phoneHref}>{identity.phone}</a>
           <a href={malera.url} target="_blank" rel="noreferrer">Malera Studio <ActionMark direction="external" /></a>
           <small>This form prepares an email draft. It does not send or store your message.</small>

@@ -1,4 +1,4 @@
-import { navigation } from "@/data/site";
+import { identity, navigation } from "@/data/site";
 import Link from "next/link";
 import { TransitionLink } from "@/components/transition/TransitionLink";
 import { ActionMark } from "@/components/ui/ActionMark";
@@ -18,7 +18,7 @@ export function Footer() {
       <div className="footer-meta">
         <span>© {new Date().getFullYear()}</span>
         <span>Kosovo</span>
-        <a href="mailto:enisqeta5@gmail.com">enisqeta5@gmail.com</a>
+        <a href={identity.emailHref} target="_blank" rel="noreferrer">{identity.email}</a>
         <Link href="/#index">Back to top <ActionMark direction="up" /></Link>
       </div>
     </footer>

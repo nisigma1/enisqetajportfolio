@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { navigation } from "@/data/site";
+import { identity, navigation } from "@/data/site";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { TransitionLink } from "@/components/transition/TransitionLink";
 import { useRouteTransition } from "@/components/transition/RouteTransitionContext";
@@ -221,7 +221,7 @@ export function Navigation() {
           </nav>
 
           <div className="mobile-navigation-foot">
-            <a href="mailto:enisqeta5@gmail.com">enisqeta5@gmail.com</a>
+            <a href={identity.emailHref} target="_blank" rel="noreferrer">{identity.email}</a>
             <span>Markets / Research / Digital products</span>
           </div>
         </div>

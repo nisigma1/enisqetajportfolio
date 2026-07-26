@@ -166,7 +166,7 @@ test("contact endpoint validates input and returns a mail fallback", async () =>
     ctx,
   );
   assert.equal(valid.status, 200);
-  assert.match((await valid.json()).mailto, /^mailto:enisqeta5@gmail\.com/);
+  assert.match((await valid.json()).mailto, /^https:\/\/mail\.google\.com\/mail\/\?view=cm&fs=1&to=enisqeta5%40gmail\.com/);
 
   const invalid = await worker.fetch(
     new Request("http://localhost/api/contact", {
