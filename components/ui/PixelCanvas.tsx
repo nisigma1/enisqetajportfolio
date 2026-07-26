@@ -24,6 +24,10 @@ interface PixelCanvasProps extends HTMLAttributes<HTMLDivElement> {
   maxDpr?: number;
   /** Radius of the pointer field in CSS pixels. */
   radius?: number;
+  /** Smaller radius used by the ambient touch animation. */
+  coarseRadius?: number;
+  /** Render cap for coarse-pointer devices. */
+  coarseFps?: number;
 }
 
 interface RgbColor {
@@ -94,6 +98,8 @@ export function PixelCanvas({
   ambientOnTouch = true,
   maxDpr = 2,
   radius,
+  coarseRadius,
+  coarseFps = 30,
   ...props
 }: PixelCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -134,6 +140,7 @@ export function PixelCanvas({
     if (!context) return;
 
     const pixelSize = Math.max(gap, 4);
+    const coarseFrameInterval = 1000 / Math.max(1, coarseFps);
     const reducedMotionQuery = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     );
@@ -287,6 +294,14 @@ export function PixelCanvas({
         return;
       }
 
+      if (
+        coarsePointer &&
+        timestamp - lastTimestamp < coarseFrameInterval
+      ) {
+        scheduleDraw();
+        return;
+      }
+
       const deltaTime = Math.max(
         1,
         Math.min(timestamp - lastTimestamp, FRAME_DURATION * 4),
@@ -315,8 +330,12 @@ export function PixelCanvas({
       }
 
       const hasPointer = pointerRef.current.active || ambient;
+      const configuredRadius = coarsePointer
+        ? (coarseRadius ?? radius)
+        : radius;
       const activeRadius =
-        radius ?? (variant === "glow" ? 116 : coarsePointer ? 96 : 82);
+        configuredRadius ??
+        (variant === "glow" ? 116 : coarsePointer ? 96 : 82);
       const activePixels = activePixelsRef.current;
 
       for (const pixel of activePixels.values()) {
@@ -563,6 +582,8 @@ export function PixelCanvas({
     };
   }, [
     ambientOnTouch,
+    coarseFps,
+    coarseRadius,
     gap,
     noFocus,
     maxDpr,

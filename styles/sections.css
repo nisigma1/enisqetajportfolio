@@ -62,12 +62,6 @@
   mix-blend-mode: multiply;
 }
 
-@media (pointer: coarse) {
-  .portfolio-pixel-field {
-    display: none;
-  }
-}
-
 .dispatch-hero__meta {
   grid-column: 1 / 13;
   display: flex;
@@ -1654,7 +1648,11 @@
 
 @media (max-width: 767px) {
   .portfolio-pixel-field {
-    display: none;
+    opacity: 0.44;
+  }
+
+  [data-theme="light"] .portfolio-pixel-field {
+    opacity: 0.26;
   }
 
   .context-circuit { margin-top: var(--space-6); }

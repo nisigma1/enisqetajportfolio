@@ -30,9 +30,11 @@ export function PortfolioPixelField() {
       speed={0.018}
       variant="trail"
       colors={["#315df2", "#5f7cff", "#819cff", "#aab9f5"]}
-      ambientOnTouch={false}
+      ambientOnTouch
       maxDpr={1}
       radius={148}
+      coarseRadius={112}
+      coarseFps={30}
       aria-hidden="true"
     />
   );
