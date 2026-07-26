@@ -71,6 +71,78 @@
   mix-blend-mode: multiply;
 }
 
+.pixel-field-section {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+}
+
+.section-pixel-field {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.28;
+  mix-blend-mode: screen;
+}
+
+.pixel-field-section > :not(.section-pixel-field) {
+  position: relative;
+  z-index: 1;
+}
+
+.research-practice__pixel-field {
+  -webkit-mask-image:
+    radial-gradient(circle 12rem at 88% 13%, black 0, transparent 76%),
+    radial-gradient(circle 13rem at 12% 76%, black 0, transparent 78%);
+  mask-image:
+    radial-gradient(circle 12rem at 88% 13%, black 0, transparent 76%),
+    radial-gradient(circle 13rem at 12% 76%, black 0, transparent 78%);
+}
+
+.markets-practice__pixel-field {
+  -webkit-mask-image:
+    radial-gradient(circle 12rem at 91% 11%, black 0, transparent 76%),
+    radial-gradient(circle 10rem at 8% 92%, black 0, transparent 78%);
+  mask-image:
+    radial-gradient(circle 12rem at 91% 11%, black 0, transparent 76%),
+    radial-gradient(circle 10rem at 8% 92%, black 0, transparent 78%);
+}
+
+.selected-work__pixel-field {
+  -webkit-mask-image:
+    radial-gradient(circle 12rem at 91% 9%, black 0, transparent 76%),
+    radial-gradient(circle 13rem at 8% 48%, black 0, transparent 78%),
+    radial-gradient(circle 11rem at 89% 91%, black 0, transparent 76%);
+  mask-image:
+    radial-gradient(circle 12rem at 91% 9%, black 0, transparent 76%),
+    radial-gradient(circle 13rem at 8% 48%, black 0, transparent 78%),
+    radial-gradient(circle 11rem at 89% 91%, black 0, transparent 76%);
+}
+
+.building-practice__pixel-field {
+  -webkit-mask-image:
+    radial-gradient(circle 12rem at 90% 12%, black 0, transparent 76%),
+    radial-gradient(circle 12rem at 9% 81%, black 0, transparent 78%);
+  mask-image:
+    radial-gradient(circle 12rem at 90% 12%, black 0, transparent 76%),
+    radial-gradient(circle 12rem at 9% 81%, black 0, transparent 78%);
+}
+
+.contact-chapter__pixel-field {
+  -webkit-mask-image:
+    radial-gradient(circle 12rem at 88% 16%, black 0, transparent 76%),
+    radial-gradient(circle 13rem at 11% 86%, black 0, transparent 78%);
+  mask-image:
+    radial-gradient(circle 12rem at 88% 16%, black 0, transparent 76%),
+    radial-gradient(circle 13rem at 11% 86%, black 0, transparent 78%);
+}
+
+[data-theme="light"] .section-pixel-field {
+  opacity: 0.18;
+  mix-blend-mode: multiply;
+}
+
 .dispatch-hero__meta {
   grid-column: 1 / 13;
   display: flex;
@@ -1656,6 +1728,10 @@
 }
 
 @media (max-width: 767px) {
+  .section-pixel-field {
+    display: none;
+  }
+
   .context-circuit { margin-top: var(--space-6); }
 
   .context-circuit__header {

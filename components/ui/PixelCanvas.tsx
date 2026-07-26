@@ -20,6 +20,8 @@ interface PixelCanvasProps extends HTMLAttributes<HTMLDivElement> {
   variant?: "default" | "trail" | "glow";
   /** Keep a slow ambient trail visible on coarse-pointer devices. */
   ambientOnTouch?: boolean;
+  /** Cap canvas density for large decorative surfaces. */
+  maxDpr?: number;
 }
 
 interface RgbColor {
@@ -88,6 +90,7 @@ export function PixelCanvas({
   noFocus = false,
   variant = "default",
   ambientOnTouch = true,
+  maxDpr = 2,
   ...props
 }: PixelCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -202,7 +205,10 @@ export function PixelCanvas({
       const rect = container.getBoundingClientRect();
       const width = Math.max(1, Math.round(rect.width));
       const height = Math.max(1, Math.round(rect.height));
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(
+        window.devicePixelRatio || 1,
+        Math.max(1, maxDpr),
+      );
       const columns = Math.max(1, Math.ceil(width / pixelSize));
       const rows = Math.max(1, Math.ceil(height / pixelSize));
       const previous = dimensionsRef.current;
@@ -552,6 +558,7 @@ export function PixelCanvas({
     ambientOnTouch,
     gap,
     noFocus,
+    maxDpr,
     palette,
     speed,
     variant,
