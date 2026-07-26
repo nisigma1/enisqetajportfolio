@@ -52,6 +52,9 @@ test("server-renders the complete identity homepage", async () => {
   assert.match(html, /\+383 44 857 227/);
   assert.match(html, /application\/ld\+json/);
   assert.match(html, /action-mark/);
+  assert.match(html, /history\.scrollRestoration='manual'/);
+  assert.match(html, /addEventListener\('pageshow'/);
+  assert.match(html, /if\(!location\.hash\)scrollTo\(0,0\)/);
   assert.doesNotMatch(html, /[↖↗↘↙←→↑↓]/);
   assert.doesNotMatch(html, />EQ</);
   assert.doesNotMatch(html, /Football|C:\/Users|C:%5CUsers|\.vinext\/fonts/i);

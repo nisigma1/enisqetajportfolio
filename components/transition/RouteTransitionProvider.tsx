@@ -4,6 +4,7 @@ import {
   ReactNode,
   useCallback,
   useEffect,
+  useLayoutEffect,
   useReducer,
   useRef,
 } from "react";
@@ -103,14 +104,26 @@ export function RouteTransitionProvider({ children }: { children: ReactNode }) {
   // visitor reopens the portfolio. That made the Index route land halfway
   // down at Markets. Own restoration so a clean Index load always starts at
   // the masthead, while deep links with a hash still resolve normally.
-  useEffect(() => {
-    const previousRestoration = window.history.scrollRestoration;
+  useLayoutEffect(() => {
     window.history.scrollRestoration = "manual";
-    if (!window.location.hash) {
+
+    const resetEntryScroll = () => {
+      if (window.location.hash) return;
       window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    }
+    };
+
+    resetEntryScroll();
+    let frame = window.requestAnimationFrame(() => {
+      resetEntryScroll();
+      frame = window.requestAnimationFrame(resetEntryScroll);
+    });
+    const timeout = window.setTimeout(resetEntryScroll, 140);
+    window.addEventListener("pageshow", resetEntryScroll);
+
     return () => {
-      window.history.scrollRestoration = previousRestoration;
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(timeout);
+      window.removeEventListener("pageshow", resetEntryScroll);
     };
   }, []);
 

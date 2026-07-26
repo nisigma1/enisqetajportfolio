@@ -59,11 +59,14 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   const themeScript =
     "try{var t=localStorage.getItem('enis-theme');var d=t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.dataset.theme=d}catch(e){}";
+  const scrollScript =
+    "(()=>{try{history.scrollRestoration='manual';const r=()=>{if(!location.hash)scrollTo(0,0)};r();addEventListener('pageshow',()=>{r();requestAnimationFrame(()=>{r();requestAnimationFrame(r)});setTimeout(r,120)})}catch(e){}})();";
 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: scrollScript }} />
       </head>
       <body>
         <RouteTransitionProvider>
