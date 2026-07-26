@@ -2,12 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { identity, navigation } from "@/data/site";
+import { navigation } from "@/data/site";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
+import { MobileNavigation } from "@/components/layout/MobileNavigation";
 import { TransitionLink } from "@/components/transition/TransitionLink";
 import { useRouteTransition } from "@/components/transition/RouteTransitionContext";
 import { activeRouteForPathname } from "@/lib/route-transition.mjs";
-import { ActionMark } from "@/components/ui/ActionMark";
 
 type InertSnapshot = {
   element: HTMLElement;
@@ -33,12 +33,24 @@ export function Navigation() {
   const pathname = usePathname();
   const { isTransitioning } = useRouteTransition();
   const [open, setOpen] = useState(false);
+  const [closing, setClosing] = useState(false);
   const currentActive = activeRouteForPathname(pathname);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
   const transitionFromMenuRef = useRef(false);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  function closeMenuNormally() {
+    transitionFromMenuRef.current = false;
+    setClosing(true);
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    closeTimerRef.current = setTimeout(() => {
+      setOpen(false);
+      setClosing(false);
+    }, 220);
+  }
 
   useEffect(() => {
     if (!open) return;
@@ -72,7 +84,7 @@ export function Navigation() {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
-        setOpen(false);
+        closeMenuNormally();
         return;
       }
 
@@ -119,8 +131,16 @@ export function Navigation() {
     };
   }, [open]);
 
+  useEffect(() => {
+    return () => {
+      if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    };
+  }, []);
+
   function openMenu() {
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
     transitionFromMenuRef.current = false;
+    setClosing(false);
     previousFocusRef.current = document.activeElement instanceof HTMLElement
       ? document.activeElement
       : triggerRef.current;
@@ -128,13 +148,10 @@ export function Navigation() {
   }
 
   function closeMenuForTransition() {
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
     transitionFromMenuRef.current = true;
     previousFocusRef.current = null;
-    setOpen(false);
-  }
-
-  function closeMenuNormally() {
-    transitionFromMenuRef.current = false;
+    setClosing(false);
     setOpen(false);
   }
 
@@ -182,49 +199,24 @@ export function Navigation() {
         </div>
       </header>
 
+      <noscript>
+        <nav className="mobile-noscript-navigation" aria-label="Mobile navigation fallback">
+          {navigation.map((item) => (
+            <a key={item.label} href={item.href}>{item.label}</a>
+          ))}
+        </nav>
+      </noscript>
+
       {open && (
-        <div
-          ref={menuRef}
-          id="mobile-navigation"
-          className="mobile-navigation"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="mobile-navigation-title"
-        >
-          <div className="mobile-navigation-top">
-            <span id="mobile-navigation-title">Enis Qetaj / Kosovo</span>
-            <div>
-              <ThemeToggle />
-              <button ref={closeRef} type="button" onClick={closeMenuNormally}>
-                Close <span aria-hidden="true">×</span>
-              </button>
-            </div>
-          </div>
-
-          <nav aria-label="Mobile navigation">
-            {navigation.map((item) => {
-              const key = item.label.toLowerCase();
-              return (
-                <TransitionLink
-                  key={item.label}
-                  className="transition-nav-link"
-                  href={item.href}
-                  onTransitionStart={closeMenuForTransition}
-                  onTransitionBypass={closeMenuNormally}
-                  aria-current={currentActive === key ? "page" : undefined}
-                >
-                  <NavLabel>{item.label}</NavLabel>
-                  <ActionMark direction="forward" className="mobile-navigation__arrow" />
-                </TransitionLink>
-              );
-            })}
-          </nav>
-
-          <div className="mobile-navigation-foot">
-            <a href={identity.emailHref} target="_blank" rel="noreferrer">{identity.email}</a>
-            <span>Markets / Research / Digital products</span>
-          </div>
-        </div>
+        <MobileNavigation
+          activeRoute={currentActive}
+          closeRef={closeRef}
+          menuRef={menuRef}
+          closing={closing}
+          onClose={closeMenuNormally}
+          onTransitionStart={closeMenuForTransition}
+          onTransitionBypass={closeMenuNormally}
+        />
       )}
     </>
   );
