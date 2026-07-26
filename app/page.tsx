@@ -6,6 +6,7 @@ import {
   Hero,
   Malera,
   Markets,
+  PortfolioPixelField,
   Work,
 } from "@/components/sections/DefinitiveSections";
 import {
@@ -86,7 +87,8 @@ export default function Home() {
 
   return (
     <>
-      <main id="main">
+      <main id="main" className="portfolio-pixel-host">
+        <PortfolioPixelField />
         <Hero />
         <About />
         <Markets />

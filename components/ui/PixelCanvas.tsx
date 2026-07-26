@@ -22,6 +22,8 @@ interface PixelCanvasProps extends HTMLAttributes<HTMLDivElement> {
   ambientOnTouch?: boolean;
   /** Cap canvas density for large decorative surfaces. */
   maxDpr?: number;
+  /** Radius of the pointer field in CSS pixels. */
+  radius?: number;
 }
 
 interface RgbColor {
@@ -91,6 +93,7 @@ export function PixelCanvas({
   variant = "default",
   ambientOnTouch = true,
   maxDpr = 2,
+  radius,
   ...props
 }: PixelCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -312,7 +315,8 @@ export function PixelCanvas({
       }
 
       const hasPointer = pointerRef.current.active || ambient;
-      const radius = variant === "glow" ? 116 : coarsePointer ? 96 : 82;
+      const activeRadius =
+        radius ?? (variant === "glow" ? 116 : coarsePointer ? 96 : 82);
       const activePixels = activePixelsRef.current;
 
       for (const pixel of activePixels.values()) {
@@ -322,19 +326,19 @@ export function PixelCanvas({
       if (hasPointer) {
         const minimumColumn = Math.max(
           0,
-          Math.floor((pointerX - radius) / pixelSize),
+          Math.floor((pointerX - activeRadius) / pixelSize),
         );
         const maximumColumn = Math.min(
           columns - 1,
-          Math.ceil((pointerX + radius) / pixelSize),
+          Math.ceil((pointerX + activeRadius) / pixelSize),
         );
         const minimumRow = Math.max(
           0,
-          Math.floor((pointerY - radius) / pixelSize),
+          Math.floor((pointerY - activeRadius) / pixelSize),
         );
         const maximumRow = Math.min(
           rows - 1,
-          Math.ceil((pointerY + radius) / pixelSize),
+          Math.ceil((pointerY + activeRadius) / pixelSize),
         );
 
         for (
@@ -349,7 +353,7 @@ export function PixelCanvas({
               pointerX - centerX,
               pointerY - centerY,
             );
-            if (distance >= radius) continue;
+            if (distance >= activeRadius) continue;
 
             const key = column * rows + row;
             const pixel = activePixels.get(key) ?? {
@@ -360,7 +364,10 @@ export function PixelCanvas({
               colorPhase:
                 ((column * 37 + row * 17) % 101) / 101,
             };
-            pixel.targetIntensity = Math.pow(1 - distance / radius, 1.5);
+            pixel.targetIntensity = Math.pow(
+              1 - distance / activeRadius,
+              1.35,
+            );
             activePixels.set(key, pixel);
           }
         }
@@ -560,6 +567,7 @@ export function PixelCanvas({
     noFocus,
     maxDpr,
     palette,
+    radius,
     speed,
     variant,
   ]);

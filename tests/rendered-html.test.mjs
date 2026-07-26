@@ -32,7 +32,10 @@ test("server-renders the complete identity homepage", async () => {
   assert.match(html, /I research what moves markets/);
   assert.equal((html.match(/alt="Portrait of Enis Qetaj"/g) ?? []).length, 1);
   assert.equal((html.match(/data-text-repel=""/g) ?? []).length, 1);
-  assert.match(html, /class="pixel-canvas dispatch-hero__pixel-canvas"/);
+  assert.equal(
+    (html.match(/class="pixel-canvas portfolio-pixel-field"/g) ?? []).length,
+    1,
+  );
   assert.match(html, /class="visually-hidden">Enis Qetaj<\/span>/);
   assert.match(html, /<ol class="dispatch-hero__proof" aria-label="Core professional focus">/);
   assert.match(html, /Barber Brothers/);

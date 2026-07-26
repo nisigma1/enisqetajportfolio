@@ -22,16 +22,17 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   return <p className="section-label">{children}</p>;
 }
 
-function SectionPixelField({ className }: { className: string }) {
+export function PortfolioPixelField() {
   return (
     <PixelCanvas
-      className={`section-pixel-field ${className}`}
-      gap={10}
-      speed={0.024}
+      className="portfolio-pixel-field"
+      gap={7}
+      speed={0.018}
       variant="trail"
       colors={["#315df2", "#5f7cff", "#819cff", "#aab9f5"]}
       ambientOnTouch={false}
       maxDpr={1}
+      radius={148}
       aria-hidden="true"
     />
   );
@@ -47,16 +48,6 @@ export function Hero() {
 
   return (
     <section id="index" className="dispatch-hero" aria-labelledby="identity-title">
-      <PixelCanvas
-        className="dispatch-hero__pixel-canvas"
-        gap={9}
-        speed={0.018}
-        variant="trail"
-        colors={["#315df2", "#5f7cff", "#819cff", "#aab9f5"]}
-        ambientOnTouch={false}
-        aria-hidden="true"
-      />
-
       <div className="dispatch-hero__meta">
         <p>Kosovo <span>/</span> Independent practice</p>
         <p><span aria-hidden="true" /> Open for selected projects</p>
@@ -124,8 +115,7 @@ export function Hero() {
 
 export function About() {
   return (
-    <section id="research" className="site-section pixel-field-section research-practice" aria-labelledby="research-title">
-      <SectionPixelField className="research-practice__pixel-field" />
+    <section id="research" className="site-section research-practice" aria-labelledby="research-title">
       <div className="section-intro research-practice__intro">
         <SectionLabel>01 / Research practice</SectionLabel>
         <h2 id="research-title">Evidence before narrative.</h2>
@@ -165,8 +155,7 @@ export function About() {
 
 export function Markets() {
   return (
-    <section id="markets" className="site-section pixel-field-section markets-practice" aria-labelledby="markets-title">
-      <SectionPixelField className="markets-practice__pixel-field" />
+    <section id="markets" className="site-section markets-practice" aria-labelledby="markets-title">
       <div className="section-intro markets-practice__intro">
         <SectionLabel>02 / Context circuit</SectionLabel>
         <h2 id="markets-title">A signal is only the beginning.</h2>
@@ -182,8 +171,7 @@ export function Markets() {
 
 export function Work() {
   return (
-    <section id="work" className="site-section pixel-field-section selected-work" aria-labelledby="work-title">
-      <SectionPixelField className="selected-work__pixel-field" />
+    <section id="work" className="site-section selected-work" aria-labelledby="work-title">
       <div className="section-intro selected-work__intro">
         <SectionLabel>03 / Selected proof</SectionLabel>
         <h2 id="work-title">A real business. A working digital journey.</h2>
@@ -255,8 +243,7 @@ export function Work() {
 
 export function Build() {
   return (
-    <section id="build" className="site-section pixel-field-section building-practice" aria-labelledby="build-title">
-      <SectionPixelField className="building-practice__pixel-field" />
+    <section id="build" className="site-section building-practice" aria-labelledby="build-title">
       <div className="section-intro building-practice__intro">
         <SectionLabel>04 / Building practice</SectionLabel>
         <h2 id="build-title">Start with the need. Find the useful form.</h2>
@@ -319,8 +306,7 @@ export function Malera() {
 
 export function Contact() {
   return (
-    <section id="contact" className="site-section pixel-field-section contact-chapter" aria-labelledby="contact-title">
-      <SectionPixelField className="contact-chapter__pixel-field" />
+    <section id="contact" className="site-section contact-chapter" aria-labelledby="contact-title">
       <div className="contact-chapter__intro">
         <SectionLabel>06 / Start a conversation</SectionLabel>
         <h2 id="contact-title">Bring the context.<br />We’ll find the useful form.</h2>

@@ -40,107 +40,32 @@
   padding: var(--space-5) var(--gutter) clamp(4rem, 8vw, 7rem);
 }
 
-.dispatch-hero__pixel-canvas {
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.32;
-  mix-blend-mode: screen;
-  -webkit-mask-image: radial-gradient(
-    ellipse 78% 48% at 27% 31%,
-    black 0,
-    rgba(0, 0, 0, 0.88) 38%,
-    transparent 100%
-  );
-  mask-image: radial-gradient(
-    ellipse 78% 48% at 27% 31%,
-    black 0,
-    rgba(0, 0, 0, 0.88) 38%,
-    transparent 100%
-  );
-}
-
-.dispatch-hero > :not(.dispatch-hero__pixel-canvas) {
-  position: relative;
-  z-index: 1;
-}
-
-[data-theme="light"] .dispatch-hero__pixel-canvas {
-  opacity: 0.2;
-  mix-blend-mode: multiply;
-}
-
-.pixel-field-section {
+.portfolio-pixel-host {
   position: relative;
   isolation: isolate;
-  overflow: clip;
 }
 
-.section-pixel-field {
-  position: absolute;
-  z-index: 0;
+.portfolio-pixel-field {
+  position: fixed;
+  z-index: 10;
   inset: 0;
+  width: 100vw;
+  height: 100dvh;
   pointer-events: none;
-  opacity: 0.28;
+  contain: strict;
+  opacity: 0.52;
   mix-blend-mode: screen;
 }
 
-.pixel-field-section > :not(.section-pixel-field) {
-  position: relative;
-  z-index: 1;
-}
-
-.research-practice__pixel-field {
-  -webkit-mask-image:
-    radial-gradient(circle 12rem at 88% 13%, black 0, transparent 76%),
-    radial-gradient(circle 13rem at 12% 76%, black 0, transparent 78%);
-  mask-image:
-    radial-gradient(circle 12rem at 88% 13%, black 0, transparent 76%),
-    radial-gradient(circle 13rem at 12% 76%, black 0, transparent 78%);
-}
-
-.markets-practice__pixel-field {
-  -webkit-mask-image:
-    radial-gradient(circle 12rem at 91% 11%, black 0, transparent 76%),
-    radial-gradient(circle 10rem at 8% 92%, black 0, transparent 78%);
-  mask-image:
-    radial-gradient(circle 12rem at 91% 11%, black 0, transparent 76%),
-    radial-gradient(circle 10rem at 8% 92%, black 0, transparent 78%);
-}
-
-.selected-work__pixel-field {
-  -webkit-mask-image:
-    radial-gradient(circle 12rem at 91% 9%, black 0, transparent 76%),
-    radial-gradient(circle 13rem at 8% 48%, black 0, transparent 78%),
-    radial-gradient(circle 11rem at 89% 91%, black 0, transparent 76%);
-  mask-image:
-    radial-gradient(circle 12rem at 91% 9%, black 0, transparent 76%),
-    radial-gradient(circle 13rem at 8% 48%, black 0, transparent 78%),
-    radial-gradient(circle 11rem at 89% 91%, black 0, transparent 76%);
-}
-
-.building-practice__pixel-field {
-  -webkit-mask-image:
-    radial-gradient(circle 12rem at 90% 12%, black 0, transparent 76%),
-    radial-gradient(circle 12rem at 9% 81%, black 0, transparent 78%);
-  mask-image:
-    radial-gradient(circle 12rem at 90% 12%, black 0, transparent 76%),
-    radial-gradient(circle 12rem at 9% 81%, black 0, transparent 78%);
-}
-
-.contact-chapter__pixel-field {
-  -webkit-mask-image:
-    radial-gradient(circle 12rem at 88% 16%, black 0, transparent 76%),
-    radial-gradient(circle 13rem at 11% 86%, black 0, transparent 78%);
-  mask-image:
-    radial-gradient(circle 12rem at 88% 16%, black 0, transparent 76%),
-    radial-gradient(circle 13rem at 11% 86%, black 0, transparent 78%);
-}
-
-[data-theme="light"] .section-pixel-field {
-  opacity: 0.18;
+[data-theme="light"] .portfolio-pixel-field {
+  opacity: 0.32;
   mix-blend-mode: multiply;
+}
+
+@media (pointer: coarse) {
+  .portfolio-pixel-field {
+    display: none;
+  }
 }
 
 .dispatch-hero__meta {
@@ -1728,7 +1653,7 @@
 }
 
 @media (max-width: 767px) {
-  .section-pixel-field {
+  .portfolio-pixel-field {
     display: none;
   }
 
@@ -1794,28 +1719,6 @@
   .context-circuit__controls button { width: 100%; min-height: 3rem; }
   .context-circuit__controls p { grid-column: 1 / -1; grid-row: 1; }
   .context-circuit__controls > span { grid-column: 2; grid-row: 3; justify-self: end; align-self: center; }
-
-  .dispatch-hero__pixel-canvas {
-    bottom: auto;
-    height: min(100svh, 52rem);
-    opacity: 0.36;
-    -webkit-mask-image: radial-gradient(
-      ellipse 118% 46% at 50% 32%,
-      black 0,
-      rgba(0, 0, 0, 0.82) 42%,
-      transparent 100%
-    );
-    mask-image: radial-gradient(
-      ellipse 118% 46% at 50% 32%,
-      black 0,
-      rgba(0, 0, 0, 0.82) 42%,
-      transparent 100%
-    );
-  }
-
-  [data-theme="light"] .dispatch-hero__pixel-canvas {
-    opacity: 0.2;
-  }
 
   .route-market-lens__intro,
   .route-build-matrix ol {
