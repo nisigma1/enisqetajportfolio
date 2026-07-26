@@ -166,8 +166,8 @@
 .letter-glitch__outer-vignette {
   background: radial-gradient(
     circle,
-    transparent 52%,
-    rgba(0, 0, 0, 0.92) 100%
+    transparent 62%,
+    rgba(0, 0, 0, 0.66) 100%
   );
 }
 

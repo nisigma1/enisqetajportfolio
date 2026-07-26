@@ -77,16 +77,18 @@ export function LetterGlitch({
     const colors = glitchColors.length > 0
       ? glitchColors.map(hexToRgb)
       : [hexToRgb("#7892ff")];
-    const fontSize = 16;
-    const characterWidth = 10;
-    const characterHeight = 20;
+    let fontSize = 17;
+    let characterWidth = 10;
+    let characterHeight = 21;
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let letters: GlitchLetter[] = [];
     let columns = 0;
     let animationFrame: number | null = null;
     let lastFrame = performance.now();
     let lastGlitch = lastFrame;
-    let isVisible = false;
+    // Start immediately so the background is alive on first paint. The
+    // observer still pauses it after the section is genuinely off-screen.
+    let isVisible = true;
 
     const randomCharacter = () => (
       symbols[Math.floor(Math.random() * symbols.length)] || "M"
@@ -128,6 +130,10 @@ export function LetterGlitch({
     const resizeCanvas = () => {
       const bounds = container.getBoundingClientRect();
       const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      const isMobile = bounds.width < 768;
+      fontSize = isMobile ? 15 : 17;
+      characterWidth = isMobile ? 9 : 10;
+      characterHeight = isMobile ? 18 : 21;
       canvas.width = Math.max(1, Math.round(bounds.width * ratio));
       canvas.height = Math.max(1, Math.round(bounds.height * ratio));
       canvas.style.width = `${bounds.width}px`;
@@ -138,7 +144,11 @@ export function LetterGlitch({
     };
 
     const updateLetters = () => {
-      const updateCount = Math.max(1, Math.floor(letters.length * 0.05));
+      const updateFraction = container.clientWidth < 768 ? 0.16 : 0.12;
+      const updateCount = Math.max(
+        1,
+        Math.floor(letters.length * updateFraction),
+      );
       for (let index = 0; index < updateCount; index += 1) {
         const letter = letters[Math.floor(Math.random() * letters.length)];
         if (!letter) continue;
@@ -227,6 +237,7 @@ export function LetterGlitch({
     resizeObserver.observe(container);
     visibilityObserver.observe(container);
     reducedMotion.addEventListener("change", handleMotionPreference);
+    startAnimation();
 
     return () => {
       stopAnimation();

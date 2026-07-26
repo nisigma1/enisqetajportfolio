@@ -260,9 +260,8 @@ export function Malera() {
     <section className="site-section malera-practice" aria-labelledby="malera-title">
       <LetterGlitch
         className="malera-practice__glitch"
-        glitchColors={["#172452", "#315df2", "#7892ff", "#b8c4ff"]}
-        glitchSpeed={64}
-        centerVignette
+        glitchColors={["#315df2", "#5f7cff", "#8facff", "#dce5ff"]}
+        glitchSpeed={42}
         outerVignette
         smooth
         characters="MALERASTUDIO0123456789+-/[]{}<>"
