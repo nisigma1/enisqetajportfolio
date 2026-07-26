@@ -14,6 +14,7 @@ import { BuildNavigator } from "@/components/build/BuildNavigator";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { ProjectMedia } from "@/components/media/ProjectMedia";
 import { ActionMark } from "@/components/ui/ActionMark";
+import { LetterGlitch } from "@/components/ui/LetterGlitch";
 import { PixelCanvas } from "@/components/ui/PixelCanvas";
 import { TextRepel } from "@/components/ui/TextRepel";
 
@@ -257,6 +258,15 @@ export function Build() {
 export function Malera() {
   return (
     <section className="site-section malera-practice" aria-labelledby="malera-title">
+      <LetterGlitch
+        className="malera-practice__glitch"
+        glitchColors={["#172452", "#315df2", "#7892ff", "#b8c4ff"]}
+        glitchSpeed={64}
+        centerVignette
+        outerVignette
+        smooth
+        characters="MALERASTUDIO0123456789+-/[]{}<>"
+      />
       <SectionLabel>05 / Professional practice</SectionLabel>
       <div className="malera-practice__relationship" aria-label="Relationship between Enis Qetaj and Malera Studio">
         <div>
