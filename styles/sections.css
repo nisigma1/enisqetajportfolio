@@ -466,7 +466,18 @@
 .context-circuit__pulse {
   stroke: var(--accent);
   stroke-width: 2px;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0;
   filter: drop-shadow(0 0 4px color-mix(in srgb, var(--accent) 45%, transparent));
+  transition:
+    stroke-dashoffset 550ms var(--ease) var(--pulse-delay, 0ms),
+    opacity 180ms var(--ease) var(--pulse-delay, 0ms);
+}
+
+.context-circuit__pulse[data-active="true"] {
+  stroke-dashoffset: 0;
+  opacity: 1;
 }
 
 .context-circuit__desktop-nodes {

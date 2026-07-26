@@ -24,6 +24,8 @@
 .site-section {
   padding: var(--section-space) var(--gutter);
   border-top: var(--border-width) solid var(--border);
+  content-visibility: auto;
+  contain-intrinsic-size: auto 70rem;
 }
 
 .section-intro {
@@ -121,8 +123,14 @@
 }
 
 @media (max-width: 767px) {
+  .masthead {
+    background: var(--background);
+    backdrop-filter: none;
+  }
+
   .site-section {
     padding-inline: var(--gutter);
+    contain-intrinsic-size: auto 56rem;
   }
 
   .section-intro,

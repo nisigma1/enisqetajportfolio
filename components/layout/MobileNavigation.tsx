@@ -1,6 +1,6 @@
 "use client";
 
-import type { CSSProperties, RefObject } from "react";
+import type { RefObject } from "react";
 import { identity, navigation } from "@/data/site";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { TransitionLink } from "@/components/transition/TransitionLink";
@@ -13,10 +13,6 @@ type MobileNavigationProps = {
   onClose: () => void;
   onTransitionBypass: () => void;
   onTransitionStart: () => void;
-};
-
-type StepStyle = CSSProperties & {
-  "--menu-step": number;
 };
 
 export function MobileNavigation({
@@ -61,31 +57,16 @@ export function MobileNavigation({
         </header>
 
         <div className="mobile-navigation__body">
-          <aside className="mobile-navigation__rail" aria-hidden="true">
-            <div>
-              <span>Navigation</span>
-              <i />
-              <p>Select a section to explore</p>
-            </div>
-            <span className="mobile-navigation__rail-cross" />
-            <span className="mobile-navigation__rail-orbit">
-              <i />
-            </span>
-            <span className="mobile-navigation__rail-note">Scroll to explore</span>
-          </aside>
-
           <nav className="mobile-navigation__staircase" aria-label="Mobile navigation">
             {navigation.map((item, index) => {
               const key = item.label.toLowerCase();
               const isCurrent = activeRoute === key;
-              const stepStyle: StepStyle = { "--menu-step": index };
 
               return (
                 <TransitionLink
                   key={item.label}
                   className="mobile-navigation__route"
                   href={item.href}
-                  style={stepStyle}
                   onTransitionStart={onTransitionStart}
                   onTransitionBypass={onTransitionBypass}
                   aria-current={isCurrent ? "page" : undefined}

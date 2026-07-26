@@ -1,7 +1,11 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
-import { useEffect, useId, useMemo, useRef, useState } from "react";
+import {
+  useId,
+  useMemo,
+  useState,
+  type CSSProperties,
+} from "react";
 
 type ModeId = "research" | "markets" | "build";
 
@@ -95,30 +99,10 @@ function ContextCircuitDetails({ node, mode }: { node: CircuitNode; mode: Circui
 export function ContextCircuit() {
   const [modeId, setModeId] = useState<ModeId>("markets");
   const [activeIndex, setActiveIndex] = useState(0);
-  const [inView, setInView] = useState(false);
-  const [visible, setVisible] = useState(true);
-  const sectionRef = useRef<HTMLElement>(null);
-  const reducedMotion = useReducedMotion() ?? false;
   const uid = useId();
   const mode = useMemo(() => modes.find((item) => item.id === modeId) ?? modes[1], [modeId]);
   const activeNode = mode.nodes[activeIndex] ?? mode.nodes[0];
   const layout = mode.nodes.length === 7 ? sevenNodeLayout : sixNodeLayout;
-  const shouldAnimate = inView && visible && !reducedMotion;
-
-  useEffect(() => {
-    const element = sectionRef.current;
-    if (!element) return;
-    const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), { threshold: 0.22 });
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const updateVisibility = () => setVisible(!document.hidden);
-    updateVisibility();
-    document.addEventListener("visibilitychange", updateVisibility);
-    return () => document.removeEventListener("visibilitychange", updateVisibility);
-  }, []);
 
   function selectMode(next: ModeId) {
     setModeId(next);
@@ -126,7 +110,7 @@ export function ContextCircuit() {
   }
 
   return (
-    <section ref={sectionRef} className="context-circuit" aria-labelledby={`${uid}-title`}>
+    <section className="context-circuit" aria-labelledby={`${uid}-title`}>
       <header className="context-circuit__header">
         <div>
           <p className="section-label">Context circuit</p>
@@ -167,12 +151,12 @@ export function ContextCircuit() {
               return (
                 <g key={`${mode.id}-${index}`}>
                   <path className="context-circuit__trace" d={path} />
-                  <motion.path
+                  <path
                     className="context-circuit__pulse"
                     d={path}
-                    initial={false}
-                    animate={shouldAnimate && (active || current) ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
-                    transition={{ duration: reducedMotion ? 0 : 0.55, ease: "easeOut", delay: index * 0.05 }}
+                    pathLength="1"
+                    data-active={active || current ? "true" : undefined}
+                    style={{ "--pulse-delay": `${index * 50}ms` } as CSSProperties}
                   />
                 </g>
               );

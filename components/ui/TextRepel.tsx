@@ -1,14 +1,6 @@
 "use client";
 
 import {
-  motion,
-  useMotionValue,
-  useReducedMotion,
-  useSpring,
-  useTransform,
-  type MotionValue,
-} from "framer-motion";
-import {
   useCallback,
   useEffect,
   useId,
@@ -18,7 +10,6 @@ import {
   type HTMLAttributes,
   type KeyboardEvent,
   type PointerEvent as ReactPointerEvent,
-  type RefObject,
 } from "react";
 
 type TextRepelMode = "repel" | "attract";
@@ -37,26 +28,40 @@ interface TextRepelProps
   disableOnCoarsePointer?: boolean;
 }
 
-interface PointerPosition {
+type Point = {
   x: number;
   y: number;
-}
+};
 
-interface RepelLetterProps {
-  character: string;
-  className?: string;
-  containerRef: RefObject<HTMLSpanElement | null>;
-  pointer: MotionValue<PointerPosition>;
-  radius: number;
-  strength: number;
-  mode: TextRepelMode;
-  stiffness: number;
-  damping: number;
-  mass: number;
-  disabled: boolean;
-}
+type LetterPhysics = {
+  originX: number;
+  originY: number;
+  minX: number;
+  maxX: number;
+  minY: number;
+  maxY: number;
+  x: number;
+  y: number;
+  velocityX: number;
+  velocityY: number;
+  targetX: number;
+  targetY: number;
+};
 
-const INACTIVE_POINTER = -10_000;
+const EMPTY_LETTER: LetterPhysics = {
+  originX: 0,
+  originY: 0,
+  minX: 0,
+  maxX: 0,
+  minY: 0,
+  maxY: 0,
+  x: 0,
+  y: 0,
+  velocityX: 0,
+  velocityY: 0,
+  targetX: 0,
+  targetY: 0,
+};
 
 function joinClassNames(...classNames: Array<string | undefined>) {
   return classNames.filter(Boolean).join(" ");
@@ -65,192 +70,6 @@ function joinClassNames(...classNames: Array<string | undefined>) {
 function clampToBounds(value: number, minimum: number, maximum: number) {
   if (minimum > maximum) return 0;
   return Math.max(minimum, Math.min(maximum, value));
-}
-
-function RepelLetter({
-  character,
-  className,
-  containerRef,
-  pointer,
-  radius,
-  strength,
-  mode,
-  stiffness,
-  damping,
-  mass,
-  disabled,
-}: RepelLetterProps) {
-  const letterRef = useRef<HTMLSpanElement>(null);
-  const originX = useMotionValue(0);
-  const originY = useMotionValue(0);
-  const minimumX = useMotionValue(0);
-  const maximumX = useMotionValue(0);
-  const minimumY = useMotionValue(0);
-  const maximumY = useMotionValue(0);
-  const radiusValue = useMotionValue(radius);
-  const strengthValue = useMotionValue(strength);
-  const directionValue = useMotionValue(mode === "repel" ? 1 : -1);
-  const enabledValue = useMotionValue(disabled ? 0 : 1);
-
-  useEffect(() => {
-    radiusValue.set(radius);
-    strengthValue.set(strength);
-    directionValue.set(mode === "repel" ? 1 : -1);
-    enabledValue.set(disabled ? 0 : 1);
-  }, [
-    directionValue,
-    disabled,
-    enabledValue,
-    mode,
-    radius,
-    radiusValue,
-    strength,
-    strengthValue,
-  ]);
-
-  const measureOrigin = useCallback(() => {
-    const letter = letterRef.current;
-    const container = containerRef.current;
-
-    if (!letter || !container) {
-      return;
-    }
-
-    const letterRect = letter.getBoundingClientRect();
-    const containerRect = container.getBoundingClientRect();
-
-    const nextOriginX =
-      letterRect.left - containerRect.left + letterRect.width / 2;
-    const nextOriginY =
-      letterRect.top - containerRect.top + letterRect.height / 2;
-
-    originX.set(nextOriginX);
-    originY.set(nextOriginY);
-    minimumX.set(containerRect.left - letterRect.left);
-    maximumX.set(containerRect.right - letterRect.right);
-    minimumY.set(containerRect.top - letterRect.top);
-    maximumY.set(containerRect.bottom - letterRect.bottom);
-  }, [
-    containerRef,
-    maximumX,
-    maximumY,
-    minimumX,
-    minimumY,
-    originX,
-    originY,
-  ]);
-
-  useEffect(() => {
-    measureOrigin();
-
-    const container = containerRef.current;
-    const letter = letterRef.current;
-
-    if (!container || !letter) {
-      return;
-    }
-
-    const observer = new ResizeObserver(measureOrigin);
-    observer.observe(container);
-    observer.observe(letter);
-
-    window.addEventListener("resize", measureOrigin, { passive: true });
-    document.fonts?.ready.then(measureOrigin).catch(() => undefined);
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("resize", measureOrigin);
-    };
-  }, [containerRef, measureOrigin]);
-
-  const force = useTransform(
-    [
-      pointer,
-      originX,
-      originY,
-      minimumX,
-      maximumX,
-      minimumY,
-      maximumY,
-      radiusValue,
-      strengthValue,
-      directionValue,
-      enabledValue,
-    ],
-    ([
-      pointerPosition,
-      letterX,
-      letterY,
-      minX,
-      maxX,
-      minY,
-      maxY,
-      currentRadius,
-      currentStrength,
-      currentDirection,
-      isEnabled,
-    ]) => {
-      if (!isEnabled) {
-        return { x: 0, y: 0 };
-      }
-
-      const deltaX = letterX - pointerPosition.x;
-      const deltaY = letterY - pointerPosition.y;
-      const distance = Math.hypot(deltaX, deltaY);
-
-      if (distance === 0 || distance >= currentRadius) {
-        return { x: 0, y: 0 };
-      }
-
-      const falloff = (1 - distance / currentRadius) ** 2;
-      const nextX =
-        (deltaX / distance) *
-        falloff *
-        currentStrength *
-        currentDirection;
-      const nextY =
-        (deltaY / distance) *
-        falloff *
-        currentStrength *
-        currentDirection;
-
-      return {
-        x: clampToBounds(nextX, minX, maxX),
-        y: clampToBounds(nextY, minY, maxY),
-      };
-    },
-  );
-
-  const forceX = useTransform(force, (value) => value.x);
-  const forceY = useTransform(force, (value) => value.y);
-
-  const springConfig = { stiffness, damping, mass };
-  const springX = useSpring(forceX, springConfig);
-  const springY = useSpring(forceY, springConfig);
-  const x = useTransform(
-    [springX, minimumX, maximumX],
-    ([value, min, max]) => clampToBounds(value, min, max),
-  );
-  const y = useTransform(
-    [springY, minimumY, maximumY],
-    ([value, min, max]) => clampToBounds(value, min, max),
-  );
-  const rotate = useTransform(x, (value) => value * 0.3);
-
-  return (
-    <span
-      ref={letterRef}
-      className="text-repel__letter"
-      aria-hidden="true"
-    >
-      <motion.span
-        className={joinClassNames("text-repel__glyph", className)}
-        style={{ x, y, rotate }}
-      >
-        {character}
-      </motion.span>
-    </span>
-  );
 }
 
 export function TextRepel({
@@ -264,8 +83,6 @@ export function TextRepel({
   damping = 14,
   mass = 0.4,
   keyboardInteractive = true,
-  // A touch screen is a first-class input, not a reduced feature set. Keep the
-  // interaction available on phones unless a caller explicitly opts out.
   disableOnCoarsePointer = false,
   tabIndex,
   onPointerDown,
@@ -279,104 +96,233 @@ export function TextRepel({
   ...props
 }: TextRepelProps) {
   const containerRef = useRef<HTMLSpanElement>(null);
-  const pointer = useMotionValue<PointerPosition>({
-    x: INACTIVE_POINTER,
-    y: INACTIVE_POINTER,
-  });
-  const reducedMotion = useReducedMotion() ?? false;
-  const instructionsId = useId();
-  const keyboardPointer = useRef<{ x: number; y: number } | null>(null);
-  const settleTimer = useRef<number>(0);
+  const glyphRefs = useRef<Array<HTMLSpanElement | null>>([]);
+  const physicsRef = useRef<LetterPhysics[]>([]);
+  const animationRef = useRef(0);
+  const animationStepRef = useRef<(timestamp: number) => void>(() => undefined);
+  const resizeRef = useRef(0);
+  const settleTimer = useRef(0);
+  const keyboardPointer = useRef<Point | null>(null);
+  const reducedMotionRef = useRef(false);
+  const disabledRef = useRef(false);
+  const runningRef = useRef(false);
+  const lastFrameRef = useRef(0);
   const [coarsePointer, setCoarsePointer] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
   const [active, setActive] = useState(false);
+  const instructionsId = useId();
   const disabled =
     reducedMotion || (disableOnCoarsePointer && coarsePointer);
   const keyboardEnabled = keyboardInteractive && !disabled;
 
-  const reset = useCallback(() => {
-    const currentPointer = pointer.get();
-    const isAlreadyReset =
-      keyboardPointer.current === null &&
-      currentPointer.x === INACTIVE_POINTER &&
-      currentPointer.y === INACTIVE_POINTER;
+  const paint = useCallback(() => {
+    physicsRef.current.forEach((letter, index) => {
+      const glyph = glyphRefs.current[index];
+      if (!glyph) return;
+      glyph.style.transform =
+        `translate3d(${letter.x.toFixed(2)}px, ${letter.y.toFixed(2)}px, 0) `
+        + `rotate(${(letter.x * 0.3).toFixed(2)}deg)`;
+    });
+  }, []);
 
-    if (isAlreadyReset) {
+  const measure = useCallback(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    glyphRefs.current.forEach((glyph) => {
+      if (glyph) glyph.style.transform = "none";
+    });
+
+    const containerRect = container.getBoundingClientRect();
+    physicsRef.current = glyphRefs.current.map((glyph) => {
+      if (!glyph) return { ...EMPTY_LETTER };
+      const rect = glyph.getBoundingClientRect();
+      return {
+        ...EMPTY_LETTER,
+        originX: rect.left - containerRect.left + rect.width / 2,
+        originY: rect.top - containerRect.top + rect.height / 2,
+        minX: containerRect.left - rect.left,
+        maxX: containerRect.right - rect.right,
+        minY: containerRect.top - rect.top,
+        maxY: containerRect.bottom - rect.bottom,
+      };
+    });
+    paint();
+  }, [paint]);
+
+  const animate = useCallback((timestamp: number) => {
+    if (reducedMotionRef.current) {
+      runningRef.current = false;
       return;
     }
 
-    keyboardPointer.current = null;
-    pointer.set({ x: INACTIVE_POINTER, y: INACTIVE_POINTER });
-    window.clearTimeout(settleTimer.current);
-    settleTimer.current = window.setTimeout(() => setActive(false), 650);
-  }, [pointer]);
+    const elapsed = lastFrameRef.current
+      ? Math.min(32, timestamp - lastFrameRef.current)
+      : 16.67;
+    const delta = elapsed / 1000;
+    lastFrameRef.current = timestamp;
+    let moving = false;
 
-  const resetAfterTouch = useCallback(() => {
-    // A tap has no hover state. Holding the force point briefly makes the
-    // letter movement visible before the springs settle back to their origin.
-    window.clearTimeout(settleTimer.current);
-    settleTimer.current = window.setTimeout(reset, 520);
-  }, [reset]);
+    physicsRef.current.forEach((letter) => {
+      const accelerationX =
+        (-stiffness * (letter.x - letter.targetX)
+          - damping * letter.velocityX) / Math.max(0.1, mass);
+      const accelerationY =
+        (-stiffness * (letter.y - letter.targetY)
+          - damping * letter.velocityY) / Math.max(0.1, mass);
 
-  useEffect(() => {
-    if (disabled) {
-      reset();
+      letter.velocityX += accelerationX * delta;
+      letter.velocityY += accelerationY * delta;
+      letter.x += letter.velocityX * delta;
+      letter.y += letter.velocityY * delta;
+
+      const settled =
+        Math.abs(letter.x - letter.targetX) < 0.08
+        && Math.abs(letter.y - letter.targetY) < 0.08
+        && Math.abs(letter.velocityX) < 0.08
+        && Math.abs(letter.velocityY) < 0.08;
+
+      if (settled) {
+        letter.x = letter.targetX;
+        letter.y = letter.targetY;
+        letter.velocityX = 0;
+        letter.velocityY = 0;
+      } else {
+        moving = true;
+      }
+    });
+
+    paint();
+    if (moving) {
+      animationRef.current = window.requestAnimationFrame(
+        animationStepRef.current,
+      );
+    } else {
+      runningRef.current = false;
+      lastFrameRef.current = 0;
+      setActive(false);
     }
-  }, [disabled, reset]);
+  }, [damping, mass, paint, stiffness]);
 
-  useEffect(() => {
-    const query = window.matchMedia("(pointer: coarse)");
-    const update = () => setCoarsePointer(query.matches);
-    update();
-    query.addEventListener("change", update);
-
-    return () => {
-      window.clearTimeout(settleTimer.current);
-      query.removeEventListener("change", update);
-    };
+  const scheduleAnimation = useCallback(() => {
+    if (runningRef.current || reducedMotionRef.current) return;
+    runningRef.current = true;
+    lastFrameRef.current = 0;
+    animationRef.current = window.requestAnimationFrame(
+      animationStepRef.current,
+    );
   }, []);
 
-  const setPointerFromClientPosition = useCallback(
-    (clientX: number, clientY: number) => {
-      const container = containerRef.current;
+  const setTargets = useCallback((point: Point | null) => {
+    const direction = mode === "repel" ? 1 : -1;
 
-      if (!container || disabled) {
+    physicsRef.current.forEach((letter) => {
+      if (!point || disabledRef.current) {
+        letter.targetX = 0;
+        letter.targetY = 0;
         return;
       }
 
-      const bounds = container.getBoundingClientRect();
-      window.clearTimeout(settleTimer.current);
-      setActive(true);
-      pointer.set({
-        x: clientX - bounds.left,
-        y: clientY - bounds.top,
-      });
-    },
-    [disabled, pointer],
-  );
-
-  useEffect(() => {
-    const handleWindowPointerMove = (event: PointerEvent) => {
-      const container = containerRef.current;
-
-      // Touch drags can be retargeted outside the heading while scrolling.
-      // Only mouse hover should clear the field immediately.
-      if (
-        event.pointerType === "mouse" &&
-        container &&
-        !event.composedPath().includes(container)
-      ) {
-        reset();
+      const deltaX = letter.originX - point.x;
+      const deltaY = letter.originY - point.y;
+      const distance = Math.hypot(deltaX, deltaY);
+      if (distance === 0 || distance >= radius) {
+        letter.targetX = 0;
+        letter.targetY = 0;
+        return;
       }
-    };
 
-    window.addEventListener("pointermove", handleWindowPointerMove, {
-      passive: true,
+      const falloff = (1 - distance / radius) ** 2;
+      const force = falloff * strength * direction;
+      letter.targetX = clampToBounds(
+        (deltaX / distance) * force,
+        letter.minX,
+        letter.maxX,
+      );
+      letter.targetY = clampToBounds(
+        (deltaY / distance) * force,
+        letter.minY,
+        letter.maxY,
+      );
     });
 
-    return () => {
-      window.removeEventListener("pointermove", handleWindowPointerMove);
+    if (point) setActive(true);
+    scheduleAnimation();
+  }, [mode, radius, scheduleAnimation, strength]);
+
+  const reset = useCallback(() => {
+    keyboardPointer.current = null;
+    window.clearTimeout(settleTimer.current);
+    setTargets(null);
+  }, [setTargets]);
+
+  const setPointerFromClientPosition = useCallback((
+    clientX: number,
+    clientY: number,
+  ) => {
+    const container = containerRef.current;
+    if (!container || disabledRef.current) return;
+    const bounds = container.getBoundingClientRect();
+    window.clearTimeout(settleTimer.current);
+    setTargets({
+      x: clientX - bounds.left,
+      y: clientY - bounds.top,
+    });
+  }, [setTargets]);
+
+  useEffect(() => {
+    animationStepRef.current = animate;
+  }, [animate]);
+
+  useEffect(() => {
+    reducedMotionRef.current = reducedMotion;
+    disabledRef.current = disabled;
+
+    if (disabled) {
+      physicsRef.current.forEach((letter) => {
+        letter.x = 0;
+        letter.y = 0;
+        letter.velocityX = 0;
+        letter.velocityY = 0;
+        letter.targetX = 0;
+        letter.targetY = 0;
+      });
+      window.cancelAnimationFrame(animationRef.current);
+      runningRef.current = false;
+      paint();
+    }
+  }, [disabled, paint, reducedMotion]);
+
+  useEffect(() => {
+    const reducedMotionQuery = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    );
+    const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
+    const updatePreferences = () => {
+      setReducedMotion(reducedMotionQuery.matches);
+      setCoarsePointer(coarsePointerQuery.matches);
     };
-  }, [reset]);
+    const resizeObserver = new ResizeObserver(() => {
+      window.cancelAnimationFrame(resizeRef.current);
+      resizeRef.current = window.requestAnimationFrame(measure);
+    });
+
+    updatePreferences();
+    measure();
+    if (containerRef.current) resizeObserver.observe(containerRef.current);
+    document.fonts?.ready.then(measure).catch(() => undefined);
+    reducedMotionQuery.addEventListener("change", updatePreferences);
+    coarsePointerQuery.addEventListener("change", updatePreferences);
+
+    return () => {
+      resizeObserver.disconnect();
+      reducedMotionQuery.removeEventListener("change", updatePreferences);
+      coarsePointerQuery.removeEventListener("change", updatePreferences);
+      window.cancelAnimationFrame(animationRef.current);
+      window.cancelAnimationFrame(resizeRef.current);
+      window.clearTimeout(settleTimer.current);
+    };
+  }, [measure]);
 
   const handlePointerDown = (event: ReactPointerEvent<HTMLSpanElement>) => {
     if (event.pointerType !== "mouse") {
@@ -392,9 +338,7 @@ export function TextRepel({
   };
 
   const handlePointerLeave = (event: ReactPointerEvent<HTMLSpanElement>) => {
-    if (event.pointerType === "mouse") {
-      reset();
-    }
+    if (event.pointerType === "mouse") reset();
     onPointerLeave?.(event);
   };
 
@@ -406,7 +350,8 @@ export function TextRepel({
   const handlePointerUp = (event: ReactPointerEvent<HTMLSpanElement>) => {
     if (event.pointerType !== "mouse") {
       event.currentTarget.releasePointerCapture?.(event.pointerId);
-      resetAfterTouch();
+      window.clearTimeout(settleTimer.current);
+      settleTimer.current = window.setTimeout(reset, 520);
     }
     onPointerUp?.(event);
   };
@@ -431,16 +376,15 @@ export function TextRepel({
     ].includes(event.key);
 
     if (
-      !container ||
-      !keyboardEnabled ||
-      (!isArrowKey && !["Enter", " ", "Escape"].includes(event.key))
+      !container
+      || !keyboardEnabled
+      || (!isArrowKey && !["Enter", " ", "Escape"].includes(event.key))
     ) {
       onKeyDown?.(event);
       return;
     }
 
     event.preventDefault();
-
     if (event.key === "Escape") {
       reset();
       onKeyDown?.(event);
@@ -467,13 +411,12 @@ export function TextRepel({
     next.x = Math.max(0, Math.min(bounds.width, next.x));
     next.y = Math.max(0, Math.min(bounds.height, next.y));
     keyboardPointer.current = next;
-    window.clearTimeout(settleTimer.current);
-    setActive(true);
-    pointer.set(next);
+    setTargets(next);
     onKeyDown?.(event);
   };
 
   const tokens = text.split(/(\s+)/).filter(Boolean);
+  let letterIndex = 0;
 
   return (
     <span
@@ -521,22 +464,22 @@ export function TextRepel({
             className="text-repel__word"
             aria-hidden="true"
           >
-            {Array.from(token).map((character, characterIndex) => (
-              <RepelLetter
-                key={`${character}-${characterIndex}`}
-                character={character}
-                className={letterClassName}
-                containerRef={containerRef}
-                pointer={pointer}
-                radius={radius}
-                strength={strength}
-                mode={mode}
-                stiffness={stiffness}
-                damping={damping}
-                mass={mass}
-                disabled={disabled}
-              />
-            ))}
+            {Array.from(token).map((character, characterIndex) => {
+              const index = letterIndex;
+              letterIndex += 1;
+              return (
+                <span key={`${character}-${characterIndex}`} className="text-repel__letter">
+                  <span
+                    ref={(element) => {
+                      glyphRefs.current[index] = element;
+                    }}
+                    className={joinClassNames("text-repel__glyph", letterClassName)}
+                  >
+                    {character}
+                  </span>
+                </span>
+              );
+            })}
           </span>
         ),
       )}

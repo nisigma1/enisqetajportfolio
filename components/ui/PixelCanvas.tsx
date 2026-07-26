@@ -225,7 +225,7 @@ export function PixelCanvas({
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
       activePixelsRef.current.clear();
 
-      if (reducedMotion) {
+      if (reducedMotion || (coarsePointer && !ambientOnTouch)) {
         drawStaticFrame();
       }
     };
@@ -387,6 +387,8 @@ export function PixelCanvas({
 
       if (hasPointer || activePixels.size > 0) {
         scheduleDraw();
+      } else if (coarsePointer && !ambientOnTouch) {
+        drawStaticFrame();
       }
     };
 
@@ -519,6 +521,8 @@ export function PixelCanvas({
       drawStaticFrame();
     } else if (coarsePointer && ambientOnTouch && !noFocus) {
       scheduleDraw();
+    } else if (coarsePointer && !ambientOnTouch) {
+      drawStaticFrame();
     }
 
     return () => {
