@@ -203,8 +203,9 @@
   width: 100%;
   max-height: min(45rem, 69svh);
   aspect-ratio: 4 / 5;
-  object-fit: cover;
-  object-position: 50% 45%;
+  object-fit: contain;
+  object-position: center;
+  background: #081536;
 }
 
 .author-artifact figcaption {
@@ -1769,7 +1770,7 @@
     max-height: none;
     margin-top: 0.75rem;
     aspect-ratio: 3 / 4;
-    object-position: 50% 42%;
+    object-position: center;
   }
 
   .author-artifact figcaption {
