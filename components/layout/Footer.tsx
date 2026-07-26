@@ -1,7 +1,7 @@
 import { identity, navigation } from "@/data/site";
 import Link from "next/link";
-import { TransitionLink } from "@/components/transition/TransitionLink";
 import { ActionMark } from "@/components/ui/ActionMark";
+import { LineSidebar } from "@/components/ui/LineSidebar";
 
 export function Footer() {
   return (
@@ -10,11 +10,27 @@ export function Footer() {
         <p>Enis Qetaj</p>
         <span>Context first. Then build.</span>
       </div>
-      <nav aria-label="Footer navigation">
-        {navigation.map((item) => (
-          <TransitionLink key={item.label} href={item.href}>{item.label}</TransitionLink>
-        ))}
-      </nav>
+      <div className="footer-navigation-panel">
+        <div className="footer-navigation-panel__intro">
+          <span>Portfolio index</span>
+          <p>Move through the practice, one context at a time.</p>
+        </div>
+        <LineSidebar
+          className="footer-line-sidebar"
+          items={navigation.map((item) => item.label)}
+          hrefs={navigation.map((item) => item.href)}
+          accentColor="var(--accent)"
+          textColor="var(--text-secondary)"
+          markerColor="var(--border-strong)"
+          proximityRadius={110}
+          maxShift={24}
+          markerLength={52}
+          tickScale={0.42}
+          itemGap={15}
+          fontSize={1.05}
+          smoothing={110}
+        />
+      </div>
       <div className="footer-meta">
         <span>© {new Date().getFullYear()}</span>
         <span>Kosovo</span>

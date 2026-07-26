@@ -53,6 +53,7 @@ test("server-renders the complete identity homepage", async () => {
   assert.match(html, /application\/ld\+json/);
   assert.match(html, /action-mark/);
   assert.match(html, /click-spark__canvas/);
+  assert.match(html, /line-sidebar__list/);
   assert.match(html, /history\.scrollRestoration='manual'/);
   assert.match(html, /addEventListener\('pageshow'/);
   assert.match(html, /if\(!location\.hash\)scrollTo\(0,0\)/);
