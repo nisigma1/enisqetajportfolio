@@ -67,6 +67,10 @@ export function MobileNavigation({
               <i />
               <p>Select a section to explore</p>
             </div>
+            <span className="mobile-navigation__rail-cross" />
+            <span className="mobile-navigation__rail-orbit">
+              <i />
+            </span>
             <span className="mobile-navigation__rail-note">Scroll to explore</span>
           </aside>
 
@@ -109,7 +113,7 @@ export function MobileNavigation({
 
         <footer className="mobile-navigation-foot">
           <a href={identity.emailHref} target="_blank" rel="noreferrer">
-            <span aria-hidden="true">✦</span>
+            <span className="mobile-navigation-foot__star" aria-hidden="true" />
             <strong>{identity.email}</strong>
             <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
               <path d="M5 12h13M13 7l5 5-5 5" />
