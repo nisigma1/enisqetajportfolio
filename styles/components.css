@@ -1,3 +1,20 @@
+.click-spark {
+  position: relative;
+  min-height: 100%;
+}
+
+.click-spark__canvas {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-transition) - 1);
+  display: block;
+  width: 100vw;
+  height: 100dvh;
+  pointer-events: none;
+  user-select: none;
+  contain: strict;
+}
+
 .skip-link {
   position: fixed;
   inset: 0 auto auto var(--gutter);

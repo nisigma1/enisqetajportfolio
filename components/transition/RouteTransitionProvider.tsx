@@ -11,6 +11,7 @@ import {
 import { usePathname, useRouter } from "next/navigation";
 import { MosaicTransitionOverlay } from "@/components/transition/MosaicTransitionOverlay";
 import { RouteTransitionContext } from "@/components/transition/RouteTransitionContext";
+import { ClickSpark } from "@/components/ui/ClickSpark";
 import {
   canAdvanceTransition,
   type TransitionPhase,
@@ -311,9 +312,17 @@ export function RouteTransitionProvider({ children }: { children: ReactNode }) {
 
   return (
     <RouteTransitionContext.Provider value={{ isTransitioning, navigateWithTransition }}>
-      <div id="app-shell" aria-busy={isTransitioning ? "true" : "false"}>
-        {children}
-      </div>
+      <ClickSpark
+        sparkColor="#7892ff"
+        sparkSize={11}
+        sparkRadius={19}
+        sparkCount={8}
+        duration={420}
+      >
+        <div id="app-shell" aria-busy={isTransitioning ? "true" : "false"}>
+          {children}
+        </div>
+      </ClickSpark>
       <MosaicTransitionOverlay
         phase={state.phase}
         origin={state.origin}
