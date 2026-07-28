@@ -6,6 +6,8 @@ import { barberProject, media, siteConfig } from "@/data/site";
 
 const description = "Selected digital work by Enis Qetaj, beginning with the live Barber Brothers customer and booking experience.";
 
+export const dynamic = "force-static";
+
 export const metadata: Metadata = {
   title: "Selected Work",
   description,

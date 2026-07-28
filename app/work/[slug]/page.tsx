@@ -7,6 +7,9 @@ import { barberProject, media, siteConfig } from "@/data/site";
 
 type ProjectPageProps = { params: Promise<{ slug: string }> };
 
+export const dynamic = "force-static";
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return [{ slug: barberProject.slug }];
 }

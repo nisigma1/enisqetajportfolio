@@ -26,7 +26,7 @@ export function PortfolioPixelField() {
   return (
     <PixelCanvas
       className="portfolio-pixel-field"
-      gap={7}
+      gap={8}
       speed={0.06}
       variant="trail"
       colors={["#315df2", "#5f7cff", "#819cff", "#aab9f5"]}
@@ -34,7 +34,7 @@ export function PortfolioPixelField() {
       maxDpr={1}
       radius={124}
       coarseRadius={92}
-      coarseFps={30}
+      coarseFps={20}
       aria-hidden="true"
     />
   );
@@ -270,7 +270,7 @@ export function Malera() {
       <LetterGlitch
         className="malera-practice__glitch"
         glitchColors={["#315df2", "#5f7cff", "#8facff", "#dce5ff"]}
-        glitchSpeed={42}
+        glitchSpeed={64}
         outerVignette
         smooth
         characters="MALERASTUDIO0123456789+-/[]{}<>"

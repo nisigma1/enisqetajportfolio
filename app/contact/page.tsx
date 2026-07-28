@@ -5,6 +5,8 @@ import { identity, malera, siteConfig } from "@/data/site";
 
 const description = "Start a conversation with Enis Qetaj about a digital product, website, automation or research interface.";
 
+export const dynamic = "force-static";
+
 export const metadata: Metadata = {
   title: "Contact",
   description,

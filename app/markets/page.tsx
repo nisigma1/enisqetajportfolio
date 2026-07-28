@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { EvidenceLadder } from "@/components/markets/PerspectiveLens";
 import { marketInterests } from "@/data/site";
 
+export const dynamic = "force-static";
+
 export const metadata: Metadata = {
   title: "Markets",
   description:

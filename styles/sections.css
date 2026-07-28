@@ -517,24 +517,23 @@
   pointer-events: none;
   stroke: var(--accent);
   stroke-dashoffset: 1;
-  animation: context-circuit-runner 6.8s linear infinite;
+  animation: context-circuit-runner 3.8s linear infinite;
+  will-change: stroke-dashoffset;
 }
 
 .context-circuit__runner-glow {
-  stroke-width: 8px;
-  stroke-dasharray: 0.035 0.965;
-  opacity: 0.2;
-  filter: blur(3px) drop-shadow(0 0 10px color-mix(in srgb, var(--accent) 78%, transparent));
+  stroke-width: 7px;
+  stroke-linecap: round;
+  stroke-dasharray: 0.065 0.935;
+  opacity: 0.3;
 }
 
 .context-circuit__runner {
-  stroke-width: 2.35px;
+  stroke-width: 3px;
   stroke-linecap: round;
-  stroke-dasharray: 0.014 0.986;
+  stroke-dasharray: 0.032 0.968;
   opacity: 1;
-  filter:
-    drop-shadow(0 0 2px var(--accent))
-    drop-shadow(0 0 7px color-mix(in srgb, var(--accent) 88%, transparent));
+  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--accent) 92%, transparent));
 }
 
 @keyframes context-circuit-runner {
@@ -1729,8 +1728,8 @@
     top: 1.7rem;
     left: 1.46rem;
     z-index: 2;
-    width: 0.34rem;
-    height: 0.34rem;
+    width: 0.5rem;
+    height: 0.5rem;
     border-radius: 50%;
     background: var(--accent);
     box-shadow:
@@ -1739,7 +1738,7 @@
     content: "";
     pointer-events: none;
     transform: translate(-50%, -50%);
-    animation: context-circuit-mobile-runner 6.8s linear infinite;
+    animation: context-circuit-mobile-runner 4s linear infinite;
   }
 
   @keyframes context-circuit-mobile-runner {

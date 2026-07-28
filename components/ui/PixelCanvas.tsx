@@ -55,6 +55,7 @@ interface CanvasDimensions {
 const DEFAULT_COLORS = ["#315df2", "#5f7cff", "#819cff", "#aab9f5"];
 const INACTIVE_POINTER = -10_000;
 const FRAME_DURATION = 1000 / 60;
+const FINE_POINTER_FRAME_INTERVAL = 1000 / 48;
 
 function hexToRgb(hex: string): RgbColor | null {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -294,10 +295,10 @@ export function PixelCanvas({
         return;
       }
 
-      if (
-        coarsePointer &&
-        timestamp - lastTimestamp < coarseFrameInterval
-      ) {
+      const frameInterval = coarsePointer
+        ? coarseFrameInterval
+        : FINE_POINTER_FRAME_INTERVAL;
+      if (timestamp - lastTimestamp < frameInterval) {
         scheduleDraw();
         return;
       }
@@ -463,6 +464,7 @@ export function PixelCanvas({
     };
 
     const onPointerMove = (event: PointerEvent) => {
+      if (coarsePointer && !ambientOnTouch) return;
       updatePointer(event.clientX, event.clientY);
     };
 

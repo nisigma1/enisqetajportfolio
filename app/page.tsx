@@ -18,6 +18,8 @@ import {
   siteConfig,
 } from "@/data/site";
 
+export const dynamic = "force-static";
+
 export const metadata: Metadata = {
   title: "Markets, Research, Geopolitics & Digital Products",
   description: siteConfig.description,

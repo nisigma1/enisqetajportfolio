@@ -86,9 +86,9 @@ export function LetterGlitch({
     let animationFrame: number | null = null;
     let lastFrame = performance.now();
     let lastGlitch = lastFrame;
-    // Start immediately so the background is alive on first paint. The
-    // observer still pauses it after the section is genuinely off-screen.
-    let isVisible = true;
+    let initialized = false;
+    let isVisible = false;
+    const frameInterval = 1000 / 30;
 
     const randomCharacter = () => (
       symbols[Math.floor(Math.random() * symbols.length)] || "M"
@@ -129,8 +129,11 @@ export function LetterGlitch({
 
     const resizeCanvas = () => {
       const bounds = container.getBoundingClientRect();
-      const ratio = Math.min(window.devicePixelRatio || 1, 2);
       const isMobile = bounds.width < 768;
+      const ratio = Math.min(
+        window.devicePixelRatio || 1,
+        isMobile ? 1.25 : 1.5,
+      );
       fontSize = isMobile ? 15 : 17;
       characterWidth = isMobile ? 9 : 10;
       characterHeight = isMobile ? 18 : 21;
@@ -141,10 +144,11 @@ export function LetterGlitch({
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
       initializeLetters(bounds.width, bounds.height);
       drawLetters();
+      initialized = true;
     };
 
     const updateLetters = () => {
-      const updateFraction = container.clientWidth < 768 ? 0.16 : 0.12;
+      const updateFraction = container.clientWidth < 768 ? 0.1 : 0.08;
       const updateCount = Math.max(
         1,
         Math.floor(letters.length * updateFraction),
@@ -184,7 +188,13 @@ export function LetterGlitch({
     };
 
     const animate = (timestamp: number) => {
-      const delta = Math.min(timestamp - lastFrame, 50);
+      const elapsed = timestamp - lastFrame;
+      if (elapsed < frameInterval) {
+        animationFrame = window.requestAnimationFrame(animate);
+        return;
+      }
+
+      const delta = Math.min(elapsed, 100);
       lastFrame = timestamp;
       let shouldDraw = false;
 
@@ -210,34 +220,43 @@ export function LetterGlitch({
       ) {
         return;
       }
+      if (!initialized) resizeCanvas();
       lastFrame = performance.now();
       lastGlitch = lastFrame;
       animationFrame = window.requestAnimationFrame(animate);
     };
 
-    const resizeObserver = new ResizeObserver(resizeCanvas);
+    const resizeObserver = new ResizeObserver(() => {
+      if (initialized) resizeCanvas();
+    });
     const visibilityObserver = new IntersectionObserver(
       ([entry]) => {
         isVisible = entry?.isIntersecting ?? false;
-        if (isVisible) startAnimation();
-        else stopAnimation();
+        if (isVisible) {
+          if (!initialized) resizeCanvas();
+          if (reducedMotion.matches) drawLetters();
+          else startAnimation();
+        } else {
+          stopAnimation();
+        }
       },
-      { rootMargin: "160px 0px", threshold: 0.01 },
+      { rootMargin: "100px 0px", threshold: 0.01 },
     );
     const handleMotionPreference = () => {
       if (reducedMotion.matches) {
         stopAnimation();
-        drawLetters();
+        if (isVisible) {
+          if (!initialized) resizeCanvas();
+          drawLetters();
+        }
       } else {
         startAnimation();
       }
     };
 
-    resizeCanvas();
     resizeObserver.observe(container);
     visibilityObserver.observe(container);
     reducedMotion.addEventListener("change", handleMotionPreference);
-    startAnimation();
 
     return () => {
       stopAnimation();

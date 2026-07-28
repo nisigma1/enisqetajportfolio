@@ -40,6 +40,8 @@ export function ClickSpark({
   const sparksRef = useRef<Spark[]>([]);
   const animationFrameRef = useRef<number | null>(null);
   const drawFrameRef = useRef<(timestamp: number) => void>(() => undefined);
+  const resizeCanvasRef = useRef<() => void>(() => undefined);
+  const canvasReadyRef = useRef(false);
   const reducedMotionRef = useRef(false);
 
   const ease = useCallback((progress: number) => {
@@ -137,7 +139,9 @@ export function ClickSpark({
     if (!canvas) return;
 
     const resizeCanvas = () => {
-      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      if (!canvasReadyRef.current) return;
+
+      const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
       const width = window.innerWidth;
       const height = window.innerHeight;
 
@@ -147,6 +151,8 @@ export function ClickSpark({
       canvas.style.height = `${height}px`;
       canvas.getContext("2d")?.setTransform(ratio, 0, 0, ratio, 0, 0);
     };
+    resizeCanvasRef.current = resizeCanvas;
+    if (canvasReadyRef.current) resizeCanvas();
 
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const updateMotionPreference = () => {
@@ -161,7 +167,6 @@ export function ClickSpark({
       clearCanvas();
     };
 
-    resizeCanvas();
     updateMotionPreference();
     window.addEventListener("resize", resizeCanvas, { passive: true });
     window.visualViewport?.addEventListener("resize", resizeCanvas, {
@@ -176,11 +181,17 @@ export function ClickSpark({
       if (animationFrameRef.current !== null) {
         window.cancelAnimationFrame(animationFrameRef.current);
       }
+      resizeCanvasRef.current = () => undefined;
     };
   }, [clearCanvas]);
 
   const handleClick = (event: MouseEvent<HTMLDivElement>) => {
     if (reducedMotionRef.current) return;
+
+    if (!canvasReadyRef.current) {
+      canvasReadyRef.current = true;
+      resizeCanvasRef.current();
+    }
 
     let x = event.clientX;
     let y = event.clientY;

@@ -3,6 +3,8 @@ import Link from "next/link";
 import { researchDomains, researchMethod } from "@/data/site";
 import { ActionMark } from "@/components/ui/ActionMark";
 
+export const dynamic = "force-static";
+
 export const metadata: Metadata = {
   title: "Research Practice",
   description: "The evidence-led research practice Enis Qetaj uses across markets, macroeconomics, geopolitics and on-chain behavior.",
