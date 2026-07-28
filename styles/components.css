@@ -675,6 +675,8 @@ button:hover .action-mark--up {
 }
 
 .project-media img {
+  display: block;
+  max-width: 100%;
   width: 100%;
   background: var(--surface);
 }

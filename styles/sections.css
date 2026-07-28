@@ -47,7 +47,7 @@
 
 .portfolio-pixel-field {
   position: fixed;
-  z-index: 10;
+  z-index: 0;
   inset: 0;
   width: 100vw;
   height: 100dvh;
@@ -55,6 +55,13 @@
   contain: strict;
   opacity: 0.52;
   mix-blend-mode: screen;
+}
+
+/* The interactive pixel field belongs to the page atmosphere, never on top of
+   editorial content or project photography. */
+.portfolio-pixel-host > :not(.portfolio-pixel-field) {
+  position: relative;
+  z-index: 1;
 }
 
 [data-theme="light"] .portfolio-pixel-field {

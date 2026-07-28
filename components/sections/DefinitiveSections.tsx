@@ -27,13 +27,13 @@ export function PortfolioPixelField() {
     <PixelCanvas
       className="portfolio-pixel-field"
       gap={7}
-      speed={0.018}
+      speed={0.06}
       variant="trail"
       colors={["#315df2", "#5f7cff", "#819cff", "#aab9f5"]}
-      ambientOnTouch
+      ambientOnTouch={false}
       maxDpr={1}
-      radius={148}
-      coarseRadius={112}
+      radius={124}
+      coarseRadius={92}
       coarseFps={30}
       aria-hidden="true"
     />
