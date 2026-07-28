@@ -222,12 +222,14 @@
 }
 
 .author-artifact img {
+  display: block;
   width: 100%;
   max-height: min(45rem, 69svh);
-  aspect-ratio: 4 / 5;
-  object-fit: contain;
+  /* The supplied portrait is 3:4. Keeping the frame at that same ratio
+     eliminates the artificial blue side bars without cropping the photo. */
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
   object-position: center;
-  background: #081536;
 }
 
 .author-artifact figcaption {
