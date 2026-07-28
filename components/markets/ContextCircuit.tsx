@@ -84,6 +84,17 @@ function circuitPath([fromX, fromY]: readonly number[], [toX, toY]: readonly num
   return `M ${fromX} ${fromY} H ${middle} V ${toY} H ${toX}`;
 }
 
+function circuitRoute(layout: readonly (readonly number[])[]) {
+  if (layout.length === 0) return "";
+
+  return layout.slice(1).reduce((path, point, index) => {
+    const [fromX] = layout[index];
+    const [toX, toY] = point;
+    const middle = Math.round((fromX + toX) / 2);
+    return `${path} H ${middle} V ${toY} H ${toX}`;
+  }, `M ${layout[0][0]} ${layout[0][1]}`);
+}
+
 function ContextCircuitDetails({ node, mode }: { node: CircuitNode; mode: CircuitMode }) {
   return (
     <aside className="context-circuit__details" aria-live="polite">
@@ -103,6 +114,7 @@ export function ContextCircuit() {
   const mode = useMemo(() => modes.find((item) => item.id === modeId) ?? modes[1], [modeId]);
   const activeNode = mode.nodes[activeIndex] ?? mode.nodes[0];
   const layout = mode.nodes.length === 7 ? sevenNodeLayout : sixNodeLayout;
+  const route = circuitRoute(layout);
 
   function selectMode(next: ModeId) {
     setModeId(next);
@@ -161,6 +173,8 @@ export function ContextCircuit() {
                 </g>
               );
             })}
+            <path className="context-circuit__runner-glow" d={route} pathLength="1" />
+            <path className="context-circuit__runner" d={route} pathLength="1" />
           </svg>
 
           <div className="context-circuit__desktop-nodes">
