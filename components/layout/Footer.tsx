@@ -2,6 +2,7 @@ import { identity, navigation } from "@/data/site";
 import Link from "next/link";
 import { ActionMark } from "@/components/ui/ActionMark";
 import { LineSidebar } from "@/components/ui/LineSidebar";
+import { SocialDock } from "@/components/layout/SocialDock";
 
 export function Footer() {
   return (
@@ -31,6 +32,7 @@ export function Footer() {
           smoothing={110}
         />
       </div>
+      <SocialDock />
       <div className="footer-meta">
         <span>© {new Date().getFullYear()}</span>
         <span>Kosovo</span>

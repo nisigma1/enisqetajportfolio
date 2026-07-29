@@ -22,6 +22,12 @@ export const identity = {
   emailHref: "https://mail.google.com/mail/?view=cm&fs=1&to=enisqeta5%40gmail.com",
   phone: "+383 44 857 227",
   phoneHref: "tel:+38344857227",
+  social: [
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/enis-qetaj-47a847308" },
+    { label: "Instagram", href: "https://www.instagram.com/enis_qeta/" },
+    { label: "Facebook", href: "https://www.facebook.com/enis.qeta/" },
+    { label: "X", href: "https://x.com/N1sigma" },
+  ],
   availability: "Available for selected freelance work",
   roles: [
     "Crypto Trader",
