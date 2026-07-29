@@ -869,6 +869,43 @@ button:hover .action-mark--up {
   border-top: var(--border-width) solid var(--border);
 }
 
+.text-roll {
+  display: inline-flex;
+  cursor: default;
+}
+
+.text-roll__clip {
+  display: inline-block;
+  overflow: hidden;
+  padding: 0.08em 0 0.16em;
+  margin: -0.08em 0 -0.16em;
+  vertical-align: top;
+}
+
+.text-roll__character {
+  display: inline-block;
+  min-width: 0.18em;
+  opacity: 0;
+  transform: translate3d(0, 1.08em, 0) rotateX(-78deg);
+  transform-origin: 50% 100%;
+}
+
+.text-roll--ready .text-roll__character {
+  animation: text-roll-in 680ms cubic-bezier(0.16, 1, 0.3, 1) var(--roll-delay) both;
+}
+
+@keyframes text-roll-in {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 1.08em, 0) rotateX(-78deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotateX(0);
+  }
+}
+
 .social-dock-section__intro span {
   color: var(--accent);
   font-size: var(--text-meta);
@@ -1204,6 +1241,12 @@ html[data-route-transition="active"] {
 
   .social-dock__item {
     transform: none;
+  }
+
+  .text-roll__character {
+    opacity: 1;
+    transform: none;
+    animation: none;
   }
 }
 .pixel-canvas {

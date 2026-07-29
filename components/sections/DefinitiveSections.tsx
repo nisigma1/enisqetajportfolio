@@ -17,6 +17,7 @@ import { ActionMark } from "@/components/ui/ActionMark";
 import { LetterGlitch } from "@/components/ui/LetterGlitch";
 import { PixelCanvas } from "@/components/ui/PixelCanvas";
 import { TextRepel } from "@/components/ui/TextRepel";
+import { TextRoll } from "@/components/core/text-roll";
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return <p className="section-label">{children}</p>;
@@ -116,7 +117,7 @@ export function Hero() {
         ))}
       </ol>
 
-      <p className="dispatch-hero__principle">Context changes the decision.</p>
+      <TextRoll className="dispatch-hero__principle">Context changes the decision.</TextRoll>
     </section>
   );
 }
