@@ -83,6 +83,8 @@ export function Hero() {
         <figure className="author-artifact">
           <PixelImage
             src={media.portrait.desktop.src}
+            tabletSrc={media.portrait.tablet.src}
+            mobileSrc={media.portrait.mobile.src}
             alt="Enis Qetaj, financial-markets researcher and AI product builder from Kosovo"
             customGrid={{ rows: 6, cols: 4 }}
             grayscaleAnimation

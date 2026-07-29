@@ -7,6 +7,8 @@ type Grid = { rows: number; cols: number };
 
 type PixelImageProps = Omit<HTMLAttributes<HTMLDivElement>, "children"> & {
   src: string;
+  tabletSrc?: string;
+  mobileSrc?: string;
   alt: string;
   customGrid?: Grid;
   grayscaleAnimation?: boolean;
@@ -21,6 +23,8 @@ const GRID_LIMIT = 16;
 
 export function PixelImage({
   src,
+  tabletSrc,
+  mobileSrc,
   alt,
   customGrid = { rows: 6, cols: 4 },
   grayscaleAnimation = true,
@@ -68,10 +72,25 @@ export function PixelImage({
     <div
       {...props}
       className={["pixel-image", isVisible ? "pixel-image--visible" : "", showColor ? "pixel-image--color" : "", className].filter(Boolean).join(" ")}
-      role="img"
-      aria-label={alt}
-      style={{ "--pixel-aspect": aspectRatio, "--pixel-object-position": objectPosition, ...props.style } as React.CSSProperties}
+      style={{
+        "--pixel-aspect": aspectRatio,
+        "--pixel-object-position": objectPosition,
+        "--pixel-source": `url(\"${src}\")`,
+        "--pixel-source-tablet": `url(\"${tabletSrc ?? src}\")`,
+        "--pixel-source-mobile": `url(\"${mobileSrc ?? tabletSrc ?? src}\")`,
+        ...props.style,
+      } as React.CSSProperties}
     >
+      <img
+        className="pixel-image__source"
+        src={src}
+        srcSet={mobileSrc && tabletSrc ? `${mobileSrc} 750w, ${tabletSrc} 900w, ${src} 1125w` : undefined}
+        sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1023px) 48vw, 44vw"
+        alt={alt}
+        draggable={false}
+        decoding="async"
+        fetchPriority="high"
+      />
       {pieces.map((piece, index) => (
         <span
           className="pixel-image__piece"
@@ -82,9 +101,7 @@ export function PixelImage({
             transitionDelay: `${piece.delay}ms`,
             transitionDuration: `${pixelFadeInDuration}ms`,
           }}
-        >
-          <img src={src} alt="" draggable={false} />
-        </span>
+        />
       ))}
     </div>
   );
