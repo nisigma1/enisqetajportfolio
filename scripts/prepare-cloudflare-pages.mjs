@@ -1,12 +1,11 @@
-import { cp, mkdir, rm } from "node:fs/promises";
+import { cp, mkdir, rm, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
 const root = process.cwd();
 const clientDir = resolve(root, "dist/client");
 const serverDir = resolve(root, "dist/server");
-const pagesDir = resolve(root, "dist/pages");
+const pagesDir = resolve(root, "dist");
 
-await rm(pagesDir, { recursive: true, force: true });
 await mkdir(pagesDir, { recursive: true });
 
 await cp(clientDir, pagesDir, { recursive: true });
@@ -20,3 +19,22 @@ await cp(resolve(serverDir, "ssr"), resolve(pagesDir, "ssr"), {
   recursive: true,
 });
 
+await writeFile(
+  resolve(pagesDir, "_routes.json"),
+  `${JSON.stringify(
+    {
+      version: 1,
+      include: ["/*"],
+      exclude: [
+        "/assets/*",
+        "/images/*",
+        "/favicon.svg",
+        "/og.png",
+        "/_headers",
+        "/.vite/*",
+      ],
+    },
+    null,
+    2,
+  )}\n`,
+);
