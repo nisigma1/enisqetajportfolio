@@ -5,6 +5,7 @@ const root = process.cwd();
 const clientDir = resolve(root, "dist/client");
 const serverDir = resolve(root, "dist/server");
 const pagesDir = resolve(root, "dist");
+const redirectedWranglerConfig = resolve(root, ".wrangler/deploy/config.json");
 
 await mkdir(pagesDir, { recursive: true });
 
@@ -38,3 +39,5 @@ await writeFile(
     2,
   )}\n`,
 );
+
+await rm(redirectedWranglerConfig, { force: true });
