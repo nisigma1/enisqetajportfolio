@@ -1966,6 +1966,8 @@
   }
 
   .author-artifact figcaption {
+    flex-wrap: wrap;
+    row-gap: 0.25rem;
     padding: var(--space-3) 0.1rem 0;
   }
 
@@ -2189,6 +2191,11 @@
 
   .dispatch-hero__proof {
     grid-template-columns: 1fr;
+  }
+
+  .dispatch-hero__issue {
+    align-items: flex-start;
+    flex-wrap: wrap;
   }
 
   .research-method,

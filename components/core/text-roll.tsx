@@ -14,6 +14,8 @@ type TextRollProps = HTMLAttributes<HTMLSpanElement> & {
 export function TextRoll({ children, className, staggerMs = 34, ...props }: TextRollProps) {
   const [isReady, setIsReady] = useState(false);
   const [run, setRun] = useState(0);
+  const tokens = Array.from(children.matchAll(/\S+|\s+/g), (match) => match[0] ?? "");
+  let characterIndex = 0;
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => setIsReady(true));
@@ -33,16 +35,29 @@ export function TextRoll({ children, className, staggerMs = 34, ...props }: Text
         }
       }}
     >
-      {Array.from(children).map((character, index) => (
-        <span
-          key={`${run}-${index}`}
-          className="text-roll__clip"
-          aria-hidden="true"
-          style={{ "--roll-delay": `${index * staggerMs}ms` } as React.CSSProperties}
-        >
-          <span className="text-roll__character">{character === " " ? "\u00a0" : character}</span>
-        </span>
-      ))}
+      {tokens.map((token, tokenIndex) => {
+        if (/^\s+$/.test(token)) {
+          return <span key={`${run}-space-${tokenIndex}`} className="text-roll__space" aria-hidden="true" />;
+        }
+
+        return (
+          <span key={`${run}-word-${tokenIndex}`} className="text-roll__word" aria-hidden="true">
+            {Array.from(token).map((character) => {
+              const index = characterIndex;
+              characterIndex += 1;
+              return (
+                <span
+                  key={`${run}-${tokenIndex}-${index}`}
+                  className="text-roll__clip"
+                  style={{ "--roll-delay": `${index * staggerMs}ms` } as React.CSSProperties}
+                >
+                  <span className="text-roll__character">{character}</span>
+                </span>
+              );
+            })}
+          </span>
+        );
+      })}
     </span>
   );
 }

@@ -871,7 +871,19 @@ button:hover .action-mark--up {
 
 .text-roll {
   display: inline-flex;
+  max-width: 100%;
+  flex-wrap: wrap;
   cursor: default;
+}
+
+.text-roll__word {
+  display: inline-flex;
+  flex: none;
+  white-space: nowrap;
+}
+
+.text-roll__space {
+  flex: 0 0 0.26em;
 }
 
 .text-roll__clip {
@@ -1247,6 +1259,10 @@ html[data-route-transition="active"] {
     opacity: 1;
     transform: none;
     animation: none;
+  }
+
+  .text-roll__word {
+    white-space: nowrap;
   }
 }
 .pixel-canvas {
