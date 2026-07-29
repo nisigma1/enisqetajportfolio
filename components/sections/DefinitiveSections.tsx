@@ -71,6 +71,11 @@ export function Hero() {
               disableOnCoarsePointer={false}
             />
           </h1>
+          <p className="dispatch-hero__entity-copy">
+            Enis Qetaj is a Kosovo-based crypto trader, financial-markets researcher, Research and Analysis practitioner and AI product builder.
+            His work focuses on technical and fundamental analysis, Macroeconomics and Geopolitics, liquidity,
+            on-chain research and building useful digital products through Malera Studio.
+          </p>
         </div>
 
         <figure className="author-artifact">
@@ -79,7 +84,7 @@ export function Hero() {
             <source media="(max-width: 1023px)" srcSet={media.portrait.tablet.src} width={media.portrait.tablet.width} height={media.portrait.tablet.height} />
             <img
               src={media.portrait.desktop.src}
-              alt="Portrait of Enis Qetaj"
+              alt="Enis Qetaj, financial-markets researcher and AI product builder from Kosovo"
               width={media.portrait.desktop.width}
               height={media.portrait.desktop.height}
               sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1023px) 48vw, 44vw"
@@ -99,6 +104,7 @@ export function Hero() {
           </p>
           <div className="dispatch-hero__actions">
             <a className="button button--primary" href="#work">View selected work <ActionMark direction="down" /></a>
+            <Link className="button button--quiet" href="/about">About Enis Qetaj <ActionMark direction="forward" /></Link>
             <a className="button button--quiet" href="#research">Explore research <ActionMark direction="down" /></a>
           </div>
         </div>

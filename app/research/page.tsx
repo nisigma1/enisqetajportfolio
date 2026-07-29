@@ -2,13 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { researchDomains, researchMethod } from "@/data/site";
 import { ActionMark } from "@/components/ui/ActionMark";
+import { ogImage, routeSeo } from "@/lib/seo";
 
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "Research Practice",
-  description: "The evidence-led research practice Enis Qetaj uses across markets, macroeconomics, geopolitics and on-chain behavior.",
+  title: routeSeo.research.title,
+  description: routeSeo.research.description,
   alternates: { canonical: "/research" },
+  openGraph: { type: "website", url: "/research", title: routeSeo.research.title, description: routeSeo.research.description, images: [ogImage()] },
+  twitter: { card: "summary_large_image", title: routeSeo.research.title, description: routeSeo.research.description, images: ["/og.png"] },
 };
 
 export default function ResearchPage() {
@@ -16,9 +19,9 @@ export default function ResearchPage() {
     <main id="main" className="route-page research-route">
       <header className="route-hero">
         <p>Research practice / Enis Qetaj</p>
-        <h1>Build the question.<br />Then widen the evidence.</h1>
+        <h1>Research by Enis Qetaj</h1>
         <div>
-          <p>Research is presented here as a working method—not as a fabricated publication archive.</p>
+          <p>Enis Qetaj studies crypto markets through macroeconomics, liquidity, geopolitics, monetary policy and on-chain behavior. Research is presented here as a working method—not as a fabricated publication archive.</p>
           <span>Markets / Macro / Geopolitics / On-chain</span>
         </div>
       </header>
@@ -49,7 +52,7 @@ export default function ResearchPage() {
 
       <section className="route-callout">
         <p>Research and educational content only. Not financial advice.</p>
-        <Link className="button button--primary" href="/#markets">Explore the Evidence Ladder <ActionMark direction="down" /></Link>
+        <Link className="button button--primary" href="/markets">Explore Enis Qetaj&apos;s market framework <ActionMark direction="forward" /></Link>
       </section>
     </main>
   );

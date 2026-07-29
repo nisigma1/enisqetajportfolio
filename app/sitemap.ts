@@ -1,42 +1,10 @@
 import type { MetadataRoute } from "next";
-import { barberProject, siteConfig } from "@/data/site";
+import { publicRoutes } from "@/lib/seo";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    {
-      url: siteConfig.url,
-      changeFrequency: "weekly",
-      priority: 1,
-    },
-    {
-      url: `${siteConfig.url}/work`,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${siteConfig.url}/research`,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${siteConfig.url}/markets`,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${siteConfig.url}/build`,
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${siteConfig.url}/work/${barberProject.slug}`,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${siteConfig.url}/contact`,
-      changeFrequency: "yearly",
-      priority: 0.6,
-    },
-  ];
+  return publicRoutes.map((route, index) => ({
+    url: route.path === "/" ? "https://enisqetaj.com/" : `https://enisqetaj.com${route.path}`,
+    changeFrequency: index === 0 ? "weekly" : "monthly",
+    priority: index === 0 ? 1 : route.path.startsWith("/work/") ? 0.8 : 0.7,
+  }));
 }

@@ -3,6 +3,7 @@ import { siteConfig } from "@/data/site";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
 import { RouteTransitionProvider } from "@/components/transition/RouteTransitionProvider";
+import { ogImage } from "@/lib/seo";
 import "@fontsource-variable/manrope";
 import "@fontsource-variable/newsreader";
 import "./globals.css";
@@ -11,11 +12,15 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
     default: siteConfig.title,
-    template: "%s — Enis Qetaj",
+    template: "%s",
   },
   description: siteConfig.description,
   applicationName: siteConfig.name,
   creator: siteConfig.name,
+  authors: [{ name: siteConfig.name, url: siteConfig.url }],
+  alternates: {
+    canonical: "/",
+  },
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
@@ -25,14 +30,9 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     title: siteConfig.title,
     description: siteConfig.description,
-    images: [
-      {
-        url: "/og.png",
-        width: 1200,
-        height: 630,
-        alt: "Enis Qetaj — markets, research, geopolitics and digital products",
-      },
-    ],
+    url: siteConfig.url,
+    locale: "en_US",
+    images: [ogImage()],
   },
   twitter: {
     card: "summary_large_image",

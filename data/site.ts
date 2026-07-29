@@ -1,9 +1,9 @@
 export const siteConfig = {
   name: "Enis Qetaj",
-  url: "https://enis-qetaj-signal.enis-qetaj.chatgpt.site",
-  title: "Enis Qetaj — Markets, Research, Geopolitics & Digital Products",
+  url: "https://enisqetaj.com",
+  title: "Enis Qetaj | Crypto Markets Research, Geopolitics & AI Products",
   description:
-    "Enis Qetaj researches crypto markets, financial markets, macroeconomics and geopolitics, then builds useful digital products from Kosovo.",
+    "Enis Qetaj is a Kosovo-based crypto trader, financial-markets researcher and AI product builder focused on crypto, macroeconomics, geopolitics, on-chain analysis and digital products.",
 } as const;
 
 export const navigation = [
@@ -29,6 +29,7 @@ export const identity = {
     "Research and Analysis",
     "Macroeconomics and Geopolitics",
     "AI Product Builder",
+    "Founder of Malera Studio",
     "Independent Freelancer",
   ],
   education: [
@@ -238,7 +239,7 @@ export const barberProject = {
   title: "Barber Brothers",
   slug: "barber-brothers",
   category: "Web experience / booking",
-  url: "https://barberbrothers.style/",
+  url: "https://www.barberbrothers.style/",
   location: "Fushë Kosovë",
   description:
     "A bilingual customer-facing web experience for a barber business in Fushë Kosovë, connecting brand information with a direct booking journey.",
@@ -258,6 +259,21 @@ export const barberProject = {
     "Real environment",
     "Responsive experience",
     "Live product",
+  ],
+} as const;
+
+export const hixhameProject = {
+  title: "Hixhame Tina",
+  slug: "hixhame-tina",
+  category: "Website / wellness presence",
+  url: "https://hixhametina.com/",
+  description:
+    "A public website for Hixhame Tina, presented as verified selected work connected to Enis Qetaj's digital-building practice.",
+  knownFeatures: [
+    "Public service presentation",
+    "Mobile-friendly website structure",
+    "Clear contact path",
+    "Live production domain",
   ],
 } as const;
 
@@ -303,7 +319,7 @@ export const projectMedia = [
 export const malera = {
   name: "Malera Studio",
   url: "https://malera.studio/",
-  line: "The professional studio connected to Enis Qetaj’s digital product practice.",
+  line: "The professional studio founded by Enis Qetaj for digital products, websites, AI applications and automation.",
 } as const;
 
 export const media = {

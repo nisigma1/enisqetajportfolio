@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import { buildCapabilities, problems } from "@/data/site";
+import { ogImage, routeSeo } from "@/lib/seo";
 
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "Build",
-  description:
-    "Enis Qetaj turns defined needs into focused websites, applications, automation and research interfaces.",
+  title: routeSeo.build.title,
+  description: routeSeo.build.description,
   alternates: { canonical: "/build" },
+  openGraph: { type: "website", url: "/build", title: routeSeo.build.title, description: routeSeo.build.description, images: [ogImage()] },
+  twitter: { card: "summary_large_image", title: routeSeo.build.title, description: routeSeo.build.description, images: ["/og.png"] },
 };
 
 export default function BuildPage() {
@@ -15,9 +17,9 @@ export default function BuildPage() {
     <main id="main" className="route-page build-route">
       <header className="route-hero">
         <p>Build / Digital products</p>
-        <h1>Start with the need.<br />Find the useful form.</h1>
+        <h1>AI products, websites and automation</h1>
         <div>
-          <p>The output follows the problem: a clear website, a focused tool, an automation or a purpose-built interface.</p>
+          <p>Enis Qetaj builds AI applications, websites, web applications, automation, bots, AI agents and research interfaces through Malera Studio.</p>
           <span>Context / Product / System</span>
         </div>
       </header>

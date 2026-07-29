@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 async function getWorker() {
-  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
+  const workerUrl = new URL("../dist/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
   return (await import(workerUrl.href)).default;
 }
@@ -11,7 +11,7 @@ const env = {
   ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) },
 };
 const ctx = { waitUntil() {}, passThroughOnException() {} };
-const publicOrigin = "https://enis-qetaj-signal.enis-qetaj.chatgpt.site";
+const publicOrigin = "https://enisqetaj.com";
 
 test("server-renders the complete identity homepage", async () => {
   const worker = await getWorker();
@@ -24,13 +24,13 @@ test("server-renders the complete identity homepage", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
-  assert.match(html, /Markets, Research, Geopolitics &amp; Digital Products — Enis Qetaj/);
+  assert.match(html, /Enis Qetaj \| Crypto Markets Research, Geopolitics &amp; AI Products/);
   assert.match(
     html,
     new RegExp(`rel="canonical" href="${publicOrigin.replaceAll(".", "\\.")}/"`),
   );
-  assert.match(html, /I research what moves markets/);
-  assert.equal((html.match(/alt="Portrait of Enis Qetaj"/g) ?? []).length, 1);
+  assert.match(html, /Kosovo-based crypto trader, financial-markets researcher and AI product builder/);
+  assert.equal((html.match(/alt="Enis Qetaj, financial-markets researcher and AI product builder from Kosovo"/g) ?? []).length, 1);
   assert.equal((html.match(/data-text-repel=""/g) ?? []).length, 1);
   assert.equal(
     (html.match(/class="pixel-canvas portfolio-pixel-field"/g) ?? []).length,
@@ -81,11 +81,12 @@ test("server-renders the complete identity homepage", async () => {
 test("renders indexed public routes with route-specific canonicals", async () => {
   const worker = await getWorker();
   for (const [route, expected] of [
-    ["/research", "Build the question"],
-    ["/markets", "A signal is only"],
+    ["/about", "About Enis Qetaj"],
+    ["/research", "Research by Enis Qetaj"],
+    ["/markets", "Crypto markets, macro"],
     ["/work", "Real work"],
-    ["/build", "Start with the need"],
-    ["/contact", "Bring the context"],
+    ["/build", "AI products, websites and automation"],
+    ["/contact", "Contact Enis Qetaj"],
   ]) {
     const response = await worker.fetch(
       new Request(`http://localhost${route}`, { headers: { accept: "text/html" } }),
@@ -118,7 +119,7 @@ test("publishes project metadata and correct intrinsic media dimensions", async 
   );
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /Barber Brothers — Selected Work — Enis Qetaj/);
+  assert.match(html, /Barber Brothers Case Study \| Enis Qetaj/);
   assert.match(
     html,
     new RegExp(
@@ -154,7 +155,9 @@ test("publishes the research framework without inventing research notes", async 
   assert.match(xml, /\/research/);
   assert.match(xml, /\/markets/);
   assert.match(xml, /\/build/);
+  assert.match(xml, /\/about/);
   assert.match(xml, /\/work\/barber-brothers/);
+  assert.match(xml, /\/work\/hixhame-tina/);
 });
 
 test("contact endpoint validates input and returns a mail fallback", async () => {

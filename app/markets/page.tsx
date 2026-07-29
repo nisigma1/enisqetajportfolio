@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
 import { EvidenceLadder } from "@/components/markets/PerspectiveLens";
 import { marketInterests } from "@/data/site";
+import { ogImage, routeSeo } from "@/lib/seo";
 
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "Markets",
-  description:
-    "A layered market-research interface connecting price, structure, fundamentals, liquidity, macro, geopolitics and on-chain behavior.",
+  title: routeSeo.markets.title,
+  description: routeSeo.markets.description,
   alternates: { canonical: "/markets" },
+  openGraph: { type: "website", url: "/markets", title: routeSeo.markets.title, description: routeSeo.markets.description, images: [ogImage()] },
+  twitter: { card: "summary_large_image", title: routeSeo.markets.title, description: routeSeo.markets.description, images: ["/og.png"] },
 };
 
 export default function MarketsPage() {
@@ -16,9 +18,9 @@ export default function MarketsPage() {
     <main id="main" className="route-page markets-route">
       <header className="route-hero">
         <p>Markets / Evidence ladder</p>
-        <h1>A signal is only<br />the beginning.</h1>
+        <h1>Crypto markets, macro and geopolitics</h1>
         <div>
-          <p>Move from observation to context without pretending that one indicator explains the whole situation.</p>
+          <p>Enis Qetaj connects price, structure, fundamentals, liquidity, macroeconomics, geopolitics and on-chain activity without pretending that one indicator explains the whole situation.</p>
           <span>Signal / Context / Decision</span>
         </div>
       </header>

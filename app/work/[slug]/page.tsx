@@ -3,42 +3,97 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProjectMedia } from "@/components/media/ProjectMedia";
 import { ActionMark } from "@/components/ui/ActionMark";
-import { barberProject, media, siteConfig } from "@/data/site";
+import { barberProject, hixhameProject, media, siteConfig } from "@/data/site";
+import { ogImage, routeSeo } from "@/lib/seo";
 
 type ProjectPageProps = { params: Promise<{ slug: string }> };
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
 
+const projects = {
+  [barberProject.slug]: {
+    data: barberProject,
+    seo: routeSeo.barber,
+    number: "01",
+  },
+  [hixhameProject.slug]: {
+    data: hixhameProject,
+    seo: routeSeo.hixhame,
+    number: "02",
+  },
+} as const;
+
 export function generateStaticParams() {
-  return [{ slug: barberProject.slug }];
+  return Object.keys(projects).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
   const { slug } = await params;
-  if (slug !== barberProject.slug) notFound();
-  const title = `${barberProject.title} — Selected Work`;
-  const canonical = `/work/${barberProject.slug}`;
+  const project = projects[slug as keyof typeof projects];
+  if (!project) notFound();
+  const canonical = project.seo.path;
+  const image = slug === barberProject.slug
+    ? [{ url: media.barber.exterior.src, width: media.barber.exterior.width, height: media.barber.exterior.height, alt: "Barber Brothers service and barber booking interface" }]
+    : [ogImage()];
   return {
-    title,
-    description: barberProject.description,
+    title: project.seo.title,
+    description: project.seo.description,
     alternates: { canonical },
     openGraph: {
       type: "website",
       url: canonical,
       siteName: siteConfig.name,
-      title: `${title} — Enis Qetaj`,
-      description: barberProject.description,
-      images: [{ url: media.barber.exterior.src, width: media.barber.exterior.width, height: media.barber.exterior.height, alt: "Barber Brothers in Fushë Kosovë" }],
+      title: project.seo.title,
+      description: project.seo.description,
+      images: image,
     },
-    twitter: { card: "summary_large_image", title: `${title} — Enis Qetaj`, description: barberProject.description, images: [media.barber.exterior.src] },
+    twitter: { card: "summary_large_image", title: project.seo.title, description: project.seo.description, images: [image[0].url] },
   };
 }
 
-export default async function ProjectPage({ params }: ProjectPageProps) {
-  const { slug } = await params;
-  if (slug !== barberProject.slug) notFound();
+function HixhameCaseStudy() {
+  return (
+    <main id="main" className="route-page case-study">
+      <header className="case-study__hero">
+        <div>
+          <p>Selected work / 02</p>
+          <h1>Hixhame<br />Tina</h1>
+        </div>
+        <div>
+          <p>{hixhameProject.description}</p>
+          <a className="button button--primary" href={hixhameProject.url} target="_blank" rel="noopener noreferrer">
+            Visit Hixhame Tina <ActionMark direction="external" />
+            <span className="visually-hidden"> (opens in a new tab)</span>
+          </a>
+        </div>
+      </header>
 
+      <section className="case-study__chapter">
+        <div><p>01 / Overview</p><h2>A focused public website for a real service.</h2></div>
+        <div>
+          <p>The Hixhame Tina project is included as verified selected work. The page keeps the case study factual: public website, mobile-friendly presentation, clear service information and a direct contact path.</p>
+          <ul>{hixhameProject.knownFeatures.map((item) => <li key={item}>{item}</li>)}</ul>
+        </div>
+      </section>
+
+      <section className="case-study__close">
+        <div>
+          <p>02 / Live project</p>
+          <h2>The work is public and can be reviewed directly.</h2>
+        </div>
+        <div>
+          <a className="button button--primary" href={hixhameProject.url} target="_blank" rel="noopener noreferrer">
+            Open live website <ActionMark direction="external" />
+          </a>
+          <Link className="button button--quiet" href="/build">Explore Enis Qetaj&apos;s build practice <ActionMark direction="forward" /></Link>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+function BarberCaseStudy() {
   return (
     <main id="main" className="route-page case-study">
       <header className="case-study__hero">
@@ -49,7 +104,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         <div>
           <p>{barberProject.description}</p>
           <a className="button button--primary" href={barberProject.url} target="_blank" rel="noopener noreferrer">
-            Visit live site <ActionMark direction="external" />
+            Visit Barber Brothers <ActionMark direction="external" />
             <span className="visually-hidden"> (opens in a new tab)</span>
           </a>
         </div>
@@ -57,7 +112,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
       <ProjectMedia
         src={media.barber.exterior.src}
-        alt="Barber Brothers exterior in Fushë Kosovë"
+        alt="Barber Brothers service and barber booking interface"
         width={media.barber.exterior.width}
         height={media.barber.exterior.height}
         focalPoint={media.barber.exterior.focalPoint}
@@ -122,4 +177,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       </section>
     </main>
   );
+}
+
+export default async function ProjectPage({ params }: ProjectPageProps) {
+  const { slug } = await params;
+  if (slug === barberProject.slug) return <BarberCaseStudy />;
+  if (slug === hixhameProject.slug) return <HixhameCaseStudy />;
+  notFound();
 }

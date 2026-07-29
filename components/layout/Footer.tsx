@@ -34,6 +34,7 @@ export function Footer() {
       <div className="footer-meta">
         <span>© {new Date().getFullYear()}</span>
         <span>Kosovo</span>
+        <Link href="/about">About Enis Qetaj</Link>
         <a href={identity.emailHref} target="_blank" rel="noreferrer">{identity.email}</a>
         <Link href="/#index">Back to top <ActionMark direction="up" /></Link>
       </div>
