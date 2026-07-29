@@ -886,39 +886,42 @@ button:hover .action-mark--up {
 }
 
 .social-dock {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 3.35rem);
   align-items: end;
-  min-height: 4.9rem;
-  padding: 0.55rem;
-  border: var(--border-width) solid var(--border-strong);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--surface-elevated) 86%, transparent);
-  box-shadow: 0 0.75rem 2.1rem color-mix(in srgb, var(--text-primary) 9%, transparent);
-  backdrop-filter: blur(12px);
+  gap: 0;
+  padding: 0;
+  border-block: var(--border-width) solid var(--border-strong);
+  background: transparent;
 }
 
 .social-dock__item {
   position: relative;
   display: grid;
   place-items: center;
-  width: 3.15rem;
-  height: 3.15rem;
+  width: 3.35rem;
+  height: 3.35rem;
   color: var(--text-primary);
+  border-inline-start: var(--border-width) solid var(--border-strong);
   text-decoration: none;
-  transform: translateY(calc((var(--dock-scale) - 1) * -0.85rem)) scale(var(--dock-scale));
-  transform-origin: center bottom;
-  transition: transform 180ms var(--ease), color var(--motion-fast) var(--ease);
+  transform: translateY(calc((var(--dock-scale) - 1) * -0.45rem)) scale(var(--dock-scale));
+  transform-origin: center;
+  transition: transform 200ms var(--ease), color var(--motion-fast) var(--ease), background var(--motion-fast) var(--ease);
+}
+
+.social-dock__item:last-child {
+  border-inline-end: var(--border-width) solid var(--border-strong);
 }
 
 .social-dock__icon {
   display: grid;
-  width: 2.8rem;
-  height: 2.8rem;
+  width: 100%;
+  height: 100%;
   place-items: center;
-  border: var(--border-width) solid var(--border);
-  border-radius: 50%;
-  background: var(--background);
-  transition: background var(--motion-fast) var(--ease), border-color var(--motion-fast) var(--ease), color var(--motion-fast) var(--ease);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  transition: background var(--motion-fast) var(--ease), color var(--motion-fast) var(--ease);
 }
 
 .social-dock__icon svg {
@@ -941,7 +944,6 @@ button:hover .action-mark--up {
 
 .social-dock__item:hover .social-dock__icon,
 .social-dock__item:focus-visible .social-dock__icon {
-  border-color: var(--accent);
   background: var(--accent);
   color: var(--accent-contrast);
 }
@@ -1178,18 +1180,18 @@ html[data-route-transition="active"] {
   .social-dock {
     width: 100%;
     justify-content: space-between;
-    min-height: 4.35rem;
+    grid-template-columns: repeat(4, 1fr);
   }
 
   .social-dock__item {
-    width: 3.3rem;
-    height: 3.3rem;
+    width: 100%;
+    height: 3.6rem;
     transform: none;
   }
 
   .social-dock__icon {
-    width: 2.95rem;
-    height: 2.95rem;
+    width: 100%;
+    height: 100%;
   }
 }
 
