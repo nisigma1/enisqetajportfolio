@@ -118,7 +118,7 @@ export function Hero() {
         ))}
       </ol>
 
-      <TextRoll className="dispatch-hero__principle">Context changes the decision.</TextRoll>
+      <p className="dispatch-hero__principle">Context changes the decision.</p>
     </section>
   );
 }
@@ -128,7 +128,7 @@ export function About() {
     <section id="research" className="site-section research-practice" aria-labelledby="research-title">
       <div className="section-intro research-practice__intro">
         <SectionLabel>01 / Research practice</SectionLabel>
-        <h2 id="research-title">Evidence before narrative.</h2>
+        <h2 id="research-title"><TextRoll>Evidence before narrative.</TextRoll></h2>
         <div>
           <p className="body-large">Research begins by defining the question, not by collecting more noise.</p>
           <p>Markets, macroeconomics and geopolitics become more useful when sources, contradictions and limitations remain visible.</p>

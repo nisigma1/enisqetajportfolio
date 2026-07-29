@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type HTMLAttributes } from "react";
+import { useEffect, useRef, useState, type HTMLAttributes } from "react";
 
 type TextRollProps = HTMLAttributes<HTMLSpanElement> & {
   children: string;
@@ -12,18 +12,26 @@ type TextRollProps = HTMLAttributes<HTMLSpanElement> & {
  * available to assistive technology while individual characters are decorative.
  */
 export function TextRoll({ children, className, staggerMs = 34, ...props }: TextRollProps) {
+  const elementRef = useRef<HTMLSpanElement>(null);
   const [isReady, setIsReady] = useState(false);
   const [run, setRun] = useState(0);
-  const tokens = Array.from(children.matchAll(/\S+|\s+/g), (match) => match[0] ?? "");
-  let characterIndex = 0;
+  const words = children.trim().split(/\s+/).filter(Boolean);
 
   useEffect(() => {
-    const frame = window.requestAnimationFrame(() => setIsReady(true));
-    return () => window.cancelAnimationFrame(frame);
+    const element = elementRef.current;
+    if (!element) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry?.isIntersecting) return;
+      setIsReady(true);
+      observer.disconnect();
+    }, { threshold: 0.3 });
+    observer.observe(element);
+    return () => observer.disconnect();
   }, [run]);
 
   return (
     <span
+      ref={elementRef}
       {...props}
       className={["text-roll", isReady ? "text-roll--ready" : "", className].filter(Boolean).join(" ")}
       aria-label={children}
@@ -35,26 +43,15 @@ export function TextRoll({ children, className, staggerMs = 34, ...props }: Text
         }
       }}
     >
-      {tokens.map((token, tokenIndex) => {
-        if (/^\s+$/.test(token)) {
-          return <span key={`${run}-space-${tokenIndex}`} className="text-roll__space" aria-hidden="true" />;
-        }
-
+      {words.map((word, index) => {
         return (
-          <span key={`${run}-word-${tokenIndex}`} className="text-roll__word" aria-hidden="true">
-            {Array.from(token).map((character) => {
-              const index = characterIndex;
-              characterIndex += 1;
-              return (
-                <span
-                  key={`${run}-${tokenIndex}-${index}`}
-                  className="text-roll__clip"
-                  style={{ "--roll-delay": `${index * staggerMs}ms` } as React.CSSProperties}
-                >
-                  <span className="text-roll__character">{character}</span>
-                </span>
-              );
-            })}
+          <span
+            key={`${run}-word-${index}`}
+            className="text-roll__clip"
+            aria-hidden="true"
+            style={{ "--roll-delay": `${index * staggerMs}ms` } as React.CSSProperties}
+          >
+            <span className="text-roll__character">{word}</span>
           </span>
         );
       })}

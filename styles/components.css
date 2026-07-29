@@ -873,32 +873,22 @@ button:hover .action-mark--up {
   display: inline-flex;
   max-width: 100%;
   flex-wrap: wrap;
+  gap: 0 0.22em;
   cursor: default;
-}
-
-.text-roll__word {
-  display: inline-flex;
-  flex: none;
-  white-space: nowrap;
-}
-
-.text-roll__space {
-  flex: 0 0 0.26em;
 }
 
 .text-roll__clip {
   display: inline-block;
   overflow: hidden;
-  padding: 0.08em 0 0.16em;
-  margin: -0.08em 0 -0.16em;
+  padding: 0.03em 0 0.12em;
+  margin: -0.03em 0 -0.12em;
   vertical-align: top;
 }
 
 .text-roll__character {
   display: inline-block;
-  min-width: 0.18em;
   opacity: 0;
-  transform: translate3d(0, 1.08em, 0) rotateX(-78deg);
+  transform: translate3d(0, 0.95em, 0);
   transform-origin: 50% 100%;
 }
 
@@ -909,12 +899,12 @@ button:hover .action-mark--up {
 @keyframes text-roll-in {
   0% {
     opacity: 0;
-    transform: translate3d(0, 1.08em, 0) rotateX(-78deg);
+    transform: translate3d(0, 0.95em, 0);
   }
 
   100% {
     opacity: 1;
-    transform: translate3d(0, 0, 0) rotateX(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -1261,9 +1251,6 @@ html[data-route-transition="active"] {
     animation: none;
   }
 
-  .text-roll__word {
-    white-space: nowrap;
-  }
 }
 .pixel-canvas {
   position: relative;
