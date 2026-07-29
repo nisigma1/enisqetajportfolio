@@ -16,6 +16,7 @@ import { ProjectMedia } from "@/components/media/ProjectMedia";
 import { ActionMark } from "@/components/ui/ActionMark";
 import { LetterGlitch } from "@/components/ui/LetterGlitch";
 import { PixelCanvas } from "@/components/ui/PixelCanvas";
+import { PixelImage } from "@/components/ui/PixelImage";
 import { TextRepel } from "@/components/ui/TextRepel";
 import { TextRoll } from "@/components/core/text-roll";
 
@@ -80,19 +81,17 @@ export function Hero() {
         </div>
 
         <figure className="author-artifact">
-          <picture>
-            <source media="(max-width: 767px)" srcSet={media.portrait.mobile.src} width={media.portrait.mobile.width} height={media.portrait.mobile.height} />
-            <source media="(max-width: 1023px)" srcSet={media.portrait.tablet.src} width={media.portrait.tablet.width} height={media.portrait.tablet.height} />
-            <img
-              src={media.portrait.desktop.src}
-              alt="Enis Qetaj, financial-markets researcher and AI product builder from Kosovo"
-              width={media.portrait.desktop.width}
-              height={media.portrait.desktop.height}
-              sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1023px) 48vw, 44vw"
-              fetchPriority="high"
-              decoding="async"
-            />
-          </picture>
+          <PixelImage
+            src={media.portrait.desktop.src}
+            alt="Enis Qetaj, financial-markets researcher and AI product builder from Kosovo"
+            customGrid={{ rows: 6, cols: 4 }}
+            grayscaleAnimation
+            pixelFadeInDuration={720}
+            maxAnimationDelay={760}
+            colorRevealDelay={980}
+            aspectRatio={media.portrait.desktop.aspectRatio}
+            objectPosition={media.portrait.desktop.objectPosition}
+          />
           <figcaption>
             <span>Author / researcher / builder</span>
             <span>Kosovo, 2026</span>
