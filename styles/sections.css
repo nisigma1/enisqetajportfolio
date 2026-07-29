@@ -281,8 +281,6 @@
   opacity: 1;
 }
 
-.pixel-image--color .pixel-image__source { filter: grayscale(0) contrast(1); }
-
 @media (max-width: 1023px) {
   .pixel-image__piece { background-image: var(--pixel-source-tablet); }
 }
