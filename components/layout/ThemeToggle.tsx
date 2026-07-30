@@ -5,5 +5,5 @@ import { AnimatedThemeToggler } from "@/components/ui/AnimatedThemeToggler";
 
 export function ThemeToggle() {
   const { isTransitioning } = useRouteTransition();
-  return <AnimatedThemeToggler className="theme-toggle" variant="hexagon" duration={620} disabled={isTransitioning} />;
+  return <AnimatedThemeToggler className="theme-toggle" variant="circle" duration={560} disabled={isTransitioning} />;
 }
