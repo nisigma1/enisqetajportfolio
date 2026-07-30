@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ProjectMedia } from "@/components/media/ProjectMedia";
+import { HixhameTinaPreview } from "@/components/showcase/HixhameTinaPreview";
 import { ActionMark } from "@/components/ui/ActionMark";
-import { barberProject, hixhameProject, siteConfig } from "@/data/site";
+import { barberProject, siteConfig } from "@/data/site";
 import { ogImage, routeSeo } from "@/lib/seo";
 
 const description = routeSeo.work.description;
@@ -46,14 +47,7 @@ export default function WorkArchive() {
         </div>
       </article>
 
-      <article className="work-feature work-feature--text">
-        <div>
-          <p>{hixhameProject.category}</p>
-          <h2>{hixhameProject.title}</h2>
-          <p>{hixhameProject.description}</p>
-          <Link className="button button--quiet" href={`/work/${hixhameProject.slug}`}>Open Hixhame Tina case study <ActionMark direction="forward" /></Link>
-        </div>
-      </article>
+      <HixhameTinaPreview />
     </main>
   );
 }

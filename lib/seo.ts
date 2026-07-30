@@ -40,7 +40,8 @@ export const routeSeo = {
   hixhame: {
     path: `/work/${hixhameProject.slug}`,
     title: "Hixhame Tina Case Study | Enis Qetaj",
-    description: hixhameProject.description,
+    description:
+      "A responsive website and digital identity for Hixhame Tina, a women-only Hijama service in Prishtina, designed around privacy, trust and direct booking.",
   },
   build: {
     path: "/build",

@@ -133,6 +133,33 @@ test("publishes project metadata and correct intrinsic media dimensions", async 
   assert.match(html, /width="576" height="710"/);
 });
 
+test("publishes the complete responsive Hixhame Tina case study", async () => {
+  const worker = await getWorker();
+  const response = await worker.fetch(
+    new Request("http://localhost/work/hixhame-tina", {
+      headers: { accept: "text/html" },
+    }),
+    env,
+    ctx,
+  );
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Hixhame Tina Case Study \| Enis Qetaj/);
+  assert.match(
+    html,
+    new RegExp(
+      `rel="canonical" href="${publicOrigin.replaceAll(".", "\\.")}/work/hixhame-tina"`,
+    ),
+  );
+  assert.match(html, /projects\/hixhame-tina\/hixhame-tina-case-study\.avif/);
+  assert.match(html, /projects\/hixhame-tina\/hixhame-tina-case-study\.webp/);
+  assert.match(html, /width="1672" height="941"/);
+  assert.match(html, /Understand\. Build trust\. Book directly\./);
+  assert.match(html, /Albanian/);
+  assert.match(html, /Italian/);
+  assert.match(html, /https:\/\/hixhametina\.com\//);
+});
+
 test("publishes the research framework without inventing research notes", async () => {
   const worker = await getWorker();
   const research = await worker.fetch(

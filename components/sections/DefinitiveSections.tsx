@@ -11,6 +11,7 @@ import {
 } from "@/data/site";
 import { ProjectMedia } from "@/components/media/ProjectMedia";
 import { BarberBrothersShowcase } from "@/components/showcase/BarberBrothersShowcase";
+import { HixhameTinaPreview } from "@/components/showcase/HixhameTinaPreview";
 import { ActionMark } from "@/components/ui/ActionMark";
 import { PixelImage } from "@/components/ui/PixelImage";
 import { TextRepel } from "@/components/ui/TextRepel";
@@ -265,6 +266,7 @@ export function Work() {
           Read the case study <ActionMark direction="forward" />
         </Link>
       </div>
+      <HixhameTinaPreview variant="homepage" />
     </section>
   );
 }

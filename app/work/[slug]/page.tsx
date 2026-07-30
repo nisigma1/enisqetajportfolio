@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BarberBrothersShowcase } from "@/components/showcase/BarberBrothersShowcase";
+import { HixhameTinaCaseStudy } from "@/components/showcase/HixhameTinaCaseStudy";
 import { ProjectMedia } from "@/components/media/ProjectMedia";
 import { ActionMark } from "@/components/ui/ActionMark";
 import { barberProject, hixhameProject, media, siteConfig } from "@/data/site";
@@ -36,7 +37,15 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
   const canonical = project.seo.path;
   const image = slug === barberProject.slug
     ? [{ url: "/projects/barber-brothers/barber-brothers-og.webp?v=20260730", width: 1200, height: 630, alt: "Barber Brothers premium website and booking case study" }]
-    : [ogImage()];
+    : slug === hixhameProject.slug
+      ? [{ url: "/projects/hixhame-tina/hixhame-tina-case-study.webp", width: 1672, height: 941, alt: "Hixhame Tina women-only Hijama website shown on desktop and mobile" }]
+      : [ogImage()];
+  const socialTitle = slug === hixhameProject.slug
+    ? "Hixhame Tina — Website Case Study"
+    : project.seo.title;
+  const socialDescription = slug === hixhameProject.slug
+    ? "A women-focused wellness website combining calm visual direction, responsive design and direct appointment booking."
+    : project.seo.description;
   return {
     title: project.seo.title,
     description: project.seo.description,
@@ -45,53 +54,16 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
       type: "website",
       url: canonical,
       siteName: siteConfig.name,
-      title: project.seo.title,
-      description: project.seo.description,
+      title: socialTitle,
+      description: socialDescription,
       images: image,
     },
-    twitter: { card: "summary_large_image", title: project.seo.title, description: project.seo.description, images: [image[0].url] },
+    twitter: { card: "summary_large_image", title: socialTitle, description: socialDescription, images: [image[0].url] },
   };
 }
 
 function HixhameCaseStudy() {
-  return (
-    <main id="main" className="route-page case-study">
-      <header className="case-study__hero">
-        <div>
-          <p>Selected work / 02</p>
-          <h1>Hixhame<br />Tina</h1>
-        </div>
-        <div>
-          <p>{hixhameProject.description}</p>
-          <a className="button button--primary" href={hixhameProject.url} target="_blank" rel="noopener noreferrer">
-            Visit Hixhame Tina <ActionMark direction="external" />
-            <span className="visually-hidden"> (opens in a new tab)</span>
-          </a>
-        </div>
-      </header>
-
-      <section className="case-study__chapter">
-        <div><p>01 / Overview</p><h2>A focused public website for a real service.</h2></div>
-        <div>
-          <p>The Hixhame Tina project is included as verified selected work. The page keeps the case study factual: public website, mobile-friendly presentation, clear service information and a direct contact path.</p>
-          <ul>{hixhameProject.knownFeatures.map((item) => <li key={item}>{item}</li>)}</ul>
-        </div>
-      </section>
-
-      <section className="case-study__close">
-        <div>
-          <p>02 / Live project</p>
-          <h2>The work is public and can be reviewed directly.</h2>
-        </div>
-        <div>
-          <a className="button button--primary" href={hixhameProject.url} target="_blank" rel="noopener noreferrer">
-            Open live website <ActionMark direction="external" />
-          </a>
-          <Link className="button button--quiet" href="/build">Explore Enis Qetaj&apos;s build practice <ActionMark direction="forward" /></Link>
-        </div>
-      </section>
-    </main>
-  );
+  return <HixhameTinaCaseStudy />;
 }
 
 function BarberCaseStudy() {

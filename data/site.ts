@@ -271,16 +271,24 @@ export const barberProject = {
 export const hixhameProject = {
   title: "Hixhame Tina",
   slug: "hixhame-tina",
-  category: "Website / wellness presence",
+  category: "Website / Women’s wellness",
   url: "https://hixhametina.com/",
+  location: "Kolovicë, Prishtina",
+  phone: "+383 45 836 605",
+  phoneHref: "tel:+38345836605",
+  instagram: "@hixhametina",
+  instagramUrl: "https://www.instagram.com/hixhametina/",
   description:
-    "A public website for Hixhame Tina, presented as verified selected work connected to Enis Qetaj's digital-building practice.",
+    "A premium multilingual website for a women-only Hijama service in Prishtina, designed around privacy, trust, clear information and direct appointment booking.",
   knownFeatures: [
-    "Public service presentation",
-    "Mobile-friendly website structure",
-    "Clear contact path",
-    "Live production domain",
+    "Privacy-first presentation",
+    "Trust-driven content",
+    "Direct WhatsApp and telephone booking",
+    "Responsive experience",
+    "Six working language routes",
+    "Production deployment",
   ],
+  locales: ["Albanian", "English", "German", "French", "Turkish", "Italian"],
 } as const;
 
 export const projectMedia = [
