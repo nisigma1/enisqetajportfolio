@@ -55,6 +55,11 @@
   contain: strict;
   opacity: 0.52;
   mix-blend-mode: screen;
+  background:
+    radial-gradient(circle at 58% 22%, rgb(49 93 242 / 18%), transparent 14rem),
+    radial-gradient(circle, rgb(96 124 255 / 24%) 1px, transparent 1.25px);
+  background-size: auto, 11px 11px;
+  mask-image: linear-gradient(to bottom, #000 0%, rgb(0 0 0 / 48%) 42%, transparent 84%);
 }
 
 /* The interactive pixel field belongs to the page atmosphere, never on top of
@@ -71,10 +76,6 @@
 
 @media (pointer: coarse) {
   .portfolio-pixel-field {
-    background:
-      radial-gradient(circle at 58% 22%, rgb(49 93 242 / 18%), transparent 14rem),
-      radial-gradient(circle, rgb(96 124 255 / 24%) 1px, transparent 1.25px);
-    background-size: auto, 11px 11px;
     mask-image: linear-gradient(to bottom, #000 0%, rgb(0 0 0 / 48%) 42%, transparent 84%);
   }
 

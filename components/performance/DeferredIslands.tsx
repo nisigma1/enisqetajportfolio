@@ -94,21 +94,30 @@ export function DeferredTextRoll({ children }: { children: string }) {
 }
 
 export function AdaptivePortfolioPixelField() {
-  const [finePointer, setFinePointer] = useState(false);
+  const [interactive, setInteractive] = useState(false);
 
   useEffect(() => {
     const query = window.matchMedia("(pointer: fine)");
-    const update = () => setFinePointer(query.matches);
-    update();
-    query.addEventListener("change", update);
-    return () => query.removeEventListener("change", update);
+    if (!query.matches) return;
+
+    const activate = () => {
+      setInteractive(true);
+      window.removeEventListener("pointermove", activate);
+      window.removeEventListener("pointerdown", activate);
+    };
+    window.addEventListener("pointermove", activate, { passive: true, once: true });
+    window.addEventListener("pointerdown", activate, { passive: true, once: true });
+    return () => {
+      window.removeEventListener("pointermove", activate);
+      window.removeEventListener("pointerdown", activate);
+    };
   }, []);
 
   const fallback = (
     <div className="pixel-canvas portfolio-pixel-field" aria-hidden="true" />
   );
 
-  if (!finePointer) return fallback;
+  if (!interactive) return fallback;
 
   return (
     <Suspense fallback={fallback}>
