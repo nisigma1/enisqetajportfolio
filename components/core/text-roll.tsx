@@ -34,7 +34,6 @@ export function TextRoll({ children, className, staggerMs = 34, ...props }: Text
       ref={elementRef}
       {...props}
       className={["text-roll", isReady ? "text-roll--ready" : "", className].filter(Boolean).join(" ")}
-      aria-label={children}
       onPointerEnter={(event) => {
         props.onPointerEnter?.(event);
         if (event.pointerType === "mouse") {
@@ -43,6 +42,7 @@ export function TextRoll({ children, className, staggerMs = 34, ...props }: Text
         }
       }}
     >
+      <span className="visually-hidden">{children}</span>
       {words.map((word, index) => {
         return (
           <span
