@@ -19,6 +19,7 @@ import { PixelCanvas } from "@/components/ui/PixelCanvas";
 import { PixelImage } from "@/components/ui/PixelImage";
 import { TextRepel } from "@/components/ui/TextRepel";
 import { TextRoll } from "@/components/core/text-roll";
+import { Magnetic } from "@/components/core/magnetic";
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return <p className="section-label">{children}</p>;
@@ -105,7 +106,9 @@ export function Hero() {
             I research what moves markets—from structure and liquidity to macro and geopolitics—then build useful digital products from what becomes clear.
           </p>
           <div className="dispatch-hero__actions">
-            <a className="button button--primary" href="#work">View selected work <ActionMark direction="down" /></a>
+            <Magnetic intensity={0.32} range={135}>
+              <a className="button button--primary" href="#work">View selected work <ActionMark direction="down" /></a>
+            </Magnetic>
             <Link className="button button--quiet" href="/about">About Enis Qetaj <ActionMark direction="forward" /></Link>
             <a className="button button--quiet" href="#research">Explore research <ActionMark direction="down" /></a>
           </div>

@@ -877,6 +877,20 @@ button:hover .action-mark--up {
   cursor: default;
 }
 
+.magnetic {
+  display: inline-block;
+  will-change: transform;
+  transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.magnetic:has(.button) {
+  max-width: 100%;
+}
+
+.magnetic .button {
+  width: 100%;
+}
+
 .text-roll__clip {
   display: inline-block;
   overflow: hidden;
@@ -1232,6 +1246,10 @@ html[data-route-transition="active"] {
     width: 100%;
     height: 100%;
   }
+
+  .dispatch-hero__actions .magnetic {
+    min-width: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1249,6 +1267,11 @@ html[data-route-transition="active"] {
     opacity: 1;
     transform: none;
     animation: none;
+  }
+
+  .magnetic {
+    transform: none !important;
+    transition: none;
   }
 
 }
