@@ -5,8 +5,9 @@ import { BarberBrothersShowcase } from "@/components/showcase/BarberBrothersShow
 import { HixhameTinaCaseStudy } from "@/components/showcase/HixhameTinaCaseStudy";
 import { ProjectMedia } from "@/components/media/ProjectMedia";
 import { ActionMark } from "@/components/ui/ActionMark";
+import { StructuredData } from "@/components/seo/StructuredData";
 import { barberProject, hixhameProject, media, siteConfig } from "@/data/site";
-import { ogImage, routeSeo } from "@/lib/seo";
+import { baseStructuredData, ogImage, routeSeo } from "@/lib/seo";
 
 type ProjectPageProps = { params: Promise<{ slug: string }> };
 
@@ -144,7 +145,13 @@ function BarberCaseStudy() {
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
   const { slug } = await params;
-  if (slug === barberProject.slug) return <BarberCaseStudy />;
-  if (slug === hixhameProject.slug) return <HixhameCaseStudy />;
-  notFound();
+  const project = projects[slug as keyof typeof projects];
+  if (!project) notFound();
+
+  return (
+    <>
+      {slug === barberProject.slug ? <BarberCaseStudy /> : <HixhameCaseStudy />}
+      <StructuredData data={baseStructuredData(project.seo)} />
+    </>
+  );
 }

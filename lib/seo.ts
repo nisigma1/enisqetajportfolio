@@ -1,4 +1,4 @@
-import { barberProject, hixhameProject, identity, malera, marketInterests, media, siteConfig } from "@/data/site";
+import { barberProject, cryptoEducation, hixhameProject, identity, malera, marketInterests, media, siteConfig } from "@/data/site";
 
 export const canonicalOrigin = siteConfig.url;
 
@@ -12,7 +12,7 @@ export const routeSeo = {
     path: "/about",
     title: "About Enis Qetaj | Research, Markets & Malera Studio",
     description:
-      "Learn about Enis Qetaj, a Kosovo-based financial-markets researcher, crypto trader, AI product builder and founder of Malera Studio.",
+      "Learn about Enis Qetaj, a Kosovo-based financial-markets researcher, crypto trader, AI product builder, KriptoShkolla course graduate and founder of Malera Studio.",
   },
   research: {
     path: "/research",
@@ -78,6 +78,7 @@ export function personJsonLd() {
     url: `${canonicalOrigin}/`,
     image: {
       "@type": "ImageObject",
+      "@id": `${canonicalOrigin}/#portrait`,
       url: absoluteUrl(media.portrait.desktop.src),
       width: media.portrait.desktop.width,
       height: media.portrait.desktop.height,
@@ -95,8 +96,14 @@ export function personJsonLd() {
       "Web applications",
       "Automation",
     ],
+    hasCredential: {
+      "@type": "EducationalOccupationalCredential",
+      name: `${cryptoEducation.provider} ${cryptoEducation.credential}`,
+      credentialCategory: "Completed professional course",
+      about: [...cryptoEducation.focus],
+    },
     worksFor: { "@id": `${canonicalOrigin}/#organization` },
-    sameAs: [],
+    sameAs: identity.social.map((profile) => profile.href),
   };
 }
 

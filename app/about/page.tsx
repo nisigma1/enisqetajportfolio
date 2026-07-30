@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ActionMark } from "@/components/ui/ActionMark";
-import { barberProject, buildCapabilities, hixhameProject, identity, malera, marketInterests } from "@/data/site";
+import { barberProject, buildCapabilities, cryptoEducation, hixhameProject, identity, malera, marketInterests } from "@/data/site";
 import { baseStructuredData, routeSeo } from "@/lib/seo";
 
 export const dynamic = "force-static";
@@ -78,14 +78,28 @@ export default function AboutPage() {
           </ul>
         </section>
 
-        <section className="case-study__chapter">
-          <div><p>05 / Education</p><h2>Verified education facts.</h2></div>
-          <div>
-            <ul>
+        <section className="education-profile" aria-labelledby="education-title">
+          <header>
+            <p>05 / Education</p>
+            <h2 id="education-title">Formal education and applied market learning.</h2>
+          </header>
+          <div className="education-profile__degrees">
+            <ul aria-label="Formal education">
               {identity.education.map((item) => (
                 <li key={`${item.degree}-${item.subject}`}>{item.degree} in {item.subject} — {item.status}</li>
               ))}
             </ul>
+            <article className="education-profile__credential">
+              <div>
+                <p>Completed course</p>
+                <span>{cryptoEducation.provider}</span>
+              </div>
+              <h3>{cryptoEducation.credential}</h3>
+              <p>{cryptoEducation.summary}</p>
+              <ul aria-label="Course areas">
+                {cryptoEducation.focus.map((area) => <li key={area}>{area}</li>)}
+              </ul>
+            </article>
           </div>
         </section>
 

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { EvidenceLadder } from "@/components/markets/PerspectiveLens";
 import { marketInterests } from "@/data/site";
-import { ogImage, routeSeo } from "@/lib/seo";
+import { StructuredData } from "@/components/seo/StructuredData";
+import { baseStructuredData, ogImage, routeSeo } from "@/lib/seo";
 
 export const dynamic = "force-static";
 
@@ -15,7 +16,8 @@ export const metadata: Metadata = {
 
 export default function MarketsPage() {
   return (
-    <main id="main" className="route-page markets-route">
+    <>
+      <main id="main" className="route-page markets-route">
       <header className="route-hero">
         <p>Markets / Evidence ladder</p>
         <h1>Crypto markets, macro and geopolitics</h1>
@@ -43,6 +45,8 @@ export default function MarketsPage() {
           {marketInterests.map((interest) => <li key={interest}>{interest}</li>)}
         </ul>
       </section>
-    </main>
+      </main>
+      <StructuredData data={baseStructuredData(routeSeo.markets)} />
+    </>
   );
 }

@@ -3,6 +3,7 @@ import { siteConfig } from "@/data/site";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
 import { RouteTransitionProvider } from "@/components/transition/RouteTransitionProvider";
+import { ConsentAnalytics } from "@/components/analytics/ConsentAnalytics";
 import { ogImage } from "@/lib/seo";
 import "@fontsource-variable/manrope";
 import "@fontsource-variable/newsreader";
@@ -61,6 +62,9 @@ export default function RootLayout({
     "try{var t=localStorage.getItem('enis-theme');var d=t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.dataset.theme=d}catch(e){}";
   const scrollScript =
     "(()=>{try{history.scrollRestoration='manual';const r=()=>{if(!location.hash)scrollTo(0,0)};r();addEventListener('pageshow',()=>{r();requestAnimationFrame(()=>{r();requestAnimationFrame(r)});setTimeout(r,120)})}catch(e){}})();";
+  const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim();
+  const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID?.trim();
+  const analyticsConfigured = Boolean(gaMeasurementId || metaPixelId);
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -74,6 +78,12 @@ export default function RootLayout({
           <Navigation />
           {children}
           <Footer />
+          {analyticsConfigured && (
+            <ConsentAnalytics
+              gaMeasurementId={gaMeasurementId}
+              metaPixelId={metaPixelId}
+            />
+          )}
         </RouteTransitionProvider>
       </body>
     </html>

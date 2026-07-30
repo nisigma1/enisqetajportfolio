@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { researchDomains, researchMethod } from "@/data/site";
 import { ActionMark } from "@/components/ui/ActionMark";
-import { ogImage, routeSeo } from "@/lib/seo";
+import { StructuredData } from "@/components/seo/StructuredData";
+import { baseStructuredData, ogImage, routeSeo } from "@/lib/seo";
 
 export const dynamic = "force-static";
 
@@ -16,7 +17,8 @@ export const metadata: Metadata = {
 
 export default function ResearchPage() {
   return (
-    <main id="main" className="route-page research-route">
+    <>
+      <main id="main" className="route-page research-route">
       <header className="route-hero">
         <p>Research practice / Enis Qetaj</p>
         <h1>Research by Enis Qetaj</h1>
@@ -54,6 +56,8 @@ export default function ResearchPage() {
         <p>Research and educational content only. Not financial advice.</p>
         <Link className="button button--primary" href="/markets">Explore Enis Qetaj&apos;s market framework <ActionMark direction="forward" /></Link>
       </section>
-    </main>
+      </main>
+      <StructuredData data={baseStructuredData(routeSeo.research)} />
+    </>
   );
 }

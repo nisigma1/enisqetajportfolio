@@ -2,6 +2,7 @@
 import Link from "next/link";
 import {
   barberProject,
+  cryptoEducation,
   identity,
   malera,
   media,
@@ -147,6 +148,23 @@ export function About() {
           {researchDomains.map((domain) => <li key={domain}>{domain}</li>)}
         </ul>
       </div>
+
+      <article className="crypto-training" aria-labelledby="crypto-training-title">
+        <div className="crypto-training__identity">
+          <SectionLabel>Completed training</SectionLabel>
+          <p>{cryptoEducation.provider}</p>
+          <span>{cryptoEducation.credential}</span>
+        </div>
+        <div className="crypto-training__statement">
+          <h3 id="crypto-training-title">A stronger foundation for reading crypto markets.</h3>
+          <p>I completed the KriptoShkolla crypto-markets course, learning with mentors from Kosovo and North Macedonia. The programme helped me connect market signals with a more structured analytical process.</p>
+        </div>
+        <ul aria-label="KriptoShkolla course focus">
+          {cryptoEducation.focus.map((area, index) => (
+            <li key={area}><span>{String(index + 1).padStart(2, "0")}</span>{area}</li>
+          ))}
+        </ul>
+      </article>
 
       <div className="research-practice__note">
         <p>Research and educational content only. Not financial advice.</p>

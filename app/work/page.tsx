@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ProjectMedia } from "@/components/media/ProjectMedia";
 import { HixhameTinaPreview } from "@/components/showcase/HixhameTinaPreview";
+import { StructuredData } from "@/components/seo/StructuredData";
 import { ActionMark } from "@/components/ui/ActionMark";
 import { barberProject, siteConfig } from "@/data/site";
-import { ogImage, routeSeo } from "@/lib/seo";
+import { baseStructuredData, ogImage, routeSeo } from "@/lib/seo";
 
 const description = routeSeo.work.description;
 
@@ -20,7 +21,8 @@ export const metadata: Metadata = {
 
 export default function WorkArchive() {
   return (
-    <main id="main" className="route-page work-route">
+    <>
+      <main id="main" className="route-page work-route">
       <header className="route-hero">
         <p>Selected work / Live proof</p>
         <h1>Real work.<br />Shown with context.</h1>
@@ -48,6 +50,8 @@ export default function WorkArchive() {
       </article>
 
       <HixhameTinaPreview />
-    </main>
+      </main>
+      <StructuredData data={baseStructuredData(routeSeo.work)} />
+    </>
   );
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { buildCapabilities, problems } from "@/data/site";
-import { ogImage, routeSeo } from "@/lib/seo";
+import { StructuredData } from "@/components/seo/StructuredData";
+import { baseStructuredData, ogImage, routeSeo } from "@/lib/seo";
 
 export const dynamic = "force-static";
 
@@ -14,7 +15,8 @@ export const metadata: Metadata = {
 
 export default function BuildPage() {
   return (
-    <main id="main" className="route-page build-route">
+    <>
+      <main id="main" className="route-page build-route">
       <header className="route-hero">
         <p>Build / Digital products</p>
         <h1>AI products, websites and automation</h1>
@@ -50,6 +52,8 @@ export default function BuildPage() {
           {buildCapabilities.map((capability) => <li key={capability}>{capability}</li>)}
         </ul>
       </section>
-    </main>
+      </main>
+      <StructuredData data={baseStructuredData(routeSeo.build)} />
+    </>
   );
 }

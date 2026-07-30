@@ -1,0 +1,303 @@
+.crypto-training {
+  display: grid;
+  grid-template-columns: 3fr 5fr 4fr;
+  gap: var(--space-6);
+  align-items: start;
+  margin-top: clamp(3rem, 7vw, 7rem);
+  padding-block: clamp(2rem, 5vw, 4.5rem);
+  border-block: 1px solid var(--border-strong);
+}
+
+.crypto-training__identity {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.crypto-training__identity > p:not(.section-label) {
+  font-family: var(--font-editorial);
+  font-size: var(--text-h3);
+  line-height: 1;
+}
+
+.crypto-training__identity > span {
+  color: var(--text-muted);
+  font-size: var(--text-caption);
+}
+
+.crypto-training__statement {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.crypto-training__statement h3 {
+  max-width: 18ch;
+  font-family: var(--font-editorial);
+  font-size: clamp(2rem, 3.6vw, 4rem);
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+}
+
+.crypto-training__statement p {
+  max-width: 60ch;
+  color: var(--text-secondary);
+}
+
+.crypto-training > ul {
+  border-top: 1px solid var(--border-strong);
+  list-style: none;
+}
+
+.crypto-training > ul li {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;
+  gap: var(--space-3);
+  min-height: 3.25rem;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+.crypto-training > ul span {
+  color: var(--accent);
+  font-size: var(--text-meta);
+}
+
+.education-profile {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: var(--space-7);
+  padding-block: var(--section-space);
+  border-bottom: 1px solid var(--border);
+}
+
+.education-profile > header > p,
+.education-profile__credential > div p {
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.education-profile > header h2 {
+  max-width: 13ch;
+  margin-top: var(--space-4);
+  font-family: var(--font-editorial);
+  font-size: var(--text-h2);
+  font-weight: 400;
+  letter-spacing: -0.05em;
+  line-height: 0.98;
+}
+
+.education-profile__degrees {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.education-profile__degrees > ul {
+  border-top: 1px solid var(--border-strong);
+  list-style: none;
+}
+
+.education-profile__degrees > ul li {
+  padding-block: var(--space-4);
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+.education-profile__credential {
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--border-strong);
+}
+
+.education-profile__credential > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.education-profile__credential > div span {
+  color: var(--accent);
+  font-size: var(--text-caption);
+}
+
+.education-profile__credential h3 {
+  max-width: 18ch;
+  margin-top: var(--space-6);
+  font-family: var(--font-editorial);
+  font-size: var(--text-h3);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.education-profile__credential > p {
+  max-width: 62ch;
+  margin-top: var(--space-4);
+  color: var(--text-secondary);
+}
+
+.education-profile__credential > ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+  list-style: none;
+}
+
+.education-profile__credential > ul li {
+  min-height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  padding-inline: var(--space-4);
+  border: 1px solid var(--border-strong);
+  color: var(--text-secondary);
+  font-size: var(--text-caption);
+}
+
+.privacy-consent {
+  position: fixed;
+  z-index: 10000;
+  right: var(--gutter);
+  bottom: var(--gutter);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-6);
+  width: min(calc(100vw - (2 * var(--gutter))), 52rem);
+  padding: var(--space-5);
+  border: 1px solid var(--border-strong);
+  background: var(--background);
+  box-shadow: 0 1rem 4rem rgb(0 0 0 / 18%);
+}
+
+.privacy-consent > div:first-child {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.privacy-consent > div:first-child > p:first-child {
+  color: var(--accent);
+  font-size: var(--text-meta);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.privacy-consent h2 {
+  font-family: var(--font-editorial);
+  font-size: var(--text-h3);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.privacy-consent > div:first-child > p:last-child {
+  max-width: 60ch;
+  color: var(--text-secondary);
+  font-size: var(--text-caption);
+}
+
+.privacy-consent__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-content: end;
+  justify-content: flex-end;
+}
+
+.privacy-consent__actions .button {
+  min-height: 3rem;
+}
+
+.privacy-consent__manage {
+  position: fixed;
+  z-index: 9999;
+  right: var(--gutter);
+  bottom: var(--gutter);
+  min-height: 2.75rem;
+  padding-inline: var(--space-4);
+  border: 1px solid var(--border-strong);
+  background: var(--background);
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: var(--text-caption);
+  cursor: pointer;
+}
+
+.privacy-consent__manage:hover,
+.privacy-consent__manage:focus-visible {
+  color: var(--text-primary);
+  border-color: var(--accent);
+}
+
+@media (max-width: 1023px) {
+  .crypto-training {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .crypto-training > ul {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .crypto-training > ul li {
+    padding-inline: var(--space-3);
+    border-right: 1px solid var(--border);
+  }
+
+  .crypto-training > ul li:last-child {
+    border-right: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .crypto-training,
+  .education-profile,
+  .privacy-consent {
+    grid-template-columns: 1fr;
+  }
+
+  .crypto-training {
+    gap: var(--space-6);
+  }
+
+  .crypto-training__statement h3 {
+    font-size: clamp(2.5rem, 12vw, 4rem);
+  }
+
+  .crypto-training > ul {
+    grid-column: 1;
+    grid-template-columns: 1fr;
+  }
+
+  .crypto-training > ul li {
+    padding-inline: 0;
+    border-right: 0;
+  }
+
+  .education-profile__credential > div {
+    display: grid;
+  }
+
+  .privacy-consent {
+    gap: var(--space-4);
+  }
+
+  .privacy-consent__actions {
+    display: grid;
+    justify-content: stretch;
+  }
+
+  .privacy-consent__actions .button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .privacy-consent,
+  .privacy-consent__manage {
+    scroll-behavior: auto;
+    transition: none;
+  }
+}

@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { ActionMark } from "@/components/ui/ActionMark";
 import { identity, malera, siteConfig } from "@/data/site";
-import { ogImage, routeSeo } from "@/lib/seo";
+import { StructuredData } from "@/components/seo/StructuredData";
+import { baseStructuredData, ogImage, routeSeo } from "@/lib/seo";
 
 const description = routeSeo.contact.description;
 
@@ -18,7 +19,8 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <main id="main" className="route-page contact-route">
+    <>
+      <main id="main" className="route-page contact-route">
       <header className="route-hero">
         <p>Contact / Selected freelance projects</p>
         <h1>Contact Enis Qetaj</h1>
@@ -39,6 +41,8 @@ export default function ContactPage() {
         </aside>
         <ContactForm />
       </section>
-    </main>
+      </main>
+      <StructuredData data={baseStructuredData(routeSeo.contact)} />
+    </>
   );
 }
