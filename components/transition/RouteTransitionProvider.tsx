@@ -4,7 +4,6 @@ import {
   ReactNode,
   useCallback,
   useEffect,
-  useLayoutEffect,
   useReducer,
   useRef,
 } from "react";
@@ -100,33 +99,6 @@ export function RouteTransitionProvider({ children }: { children: ReactNode }) {
   const navigationTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const previousPathname = useRef(pathname);
   const reducedTarget = useRef<string | null>(null);
-
-  // Browsers are allowed to restore the previous scroll position when a
-  // visitor reopens the portfolio. That made the Index route land halfway
-  // down at Markets. Own restoration so a clean Index load always starts at
-  // the masthead, while deep links with a hash still resolve normally.
-  useLayoutEffect(() => {
-    window.history.scrollRestoration = "manual";
-
-    const resetEntryScroll = () => {
-      if (window.location.hash) return;
-      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    };
-
-    resetEntryScroll();
-    let frame = window.requestAnimationFrame(() => {
-      resetEntryScroll();
-      frame = window.requestAnimationFrame(resetEntryScroll);
-    });
-    const timeout = window.setTimeout(resetEntryScroll, 140);
-    window.addEventListener("pageshow", resetEntryScroll);
-
-    return () => {
-      window.cancelAnimationFrame(frame);
-      window.clearTimeout(timeout);
-      window.removeEventListener("pageshow", resetEntryScroll);
-    };
-  }, []);
 
   useEffect(() => {
     stateRef.current = state;

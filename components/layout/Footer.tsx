@@ -1,8 +1,8 @@
 import { identity, navigation } from "@/data/site";
 import Link from "next/link";
 import { ActionMark } from "@/components/ui/ActionMark";
-import { LineSidebar } from "@/components/ui/LineSidebar";
 import { SocialDock } from "@/components/layout/SocialDock";
+import { DeferredLineSidebar } from "@/components/performance/DeferredIslands";
 
 export function Footer() {
   return (
@@ -16,20 +16,9 @@ export function Footer() {
           <span>Portfolio index</span>
           <p>Move through the practice, one context at a time.</p>
         </div>
-        <LineSidebar
-          className="footer-line-sidebar"
+        <DeferredLineSidebar
           items={navigation.map((item) => item.label)}
           hrefs={navigation.map((item) => item.href)}
-          accentColor="var(--accent)"
-          textColor="var(--text-secondary)"
-          markerColor="var(--border-strong)"
-          proximityRadius={110}
-          maxShift={24}
-          markerLength={52}
-          tickScale={0.42}
-          itemGap={15}
-          fontSize={1.05}
-          smoothing={110}
         />
       </div>
       <SocialDock />

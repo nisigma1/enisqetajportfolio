@@ -134,6 +134,11 @@ export function PixelCanvas({
     const container = containerRef.current;
     if (!canvas || !container) return;
 
+    const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
+    // On touch-first devices the decorative field is rendered by the CSS
+    // fallback. Avoid allocating a viewport canvas and observers during LCP.
+    if (coarsePointerQuery.matches && !ambientOnTouch) return;
+
     const context = canvas.getContext("2d", {
       alpha: true,
       desynchronized: true,
@@ -145,8 +150,6 @@ export function PixelCanvas({
     const reducedMotionQuery = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     );
-    const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
-
     let disposed = false;
     let isVisible = true;
     let reducedMotion = reducedMotionQuery.matches;

@@ -58,6 +58,9 @@ export function Magnetic({
     };
 
     const target = actionArea === "parent" ? ref.current?.parentElement : null;
+    const moveTarget: EventTarget | null = actionArea === "self"
+      ? ref.current
+      : window;
     const activate = () => { activeRef.current = true; };
     const deactivate = () => { activeRef.current = false; reset(); };
 
@@ -67,13 +70,13 @@ export function Magnetic({
       target.addEventListener("pointerenter", activate);
       target.addEventListener("pointerleave", deactivate);
     }
-    window.addEventListener("pointermove", move, { passive: true });
+    moveTarget?.addEventListener("pointermove", move as EventListener, { passive: true });
     finePointer.addEventListener("change", updateEnabled);
     reducedMotion.addEventListener("change", updateEnabled);
 
     return () => {
       window.cancelAnimationFrame(frameRef.current);
-      window.removeEventListener("pointermove", move);
+      moveTarget?.removeEventListener("pointermove", move as EventListener);
       target?.removeEventListener("pointerenter", activate);
       target?.removeEventListener("pointerleave", deactivate);
       finePointer.removeEventListener("change", updateEnabled);

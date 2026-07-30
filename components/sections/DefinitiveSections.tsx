@@ -9,38 +9,26 @@ import {
   researchDomains,
   researchMethod,
 } from "@/data/site";
-import { ContextCircuit } from "@/components/markets/ContextCircuit";
-import { BuildNavigator } from "@/components/build/BuildNavigator";
-import { ContactForm } from "@/components/forms/ContactForm";
 import { ProjectMedia } from "@/components/media/ProjectMedia";
 import { ActionMark } from "@/components/ui/ActionMark";
-import { LetterGlitch } from "@/components/ui/LetterGlitch";
-import { PixelCanvas } from "@/components/ui/PixelCanvas";
 import { PixelImage } from "@/components/ui/PixelImage";
 import { TextRepel } from "@/components/ui/TextRepel";
-import { TextRoll } from "@/components/core/text-roll";
 import { Magnetic } from "@/components/core/magnetic";
+import {
+  DeferredBuildNavigator,
+  DeferredContactForm,
+  DeferredContextCircuit,
+  DeferredLetterGlitch,
+  DeferredTextRoll,
+  AdaptivePortfolioPixelField,
+} from "@/components/performance/DeferredIslands";
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return <p className="section-label">{children}</p>;
 }
 
 export function PortfolioPixelField() {
-  return (
-    <PixelCanvas
-      className="portfolio-pixel-field"
-      gap={8}
-      speed={0.06}
-      variant="trail"
-      colors={["#315df2", "#5f7cff", "#819cff", "#aab9f5"]}
-      ambientOnTouch={false}
-      maxDpr={1}
-      radius={124}
-      coarseRadius={92}
-      coarseFps={20}
-      aria-hidden="true"
-    />
-  );
+  return <AdaptivePortfolioPixelField />;
 }
 
 export function Hero() {
@@ -71,7 +59,7 @@ export function Hero() {
               damping={16}
               mass={0.38}
               keyboardInteractive={false}
-              disableOnCoarsePointer={false}
+              disableOnCoarsePointer
             />
           </h1>
           <p className="dispatch-hero__entity-copy">
@@ -131,7 +119,7 @@ export function About() {
     <section id="research" className="site-section research-practice" aria-labelledby="research-title">
       <div className="section-intro research-practice__intro">
         <SectionLabel>01 / Research practice</SectionLabel>
-        <h2 id="research-title"><TextRoll>Evidence before narrative.</TextRoll></h2>
+        <h2 id="research-title"><DeferredTextRoll>Evidence before narrative.</DeferredTextRoll></h2>
         <div>
           <p className="body-large">Research begins by defining the question, not by collecting more noise.</p>
           <p>Markets, macroeconomics and geopolitics become more useful when sources, contradictions and limitations remain visible.</p>
@@ -177,7 +165,7 @@ export function Markets() {
           <p>Research, markets and product building use the same discipline: connect the signal to the context before acting.</p>
         </div>
       </div>
-      <ContextCircuit />
+      <DeferredContextCircuit />
     </section>
   );
 }
@@ -265,7 +253,7 @@ export function Build() {
           <p>Select the sentence closest to your situation to see how the need can be reframed.</p>
         </div>
       </div>
-      <BuildNavigator />
+      <DeferredBuildNavigator />
       <ol className="build-process" aria-label="Working process">
         {["Understand", "Shape", "Design", "Build", "Refine"].map((step, index) => (
           <li key={step}><span>{String(index + 1).padStart(2, "0")}</span>{step}</li>
@@ -278,14 +266,7 @@ export function Build() {
 export function Malera() {
   return (
     <section className="site-section malera-practice" aria-labelledby="malera-title">
-      <LetterGlitch
-        className="malera-practice__glitch"
-        glitchColors={["#315df2", "#5f7cff", "#8facff", "#dce5ff"]}
-        glitchSpeed={64}
-        outerVignette
-        smooth
-        characters="MALERASTUDIO0123456789+-/[]{}<>"
-      />
+      <DeferredLetterGlitch />
       <SectionLabel>05 / Professional practice</SectionLabel>
       <div className="malera-practice__relationship" aria-label="Relationship between Enis Qetaj and Malera Studio">
         <div>
@@ -336,7 +317,7 @@ export function Contact() {
           <a href={malera.url} target="_blank" rel="noreferrer">Malera Studio <ActionMark direction="external" /></a>
           <small>The form prepares an email draft. Nothing is sent or stored by this site.</small>
         </aside>
-        <ContactForm />
+        <DeferredContactForm />
       </div>
     </section>
   );

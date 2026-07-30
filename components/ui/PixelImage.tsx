@@ -1,7 +1,5 @@
-/* eslint-disable @next/next/no-img-element -- Each clipped image uses the same pre-compressed local source; this is required for the pixel reveal effect. */
-"use client";
-
-import { useEffect, useMemo, useState, type HTMLAttributes } from "react";
+/* eslint-disable @next/next/no-img-element -- Each clipped layer reuses the same pre-compressed local source; this is required for the pixel reveal effect. */
+import type { CSSProperties, HTMLAttributes } from "react";
 
 type Grid = { rows: number; cols: number };
 
@@ -36,42 +34,23 @@ export function PixelImage({
   className,
   ...props
 }: PixelImageProps) {
-  const [isVisible, setIsVisible] = useState(false);
-  const [showColor, setShowColor] = useState(!grayscaleAnimation);
-
-  const grid = useMemo<Grid>(() => {
-    const rows = Math.max(1, Math.min(GRID_LIMIT, Math.floor(customGrid.rows)));
-    const cols = Math.max(1, Math.min(GRID_LIMIT, Math.floor(customGrid.cols)));
-    return { rows, cols };
-  }, [customGrid.cols, customGrid.rows]);
-
-  useEffect(() => {
-    const revealFrame = window.requestAnimationFrame(() => setIsVisible(true));
-    const colorTimer = grayscaleAnimation
-      ? window.setTimeout(() => setShowColor(true), colorRevealDelay)
-      : undefined;
-
-    return () => {
-      window.cancelAnimationFrame(revealFrame);
-      if (colorTimer) window.clearTimeout(colorTimer);
-    };
-  }, [colorRevealDelay, grayscaleAnimation]);
-
-  const pieces = useMemo(() => {
-    const total = grid.rows * grid.cols;
-    return Array.from({ length: total }, (_, index) => {
-      const row = Math.floor(index / grid.cols);
-      const col = index % grid.cols;
-      const clipPath = `polygon(${col * (100 / grid.cols)}% ${row * (100 / grid.rows)}%, ${(col + 1) * (100 / grid.cols)}% ${row * (100 / grid.rows)}%, ${(col + 1) * (100 / grid.cols)}% ${(row + 1) * (100 / grid.rows)}%, ${col * (100 / grid.cols)}% ${(row + 1) * (100 / grid.rows)}%)`;
-      const delay = ((row * 13 + col * 7) % total) / Math.max(1, total - 1) * maxAnimationDelay;
-      return { clipPath, delay };
-    });
-  }, [grid, maxAnimationDelay]);
+  const grid = {
+    rows: Math.max(1, Math.min(GRID_LIMIT, Math.floor(customGrid.rows))),
+    cols: Math.max(1, Math.min(GRID_LIMIT, Math.floor(customGrid.cols))),
+  };
+  const total = grid.rows * grid.cols;
+  const pieces = Array.from({ length: total }, (_, index) => {
+    const row = Math.floor(index / grid.cols);
+    const col = index % grid.cols;
+    const clipPath = `polygon(${col * (100 / grid.cols)}% ${row * (100 / grid.rows)}%, ${(col + 1) * (100 / grid.cols)}% ${row * (100 / grid.rows)}%, ${(col + 1) * (100 / grid.cols)}% ${(row + 1) * (100 / grid.rows)}%, ${col * (100 / grid.cols)}% ${(row + 1) * (100 / grid.rows)}%)`;
+    const delay = ((row * 13 + col * 7) % total) / Math.max(1, total - 1) * maxAnimationDelay;
+    return { clipPath, delay };
+  });
 
   return (
     <div
       {...props}
-      className={["pixel-image", isVisible ? "pixel-image--visible" : "", showColor ? "pixel-image--color" : "", className].filter(Boolean).join(" ")}
+      className={["pixel-image", grayscaleAnimation ? "pixel-image--reveal" : "pixel-image--color", className].filter(Boolean).join(" ")}
       style={{
         "--pixel-aspect": aspectRatio,
         "--pixel-object-position": objectPosition,
@@ -79,7 +58,7 @@ export function PixelImage({
         "--pixel-source-tablet": `url(\"${tabletSrc ?? src}\")`,
         "--pixel-source-mobile": `url(\"${mobileSrc ?? tabletSrc ?? src}\")`,
         ...props.style,
-      } as React.CSSProperties}
+      } as CSSProperties}
     >
       <img
         className="pixel-image__source"
@@ -98,8 +77,8 @@ export function PixelImage({
           aria-hidden="true"
           style={{
             clipPath: piece.clipPath,
-            transitionDelay: `${piece.delay}ms`,
-            transitionDuration: `${pixelFadeInDuration}ms`,
+            animationDelay: `${colorRevealDelay + piece.delay}ms`,
+            animationDuration: `${pixelFadeInDuration}ms`,
           }}
         />
       ))}

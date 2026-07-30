@@ -302,17 +302,33 @@ export function TextRepel({
       setReducedMotion(reducedMotionQuery.matches);
       setCoarsePointer(coarsePointerQuery.matches);
     };
+
+    const initiallyDisabled =
+      reducedMotionQuery.matches
+      || (disableOnCoarsePointer && coarsePointerQuery.matches);
+
+    updatePreferences();
+    reducedMotionQuery.addEventListener("change", updatePreferences);
+    coarsePointerQuery.addEventListener("change", updatePreferences);
+
+    // The mobile hero keeps the same server-rendered typography, but does not
+    // measure every glyph or allocate observers for a pointer interaction that
+    // touch-first devices cannot use.
+    if (initiallyDisabled) {
+      return () => {
+        reducedMotionQuery.removeEventListener("change", updatePreferences);
+        coarsePointerQuery.removeEventListener("change", updatePreferences);
+      };
+    }
+
     const resizeObserver = new ResizeObserver(() => {
       window.cancelAnimationFrame(resizeRef.current);
       resizeRef.current = window.requestAnimationFrame(measure);
     });
 
-    updatePreferences();
     measure();
     if (containerRef.current) resizeObserver.observe(containerRef.current);
     document.fonts?.ready.then(measure).catch(() => undefined);
-    reducedMotionQuery.addEventListener("change", updatePreferences);
-    coarsePointerQuery.addEventListener("change", updatePreferences);
 
     return () => {
       resizeObserver.disconnect();
@@ -322,7 +338,7 @@ export function TextRepel({
       window.cancelAnimationFrame(resizeRef.current);
       window.clearTimeout(settleTimer.current);
     };
-  }, [measure]);
+  }, [disableOnCoarsePointer, measure]);
 
   const handlePointerDown = (event: ReactPointerEvent<HTMLSpanElement>) => {
     if (event.pointerType !== "mouse") {
