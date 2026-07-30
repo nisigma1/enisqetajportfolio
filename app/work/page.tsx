@@ -31,7 +31,7 @@ export default function WorkArchive() {
 
       <article className="work-feature">
         <ProjectMedia
-          src="/projects/barber-brothers/barber-brothers-cover.webp"
+          src="/projects/barber-brothers/barber-brothers-cover.webp?v=20260730"
           alt="Barber Brothers premium website and booking case study"
           width={1600}
           height={900}

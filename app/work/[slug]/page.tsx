@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
   if (!project) notFound();
   const canonical = project.seo.path;
   const image = slug === barberProject.slug
-    ? [{ url: "/projects/barber-brothers/barber-brothers-og.webp", width: 1200, height: 630, alt: "Barber Brothers premium website and booking case study" }]
+    ? [{ url: "/projects/barber-brothers/barber-brothers-og.webp?v=20260730", width: 1200, height: 630, alt: "Barber Brothers premium website and booking case study" }]
     : [ogImage()];
   return {
     title: project.seo.title,
