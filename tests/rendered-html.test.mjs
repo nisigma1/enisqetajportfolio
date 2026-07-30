@@ -39,8 +39,24 @@ test("server-renders the complete identity homepage", async () => {
   assert.match(html, /class="visually-hidden">Enis Qetaj<\/span>/);
   assert.match(html, /<ol class="dispatch-hero__proof" aria-label="Core professional focus">/);
   assert.match(html, /Barber Brothers/);
-  assert.match(html, /KriptoShkolla/);
-  assert.match(html, /A stronger foundation for reading crypto markets/);
+  assert.match(html, /Crypto School/);
+  assert.match(html, /Crypto Markets Curriculum/);
+  assert.match(html, /A structured foundation in crypto markets/);
+  for (const moduleTitle of [
+    "Blockchain Basics",
+    "Bitcoin",
+    "Ethereum",
+    "Wallets",
+    "Security",
+    "Fundamental Analysis",
+    "Technical Analysis",
+    "Risk Management",
+    "DeFi",
+    "Market Narratives",
+    "Investment Psychology",
+  ]) {
+    assert.match(html, new RegExp(moduleTitle));
+  }
   assert.match(html, /A signal is only the beginning/);
   assert.match(html, /Context circuit/);
   assert.match(html, /One signal\. A wider decision/);
@@ -80,7 +96,7 @@ test("server-renders the complete identity homepage", async () => {
   assert.doesNotMatch(primaryNavigation, />Studio</);
 });
 
-test("publishes KriptoShkolla education and connected Person schema", async () => {
+test("publishes Crypto School learning without false credential claims", async () => {
   const worker = await getWorker();
   const response = await worker.fetch(
     new Request("http://localhost/about", {
@@ -92,11 +108,11 @@ test("publishes KriptoShkolla education and connected Person schema", async () =
   assert.equal(response.status, 200);
   const html = await response.text();
   assert.match(html, /Formal education and applied market learning/);
-  assert.match(html, /KriptoShkolla/);
+  assert.match(html, /Crypto School/);
   assert.match(html, /Technical analysis/);
   assert.match(html, /Fundamental analysis/);
   assert.match(html, /On-chain analysis/);
-  assert.match(html, /EducationalOccupationalCredential/);
+  assert.doesNotMatch(html, /EducationalOccupationalCredential/);
   assert.match(html, /enis-qetaj-47a847308/);
   assert.match(html, /https:\/\/x\.com\/N1sigma/);
   assert.doesNotMatch(html, /googletagmanager\.com\/gtag/);

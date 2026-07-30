@@ -53,8 +53,8 @@ export const identity = {
 } as const;
 
 export const cryptoEducation = {
-  provider: "KriptoShkolla",
-  credential: "Crypto Markets Course",
+  provider: "Crypto School",
+  credential: "Crypto Markets Curriculum",
   status: "Completed",
   mentorRegion: "Kosovo and North Macedonia",
   focus: [
@@ -63,7 +63,7 @@ export const cryptoEducation = {
     "On-chain analysis",
   ],
   summary:
-    "Completed crypto-market training with mentors from Kosovo and North Macedonia, building a more structured way to connect technical, fundamental and on-chain evidence.",
+    "Completed Crypto School market training with mentors from Kosovo and North Macedonia, building a more structured way to connect technical, fundamental and on-chain evidence.",
 } as const;
 
 export const marketInterests = [

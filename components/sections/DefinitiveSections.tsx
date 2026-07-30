@@ -2,7 +2,6 @@
 import Link from "next/link";
 import {
   barberProject,
-  cryptoEducation,
   identity,
   malera,
   media,
@@ -149,23 +148,6 @@ export function About() {
         </ul>
       </div>
 
-      <article className="crypto-training" aria-labelledby="crypto-training-title">
-        <div className="crypto-training__identity">
-          <SectionLabel>Completed training</SectionLabel>
-          <p>{cryptoEducation.provider}</p>
-          <span>{cryptoEducation.credential}</span>
-        </div>
-        <div className="crypto-training__statement">
-          <h3 id="crypto-training-title">A stronger foundation for reading crypto markets.</h3>
-          <p>I completed the KriptoShkolla crypto-markets course, learning with mentors from Kosovo and North Macedonia. The programme helped me connect market signals with a more structured analytical process.</p>
-        </div>
-        <ul aria-label="KriptoShkolla course focus">
-          {cryptoEducation.focus.map((area, index) => (
-            <li key={area}><span>{String(index + 1).padStart(2, "0")}</span>{area}</li>
-          ))}
-        </ul>
-      </article>
-
       <div className="research-practice__note">
         <p>Research and educational content only. Not financial advice.</p>
         <Link href="/research">Open the research practice <ActionMark direction="forward" /></Link>
@@ -178,7 +160,7 @@ export function Markets() {
   return (
     <section id="markets" className="site-section markets-practice" aria-labelledby="markets-title">
       <div className="section-intro markets-practice__intro">
-        <SectionLabel>02 / Context circuit</SectionLabel>
+        <SectionLabel>03 / Context circuit</SectionLabel>
         <h2 id="markets-title">A signal is only the beginning.</h2>
         <div>
           <p className="body-large">Price makes a move visible. Context changes what that move can mean.</p>
@@ -194,7 +176,7 @@ export function LegacyWork() {
   return (
     <section id="work" className="site-section selected-work" aria-labelledby="work-title">
       <div className="section-intro selected-work__intro">
-        <SectionLabel>03 / Selected proof</SectionLabel>
+        <SectionLabel>04 / Selected proof</SectionLabel>
         <h2 id="work-title">A real business. A working digital journey.</h2>
         <div>
           <p className="body-large">{barberProject.title} / {barberProject.location}</p>
@@ -266,7 +248,7 @@ export function Work() {
   return (
     <section id="work" className="site-section selected-work" aria-labelledby="work-title">
       <div className="section-intro selected-work__intro">
-        <SectionLabel>03 / Selected proof</SectionLabel>
+        <SectionLabel>04 / Selected proof</SectionLabel>
         <h2 id="work-title">A real business. A working digital journey.</h2>
         <div>
           <p className="body-large">{barberProject.title} / {barberProject.location}</p>
@@ -293,7 +275,7 @@ export function Build() {
   return (
     <section id="build" className="site-section building-practice" aria-labelledby="build-title">
       <div className="section-intro building-practice__intro">
-        <SectionLabel>04 / Building practice</SectionLabel>
+        <SectionLabel>05 / Building practice</SectionLabel>
         <h2 id="build-title">Start with the need. Find the useful form.</h2>
         <div>
           <p className="body-large">A website, AI product, automation or interface should begin with the job it needs to do.</p>
@@ -314,7 +296,7 @@ export function Malera() {
   return (
     <section className="site-section malera-practice" aria-labelledby="malera-title">
       <DeferredLetterGlitch />
-      <SectionLabel>05 / Professional practice</SectionLabel>
+      <SectionLabel>06 / Professional practice</SectionLabel>
       <div className="malera-practice__relationship" aria-label="Relationship between Enis Qetaj and Malera Studio">
         <div>
           <span>Person</span>
@@ -349,7 +331,7 @@ export function Contact() {
   return (
     <section id="contact" className="site-section contact-chapter" aria-labelledby="contact-title">
       <div className="contact-chapter__intro">
-        <SectionLabel>06 / Start a conversation</SectionLabel>
+        <SectionLabel>07 / Start a conversation</SectionLabel>
         <h2 id="contact-title">Bring the context.<br />We’ll find the useful form.</h2>
         <p>For selected freelance projects, digital products, websites, automation and research interfaces.</p>
       </div>

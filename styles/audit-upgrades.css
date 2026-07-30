@@ -1,68 +1,3 @@
-.crypto-training {
-  display: grid;
-  grid-template-columns: 3fr 5fr 4fr;
-  gap: var(--space-6);
-  align-items: start;
-  margin-top: clamp(3rem, 7vw, 7rem);
-  padding-block: clamp(2rem, 5vw, 4.5rem);
-  border-block: 1px solid var(--border-strong);
-}
-
-.crypto-training__identity {
-  display: grid;
-  gap: var(--space-3);
-}
-
-.crypto-training__identity > p:not(.section-label) {
-  font-family: var(--font-editorial);
-  font-size: var(--text-h3);
-  line-height: 1;
-}
-
-.crypto-training__identity > span {
-  color: var(--text-muted);
-  font-size: var(--text-caption);
-}
-
-.crypto-training__statement {
-  display: grid;
-  gap: var(--space-4);
-}
-
-.crypto-training__statement h3 {
-  max-width: 18ch;
-  font-family: var(--font-editorial);
-  font-size: clamp(2rem, 3.6vw, 4rem);
-  font-weight: 400;
-  letter-spacing: -0.045em;
-  line-height: 0.98;
-}
-
-.crypto-training__statement p {
-  max-width: 60ch;
-  color: var(--text-secondary);
-}
-
-.crypto-training > ul {
-  border-top: 1px solid var(--border-strong);
-  list-style: none;
-}
-
-.crypto-training > ul li {
-  display: grid;
-  grid-template-columns: 2.5rem 1fr;
-  gap: var(--space-3);
-  min-height: 3.25rem;
-  align-items: center;
-  border-bottom: 1px solid var(--border);
-  color: var(--text-secondary);
-}
-
-.crypto-training > ul span {
-  color: var(--accent);
-  font-size: var(--text-meta);
-}
-
 .education-profile {
   display: grid;
   grid-template-columns: 5fr 7fr;
@@ -230,50 +165,10 @@
   border-color: var(--accent);
 }
 
-@media (max-width: 1023px) {
-  .crypto-training {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .crypto-training > ul {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .crypto-training > ul li {
-    padding-inline: var(--space-3);
-    border-right: 1px solid var(--border);
-  }
-
-  .crypto-training > ul li:last-child {
-    border-right: 0;
-  }
-}
-
 @media (max-width: 767px) {
-  .crypto-training,
   .education-profile,
   .privacy-consent {
     grid-template-columns: 1fr;
-  }
-
-  .crypto-training {
-    gap: var(--space-6);
-  }
-
-  .crypto-training__statement h3 {
-    font-size: clamp(2.5rem, 12vw, 4rem);
-  }
-
-  .crypto-training > ul {
-    grid-column: 1;
-    grid-template-columns: 1fr;
-  }
-
-  .crypto-training > ul li {
-    padding-inline: 0;
-    border-right: 0;
   }
 
   .education-profile__credential > div {

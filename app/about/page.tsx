@@ -91,7 +91,7 @@ export default function AboutPage() {
             </ul>
             <article className="education-profile__credential">
               <div>
-                <p>Completed course</p>
+                <p>Completed curriculum</p>
                 <span>{cryptoEducation.provider}</span>
               </div>
               <h3>{cryptoEducation.credential}</h3>
