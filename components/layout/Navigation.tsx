@@ -183,7 +183,6 @@ export function Navigation() {
         </nav>
 
         <div className="masthead-actions">
-          <p className="masthead-place"><i aria-hidden="true" /> Kosovo</p>
           <ThemeToggle />
           <button
             ref={triggerRef}

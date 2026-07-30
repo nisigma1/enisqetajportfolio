@@ -51,7 +51,7 @@ export function Hero() {
 
       <div className="dispatch-hero__primary">
         <div className="dispatch-hero__identity">
-          <p className="dispatch-hero__issue"><span>The Research Dispatch</span><span>01 / 2026</span></p>
+          <p className="dispatch-hero__issue"><span>The Research Dispatch</span></p>
           <h1 id="identity-title">
             <TextRepel
               text="Enis Qetaj"

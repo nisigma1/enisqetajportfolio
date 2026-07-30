@@ -134,10 +134,6 @@
   color: var(--text-primary);
 }
 
-.dispatch-hero__issue span:last-child {
-  color: var(--accent);
-}
-
 .dispatch-hero h1 {
   display: block;
   max-width: 100%;

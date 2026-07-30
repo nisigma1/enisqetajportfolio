@@ -57,12 +57,14 @@
 }
 
 .hixhame-preview__lead h3 {
-  font-family: var(--font-identity);
-  font-size: clamp(4rem, 9vw, 8.5rem);
-  font-weight: 800;
-  letter-spacing: -0.085em;
-  line-height: 0.78;
-  text-transform: uppercase;
+  max-width: 9ch;
+  color: var(--text-primary);
+  font-family: var(--font-editorial);
+  font-size: clamp(3.25rem, 5.8vw, 6.25rem);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 0.9;
+  text-wrap: balance;
 }
 
 .hixhame-preview__lead > div:first-child > p {
@@ -435,7 +437,8 @@
   }
 
   .hixhame-preview__lead h3 {
-    font-size: clamp(3.5rem, 17vw, 5.5rem);
+    max-width: 10ch;
+    font-size: clamp(2.9rem, 13vw, 4.2rem);
   }
 
   .hixhame-preview__lead > div:first-child > p {
