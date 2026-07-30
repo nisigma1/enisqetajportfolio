@@ -1794,20 +1794,13 @@
     opacity: 0.44;
   }
 
-  /* Touch devices receive the finished portrait immediately. The staggered
-     pixel reveal and continuously painted conic border remain desktop
-     signatures, where they do not compete with mobile LCP. */
-  .pixel-image__source {
-    filter: none;
-  }
-
-  .pixel-image__piece {
-    display: none;
-  }
-
+  /* Keep the portrait interaction visually identical across input types:
+     grayscale foundation, staggered color tiles and an orbiting blue edge. */
   .author-artifact {
-    animation: none;
-    border-color: color-mix(in srgb, var(--accent) 58%, var(--border-strong));
+    animation-duration: 4.6s;
+    box-shadow:
+      0 0 0 1px rgb(75 112 255 / 16%),
+      0 0 1.35rem rgb(49 91 255 / 18%);
   }
 
   [data-theme="light"] .portfolio-pixel-field {
