@@ -430,16 +430,30 @@
   width: 2.75rem;
   place-items: center;
   overflow: hidden;
+  isolation: isolate;
+  color: var(--text-primary);
+  transition: border-color var(--motion-fast) var(--ease), background var(--motion-fast) var(--ease), color var(--motion-fast) var(--ease), transform var(--motion-fast) var(--ease);
 }
 
-.theme-toggle-track {
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.theme-toggle:active {
+  transform: scale(0.94);
+}
+
+.animated-theme-toggler__icons {
   position: relative;
   display: block;
   width: 1.2rem;
   height: 1.2rem;
 }
 
-.theme-toggle-orb {
+.animated-theme-toggler__icons svg {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -447,13 +461,32 @@
   fill: none;
   stroke: currentColor;
   stroke-width: 1.8;
-  transition: opacity var(--motion-fast) var(--ease), transform var(--motion-fast) var(--ease);
+  transition: opacity 260ms var(--ease), transform 360ms var(--transition-ease);
 }
 
-:root[data-theme="dark"] .theme-toggle-sun,
-:root:not([data-theme="dark"]) .theme-toggle-moon {
+:root[data-theme="dark"] .animated-theme-toggler__moon,
+:root:not([data-theme="dark"]) .animated-theme-toggler__sun {
   opacity: 0;
-  transform: scale(0.6);
+  transform: scale(0.55) rotate(-90deg);
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+html[data-magicui-theme-vt="active"]::view-transition-new(root) {
+  z-index: 9999;
+  clip-path: var(--magicui-theme-vt-clip-from);
+}
+
+html[data-magicui-theme-vt="active"]::view-transition-old(root) {
+  z-index: 1;
+}
+
+html[data-magicui-theme-vt="active"]::view-transition-group(root) {
+  animation-duration: var(--magicui-theme-toggle-vt-duration);
 }
 
 .menu-button {
