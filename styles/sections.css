@@ -952,6 +952,14 @@
 }
 
 /* Selected work */
+.selected-work__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: flex-end;
+  margin-top: var(--space-5);
+}
+
 .case-story {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));

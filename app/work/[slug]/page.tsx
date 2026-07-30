@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { BarberBrothersShowcase } from "@/components/showcase/BarberBrothersShowcase";
 import { ProjectMedia } from "@/components/media/ProjectMedia";
 import { ActionMark } from "@/components/ui/ActionMark";
 import { barberProject, hixhameProject, media, siteConfig } from "@/data/site";
@@ -34,7 +35,7 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
   if (!project) notFound();
   const canonical = project.seo.path;
   const image = slug === barberProject.slug
-    ? [{ url: media.barber.exterior.src, width: media.barber.exterior.width, height: media.barber.exterior.height, alt: "Barber Brothers service and barber booking interface" }]
+    ? [{ url: "/projects/barber-brothers/barber-brothers-og.webp", width: 1200, height: 630, alt: "Barber Brothers premium website and booking case study" }]
     : [ogImage()];
   return {
     title: project.seo.title,
@@ -110,22 +111,12 @@ function BarberCaseStudy() {
         </div>
       </header>
 
-      <ProjectMedia
-        src={media.barber.exterior.src}
-        alt="Barber Brothers service and barber booking interface"
-        width={media.barber.exterior.width}
-        height={media.barber.exterior.height}
-        focalPoint={media.barber.exterior.focalPoint}
-        mode="landscape"
-        caption="01 / Context — a real barber business in Fushë Kosovë"
-        priority
-        className="case-study__lead"
-      />
+      <BarberBrothersShowcase priority />
 
       <section className="case-study__chapter">
         <div><p>02 / Product idea</p><h2>A clearer path from interest to booking.</h2></div>
         <div>
-          <p>The digital experience connects the business identity and service information with an understandable appointment journey.</p>
+          <p>The digital experience connects the Barber Brothers identity, real work and space with an understandable appointment journey.</p>
           <ul>{barberProject.knownFeatures.map((item) => <li key={item}>{item}</li>)}</ul>
         </div>
       </section>
@@ -142,7 +133,7 @@ function BarberCaseStudy() {
         </ol>
       </section>
 
-      <section className="case-study__media-pair">
+      <section className="case-study__media-pair case-study__media-pair--legacy" hidden aria-hidden="true">
         <ProjectMedia
           src={media.barber.interior.src}
           alt="Interior of Barber Brothers in Fushë Kosovë"

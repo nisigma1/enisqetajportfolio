@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ProjectMedia } from "@/components/media/ProjectMedia";
 import { ActionMark } from "@/components/ui/ActionMark";
-import { barberProject, hixhameProject, media, siteConfig } from "@/data/site";
+import { barberProject, hixhameProject, siteConfig } from "@/data/site";
 import { ogImage, routeSeo } from "@/lib/seo";
 
 const description = routeSeo.work.description;
@@ -31,11 +31,10 @@ export default function WorkArchive() {
 
       <article className="work-feature">
         <ProjectMedia
-          src={media.barber.exterior.src}
-          alt="Barber Brothers exterior in Fushë Kosovë"
-          width={media.barber.exterior.width}
-          height={media.barber.exterior.height}
-          focalPoint={media.barber.exterior.focalPoint}
+          src="/projects/barber-brothers/barber-brothers-cover.webp"
+          alt="Barber Brothers premium website and booking case study"
+          width={1600}
+          height={900}
           mode="landscape"
           priority
         />

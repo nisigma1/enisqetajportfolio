@@ -126,9 +126,11 @@ test("publishes project metadata and correct intrinsic media dimensions", async 
       `rel="canonical" href="${publicOrigin.replaceAll(".", "\\.")}/work/barber-brothers"`,
     ),
   );
-  assert.match(html, /width="1023" height="1537"/);
-  assert.match(html, /width="1086" height="1448"/);
-  assert.match(html, /width="1200" height="960"/);
+  assert.match(html, /projects\/barber-brothers\/barber-brothers-og\.webp/);
+  assert.match(html, /width="1440" height="900"/);
+  assert.match(html, /width="840" height="1200"/);
+  assert.match(html, /width="1136" height="486"/);
+  assert.match(html, /width="576" height="710"/);
 });
 
 test("publishes the research framework without inventing research notes", async () => {

@@ -10,6 +10,7 @@ import {
   researchMethod,
 } from "@/data/site";
 import { ProjectMedia } from "@/components/media/ProjectMedia";
+import { BarberBrothersShowcase } from "@/components/showcase/BarberBrothersShowcase";
 import { ActionMark } from "@/components/ui/ActionMark";
 import { PixelImage } from "@/components/ui/PixelImage";
 import { TextRepel } from "@/components/ui/TextRepel";
@@ -170,7 +171,7 @@ export function Markets() {
   );
 }
 
-export function Work() {
+export function LegacyWork() {
   return (
     <section id="work" className="site-section selected-work" aria-labelledby="work-title">
       <div className="section-intro selected-work__intro">
@@ -237,6 +238,32 @@ export function Work() {
             <Link className="button button--quiet" href={`/work/${barberProject.slug}`}>Read the case study <ActionMark direction="forward" /></Link>
           </div>
         </article>
+      </div>
+    </section>
+  );
+}
+
+export function Work() {
+  return (
+    <section id="work" className="site-section selected-work" aria-labelledby="work-title">
+      <div className="section-intro selected-work__intro">
+        <SectionLabel>03 / Selected proof</SectionLabel>
+        <h2 id="work-title">A real business. A working digital journey.</h2>
+        <div>
+          <p className="body-large">{barberProject.title} / {barberProject.location}</p>
+          <p>{barberProject.description}</p>
+        </div>
+      </div>
+
+      <BarberBrothersShowcase />
+      <div className="selected-work__actions">
+        <a className="button button--primary" href={barberProject.url} target="_blank" rel="noreferrer">
+          Visit live site <ActionMark direction="external" />
+          <span className="visually-hidden"> (opens in a new tab)</span>
+        </a>
+        <Link className="button button--quiet" href={`/work/${barberProject.slug}`}>
+          Read the case study <ActionMark direction="forward" />
+        </Link>
       </div>
     </section>
   );
