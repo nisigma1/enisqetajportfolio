@@ -35,6 +35,20 @@ function CurriculumIntroduction() {
         <span aria-hidden="true" />
         Completed curriculum
       </p>
+      <dl className="curriculum-introduction__facts" aria-label="Curriculum overview">
+        <div>
+          <dt>Modules</dt>
+          <dd>11</dd>
+        </div>
+        <div>
+          <dt>Learning tracks</dt>
+          <dd>03</dd>
+        </div>
+        <div>
+          <dt>Focus</dt>
+          <dd>Applied markets</dd>
+        </div>
+      </dl>
       <p className="curriculum-introduction__relevance">
         This curriculum built the foundation for how I approach crypto markets:
         understand the technology, analyze the asset, manage risk and interpret
@@ -64,7 +78,7 @@ function CurriculumModule({
       <button
         type="button"
         aria-expanded={active}
-        aria-controls="curriculum-active-detail"
+        aria-controls={`curriculum-module-panel-${module.id} curriculum-active-detail`}
         onClick={() => onSelect(module)}
       >
         <span className="curriculum-module__number">{module.number}</span>
@@ -72,6 +86,13 @@ function CurriculumModule({
         <span className="curriculum-module__track">{track.label}</span>
         <span className="curriculum-module__state" aria-hidden="true" />
       </button>
+      <div
+        id={`curriculum-module-panel-${module.id}`}
+        className="curriculum-module__mobile-detail"
+        hidden={!active}
+      >
+        <CurriculumDetailContent module={module} />
+      </div>
     </li>
   );
 }
@@ -113,6 +134,30 @@ function CurriculumTrack({
   );
 }
 
+function CurriculumDetailContent({
+  module,
+}: {
+  module: CryptoCurriculumModule;
+}) {
+  return (
+    <>
+      <h3 className="curriculum-detail__title">{module.title}</h3>
+      <div>
+        <p>What it covers</p>
+        <p>{module.summary}</p>
+      </div>
+      <div>
+        <p>Why it matters</p>
+        <p>{module.whyItMatters}</p>
+      </div>
+      <p className="curriculum-detail__status">
+        <span aria-hidden="true" />
+        Completed module
+      </p>
+    </>
+  );
+}
+
 function CurriculumModuleDetails({
   module,
   track,
@@ -131,19 +176,7 @@ function CurriculumModuleDetails({
         <span>Module {module.number}</span>
         <span>{track.label}</span>
       </div>
-      <h3>{module.title}</h3>
-      <div>
-        <p>What it covers</p>
-        <p>{module.summary}</p>
-      </div>
-      <div>
-        <p>Why it matters</p>
-        <p>{module.whyItMatters}</p>
-      </div>
-      <p className="curriculum-detail__status">
-        <span aria-hidden="true" />
-        Completed module
-      </p>
+      <CurriculumDetailContent module={module} />
     </aside>
   );
 }

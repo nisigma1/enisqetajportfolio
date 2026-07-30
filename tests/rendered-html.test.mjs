@@ -42,6 +42,11 @@ test("server-renders the complete identity homepage", async () => {
   assert.match(html, /Crypto School/);
   assert.match(html, /Crypto Markets Curriculum/);
   assert.match(html, /A structured foundation in crypto markets/);
+  assert.match(html, /Curriculum overview/);
+  assert.equal(
+    [...html.matchAll(/class="curriculum-module__mobile-detail"/g)].length,
+    11,
+  );
   for (const moduleTitle of [
     "Blockchain Basics",
     "Bitcoin",
