@@ -442,7 +442,7 @@ export function TextRepel({
       data-reduced-motion={reducedMotion ? "true" : undefined}
       data-active={active ? "true" : undefined}
       data-coarse-pointer={coarsePointer ? "true" : undefined}
-      aria-label={keyboardEnabled ? text : undefined}
+      aria-label={text}
       aria-describedby={keyboardEnabled ? instructionsId : undefined}
       tabIndex={
         keyboardEnabled
@@ -461,10 +461,6 @@ export function TextRepel({
       onKeyDown={handleKeyDown}
       {...props}
     >
-      {!keyboardEnabled ? (
-        <span className="visually-hidden">{text}</span>
-      ) : null}
-
       {tokens.map((token, tokenIndex) =>
         /^\s+$/.test(token) ? (
           <span

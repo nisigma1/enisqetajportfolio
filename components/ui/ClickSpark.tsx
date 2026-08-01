@@ -43,6 +43,7 @@ export function ClickSpark({
   const resizeCanvasRef = useRef<() => void>(() => undefined);
   const canvasReadyRef = useRef(false);
   const reducedMotionRef = useRef(false);
+  const coarsePointerRef = useRef(false);
 
   const ease = useCallback((progress: number) => {
     switch (easing) {
@@ -155,8 +156,10 @@ export function ClickSpark({
     if (canvasReadyRef.current) resizeCanvas();
 
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
     const updateMotionPreference = () => {
       reducedMotionRef.current = mediaQuery.matches;
+      coarsePointerRef.current = coarsePointerQuery.matches;
       if (!mediaQuery.matches) return;
 
       sparksRef.current = [];
@@ -173,11 +176,13 @@ export function ClickSpark({
       passive: true,
     });
     mediaQuery.addEventListener("change", updateMotionPreference);
+    coarsePointerQuery.addEventListener("change", updateMotionPreference);
 
     return () => {
       window.removeEventListener("resize", resizeCanvas);
       window.visualViewport?.removeEventListener("resize", resizeCanvas);
       mediaQuery.removeEventListener("change", updateMotionPreference);
+      coarsePointerQuery.removeEventListener("change", updateMotionPreference);
       if (animationFrameRef.current !== null) {
         window.cancelAnimationFrame(animationFrameRef.current);
       }
@@ -186,7 +191,7 @@ export function ClickSpark({
   }, [clearCanvas]);
 
   const handleClick = (event: MouseEvent<HTMLDivElement>) => {
-    if (reducedMotionRef.current) return;
+    if (reducedMotionRef.current || coarsePointerRef.current) return;
 
     if (!canvasReadyRef.current) {
       canvasReadyRef.current = true;

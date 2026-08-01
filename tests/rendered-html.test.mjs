@@ -36,7 +36,8 @@ test("server-renders the complete identity homepage", async () => {
     (html.match(/class="pixel-canvas portfolio-pixel-field"/g) ?? []).length,
     1,
   );
-  assert.match(html, /class="visually-hidden">Enis Qetaj<\/span>/);
+  assert.match(html, /data-text-repel=""[^>]*aria-label="Enis Qetaj"/);
+  assert.doesNotMatch(html, /class="visually-hidden">Enis Qetaj<\/span>/);
   assert.match(html, /<ol class="dispatch-hero__proof" aria-label="Core professional focus">/);
   assert.match(html, /Barber Brothers/);
   assert.match(html, /Crypto School/);

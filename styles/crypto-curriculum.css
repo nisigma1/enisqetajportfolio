@@ -250,6 +250,7 @@
 
 .curriculum-module {
   border-bottom: 1px solid var(--border);
+  scroll-margin-top: calc(var(--masthead-height) + var(--space-4));
 }
 
 .curriculum-module button {
@@ -555,6 +556,48 @@
     display: none;
   }
 
+  .knowledge-spine__tracks {
+    position: relative;
+    padding-left: 3px;
+    border-left: 0;
+  }
+
+  .knowledge-spine__tracks::before {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 3px;
+    background: var(--accent);
+    content: "";
+    pointer-events: none;
+  }
+
+  .curriculum-track::before,
+  .curriculum-track[data-track="analysis"]::before,
+  .curriculum-track[data-track="systems"]::before {
+    z-index: 2;
+    top: 1.92rem;
+    bottom: auto;
+    left: -2px;
+    width: 0.62rem;
+    height: 0.62rem;
+    border: 2px solid var(--background);
+    background: var(--accent);
+    transform: translate(-50%, -50%);
+  }
+
+  .curriculum-track[data-track="analysis"]::before {
+    border: 2px solid var(--accent);
+    background: var(--background);
+  }
+
+  .curriculum-track[data-track="systems"]::before {
+    border-color: var(--background);
+    background: linear-gradient(135deg, var(--accent) 50%, var(--background) 50%);
+  }
+
   .curriculum-track > header {
     grid-template-columns: 2.25rem minmax(0, 1fr) auto;
     min-height: 4.5rem;
@@ -569,6 +612,36 @@
   .curriculum-module button {
     min-height: 4.75rem;
     padding-inline: var(--space-4);
+  }
+
+  .curriculum-module__state {
+    position: relative;
+    width: 1rem;
+    height: 1rem;
+    border: 0;
+    background: transparent !important;
+  }
+
+  .curriculum-module__state::before,
+  .curriculum-module__state::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0.72rem;
+    height: 1px;
+    background: var(--accent);
+    content: "";
+    transform: translate(-50%, -50%);
+    transition: opacity 160ms ease, transform 160ms ease;
+  }
+
+  .curriculum-module__state::after {
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+
+  .curriculum-module[data-active="true"] .curriculum-module__state::after {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(0deg);
   }
 
   .curriculum-module[data-active="true"] button {
@@ -633,6 +706,19 @@
   .crypto-curriculum__closing {
     margin-top: 0;
     font-size: clamp(1.55rem, 7vw, 2rem);
+  }
+}
+
+@media (max-width: 479px) {
+  .curriculum-track > header {
+    grid-template-columns: 2.2rem minmax(0, 1fr);
+    row-gap: 0.25rem;
+    min-height: 5rem;
+  }
+
+  .curriculum-track > header > p {
+    grid-column: 2;
+    font-size: 0.64rem;
   }
 }
 

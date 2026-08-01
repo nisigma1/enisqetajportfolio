@@ -566,6 +566,12 @@
     font-size: 0.75rem;
   }
 
+  .bb-showcase__details a {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+  }
+
   .bb-showcase__details small {
     font-size: 0.58rem;
   }
@@ -603,6 +609,10 @@
 
   .bb-showcase__booking h4 {
     font-size: 1.6rem;
+  }
+
+  .bb-showcase__booking > a {
+    min-height: 2.75rem;
   }
 
   .bb-showcase__booking header span {
