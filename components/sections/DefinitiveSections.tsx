@@ -12,6 +12,7 @@ import {
 import { ProjectMedia } from "@/components/media/ProjectMedia";
 import { BarberBrothersShowcase } from "@/components/showcase/BarberBrothersShowcase";
 import { HixhameTinaPreview } from "@/components/showcase/HixhameTinaPreview";
+import { BesianaPhotographyPreview } from "@/components/showcase/BesianaPhotographyPreview";
 import { ActionMark } from "@/components/ui/ActionMark";
 import { PixelImage } from "@/components/ui/PixelImage";
 import { TextRepel } from "@/components/ui/TextRepel";
@@ -267,6 +268,7 @@ export function Work() {
         </Link>
       </div>
       <HixhameTinaPreview variant="homepage" />
+      <BesianaPhotographyPreview variant="homepage" />
     </section>
   );
 }

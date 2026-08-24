@@ -1,4 +1,4 @@
-import { barberProject, hixhameProject, identity, malera, marketInterests, media, siteConfig } from "@/data/site";
+import { barberProject, besianaProject, hixhameProject, identity, malera, marketInterests, media, siteConfig } from "@/data/site";
 
 export const canonicalOrigin = siteConfig.url;
 
@@ -30,7 +30,7 @@ export const routeSeo = {
     path: "/work",
     title: "Selected Work | Enis Qetaj",
     description:
-      "Selected digital work by Enis Qetaj, including Barber Brothers, Hixhame Tina and products built through Malera Studio.",
+      "Selected digital work by Enis Qetaj, including Barber Brothers, Hixhame Tina, Besiana Photography and products built through Malera Studio.",
   },
   barber: {
     path: `/work/${barberProject.slug}`,
@@ -42,6 +42,11 @@ export const routeSeo = {
     title: "Hixhame Tina Case Study | Enis Qetaj",
     description:
       "A responsive website and digital identity for Hixhame Tina, a women-only Hijama service in Prishtina, designed around privacy, trust and direct booking.",
+  },
+  besiana: {
+    path: `/work/${besianaProject.slug}`,
+    title: "Besiana Photography Website | Enis Qetaj",
+    description: besianaProject.description,
   },
   build: {
     path: "/build",
@@ -145,6 +150,7 @@ export const publicRoutes = [
   routeSeo.work,
   routeSeo.barber,
   routeSeo.hixhame,
+  routeSeo.besiana,
   routeSeo.build,
   routeSeo.contact,
 ] as const;

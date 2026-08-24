@@ -6,7 +6,7 @@ import { HixhameTinaCaseStudy } from "@/components/showcase/HixhameTinaCaseStudy
 import { ProjectMedia } from "@/components/media/ProjectMedia";
 import { ActionMark } from "@/components/ui/ActionMark";
 import { StructuredData } from "@/components/seo/StructuredData";
-import { barberProject, hixhameProject, media, siteConfig } from "@/data/site";
+import { barberProject, besianaProject, hixhameProject, media, siteConfig } from "@/data/site";
 import { baseStructuredData, ogImage, routeSeo } from "@/lib/seo";
 
 type ProjectPageProps = { params: Promise<{ slug: string }> };
@@ -25,6 +25,11 @@ const projects = {
     seo: routeSeo.hixhame,
     number: "02",
   },
+  [besianaProject.slug]: {
+    data: besianaProject,
+    seo: routeSeo.besiana,
+    number: "03",
+  },
 } as const;
 
 export function generateStaticParams() {
@@ -40,13 +45,19 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
     ? [{ url: "/projects/barber-brothers/barber-brothers-og.webp?v=20260730", width: 1200, height: 630, alt: "Barber Brothers premium website and booking case study" }]
     : slug === hixhameProject.slug
       ? [{ url: "/projects/hixhame-tina/hixhame-tina-case-study.webp", width: 1672, height: 941, alt: "Hixhame Tina women-only Hijama website shown on desktop and mobile" }]
-      : [ogImage()];
+      : slug === besianaProject.slug
+        ? [{ url: "/projects/besiana-photography/besiana-photography-og.jpg", width: 1200, height: 630, alt: "Besiana Photography website preview" }]
+        : [ogImage()];
   const socialTitle = slug === hixhameProject.slug
     ? "Hixhame Tina — Website Case Study"
-    : project.seo.title;
+    : slug === besianaProject.slug
+      ? "Besiana Photography — Website Case Study"
+      : project.seo.title;
   const socialDescription = slug === hixhameProject.slug
     ? "A women-focused wellness website combining calm visual direction, responsive design and direct appointment booking."
-    : project.seo.description;
+    : slug === besianaProject.slug
+      ? "A story-led photography website for weddings, portraits, events and businesses in Kosovo."
+      : project.seo.description;
   return {
     title: project.seo.title,
     description: project.seo.description,
@@ -143,6 +154,35 @@ function BarberCaseStudy() {
   );
 }
 
+function BesianaCaseStudy() {
+  return (
+    <main id="main" className="route-page case-study">
+      <header className="case-study__hero">
+        <div>
+          <p>Selected work / 03</p>
+          <h1>Besiana<br />Photography</h1>
+        </div>
+        <div>
+          <p>{besianaProject.description}</p>
+          <a className="button button--primary" href={besianaProject.url} target="_blank" rel="noopener noreferrer">
+            Visit Besiana Photography <ActionMark direction="external" />
+            <span className="visually-hidden"> (opens in a new tab)</span>
+          </a>
+        </div>
+      </header>
+      <img className="case-study__hero-image" src="/projects/besiana-photography/besiana-photography-og.jpg" alt="Besiana Photography website preview" width={1200} height={630} />
+      <section className="case-study__chapter">
+        <div><p>02 / Website direction</p><h2>Let the work lead the story.</h2></div>
+        <div><p>The experience gives photography room to breathe while keeping services and contact paths clear across devices.</p><ul>{besianaProject.knownFeatures.map((item) => <li key={item}>{item}</li>)}</ul></div>
+      </section>
+      <section className="case-study__close">
+        <div><p>03 / Live product</p><h2>A real photography website, ready to explore.</h2></div>
+        <div><a className="button button--primary" href={besianaProject.url} target="_blank" rel="noopener noreferrer">Visit live website <ActionMark direction="external" /></a><Link className="button button--quiet" href="/contact">Start a conversation <ActionMark direction="forward" /></Link></div>
+      </section>
+    </main>
+  );
+}
+
 export default async function ProjectPage({ params }: ProjectPageProps) {
   const { slug } = await params;
   const project = projects[slug as keyof typeof projects];
@@ -150,7 +190,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <>
-      {slug === barberProject.slug ? <BarberCaseStudy /> : <HixhameCaseStudy />}
+      {slug === barberProject.slug ? <BarberCaseStudy /> : slug === hixhameProject.slug ? <HixhameCaseStudy /> : <BesianaCaseStudy />}
       <StructuredData data={baseStructuredData(project.seo)} />
     </>
   );

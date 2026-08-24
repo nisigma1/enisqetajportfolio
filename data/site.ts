@@ -305,6 +305,22 @@ export const hixhameProject = {
   locales: ["Albanian", "English", "German", "French", "Turkish", "Italian"],
 } as const;
 
+export const besianaProject = {
+  title: "Besiana Photography",
+  slug: "besiana-photography",
+  category: "Website / Photography",
+  url: "https://besianaphotography.com/",
+  location: "Kosovo",
+  description:
+    "A warm, story-led photography website for Besiana Photography, designed to make real moments, services and contact paths feel easy to explore.",
+  knownFeatures: [
+    "Wedding, engagement and event photography",
+    "Portrait, family and business sessions",
+    "Responsive visual portfolio",
+    "Direct WhatsApp contact",
+  ],
+} as const;
+
 export const projectMedia = [
   {
     id: "barber-place",

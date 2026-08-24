@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ProjectMedia } from "@/components/media/ProjectMedia";
 import { HixhameTinaPreview } from "@/components/showcase/HixhameTinaPreview";
+import { BesianaPhotographyPreview } from "@/components/showcase/BesianaPhotographyPreview";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { ActionMark } from "@/components/ui/ActionMark";
 import { barberProject, siteConfig } from "@/data/site";
@@ -50,6 +51,7 @@ export default function WorkArchive() {
       </article>
 
       <HixhameTinaPreview />
+      <BesianaPhotographyPreview />
       </main>
       <StructuredData data={baseStructuredData(routeSeo.work)} />
     </>
