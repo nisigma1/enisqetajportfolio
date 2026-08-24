@@ -447,7 +447,8 @@
 }
 
 .crypto-curriculum__closing {
-  grid-column: 1 / -1;
+  grid-column: 2 / -1;
+  max-width: 48ch;
   margin-top: clamp(1rem, 3vw, 3rem);
   padding-top: var(--space-5);
   border-top: 1px solid var(--border);
