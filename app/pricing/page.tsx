@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element -- User-provided research-note captures stay as local, unmodified proof images. */
 import type { Metadata } from "next";
 import Link from "next/link";
 import { InnerPageShell } from "@/components/layout/InnerPageShell";
@@ -110,6 +111,39 @@ export default function PricingPage() {
               ].map((topic) => <li key={topic}>{topic}</li>)}
             </ul>
           </article>
+        </section>
+
+        <section className="inner-section research-notes" aria-labelledby="research-notes-title">
+          <header className="inner-section__header">
+            <p className="inner-section__label">05 / Research notes</p>
+            <h2 id="research-notes-title">Selected market observations.</h2>
+            <p>Two public research notes shared through NISIGMA on X. These are examples of market context, not trade signals or financial advice.</p>
+          </header>
+          <div className="research-notes__grid">
+            {[
+              {
+                image: "/images/research-notes/susdt-weekly-note.png",
+                alt: "NISIGMA X post outlining a possible SUSDT weekly market scenario",
+                label: "SUSDT weekly scenario",
+              },
+              {
+                image: "/images/research-notes/bitcoin-mvrv-note.png",
+                alt: "NISIGMA X post discussing Bitcoin MVRV Z-score market context",
+                label: "Bitcoin MVRV context",
+              },
+            ].map((note) => (
+              <article key={note.image} className="research-note">
+                <a href="https://x.com/N1sigma" target="_blank" rel="noopener noreferrer" aria-label={`Open ${note.label} on X`}>
+                  <div className="research-note__source">
+                    <span><b>NISIGMA</b><small>@N1sigma</small></span>
+                    <span className="research-note__x" aria-hidden="true">𝕏</span>
+                  </div>
+                  <img src={note.image} alt={note.alt} width={587} height={518} loading="lazy" decoding="async" />
+                  <span className="research-note__footer">View research on X <ActionMark direction="external" /></span>
+                </a>
+              </article>
+            ))}
+          </div>
         </section>
 
         <aside className="analysis-disclaimer" aria-label="Market research disclaimer">
