@@ -17,7 +17,7 @@ export const routeSeo = {
   background: {
     path: "/background",
     title: "Background | Enis Qetaj",
-    description: "The marketing, banking and finance, and crypto-markets background of Enis Qetaj.",
+    description: "Education, skills and professional foundation of Enis Qetaj across Marketing, Banking & Finance and Crypto Markets.",
   },
   research: {
     path: "/research",
@@ -52,6 +52,16 @@ export const routeSeo = {
     path: "/malera",
     title: "Malera Studio | Enis Qetaj",
     description: "Malera Studio builds websites, digital products, automation and AI systems through a focused product practice.",
+  },
+  companies: {
+    path: "/companies",
+    title: "Companies | Enis Qetaj",
+    description: "Companies and digital ventures connected to Enis Qetaj, including Malera Studio.",
+  },
+  pricing: {
+    path: "/pricing",
+    title: "Crypto Market Analysis Pricing | Enis Qetaj",
+    description: "Monthly crypto market analysis plans covering technical, fundamental and on-chain research, research assistance and live market sessions.",
   },
   besiana: {
     path: `/work/${besianaProject.slug}`,
@@ -156,6 +166,8 @@ export const publicRoutes = [
   routeSeo.home,
   routeSeo.about,
   routeSeo.background,
+  routeSeo.companies,
+  routeSeo.pricing,
   routeSeo.research,
   routeSeo.markets,
   routeSeo.work,

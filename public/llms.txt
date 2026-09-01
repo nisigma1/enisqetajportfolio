@@ -3,7 +3,7 @@
 > Official portfolio and primary online profile of Enis Qetaj, a Kosovo-based financial-markets researcher, crypto trader and AI product builder.
 
 ## Canonical profile
-- https://enisqetaj.com/about
+- https://enisqetaj.com/background
 
 ## Research
 - https://enisqetaj.com/research
@@ -21,7 +21,14 @@
 - https://enisqetaj.com/work/hixhame-tina
 
 ## Professional practice
+- Companies: https://enisqetaj.com/companies
 - Malera Studio: https://malera.studio/
+
+## Crypto market analysis pricing
+- https://enisqetaj.com/pricing
+- Technical: €30 / month
+- Advanced: €60 / month
+- Complete: €100 / month
 
 ## Contact
 - https://enisqetaj.com/contact

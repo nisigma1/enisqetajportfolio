@@ -1,18 +1,82 @@
+/* eslint-disable @next/next/no-img-element -- Local identity assets use fixed intrinsic dimensions and native lazy loading. */
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CryptoCurriculumSection } from "@/components/education/CryptoCurriculumSection";
 import { ActionMark } from "@/components/ui/ActionMark";
-import { cryptoEducation, identity, marketInterests } from "@/data/site";
+import { backgroundChapters } from "@/data/site";
 import { baseStructuredData, routeSeo } from "@/lib/seo";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = { title: routeSeo.background.title, description: routeSeo.background.description, alternates: { canonical: "/background" }, openGraph: { type: "website", url: "/background", title: routeSeo.background.title, description: routeSeo.background.description }, twitter: { card: "summary", title: routeSeo.background.title, description: routeSeo.background.description } };
+
+export const metadata: Metadata = {
+  title: routeSeo.background.title,
+  description: routeSeo.background.description,
+  alternates: { canonical: "/background" },
+  openGraph: { type: "website", url: "/background", title: routeSeo.background.title, description: routeSeo.background.description },
+  twitter: { card: "summary", title: routeSeo.background.title, description: routeSeo.background.description },
+};
 
 export default function BackgroundPage() {
-  return <><main id="main" className="route-page about-route">
-    <header className="route-hero"><p>Background / Professional progression</p><h1>From markets to useful systems.</h1><div><p>Enis Qetaj’s background brings marketing, banking and finance, and applied crypto-market learning into one connected practice.</p><span>Marketing / Banking &amp; Finance / Crypto Markets</span></div></header>
-    <section className="route-section route-domains" aria-labelledby="background-fields"><div><p>01 / Fields</p><h2 id="background-fields">Three foundations. One way of thinking.</h2></div><ul>{["Marketing", "Banking & Finance", "Crypto Markets"].map((item) => <li key={item}>{item}</li>)}</ul></section>
-    <section className="education-profile" aria-labelledby="background-learning"><header><p>02 / Learning</p><h2 id="background-learning">Formal education and applied market learning.</h2></header><div className="education-profile__degrees"><ul aria-label="Formal education">{identity.education.map((item) => <li key={`${item.degree}-${item.subject}`}>{item.degree} in {item.subject} — {item.status}</li>)}</ul><article className="education-profile__credential"><div><p>Completed curriculum</p><span>{cryptoEducation.provider}</span></div><h3>{cryptoEducation.credential}</h3><p>{cryptoEducation.summary}</p><ul aria-label="Course areas">{cryptoEducation.focus.map((area) => <li key={area}>{area}</li>)}</ul></article></div></section>
-    <section className="route-section route-domains" aria-labelledby="background-research"><div><p>03 / Research frame</p><h2 id="background-research">What the practice keeps in view.</h2></div><ul>{marketInterests.map((area) => <li key={area}>{area}</li>)}</ul></section>
-    <section className="case-study__close"><div><p>04 / Continue</p><h2>See the work built from this foundation.</h2></div><div><Link className="button button--primary" href="/work">View selected work <ActionMark direction="forward" /></Link></div></section>
-  </main><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(baseStructuredData(routeSeo.background)).replace(/</g, "\\u003c") }} /></>;
+  return (
+    <>
+      <main id="main" className="route-page background-route">
+        <header className="route-hero">
+          <p>Background / Knowledge progression</p>
+          <h1>Three fields. One analytical practice.</h1>
+          <div>
+            <p>Marketing established the audience lens. Banking and finance widened the market frame. Crypto markets connected the system to applied research.</p>
+            <span>Marketing → Banking &amp; Finance → Crypto Markets</span>
+          </div>
+        </header>
+
+        <section className="background-progression" aria-labelledby="background-progression-title">
+          <header className="background-progression__intro">
+            <p>01 / Education &amp; practice</p>
+            <h2 id="background-progression-title">Knowledge accumulated through connected chapters.</h2>
+          </header>
+
+          <ol className="background-chapters">
+            {backgroundChapters.map((chapter, index) => (
+              <li key={chapter.field} className="background-chapter">
+                <div className="background-chapter__field">
+                  <span>{chapter.number}</span>
+                  <h3>{chapter.field}</h3>
+                </div>
+
+                <div className="background-chapter__education">
+                  <div>
+                    <p>{chapter.degree}</p>
+                    <strong>{chapter.institution}</strong>
+                    <span>{chapter.faculty}</span>
+                  </div>
+                  {index < 2 ? (
+                    <img src="/images/education/university-of-prishtina.png" width="447" height="447" alt="University of Prishtina seal" loading="lazy" decoding="async" />
+                  ) : (
+                    <img src="/images/crypto-school-logo.webp" width="960" height="538" alt="Crypto School" loading="lazy" decoding="async" />
+                  )}
+                  <p className="background-chapter__status"><span aria-hidden="true" />{chapter.status}</p>
+                </div>
+
+                <div className="background-chapter__practice">
+                  <p>Primary skills</p>
+                  <ul aria-label={`${chapter.field} primary skills`}>
+                    {chapter.skills.map((skill) => <li key={skill}>{skill}</li>)}
+                  </ul>
+                  <div><span>Experience</span><strong>{chapter.experience}</strong></div>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <CryptoCurriculumSection />
+
+        <section className="case-study__close">
+          <div><p>04 / Continue</p><h2>See how the foundation becomes working products.</h2></div>
+          <div><Link className="button button--primary" href="/work">View selected work <ActionMark direction="forward" /></Link></div>
+        </section>
+      </main>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(baseStructuredData(routeSeo.background)).replace(/</g, "\\u003c") }} />
+    </>
+  );
 }

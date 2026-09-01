@@ -1,6 +1,6 @@
 "use client";
 
-import { FocusEvent, FormEvent, useState } from "react";
+import { FocusEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { ActionMark } from "@/components/ui/ActionMark";
 
 type FormState = "idle" | "loading" | "ready" | "error";
@@ -56,6 +56,19 @@ export function ContactForm() {
   const [errors, setErrors] = useState<FieldErrors>({});
   const [mailto, setMailto] = useState<string | null>(null);
   const [copyMessage, setCopyMessage] = useState("");
+  const projectRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const plan = new URLSearchParams(window.location.search).get("plan");
+    const planLabels: Record<string, string> = {
+      technical: "Crypto market analysis — Technical plan (€30 / month)",
+      advanced: "Crypto market analysis — Advanced plan (€60 / month)",
+      complete: "Crypto market analysis — Complete plan (€100 / month)",
+    };
+    if (projectRef.current && plan && planLabels[plan]) {
+      projectRef.current.value = planLabels[plan];
+    }
+  }, []);
 
   function focusFirstError(form: HTMLFormElement, nextErrors: FieldErrors) {
     const firstName = (Object.keys(nextErrors) as FieldName[])[0];
@@ -196,6 +209,7 @@ export function ContactForm() {
       <label className="wide">
         <span>What are you working on?</span>
         <input
+          ref={projectRef}
           name="project"
           type="text"
           minLength={3}

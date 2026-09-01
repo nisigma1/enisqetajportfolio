@@ -9,8 +9,8 @@ export const siteConfig = {
 export const navigation = [
   { label: "Background", href: "/background" },
   { label: "Work", href: "/work" },
-  { label: "Research", href: "/research" },
-  { label: "Malera", href: "/malera" },
+  { label: "Companies", href: "/companies" },
+  { label: "Pricing", href: "/pricing" },
   { label: "Contact", href: "/contact" },
 ] as const;
 
@@ -64,6 +64,72 @@ export const cryptoEducation = {
   summary:
     "Completed Crypto School market training with mentors from Kosovo and North Macedonia, building a more structured way to connect technical, fundamental and on-chain evidence.",
 } as const;
+
+export const backgroundChapters = [
+  {
+    number: "01",
+    field: "Marketing",
+    degree: "Bachelor’s Degree",
+    institution: "University of Prishtina",
+    faculty: "Faculty of Economics",
+    status: "Completed",
+    experience: "4+ years",
+    skills: ["Market Research", "Brand Strategy", "SEO", "Content Creation"],
+  },
+  {
+    number: "02",
+    field: "Banking & Finance",
+    degree: "Master’s Degree",
+    institution: "University of Prishtina",
+    faculty: "Faculty of Economics",
+    status: "In progress",
+    experience: "2+ years",
+    skills: ["Macroeconomics", "Financial Markets", "Financial Analysis", "Risk Management"],
+  },
+  {
+    number: "03",
+    field: "Crypto Markets",
+    degree: "Crypto School",
+    institution: "Applied market learning",
+    faculty: "Crypto markets curriculum",
+    status: "Completed",
+    experience: "2+ years",
+    skills: ["Technical Analysis", "Fundamental Research", "On-Chain Analytics", "Market Research"],
+  },
+] as const;
+
+export const pricingPlans = [
+  {
+    id: "technical",
+    number: "01",
+    name: "Technical",
+    price: 30,
+    duration: "1 month",
+    description: "For traders who want structured technical analysis and support interpreting market structure.",
+    features: ["Technical Analysis", "Chart Analysis", "Market Structure", "Key Technical Levels", "Research Assistance"],
+    liveSessions: "—",
+  },
+  {
+    id: "advanced",
+    number: "02",
+    name: "Advanced",
+    price: 60,
+    duration: "1 month",
+    description: "Combines technical and fundamental research with weekly live discussion and ongoing assistance.",
+    features: ["Technical Analysis", "Fundamental Analysis", "Market Research", "Research Assistance"],
+    liveSessions: "1 / week",
+  },
+  {
+    id: "complete",
+    number: "03",
+    name: "Complete",
+    price: 100,
+    duration: "1 month",
+    description: "The complete research package combining technical, fundamental and on-chain analysis with deeper ongoing support.",
+    features: ["Technical Analysis", "Fundamental Analysis", "On-Chain Analysis", "Market Research", "Research Assistance"],
+    liveSessions: "2 / week",
+  },
+] as const;
 
 export const marketInterests = [
   "Cryptocurrency markets",

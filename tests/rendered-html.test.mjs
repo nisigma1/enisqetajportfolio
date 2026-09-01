@@ -39,39 +39,13 @@ test("server-renders the complete identity homepage", async () => {
   assert.match(html, /data-text-repel=""[^>]*aria-label="Enis Qetaj"/);
   assert.doesNotMatch(html, /class="visually-hidden">Enis Qetaj<\/span>/);
   assert.match(html, /<ol class="dispatch-hero__proof" aria-label="Core professional focus">/);
-  assert.match(html, /Barber Brothers/);
-  assert.match(html, /Crypto School/);
-  assert.match(html, /Crypto Markets Curriculum/);
-  assert.match(html, /A structured foundation in crypto markets/);
-  assert.match(html, /Curriculum overview/);
-  assert.equal(
-    [...html.matchAll(/class="curriculum-module__mobile-detail"/g)].length,
-    11,
-  );
-  for (const moduleTitle of [
-    "Blockchain Basics",
-    "Bitcoin",
-    "Ethereum",
-    "Wallets",
-    "Security",
-    "Fundamental Analysis",
-    "Technical Analysis",
-    "Risk Management",
-    "DeFi",
-    "Market Narratives",
-    "Investment Psychology",
-  ]) {
-    assert.match(html, new RegExp(moduleTitle));
-  }
-  assert.match(html, /A signal is only the beginning/);
-  assert.match(html, /Context circuit/);
-  assert.match(html, /One signal\. A wider decision/);
+  assert.match(html, /Marketing \/ Finance \/ Crypto/);
+  assert.match(html, /Crypto market analysis from €30 \/ month/);
+  assert.match(html, /href="\/background"/);
+  assert.match(html, /href="\/pricing"/);
+  assert.match(html, /href="\/companies"/);
   assert.match(html, /Research/);
   assert.match(html, /Markets/);
-  assert.match(html, /Build/);
-  assert.match(html, /Context/);
-  assert.match(html, /wider decision/);
-  assert.match(html, /href="\/markets"/);
   assert.match(html, /On-chain/);
   assert.match(html, /Research and Analysis/);
   assert.match(html, /Macroeconomics and Geopolitics/);
@@ -80,8 +54,6 @@ test("server-renders the complete identity homepage", async () => {
   assert.match(html, /application\/ld\+json/);
   assert.match(html, /action-mark/);
   assert.match(html, /click-spark__canvas/);
-  assert.match(html, /line-sidebar__list/);
-  assert.match(html, /malera-practice__glitch/);
   assert.match(html, /history\.scrollRestoration='manual'/);
   assert.match(html, /addEventListener\('pageshow'/);
   assert.match(html, /if\(!location\.hash\)scrollTo\(0,0\)/);
@@ -96,16 +68,16 @@ test("server-renders the complete identity homepage", async () => {
   )?.[0];
   assert.ok(primaryNavigation, "primary navigation is present");
   assert.equal((primaryNavigation.match(/<a\b/g) ?? []).length, 5);
-  for (const label of ["Background", "Work", "Research", "Malera", "Contact"]) {
+  for (const label of ["Background", "Work", "Companies", "Pricing", "Contact"]) {
     assert.match(primaryNavigation, new RegExp(`>${label}<`));
   }
-  assert.doesNotMatch(primaryNavigation, />Studio</);
+  assert.doesNotMatch(primaryNavigation, />Research<|>Malera<|>Index</);
 });
 
 test("publishes Crypto School learning without false credential claims", async () => {
   const worker = await getWorker();
   const response = await worker.fetch(
-    new Request("http://localhost/about", {
+    new Request("http://localhost/background", {
       headers: { accept: "text/html" },
     }),
     env,
@@ -113,21 +85,30 @@ test("publishes Crypto School learning without false credential claims", async (
   );
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /Formal education and applied market learning/);
+  assert.match(html, /Bachelor’s Degree/);
+  assert.match(html, /University of Prishtina/);
+  assert.match(html, /Faculty of Economics/);
+  assert.match(html, /4\+ years/);
+  assert.match(html, /Master’s Degree/);
+  assert.match(html, /In progress/);
   assert.match(html, /Crypto School/);
-  assert.match(html, /Technical analysis/);
-  assert.match(html, /Fundamental analysis/);
-  assert.match(html, /On-chain analysis/);
+  assert.match(html, /Crypto Markets Curriculum/);
+  assert.match(html, /Technical Analysis/);
+  assert.match(html, /Fundamental Research/);
+  assert.match(html, /On-Chain Analytics/);
+  assert.equal([...html.matchAll(/class="curriculum-module__mobile-detail"/g)].length, 11);
+  for (const moduleTitle of ["Blockchain Basics", "Bitcoin", "Ethereum", "Wallets", "Security", "Fundamental Analysis", "Technical Analysis", "Risk Management", "DeFi", "Market Narratives", "Investment Psychology"]) {
+    assert.match(html, new RegExp(moduleTitle));
+  }
   assert.doesNotMatch(html, /EducationalOccupationalCredential/);
-  assert.match(html, /enis-qetaj-47a847308/);
-  assert.match(html, /https:\/\/x\.com\/N1sigma/);
-  assert.doesNotMatch(html, /googletagmanager\.com\/gtag/);
-  assert.doesNotMatch(html, /connect\.facebook\.net/);
 });
 
 test("renders indexed public routes with route-specific canonicals", async () => {
   const worker = await getWorker();
   for (const [route, expected] of [
+    ["/background", "Three fields. One analytical practice"],
+    ["/companies", "Malera Studio"],
+    ["/pricing", "Crypto market analysis"],
     ["/about", "About Enis Qetaj"],
     ["/research", "Research by Enis Qetaj"],
     ["/markets", "Crypto markets, macro"],
@@ -231,11 +212,28 @@ test("publishes the research framework without inventing research notes", async 
   assert.equal(sitemap.status, 200);
   const xml = await sitemap.text();
   assert.match(xml, /\/research/);
+  assert.match(xml, /\/background/);
+  assert.match(xml, /\/companies/);
+  assert.match(xml, /\/pricing/);
   assert.match(xml, /\/markets/);
   assert.match(xml, /\/build/);
   assert.match(xml, /\/about/);
   assert.match(xml, /\/work\/barber-brothers/);
   assert.match(xml, /\/work\/hixhame-tina/);
+});
+
+test("publishes three factual monthly pricing plans and request links", async () => {
+  const worker = await getWorker();
+  const response = await worker.fetch(new Request("http://localhost/pricing", { headers: { accept: "text/html" } }), env, ctx);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  for (const [name, price, plan] of [["Technical", "30", "technical"], ["Advanced", "60", "advanced"], ["Complete", "100", "complete"]]) {
+    assert.match(html, new RegExp(name));
+    assert.match(html, new RegExp(`€(?:<!-- -->)?${price}`));
+    assert.match(html, new RegExp(`href="/contact\\?plan=${plan}"`));
+  }
+  assert.match(html, /Market research and educational analysis only/);
+  assert.doesNotMatch(html, /guaranteed|risk-free|best value|most popular/i);
 });
 
 test("contact endpoint validates input and returns a mail fallback", async () => {

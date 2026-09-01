@@ -11,10 +11,9 @@ import {
 test("maps primary and nested routes to the correct active navigation item", () => {
   assert.equal(activeRouteForPathname("/"), "background");
   assert.equal(activeRouteForPathname("/background"), "background");
-  assert.equal(activeRouteForPathname("/research"), "research");
-  assert.equal(activeRouteForPathname("/research/liquidity"), "research");
   assert.equal(activeRouteForPathname("/work/barber-brothers"), "work");
-  assert.equal(activeRouteForPathname("/malera"), "malera");
+  assert.equal(activeRouteForPathname("/companies"), "companies");
+  assert.equal(activeRouteForPathname("/pricing"), "pricing");
   assert.equal(activeRouteForPathname("/contact"), "contact");
 });
 

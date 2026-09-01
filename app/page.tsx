@@ -1,15 +1,11 @@
 import type { Metadata } from "next";
 import {
   About,
-  Build,
   Contact,
   Hero,
-  Malera,
-  Markets,
   PortfolioPixelField,
-  Work,
 } from "@/components/sections/DefinitiveSections";
-import { CryptoCurriculumSection } from "@/components/education/CryptoCurriculumSection";
+import { HomeRouteTeasers } from "@/components/sections/HomeRouteTeasers";
 import { siteConfig } from "@/data/site";
 import { baseStructuredData, ogImage, routeSeo } from "@/lib/seo";
 
@@ -44,11 +40,7 @@ export default function Home() {
         <PortfolioPixelField />
         <Hero />
         <About />
-        <CryptoCurriculumSection />
-        <Markets />
-        <Work />
-        <Build />
-        <Malera />
+        <HomeRouteTeasers />
         <Contact />
       </main>
       <script
