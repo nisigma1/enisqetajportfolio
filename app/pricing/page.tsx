@@ -122,18 +122,18 @@ export default function PricingPage() {
           <div className="research-notes__grid">
             {[
               {
-                image: "/images/research-notes/susdt-weekly-note.png",
+                image: "/images/research-notes/susdt-weekly-note-4k.webp",
                 alt: "NISIGMA X post outlining a possible SUSDT weekly market scenario",
                 label: "SUSDT weekly scenario",
-                width: 582,
-                height: 445,
+                width: 3840,
+                height: 2936,
               },
               {
-                image: "/images/research-notes/bitcoin-mvrv-note.png",
+                image: "/images/research-notes/bitcoin-mvrv-note-4k.webp",
                 alt: "NISIGMA X post discussing Bitcoin MVRV Z-score market context",
                 label: "Bitcoin MVRV context",
-                width: 587,
-                height: 518,
+                width: 3840,
+                height: 3389,
               },
             ].map((note) => (
               <article key={note.image} className="research-note">
