@@ -125,11 +125,15 @@ export default function PricingPage() {
                 image: "/images/research-notes/susdt-weekly-note.png",
                 alt: "NISIGMA X post outlining a possible SUSDT weekly market scenario",
                 label: "SUSDT weekly scenario",
+                width: 582,
+                height: 445,
               },
               {
                 image: "/images/research-notes/bitcoin-mvrv-note.png",
                 alt: "NISIGMA X post discussing Bitcoin MVRV Z-score market context",
                 label: "Bitcoin MVRV context",
+                width: 587,
+                height: 518,
               },
             ].map((note) => (
               <article key={note.image} className="research-note">
@@ -138,7 +142,7 @@ export default function PricingPage() {
                     <span><b>NISIGMA</b><small>@N1sigma</small></span>
                     <span className="research-note__x" aria-hidden="true">𝕏</span>
                   </div>
-                  <img src={note.image} alt={note.alt} width={587} height={518} loading="lazy" decoding="async" />
+                  <img src={note.image} alt={note.alt} width={note.width} height={note.height} loading="lazy" decoding="async" />
                   <span className="research-note__footer">View research on X <ActionMark direction="external" /></span>
                 </a>
               </article>

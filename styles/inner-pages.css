@@ -842,7 +842,8 @@
 /* Public X research notes: local captures are presented as source-attributed proof, never as a live feed. */
 .research-notes__grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 37rem));
+  justify-content: space-between;
   gap: clamp(1rem, 2.2vw, 2rem);
 }
 
@@ -895,9 +896,9 @@
 
 .research-note img {
   width: 100%;
-  aspect-ratio: 1.18 / 1;
-  object-fit: cover;
-  object-position: top;
+  height: auto;
+  object-fit: contain;
+  image-rendering: auto;
   transition: transform 220ms ease;
 }
 
