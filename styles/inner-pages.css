@@ -294,7 +294,61 @@
 
 /* Work: project proof takes priority over editorial framing. */
 .inner-page--work .inner-masthead {
+  position: relative;
+  overflow: hidden;
   min-height: clamp(23rem, 46svh, 30rem);
+}
+
+.meteors {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.meteors__item {
+  position: absolute;
+  top: var(--meteor-top);
+  left: var(--meteor-left);
+  width: 1px;
+  height: var(--meteor-length);
+  opacity: 0;
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--accent) 82%, white), transparent);
+  box-shadow: 0 0 0.7rem color-mix(in srgb, var(--accent) 48%, transparent);
+  transform: rotate(31deg);
+  transform-origin: top;
+  animation: work-meteor var(--meteor-duration) linear var(--meteor-delay) infinite;
+}
+
+.meteors__item::before {
+  position: absolute;
+  top: -0.2rem;
+  left: -0.14rem;
+  width: 0.32rem;
+  height: 0.32rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent) 72%, white);
+  box-shadow: 0 0 0.85rem var(--accent);
+  content: "";
+}
+
+.inner-page--work .inner-masthead > :not(.meteors) {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes work-meteor {
+  0% { opacity: 0; translate: 0 0; }
+  8% { opacity: 0.52; }
+  42% { opacity: 0.16; }
+  48%, 100% { opacity: 0; translate: 20rem 34rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .meteors__item {
+    display: none;
+  }
 }
 
 .project-index {

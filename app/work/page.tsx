@@ -6,6 +6,7 @@ import { HixhameTinaPreview } from "@/components/showcase/HixhameTinaPreview";
 import { BesianaPhotographyPreview } from "@/components/showcase/BesianaPhotographyPreview";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { ActionMark } from "@/components/ui/ActionMark";
+import { Meteors } from "@/components/ui/Meteors";
 import { barberProject, besianaProject, hixhameProject, siteConfig } from "@/data/site";
 import { baseStructuredData, ogImage, routeSeo } from "@/lib/seo";
 
@@ -32,6 +33,7 @@ export default function WorkArchive() {
         title={<>Built for real businesses.</>}
         summary="Three live digital experiences, shown through their actual interfaces, journeys and visual systems."
         meta={["Websites", "Service journeys", "Responsive systems"]}
+        mastheadDecoration={<Meteors />}
       >
         <nav className="inner-section project-index" aria-label="Selected project index">
           <p className="inner-section__label">01 / Project index</p>

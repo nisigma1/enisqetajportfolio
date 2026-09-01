@@ -6,6 +6,7 @@ type InnerPageShellProps = {
   title: ReactNode;
   summary: string;
   meta?: readonly string[];
+  mastheadDecoration?: ReactNode;
   children: ReactNode;
 };
 
@@ -15,11 +16,13 @@ export function InnerPageShell({
   title,
   summary,
   meta = [],
+  mastheadDecoration,
   children,
 }: InnerPageShellProps) {
   return (
     <main id="main" className={`inner-page inner-page--${variant}`}>
       <header className="inner-masthead">
+        {mastheadDecoration}
         <p className="inner-masthead__eyebrow">{eyebrow}</p>
         <div className="inner-masthead__lead">
           <h1>{title}</h1>

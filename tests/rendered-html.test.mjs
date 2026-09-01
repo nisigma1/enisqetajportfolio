@@ -54,6 +54,7 @@ test("server-renders the complete identity homepage", async () => {
   assert.match(html, /application\/ld\+json/);
   assert.match(html, /action-mark/);
   assert.match(html, /click-spark__canvas/);
+  assert.doesNotMatch(html, /class="meteors/);
   assert.match(html, /history\.scrollRestoration='manual'/);
   assert.match(html, /addEventListener\('pageshow'/);
   assert.match(html, /if\(!location\.hash\)scrollTo\(0,0\)/);
@@ -168,6 +169,7 @@ test("work keeps all three real project proofs on the dedicated work route", asy
   for (const project of ["Barber Brothers", "Hixhame Tina", "Besiana Photography"]) {
     assert.match(html, new RegExp(project));
   }
+  assert.match(html, /class="meteors/);
   assert.match(html, /besiana-photography-og\.jpg/);
 });
 
