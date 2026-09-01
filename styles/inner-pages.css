@@ -619,15 +619,17 @@
 
 .analysis-plan__layers {
   display: grid;
+  grid-auto-rows: 2.85rem;
   align-content: center;
-  gap: var(--space-3);
+  gap: 0;
 }
 
 .analysis-plan__layers li {
   display: grid;
   grid-template-columns: 1rem minmax(0, 1fr);
   gap: var(--space-2);
-  padding-block: var(--space-2);
+  align-items: center;
+  padding-block: 0;
   color: var(--text-muted);
   border-bottom: var(--border-width) solid var(--border);
   font-size: var(--text-caption);
@@ -1213,11 +1215,13 @@ body:has(.inner-page) .social-dock-section {
 
   .analysis-plan__layers {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: auto;
     gap: var(--space-2);
   }
 
   .analysis-plan__layers li {
     grid-template-columns: 0.75rem minmax(0, 1fr);
+    padding-block: var(--space-2);
     font-size: 0.63rem;
   }
 
