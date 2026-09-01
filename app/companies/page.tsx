@@ -38,7 +38,7 @@ export default function CompaniesPage() {
     <>
       <InnerPageShell
         variant="malera"
-        eyebrow="Malera Studio / Digital building practice"
+        eyebrow="Digital building practice"
         title="Malera Studio"
         summary="Digital products, websites and AI systems built around real business needs."
         meta={["Founded by Enis Qetaj", "Digital product practice", "malera.studio"]}
