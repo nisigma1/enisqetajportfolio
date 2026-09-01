@@ -137,6 +137,22 @@ test("renders indexed public routes with route-specific canonicals", async () =>
   }
 });
 
+test("companies restores the building method and Malera relationship chapters", async () => {
+  const worker = await getWorker();
+  const response = await worker.fetch(
+    new Request("http://localhost/companies", { headers: { accept: "text/html" } }),
+    env,
+    ctx,
+  );
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Start with the need\. Find the useful form\./);
+  assert.match(html, /Relationship between Enis Qetaj and Malera Studio/);
+  assert.match(html, /When the problem needs a wider practice\./);
+  assert.match(html, /03 \/ Building method/);
+  assert.match(html, /04 \/ Company relationship/);
+});
+
 test("publishes project metadata and correct intrinsic media dimensions", async () => {
   const worker = await getWorker();
   const response = await worker.fetch(

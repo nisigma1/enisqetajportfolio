@@ -262,12 +262,20 @@ export function Work() {
   );
 }
 
-export function Build() {
+type ReusableSectionProps = {
+  sectionLabel?: string;
+  headingId?: string;
+};
+
+export function Build({
+  sectionLabel = "05 / Building practice",
+  headingId = "build-title",
+}: ReusableSectionProps = {}) {
   return (
-    <section id="build" className="site-section building-practice" aria-labelledby="build-title">
+    <section id="build" className="site-section building-practice" aria-labelledby={headingId}>
       <div className="section-intro building-practice__intro">
-        <SectionLabel>05 / Building practice</SectionLabel>
-        <h2 id="build-title">Start with the need. Find the useful form.</h2>
+        <SectionLabel>{sectionLabel}</SectionLabel>
+        <h2 id={headingId}>Start with the need. Find the useful form.</h2>
         <div>
           <p className="body-large">A website, AI product, automation or interface should begin with the job it needs to do.</p>
           <p>Select the sentence closest to your situation to see how the need can be reframed.</p>
@@ -283,11 +291,14 @@ export function Build() {
   );
 }
 
-export function Malera() {
+export function Malera({
+  sectionLabel = "06 / Professional practice",
+  headingId = "malera-title",
+}: ReusableSectionProps = {}) {
   return (
-    <section className="site-section malera-practice" aria-labelledby="malera-title">
+    <section id="malera" className="site-section malera-practice" aria-labelledby={headingId}>
       <DeferredLetterGlitch />
-      <SectionLabel>06 / Professional practice</SectionLabel>
+      <SectionLabel>{sectionLabel}</SectionLabel>
       <div className="malera-practice__relationship" aria-label="Relationship between Enis Qetaj and Malera Studio">
         <div>
           <span>Person</span>
@@ -305,7 +316,7 @@ export function Malera() {
         </div>
       </div>
       <div className="malera-practice__close">
-        <h2 id="malera-title">When the problem needs a wider practice.</h2>
+        <h2 id={headingId}>When the problem needs a wider practice.</h2>
         <div>
           <p>{malera.line}</p>
           <a className="button button--quiet" href={malera.url} target="_blank" rel="noreferrer">

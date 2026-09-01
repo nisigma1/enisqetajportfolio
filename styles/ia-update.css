@@ -210,6 +210,15 @@
 }
 
 /* Companies */
+.companies-page {
+  position: relative;
+}
+
+.companies-page > .route-page,
+.companies-route--closing {
+  min-height: 0;
+}
+
 .company-profile {
   display: grid;
   grid-template-columns: 5fr 7fr;
