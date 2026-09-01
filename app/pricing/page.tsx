@@ -16,15 +16,6 @@ export const metadata: Metadata = {
   twitter: { card: "summary", title: routeSeo.pricing.title, description: routeSeo.pricing.description },
 };
 
-const comparisonRows = [
-  { label: "Technical", values: ["Included", "Included", "Included"] },
-  { label: "Fundamental", values: ["Not included", "Included", "Included"] },
-  { label: "On-chain", values: ["Not included", "Not included", "Included"] },
-  { label: "Research assistance", values: ["Included", "Included", "Included"] },
-  { label: "Live sessions", values: ["None", "1 / week", "2 / week"] },
-  { label: "Duration", values: ["1 month", "1 month", "1 month"] },
-] as const;
-
 export default function PricingPage() {
   const analysisLayers = ["Technical", "Fundamental", "On-chain"] as const;
 
@@ -39,30 +30,33 @@ export default function PricingPage() {
       >
         <section className="inner-section analysis-depth" aria-labelledby="analysis-depth-title">
           <header className="inner-section__header">
-            <p className="inner-section__label">01 / Analysis depth</p>
+            <p className="inner-section__label">01 / Monthly plans</p>
             <h2 id="analysis-depth-title">Choose the analytical framework you need.</h2>
-            <p>Each level includes the layers before it. The progression explains the difference in scope and price.</p>
+            <p>Clear monthly scope, without an overloaded comparison table. Each level adds a deeper layer of analysis.</p>
           </header>
           <ol className="analysis-plans">
             {pricingPlans.map((plan, planIndex) => (
-              <li key={plan.id} className="analysis-plan">
+              <li key={plan.id} className="analysis-plan" data-featured={plan.id === "advanced" ? "true" : undefined}>
                 <div className="analysis-plan__identity">
-                  <span className="analysis-plan__number">{plan.number}</span>
-                  <h3>{plan.name}</h3>
-                  <p><strong>€{plan.price}</strong><span>/ 1 month</span></p>
+                  <div className="analysis-plan__heading">
+                    <span className="analysis-plan__number">{plan.number}</span>
+                    <h3>{plan.name}</h3>
+                    {plan.id === "advanced" && <span className="analysis-plan__badge">Most selected</span>}
+                  </div>
+                  <p className="analysis-plan__description">{plan.description}</p>
+                  <p className="analysis-plan__price"><strong>€{plan.price}</strong><span>/ month</span></p>
                 </div>
                 <ol className="analysis-plan__layers" aria-label={`${plan.name} analysis layers`}>
                   {analysisLayers.map((layer, layerIndex) => (
                     <li key={layer} data-included={layerIndex <= planIndex ? "true" : undefined}>
-                      <span aria-hidden="true">{layerIndex <= planIndex ? "●" : "○"}</span>{layer}
+                      <span aria-hidden="true">{layerIndex <= planIndex ? "✓" : "—"}</span>{layer}
                     </li>
                   ))}
                 </ol>
                 <div className="analysis-plan__scope">
-                  <p>{plan.description}</p>
                   <ul aria-label={`${plan.name} plan features`}>
-                    {plan.features.map((feature) => <li key={feature}><span aria-hidden="true">+</span>{feature}</li>)}
-                    {plan.liveSessions !== "—" && <li><span aria-hidden="true">+</span>{plan.liveSessions} live research session{plan.liveSessions.startsWith("2") ? "s" : ""}</li>}
+                    {plan.features.map((feature) => <li key={feature}><span aria-hidden="true">✓</span>{feature}</li>)}
+                    {plan.liveSessions !== "—" && <li><span aria-hidden="true">✓</span>{plan.liveSessions} live research session{plan.liveSessions.startsWith("2") ? "s" : ""}</li>}
                   </ul>
                 </div>
                 <Link className="button button--primary" href={`/contact?service=crypto-analysis&plan=${plan.id}`}>Select {plan.name} <ActionMark direction="forward" /></Link>
@@ -71,33 +65,14 @@ export default function PricingPage() {
           </ol>
         </section>
 
-        <section className="inner-section analysis-comparison" aria-labelledby="analysis-comparison-title">
-          <header className="inner-section__header"><p className="inner-section__label">02 / Comparison</p><h2 id="analysis-comparison-title">Compare the research framework.</h2><p>Exact differences across analysis, assistance, live sessions and subscription duration.</p></header>
-          <div className="analysis-comparison__desktop">
-            <table>
-              <caption className="visually-hidden">Comparison of Technical, Advanced and Complete monthly plans</caption>
-              <thead><tr><th scope="col">Feature</th>{pricingPlans.map((plan) => <th scope="col" key={plan.id}>{plan.name}<span>€{plan.price}</span></th>)}</tr></thead>
-              <tbody>{comparisonRows.map((row) => <tr key={row.label}><th scope="row">{row.label}</th>{row.values.map((value, index) => <td key={`${row.label}-${pricingPlans[index].id}`} data-included={value === "Included" ? "true" : undefined}><span aria-hidden="true">{value === "Included" ? "✓" : value === "Not included" ? "—" : value}</span><span className="visually-hidden">{value}</span></td>)}</tr>)}</tbody>
-            </table>
-          </div>
-          <div className="analysis-comparison__mobile" aria-label="Mobile plan comparison">
-            {pricingPlans.map((plan, planIndex) => (
-              <article key={plan.id}>
-                <h3>{plan.name} <span>€{plan.price} / month</span></h3>
-                <dl>{comparisonRows.map((row) => <div key={row.label}><dt>{row.label}</dt><dd>{row.values[planIndex]}</dd></div>)}</dl>
-              </article>
-            ))}
-          </div>
-        </section>
-
         <section className="inner-section analysis-support" aria-label="Service details">
           <article>
-            <p className="inner-section__label">03 / Research assistance</p>
+            <p className="inner-section__label">02 / Research assistance</p>
             <h2>Understand the analysis, not only the conclusion.</h2>
             <p>Research assistance helps you understand the analysis, important market variables and the analytical framework during your active subscription.</p>
           </article>
           <article>
-            <p className="inner-section__label">04 / Live research sessions</p>
+            <p className="inner-section__label">03 / Live research sessions</p>
             <h2>Discuss the current context.</h2>
             <p>Advanced includes 1 live research session per week. Complete includes 2 live research sessions per week.</p>
             <ul>
@@ -115,7 +90,7 @@ export default function PricingPage() {
 
         <section className="inner-section research-notes" aria-labelledby="research-notes-title">
           <header className="inner-section__header">
-            <p className="inner-section__label">05 / Research notes</p>
+            <p className="inner-section__label">04 / Research notes</p>
             <h2 id="research-notes-title">Selected market observations.</h2>
             <p>Two public research notes shared through NISIGMA on X. These are examples of market context, not trade signals or financial advice.</p>
           </header>
