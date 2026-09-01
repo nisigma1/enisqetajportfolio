@@ -14,6 +14,11 @@ export const routeSeo = {
     description:
       "Learn about Enis Qetaj, a Kosovo-based financial-markets researcher, crypto trader, AI product builder who completed the Crypto School curriculum, and founder of Malera Studio.",
   },
+  background: {
+    path: "/background",
+    title: "Background | Enis Qetaj",
+    description: "The marketing, banking and finance, and crypto-markets background of Enis Qetaj.",
+  },
   research: {
     path: "/research",
     title: "Research | Enis Qetaj",
@@ -42,6 +47,11 @@ export const routeSeo = {
     title: "Hixhame Tina Case Study | Enis Qetaj",
     description:
       "A responsive website and digital identity for Hixhame Tina, a women-only Hijama service in Prishtina, designed around privacy, trust and direct booking.",
+  },
+  malera: {
+    path: "/malera",
+    title: "Malera Studio | Enis Qetaj",
+    description: "Malera Studio builds websites, digital products, automation and AI systems through a focused product practice.",
   },
   besiana: {
     path: `/work/${besianaProject.slug}`,
@@ -145,11 +155,13 @@ export function baseStructuredData(page?: { path: string; title: string; descrip
 export const publicRoutes = [
   routeSeo.home,
   routeSeo.about,
+  routeSeo.background,
   routeSeo.research,
   routeSeo.markets,
   routeSeo.work,
   routeSeo.barber,
   routeSeo.hixhame,
+  routeSeo.malera,
   routeSeo.besiana,
   routeSeo.build,
   routeSeo.contact,

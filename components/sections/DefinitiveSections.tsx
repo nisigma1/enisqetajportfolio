@@ -10,9 +10,6 @@ import {
   researchMethod,
 } from "@/data/site";
 import { ProjectMedia } from "@/components/media/ProjectMedia";
-import { BarberBrothersShowcase } from "@/components/showcase/BarberBrothersShowcase";
-import { HixhameTinaPreview } from "@/components/showcase/HixhameTinaPreview";
-import { BesianaPhotographyPreview } from "@/components/showcase/BesianaPhotographyPreview";
 import { ActionMark } from "@/components/ui/ActionMark";
 import { PixelImage } from "@/components/ui/PixelImage";
 import { TextRepel } from "@/components/ui/TextRepel";
@@ -169,6 +166,7 @@ export function Markets() {
         </div>
       </div>
       <DeferredContextCircuit />
+      <div className="selected-work__actions"><Link className="button button--quiet" href="/markets">Open the market framework <ActionMark direction="forward" /></Link></div>
     </section>
   );
 }
@@ -257,18 +255,9 @@ export function Work() {
         </div>
       </div>
 
-      <BarberBrothersShowcase />
       <div className="selected-work__actions">
-        <a className="button button--primary" href={barberProject.url} target="_blank" rel="noreferrer">
-          Visit live site <ActionMark direction="external" />
-          <span className="visually-hidden"> (opens in a new tab)</span>
-        </a>
-        <Link className="button button--quiet" href={`/work/${barberProject.slug}`}>
-          Read the case study <ActionMark direction="forward" />
-        </Link>
+        <Link className="button button--primary" href="/work">Explore selected work <ActionMark direction="forward" /></Link>
       </div>
-      <HixhameTinaPreview variant="homepage" />
-      <BesianaPhotographyPreview variant="homepage" />
     </section>
   );
 }

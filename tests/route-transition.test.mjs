@@ -9,12 +9,12 @@ import {
 } from "../lib/route-transition.mjs";
 
 test("maps primary and nested routes to the correct active navigation item", () => {
-  assert.equal(activeRouteForPathname("/"), "index");
+  assert.equal(activeRouteForPathname("/"), "background");
+  assert.equal(activeRouteForPathname("/background"), "background");
   assert.equal(activeRouteForPathname("/research"), "research");
   assert.equal(activeRouteForPathname("/research/liquidity"), "research");
-  assert.equal(activeRouteForPathname("/markets"), "markets");
   assert.equal(activeRouteForPathname("/work/barber-brothers"), "work");
-  assert.equal(activeRouteForPathname("/build"), "build");
+  assert.equal(activeRouteForPathname("/malera"), "malera");
   assert.equal(activeRouteForPathname("/contact"), "contact");
 });
 

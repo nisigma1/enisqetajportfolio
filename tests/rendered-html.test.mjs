@@ -95,8 +95,8 @@ test("server-renders the complete identity homepage", async () => {
     /<nav class="masthead-nav"[\s\S]*?<\/nav>/,
   )?.[0];
   assert.ok(primaryNavigation, "primary navigation is present");
-  assert.equal((primaryNavigation.match(/<a\b/g) ?? []).length, 6);
-  for (const label of ["Index", "Research", "Markets", "Work", "Build", "Contact"]) {
+  assert.equal((primaryNavigation.match(/<a\b/g) ?? []).length, 5);
+  for (const label of ["Background", "Work", "Research", "Malera", "Contact"]) {
     assert.match(primaryNavigation, new RegExp(`>${label}<`));
   }
   assert.doesNotMatch(primaryNavigation, />Studio</);
