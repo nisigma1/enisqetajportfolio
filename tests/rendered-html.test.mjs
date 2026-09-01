@@ -89,9 +89,10 @@ test("publishes Crypto School learning without false credential claims", async (
   assert.match(html, /Bachelor’s Degree/);
   assert.match(html, /University of Prishtina/);
   assert.match(html, /Faculty of Economics/);
-  assert.match(html, /4\+ years/);
+  assert.match(html, /aria-label="4\+"/);
   assert.match(html, /Master’s Degree/);
   assert.match(html, /In progress/);
+  assert.equal((html.match(/aria-label="2\+"/g) ?? []).length, 2);
   assert.match(html, /Crypto School/);
   assert.match(html, /Crypto Markets Curriculum/);
   assert.match(html, /Technical Analysis/);

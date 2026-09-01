@@ -4,6 +4,7 @@ import Link from "next/link";
 import { CryptoCurriculumSection } from "@/components/education/CryptoCurriculumSection";
 import { InnerPageShell } from "@/components/layout/InnerPageShell";
 import { ActionMark } from "@/components/ui/ActionMark";
+import { NumberTicker } from "@/components/ui/NumberTicker";
 import { backgroundChapters } from "@/data/site";
 import { baseStructuredData, routeSeo } from "@/lib/seo";
 
@@ -63,7 +64,13 @@ export default function BackgroundPage() {
                   </ul>
                 </div>
 
-                <div className="journey-field__experience"><span>Experience</span><strong>{chapter.experience}</strong></div>
+                <div className="journey-field__experience">
+                  <span>Experience</span>
+                  <strong>
+                    <NumberTicker value={Number.parseInt(chapter.experience, 10)} suffix="+" />
+                    <span>years</span>
+                  </strong>
+                </div>
               </li>
             ))}
           </ol>

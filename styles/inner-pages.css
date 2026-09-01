@@ -224,10 +224,16 @@
 }
 
 .journey-field__experience strong {
+  display: grid;
+  justify-items: start;
   font-family: var(--font-editorial);
   font-size: clamp(2.1rem, 3.4vw, 3.6rem);
   font-weight: 430;
   line-height: 0.9;
+}
+
+.journey-field__experience strong > span:last-child {
+  font-size: 0.78em;
 }
 
 .inner-page--background > .crypto-curriculum {
@@ -1211,6 +1217,11 @@ body:has(.inner-page) .social-dock-section {
 
   .journey-field__experience strong {
     font-size: 2.5rem;
+  }
+
+  .journey-field__experience strong {
+    display: inline-flex;
+    gap: 0.18em;
   }
 
   .inner-page--background .crypto-curriculum {
