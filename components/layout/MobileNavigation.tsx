@@ -6,7 +6,7 @@ import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { TransitionLink } from "@/components/transition/TransitionLink";
 
 type MobileNavigationProps = {
-  activeRoute: string;
+  activeRoute: string | null;
   closeRef: RefObject<HTMLButtonElement | null>;
   menuRef: RefObject<HTMLDivElement | null>;
   closing: boolean;
