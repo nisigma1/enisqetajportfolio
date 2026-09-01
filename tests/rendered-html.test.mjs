@@ -68,10 +68,10 @@ test("server-renders the complete identity homepage", async () => {
   )?.[0];
   assert.ok(primaryNavigation, "primary navigation is present");
   assert.equal((primaryNavigation.match(/<a\b/g) ?? []).length, 5);
-  for (const label of ["Background", "Work", "Companies", "Pricing", "Contact"]) {
+  for (const label of ["Background", "Work", "Malera Studio", "Crypto Analysis", "Contact"]) {
     assert.match(primaryNavigation, new RegExp(`>${label}<`));
   }
-  assert.doesNotMatch(primaryNavigation, />Research<|>Malera<|>Index</);
+  assert.doesNotMatch(primaryNavigation, />Research<|>Companies<|>Pricing<|>Index</);
 });
 
 test("publishes Crypto School learning without false credential claims", async () => {
@@ -106,15 +106,15 @@ test("publishes Crypto School learning without false credential claims", async (
 test("renders indexed public routes with route-specific canonicals", async () => {
   const worker = await getWorker();
   for (const [route, expected] of [
-    ["/background", "Three fields. One analytical practice"],
+    ["/background", "A connected professional foundation"],
     ["/companies", "Malera Studio"],
-    ["/pricing", "Crypto market analysis"],
+    ["/pricing", "Monthly research plans"],
     ["/about", "About Enis Qetaj"],
     ["/research", "Research by Enis Qetaj"],
     ["/markets", "Crypto markets, macro"],
-    ["/work", "Real work"],
+    ["/work", "Built for real businesses"],
     ["/build", "AI products, websites and automation"],
-    ["/contact", "Contact Enis Qetaj"],
+    ["/contact", "Why are you contacting me"],
   ]) {
     const response = await worker.fetch(
       new Request(`http://localhost${route}`, { headers: { accept: "text/html" } }),
@@ -149,8 +149,26 @@ test("companies restores the building method and Malera relationship chapters", 
   assert.match(html, /Start with the need\. Find the useful form\./);
   assert.match(html, /Relationship between Enis Qetaj and Malera Studio/);
   assert.match(html, /When the problem needs a wider practice\./);
-  assert.match(html, /03 \/ Building method/);
-  assert.match(html, /04 \/ Company relationship/);
+  assert.match(html, /03 \/ How Malera works/);
+  assert.match(html, /05 \/ Company relationship/);
+  assert.match(html, /Websites/);
+  assert.match(html, /AI agents/);
+  assert.match(html, /Selected proof/);
+});
+
+test("work keeps all three real project proofs on the dedicated work route", async () => {
+  const worker = await getWorker();
+  const response = await worker.fetch(
+    new Request("http://localhost/work", { headers: { accept: "text/html" } }),
+    env,
+    ctx,
+  );
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  for (const project of ["Barber Brothers", "Hixhame Tina", "Besiana Photography"]) {
+    assert.match(html, new RegExp(project));
+  }
+  assert.match(html, /besiana-photography-og\.jpg/);
 });
 
 test("publishes project metadata and correct intrinsic media dimensions", async () => {
@@ -246,10 +264,30 @@ test("publishes three factual monthly pricing plans and request links", async ()
   for (const [name, price, plan] of [["Technical", "30", "technical"], ["Advanced", "60", "advanced"], ["Complete", "100", "complete"]]) {
     assert.match(html, new RegExp(name));
     assert.match(html, new RegExp(`€(?:<!-- -->)?${price}`));
-    assert.match(html, new RegExp(`href="/contact\\?plan=${plan}"`));
+    assert.match(html, new RegExp(`href="/contact\\?service=crypto-analysis&amp;plan=${plan}"`));
   }
+  assert.match(html, /Research assistance helps you understand the analysis/);
+  assert.match(html, /1 live research session per week/);
+  assert.match(html, /2 live research sessions per week/);
   assert.match(html, /Market research and educational analysis only/);
   assert.doesNotMatch(html, /guaranteed|risk-free|best value|most popular/i);
+});
+
+test("contact separates research and digital-work pathways while preserving the existing mail flow", async () => {
+  const worker = await getWorker();
+  const response = await worker.fetch(
+    new Request("http://localhost/contact?service=crypto-analysis&plan=advanced", { headers: { accept: "text/html" } }),
+    env,
+    ctx,
+  );
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Request market analysis/);
+  assert.match(html, /Discuss a digital project/);
+  assert.match(html, /id="contact-form"/);
+  assert.match(html, /name="project"/);
+  assert.match(html, /Crypto Analysis — Advanced \(€60\)/);
+  assert.match(html, /enisqeta5@gmail\.com/);
 });
 
 test("contact endpoint validates input and returns a mail fallback", async () => {

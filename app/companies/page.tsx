@@ -1,8 +1,10 @@
+/* eslint-disable @next/next/no-img-element -- Local, pre-compressed project proof is rendered with explicit dimensions and native lazy loading. */
 import type { Metadata } from "next";
 import Link from "next/link";
+import { InnerPageShell } from "@/components/layout/InnerPageShell";
 import { Build, Malera } from "@/components/sections/DefinitiveSections";
 import { ActionMark } from "@/components/ui/ActionMark";
-import { buildCapabilities, malera } from "@/data/site";
+import { barberProject, besianaProject, hixhameProject, malera } from "@/data/site";
 import { baseStructuredData, routeSeo } from "@/lib/seo";
 
 export const dynamic = "force-static";
@@ -16,55 +18,88 @@ export const metadata: Metadata = {
 };
 
 export default function CompaniesPage() {
+  const capabilities = [
+    ["01", "Websites", "Focused public experiences and service journeys."],
+    ["02", "Web applications", "Purpose-built interfaces for real workflows."],
+    ["03", "AI products", "Useful AI systems shaped around a clear job."],
+    ["04", "Automation", "Less repetitive work and clearer handoffs."],
+    ["05", "AI agents", "Task-oriented agents with understandable boundaries."],
+    ["06", "Digital systems", "Connected tools, content and operational flows."],
+    ["07", "Bots", "Focused conversational and workflow utilities."],
+    ["08", "Research interfaces", "Structured views for markets and complex information."],
+  ] as const;
+  const proof = [
+    { project: barberProject, image: "/projects/barber-brothers/barber-brothers-cover.webp", alt: "Barber Brothers website and booking experience", width: 1600, height: 900 },
+    { project: hixhameProject, image: "/projects/hixhame-tina/hixhame-tina-case-study.webp", alt: "Hixhame Tina responsive website case study", width: 1672, height: 941 },
+    { project: besianaProject, image: "/projects/besiana-photography/besiana-photography-og.jpg", alt: "Besiana Photography website preview", width: 1200, height: 630 },
+  ] as const;
+
   return (
     <>
-      <main id="main" className="companies-page">
-        <div className="route-page companies-route">
-          <header className="route-hero">
-            <p>Companies / Professional practice</p>
-            <h1>Malera Studio</h1>
-            <div>
-              <p>A digital product and AI-building practice founded by Enis Qetaj.</p>
-              <span>Websites / AI products / Automation</span>
-            </div>
+      <InnerPageShell
+        variant="malera"
+        eyebrow="Malera Studio / Digital building practice"
+        title="Malera Studio"
+        summary="Digital products, websites and AI systems built around real business needs."
+        meta={["Founded by Enis Qetaj", "Digital product practice", "malera.studio"]}
+      >
+        <section className="inner-section malera-identity" aria-labelledby="malera-identity-title">
+          <p className="inner-section__label">01 / Identity</p>
+          <div>
+            <h2 id="malera-identity-title">A wider practice for building useful systems.</h2>
+            <p>{malera.line}</p>
+          </div>
+          <div>
+            <p>Malera is the company expression of Enis’s digital-building work: understanding the business need, designing the right form and delivering a focused product.</p>
+            <a className="button button--primary" href={malera.url} target="_blank" rel="noopener noreferrer">Visit malera.studio <ActionMark direction="external" /></a>
+          </div>
+        </section>
+
+        <section className="inner-section malera-capabilities" aria-labelledby="malera-capabilities-title">
+          <header className="inner-section__header">
+            <p className="inner-section__label">02 / Capabilities</p>
+            <h2 id="malera-capabilities-title">Different forms. One product discipline.</h2>
+            <p>The medium follows the job: explain, automate, organize, connect or support a decision.</p>
           </header>
+          <ol>
+            {capabilities.map(([number, name, description]) => (
+              <li key={name}><span>{number}</span><strong>{name}</strong><p>{description}</p></li>
+            ))}
+          </ol>
+        </section>
 
-          <section className="company-profile" aria-labelledby="company-profile-title">
-            <div className="company-profile__identity">
-              <p>01 / Company</p>
-              <span>Founded by Enis Qetaj</span>
-              <h2 id="company-profile-title">Build the useful form.</h2>
-            </div>
-            <div className="company-profile__definition">
-              <p>{malera.line}</p>
-              <p>Malera expands the building side of Enis’s practice into focused digital systems for real business needs.</p>
-              <a className="button button--primary" href={malera.url} target="_blank" rel="noopener noreferrer">
-                Visit Malera Studio <ActionMark direction="external" />
-                <span className="visually-hidden"> (opens in a new tab)</span>
-              </a>
-            </div>
-          </section>
+        <Build sectionLabel="03 / How Malera works" headingId="companies-build-title" />
 
-          <section className="company-capabilities" aria-labelledby="company-capabilities-title">
-            <header><p>02 / Capabilities</p><h2 id="company-capabilities-title">A clear system for digital work.</h2></header>
-            <ol>
-              {buildCapabilities.map((capability, index) => (
-                <li key={capability}><span>{String(index + 1).padStart(2, "0")}</span><strong>{capability}</strong></li>
-              ))}
-            </ol>
-          </section>
-        </div>
+        <section className="inner-section malera-proof" aria-labelledby="malera-proof-title">
+          <header className="inner-section__header">
+            <p className="inner-section__label">04 / Selected proof</p>
+            <h2 id="malera-proof-title">Real interfaces for real businesses.</h2>
+            <p>Selected public work from this portfolio, shown with authentic project media.</p>
+          </header>
+          <ol>
+            {proof.map(({ project, image, alt, width, height }, index) => (
+              <li key={project.slug}>
+                <Link href={`/work#${project.slug}`}>
+                  <span>{String(index + 1).padStart(2, "0")} / {project.category}</span>
+                  <strong>{project.title}</strong>
+                  <figure><img src={image} alt={alt} width={width} height={height} loading="lazy" decoding="async" /></figure>
+                  <span>View project <ActionMark direction="forward" /></span>
+                </Link>
+              </li>
+            ))}
+          </ol>
+        </section>
 
-        <Build sectionLabel="03 / Building method" headingId="companies-build-title" />
-        <Malera sectionLabel="04 / Company relationship" headingId="companies-malera-title" />
+        <Malera sectionLabel="05 / Company relationship" headingId="companies-malera-title" />
 
-        <div className="route-page companies-route companies-route--closing">
-          <section className="case-study__close">
-            <div><p>05 / Contact</p><h2>One person’s perspective. A wider product practice.</h2></div>
-            <div><Link className="button button--quiet" href="/contact">Start a build inquiry <ActionMark direction="forward" /></Link></div>
-          </section>
-        </div>
-      </main>
+        <section className="inner-section inner-final-cta malera-cta">
+          <div><p className="inner-section__label">06 / Start</p><h2>Bring the need. Build the useful system.</h2></div>
+          <div className="malera-cta__actions">
+            <a className="button button--primary" href={malera.url} target="_blank" rel="noopener noreferrer">Visit Malera Studio <ActionMark direction="external" /></a>
+            <Link className="button button--quiet" href="/contact?service=digital-project">Discuss a project <ActionMark direction="forward" /></Link>
+          </div>
+        </section>
+      </InnerPageShell>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(baseStructuredData(routeSeo.companies)).replace(/</g, "\\u003c") }} />
     </>
   );

@@ -168,13 +168,12 @@ export function Navigation() {
 
         <nav className="masthead-nav" aria-label="Primary navigation">
           {navigation.map((item) => {
-            const key = item.label.toLowerCase();
             return (
               <TransitionLink
                 key={item.label}
                 className="transition-nav-link"
                 href={item.href}
-                aria-current={currentActive === key ? "page" : undefined}
+                aria-current={currentActive === item.id ? "page" : undefined}
               >
                 <NavLabel>{item.label}</NavLabel>
               </TransitionLink>

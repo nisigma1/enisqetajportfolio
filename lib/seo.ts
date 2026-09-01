@@ -55,12 +55,12 @@ export const routeSeo = {
   },
   companies: {
     path: "/companies",
-    title: "Companies | Enis Qetaj",
-    description: "Companies and digital ventures connected to Enis Qetaj, including Malera Studio.",
+    title: "Malera Studio | Enis Qetaj",
+    description: "Malera Studio is the digital product practice founded by Enis Qetaj for websites, web applications, AI products, automation and digital systems.",
   },
   pricing: {
     path: "/pricing",
-    title: "Crypto Market Analysis Pricing | Enis Qetaj",
+    title: "Crypto Analysis Plans | Enis Qetaj",
     description: "Monthly crypto market analysis plans covering technical, fundamental and on-chain research, research assistance and live market sessions.",
   },
   besiana: {
@@ -78,7 +78,7 @@ export const routeSeo = {
     path: "/contact",
     title: "Contact Enis Qetaj",
     description:
-      "Contact Enis Qetaj in Kosovo about websites, AI products, automation, research interfaces and selected freelance projects.",
+      "Contact Enis Qetaj in Kosovo about crypto analysis or digital projects through Malera Studio, including websites, AI products and automation.",
   },
 } as const;
 

@@ -59,8 +59,7 @@ export function MobileNavigation({
         <div className="mobile-navigation__body">
           <nav className="mobile-navigation__staircase" aria-label="Mobile navigation">
             {navigation.map((item, index) => {
-              const key = item.label.toLowerCase();
-              const isCurrent = activeRoute === key;
+              const isCurrent = activeRoute === item.id;
 
               return (
                 <TransitionLink

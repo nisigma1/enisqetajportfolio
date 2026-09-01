@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ProjectMedia } from "@/components/media/ProjectMedia";
+import { InnerPageShell } from "@/components/layout/InnerPageShell";
+import { BarberBrothersShowcase } from "@/components/showcase/BarberBrothersShowcase";
 import { HixhameTinaPreview } from "@/components/showcase/HixhameTinaPreview";
 import { BesianaPhotographyPreview } from "@/components/showcase/BesianaPhotographyPreview";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { ActionMark } from "@/components/ui/ActionMark";
-import { barberProject, siteConfig } from "@/data/site";
+import { barberProject, besianaProject, hixhameProject, siteConfig } from "@/data/site";
 import { baseStructuredData, ogImage, routeSeo } from "@/lib/seo";
 
 const description = routeSeo.work.description;
@@ -21,38 +22,53 @@ export const metadata: Metadata = {
 };
 
 export default function WorkArchive() {
+  const projects = [barberProject, hixhameProject, besianaProject] as const;
+
   return (
     <>
-      <main id="main" className="route-page work-route">
-      <header className="route-hero">
-        <p>Selected work / Live proof</p>
-        <h1>Real work.<br />Shown with context.</h1>
-        <div>
-          <p>Verified public work connected to Enis Qetaj and Malera Studio, shown with factual context instead of unsupported claims.</p>
-          <span>Context / Journey / Interface / Environment</span>
-        </div>
-      </header>
+      <InnerPageShell
+        variant="work"
+        eyebrow="Work / Selected digital products"
+        title={<>Built for real businesses.</>}
+        summary="Three live digital experiences, shown through their actual interfaces, journeys and visual systems."
+        meta={["Websites", "Service journeys", "Responsive systems"]}
+      >
+        <nav className="inner-section project-index" aria-label="Selected project index">
+          <p className="inner-section__label">01 / Project index</p>
+          <ol>
+            {projects.map((project, index) => (
+              <li key={project.slug}>
+                <a href={`#${project.slug}`}>
+                  <span className="project-index__number">{String(index + 1).padStart(2, "0")}</span>
+                  <strong>{project.title}</strong>
+                  <span>{project.category}</span>
+                  <ActionMark direction="down" />
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
 
-      <article className="work-feature">
-        <ProjectMedia
-          src="/projects/barber-brothers/barber-brothers-cover.webp?v=20260730"
-          alt="Barber Brothers premium website and booking case study"
-          width={1600}
-          height={900}
-          mode="landscape"
-          priority
-        />
-        <div>
-          <p>{barberProject.category}</p>
-          <h2>{barberProject.title}</h2>
-          <p>{barberProject.description}</p>
-          <Link className="button button--primary" href={`/work/${barberProject.slug}`}>Open case study <ActionMark direction="forward" /></Link>
-        </div>
-      </article>
+        <section id={barberProject.slug} className="inner-section work-project work-project--barber" aria-labelledby="barber-work-title">
+          <header className="work-project__header">
+            <div><p>02 / Project 01</p><h2 id="barber-work-title">{barberProject.title}</h2></div>
+            <div><p>{barberProject.description}</p><span>{barberProject.category} / {barberProject.location}</span></div>
+            <div className="work-project__actions">
+              <Link className="button button--primary" href={`/work/${barberProject.slug}`}>Open case study <ActionMark direction="forward" /></Link>
+              <a className="button button--quiet" href={barberProject.url} target="_blank" rel="noopener noreferrer">Visit live website <ActionMark direction="external" /></a>
+            </div>
+          </header>
+          <BarberBrothersShowcase priority />
+        </section>
 
-      <HixhameTinaPreview />
-      <BesianaPhotographyPreview />
-      </main>
+        <section id={hixhameProject.slug} className="inner-section work-project work-project--hixhame" aria-label="Hixhame Tina project">
+          <HixhameTinaPreview />
+        </section>
+
+        <section id={besianaProject.slug} className="inner-section work-project work-project--besiana" aria-label="Besiana Photography project">
+          <BesianaPhotographyPreview />
+        </section>
+      </InnerPageShell>
       <StructuredData data={baseStructuredData(routeSeo.work)} />
     </>
   );

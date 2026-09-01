@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CryptoCurriculumSection } from "@/components/education/CryptoCurriculumSection";
+import { InnerPageShell } from "@/components/layout/InnerPageShell";
 import { ActionMark } from "@/components/ui/ActionMark";
 import { backgroundChapters } from "@/data/site";
 import { baseStructuredData, routeSeo } from "@/lib/seo";
@@ -19,51 +20,50 @@ export const metadata: Metadata = {
 export default function BackgroundPage() {
   return (
     <>
-      <main id="main" className="route-page background-route">
-        <header className="route-hero">
-          <p>Background / Knowledge progression</p>
-          <h1>Three fields. One analytical practice.</h1>
-          <div>
-            <p>Marketing established the audience lens. Banking and finance widened the market frame. Crypto markets connected the system to applied research.</p>
-            <span>Marketing → Banking &amp; Finance → Crypto Markets</span>
-          </div>
-        </header>
-
-        <section className="background-progression" aria-labelledby="background-progression-title">
-          <header className="background-progression__intro">
-            <p>01 / Education &amp; practice</p>
-            <h2 id="background-progression-title">Knowledge accumulated through connected chapters.</h2>
+      <InnerPageShell
+        variant="background"
+        eyebrow="Background / Knowledge journey"
+        title={<>Marketing.<br />Finance.<br />Crypto Markets.</>}
+        summary="Three disciplines that shape how I understand markets, businesses and digital systems."
+        meta={["Education", "Applied learning", "Professional practice"]}
+      >
+        <section className="inner-section background-journey" aria-labelledby="background-journey-title">
+          <header className="inner-section__header">
+            <p className="inner-section__label">01 / Progression</p>
+            <h2 id="background-journey-title">A connected professional foundation.</h2>
+            <p>Audience understanding leads into financial systems, then into applied crypto-market research.</p>
           </header>
 
-          <ol className="background-chapters">
+          <ol className="knowledge-journey">
             {backgroundChapters.map((chapter, index) => (
-              <li key={chapter.field} className="background-chapter">
-                <div className="background-chapter__field">
-                  <span>{chapter.number}</span>
+              <li key={chapter.field} className="journey-field">
+                <div className="journey-field__identity">
+                  <span className="journey-field__number">{chapter.number}</span>
                   <h3>{chapter.field}</h3>
+                  <p className="journey-field__status"><span aria-hidden="true" />{chapter.status}</p>
                 </div>
 
-                <div className="background-chapter__education">
-                  <div>
-                    <p>{chapter.degree}</p>
-                    <strong>{chapter.institution}</strong>
-                    <span>{chapter.faculty}</span>
-                  </div>
+                <div className="journey-field__education">
                   {index < 2 ? (
                     <img src="/images/education/university-of-prishtina.png" width="447" height="447" alt="University of Prishtina seal" loading="lazy" decoding="async" />
                   ) : (
                     <img src="/images/crypto-school-logo.webp" width="960" height="538" alt="Crypto School" loading="lazy" decoding="async" />
                   )}
-                  <p className="background-chapter__status"><span aria-hidden="true" />{chapter.status}</p>
+                  <div>
+                    <p>{chapter.degree}</p>
+                    <strong>{chapter.institution}</strong>
+                    <span>{chapter.faculty}</span>
+                  </div>
                 </div>
 
-                <div className="background-chapter__practice">
-                  <p>Primary skills</p>
+                <div className="journey-field__skills">
+                  <p>Skills</p>
                   <ul aria-label={`${chapter.field} primary skills`}>
                     {chapter.skills.map((skill) => <li key={skill}>{skill}</li>)}
                   </ul>
-                  <div><span>Experience</span><strong>{chapter.experience}</strong></div>
                 </div>
+
+                <div className="journey-field__experience"><span>Experience</span><strong>{chapter.experience}</strong></div>
               </li>
             ))}
           </ol>
@@ -71,11 +71,11 @@ export default function BackgroundPage() {
 
         <CryptoCurriculumSection />
 
-        <section className="case-study__close">
-          <div><p>04 / Continue</p><h2>See how the foundation becomes working products.</h2></div>
+        <section className="inner-section inner-final-cta">
+          <div><p className="inner-section__label">03 / Continue</p><h2>See how the foundation becomes working products.</h2></div>
           <div><Link className="button button--primary" href="/work">View selected work <ActionMark direction="forward" /></Link></div>
         </section>
-      </main>
+      </InnerPageShell>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(baseStructuredData(routeSeo.background)).replace(/</g, "\\u003c") }} />
     </>
   );

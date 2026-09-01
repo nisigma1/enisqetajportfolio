@@ -56,17 +56,24 @@ export function ContactForm() {
   const [errors, setErrors] = useState<FieldErrors>({});
   const [mailto, setMailto] = useState<string | null>(null);
   const [copyMessage, setCopyMessage] = useState("");
-  const projectRef = useRef<HTMLInputElement>(null);
+  const projectRef = useRef<HTMLSelectElement>(null);
 
   useEffect(() => {
-    const plan = new URLSearchParams(window.location.search).get("plan");
+    const params = new URLSearchParams(window.location.search);
+    const plan = params.get("plan");
+    const service = params.get("service");
     const planLabels: Record<string, string> = {
       technical: "Crypto market analysis — Technical plan (€30 / month)",
       advanced: "Crypto market analysis — Advanced plan (€60 / month)",
       complete: "Crypto market analysis — Complete plan (€100 / month)",
     };
-    if (projectRef.current && plan && planLabels[plan]) {
+    if (!projectRef.current) return;
+    if (plan && planLabels[plan]) {
       projectRef.current.value = planLabels[plan];
+    } else if (service === "crypto-analysis") {
+      projectRef.current.value = "Crypto Analysis";
+    } else if (service === "digital-project") {
+      projectRef.current.value = "Digital Project";
     }
   }, []);
 
@@ -135,14 +142,14 @@ export function ContactForm() {
     }
   }
 
-  function handleBlur(event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>) {
+  function handleBlur(event: FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     const name = event.currentTarget.name as FieldName;
     if (!(name in { name: true, email: true, project: true, message: true })) return;
     const error = validateField(name, event.currentTarget.value);
     setErrors((current) => ({ ...current, [name]: error }));
   }
 
-  function handleInput(event: FormEvent<HTMLInputElement | HTMLTextAreaElement>) {
+  function handleInput(event: FormEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     const name = event.currentTarget.name as FieldName;
     if (state === "ready") {
       setMailto(null);
@@ -171,7 +178,7 @@ export function ContactForm() {
   }
 
   return (
-    <form className="contact-form" onSubmit={submit} noValidate aria-busy={state === "loading"}>
+    <form id="contact-form" className="contact-form" onSubmit={submit} noValidate aria-busy={state === "loading"}>
       <label>
         <span>Name</span>
         <input
@@ -207,19 +214,25 @@ export function ContactForm() {
       </label>
 
       <label className="wide">
-        <span>What are you working on?</span>
-        <input
+        <span>Inquiry type</span>
+        <select
           ref={projectRef}
           name="project"
-          type="text"
-          minLength={3}
-          maxLength={240}
           required
           aria-invalid={Boolean(errors.project)}
           aria-describedby={describedBy("project")}
           onBlur={handleBlur}
-          onInput={handleInput}
-        />
+          onChange={handleInput}
+          defaultValue=""
+        >
+          <option value="" disabled>Select an inquiry type</option>
+          <option value="Crypto Analysis">Crypto Analysis</option>
+          <option value="Crypto market analysis — Technical plan (€30 / month)">Crypto Analysis — Technical (€30)</option>
+          <option value="Crypto market analysis — Advanced plan (€60 / month)">Crypto Analysis — Advanced (€60)</option>
+          <option value="Crypto market analysis — Complete plan (€100 / month)">Crypto Analysis — Complete (€100)</option>
+          <option value="Digital Project">Digital Project / Malera Studio</option>
+          <option value="Other Inquiry">Other Inquiry</option>
+        </select>
         {errors.project && <small id="project-error" className="field-error">{errors.project}</small>}
       </label>
 
@@ -227,7 +240,7 @@ export function ContactForm() {
         <span>Message</span>
         <textarea
           name="message"
-          rows={5}
+          rows={4}
           minLength={20}
           maxLength={4000}
           required

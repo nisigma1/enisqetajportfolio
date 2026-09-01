@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { InnerPageShell } from "@/components/layout/InnerPageShell";
 import { ActionMark } from "@/components/ui/ActionMark";
 import { pricingPlans } from "@/data/site";
 import { baseStructuredData, routeSeo } from "@/lib/seo";
@@ -24,50 +25,61 @@ const comparisonRows = [
 ] as const;
 
 export default function PricingPage() {
+  const analysisLayers = ["Technical", "Fundamental", "On-chain"] as const;
+
   return (
     <>
-      <main id="main" className="route-page pricing-route">
-        <header className="route-hero">
-          <p>Pricing / Monthly subscription</p>
-          <h1>Crypto market analysis.</h1>
-          <div>
-            <p>Structured market analysis combining technical, fundamental and on-chain research depending on the selected plan.</p>
-            <span>Research and educational analysis / 1 month</span>
-          </div>
-        </header>
-
-        <section className="pricing-depth" aria-labelledby="pricing-depth-title">
-          <header>
-            <p>01 / Analysis depth</p>
-            <h2 id="pricing-depth-title">Choose the depth of research you need.</h2>
+      <InnerPageShell
+        variant="analysis"
+        eyebrow="Crypto Analysis / Monthly research"
+        title={<>Monthly research plans for crypto-market analysis.</>}
+        summary="Technical, fundamental and on-chain analysis with increasing research depth across one-month subscriptions."
+        meta={["Technical", "Fundamental", "On-chain"]}
+      >
+        <section className="inner-section analysis-depth" aria-labelledby="analysis-depth-title">
+          <header className="inner-section__header">
+            <p className="inner-section__label">01 / Analysis depth</p>
+            <h2 id="analysis-depth-title">Choose the analytical framework you need.</h2>
+            <p>Each level includes the layers before it. The progression explains the difference in scope and price.</p>
           </header>
-          <ol className="pricing-plans">
-            {pricingPlans.map((plan) => (
-              <li key={plan.id} className="pricing-plan">
-                <div className="pricing-plan__identity"><span>{plan.number}</span><h3>{plan.name}</h3></div>
-                <p className="pricing-plan__price"><strong>€{plan.price}</strong><span>/ month</span></p>
-                <p className="pricing-plan__description">{plan.description}</p>
-                <ul aria-label={`${plan.name} plan features`}>
-                  {plan.features.map((feature) => <li key={feature}><span aria-hidden="true">+</span>{feature}</li>)}
-                  {plan.liveSessions !== "—" && <li><span aria-hidden="true">+</span>{plan.liveSessions} live research session{plan.liveSessions.startsWith("2") ? "s" : ""}</li>}
-                </ul>
-                <div className="pricing-plan__meta"><span>Subscription</span><strong>{plan.duration}</strong></div>
-                <Link className="button button--primary" href={`/contact?plan=${plan.id}`}>Request this plan <ActionMark direction="forward" /></Link>
+          <ol className="analysis-plans">
+            {pricingPlans.map((plan, planIndex) => (
+              <li key={plan.id} className="analysis-plan">
+                <div className="analysis-plan__identity">
+                  <span className="analysis-plan__number">{plan.number}</span>
+                  <h3>{plan.name}</h3>
+                  <p><strong>€{plan.price}</strong><span>/ 1 month</span></p>
+                </div>
+                <ol className="analysis-plan__layers" aria-label={`${plan.name} analysis layers`}>
+                  {analysisLayers.map((layer, layerIndex) => (
+                    <li key={layer} data-included={layerIndex <= planIndex ? "true" : undefined}>
+                      <span aria-hidden="true">{layerIndex <= planIndex ? "●" : "○"}</span>{layer}
+                    </li>
+                  ))}
+                </ol>
+                <div className="analysis-plan__scope">
+                  <p>{plan.description}</p>
+                  <ul aria-label={`${plan.name} plan features`}>
+                    {plan.features.map((feature) => <li key={feature}><span aria-hidden="true">+</span>{feature}</li>)}
+                    {plan.liveSessions !== "—" && <li><span aria-hidden="true">+</span>{plan.liveSessions} live research session{plan.liveSessions.startsWith("2") ? "s" : ""}</li>}
+                  </ul>
+                </div>
+                <Link className="button button--primary" href={`/contact?service=crypto-analysis&plan=${plan.id}`}>Select {plan.name} <ActionMark direction="forward" /></Link>
               </li>
             ))}
           </ol>
         </section>
 
-        <section className="pricing-comparison" aria-labelledby="pricing-comparison-title">
-          <header><p>02 / Comparison</p><h2 id="pricing-comparison-title">Compare the research framework.</h2></header>
-          <div className="pricing-comparison__desktop">
+        <section className="inner-section analysis-comparison" aria-labelledby="analysis-comparison-title">
+          <header className="inner-section__header"><p className="inner-section__label">02 / Comparison</p><h2 id="analysis-comparison-title">Compare the research framework.</h2><p>Exact differences across analysis, assistance, live sessions and subscription duration.</p></header>
+          <div className="analysis-comparison__desktop">
             <table>
               <caption className="visually-hidden">Comparison of Technical, Advanced and Complete monthly plans</caption>
               <thead><tr><th scope="col">Feature</th>{pricingPlans.map((plan) => <th scope="col" key={plan.id}>{plan.name}<span>€{plan.price}</span></th>)}</tr></thead>
               <tbody>{comparisonRows.map((row) => <tr key={row.label}><th scope="row">{row.label}</th>{row.values.map((value, index) => <td key={`${row.label}-${pricingPlans[index].id}`} data-included={value === "Included" ? "true" : undefined}><span aria-hidden="true">{value === "Included" ? "✓" : value === "Not included" ? "—" : value}</span><span className="visually-hidden">{value}</span></td>)}</tr>)}</tbody>
             </table>
           </div>
-          <div className="pricing-comparison__mobile" aria-label="Mobile plan comparison">
+          <div className="analysis-comparison__mobile" aria-label="Mobile plan comparison">
             {pricingPlans.map((plan, planIndex) => (
               <article key={plan.id}>
                 <h3>{plan.name} <span>€{plan.price} / month</span></h3>
@@ -77,16 +89,34 @@ export default function PricingPage() {
           </div>
         </section>
 
-        <section className="pricing-service-notes" aria-label="Service details">
-          <article><p>03 / Research assistance</p><h2>Understand the framework.</h2><p>Research assistance includes help understanding the analysis, key market variables and the analytical framework during the active subscription.</p></article>
-          <article><p>04 / Live sessions</p><h2>Discuss the current context.</h2><p>Live market research sessions can cover market structure, asset analysis, technical context, fundamental developments, on-chain developments where relevant and macro market context.</p></article>
+        <section className="inner-section analysis-support" aria-label="Service details">
+          <article>
+            <p className="inner-section__label">03 / Research assistance</p>
+            <h2>Understand the analysis, not only the conclusion.</h2>
+            <p>Research assistance helps you understand the analysis, important market variables and the analytical framework during your active subscription.</p>
+          </article>
+          <article>
+            <p className="inner-section__label">04 / Live research sessions</p>
+            <h2>Discuss the current context.</h2>
+            <p>Advanced includes 1 live research session per week. Complete includes 2 live research sessions per week.</p>
+            <ul>
+              {[
+                "Current market structure",
+                "Technical developments",
+                "Fundamental updates",
+                "On-chain developments",
+                "Asset-specific questions",
+                "Broader market context",
+              ].map((topic) => <li key={topic}>{topic}</li>)}
+            </ul>
+          </article>
         </section>
 
-        <aside className="pricing-disclaimer" aria-label="Market research disclaimer">
+        <aside className="analysis-disclaimer" aria-label="Market research disclaimer">
           <strong>Research disclaimer</strong>
           <p>Market research and educational analysis only. Nothing on this website constitutes financial or investment advice. Cryptocurrency and financial markets involve risk, and market outcomes are uncertain.</p>
         </aside>
-      </main>
+      </InnerPageShell>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(baseStructuredData(routeSeo.pricing)).replace(/</g, "\\u003c") }} />
     </>
   );

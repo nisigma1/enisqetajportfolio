@@ -7,11 +7,11 @@ export const siteConfig = {
 } as const;
 
 export const navigation = [
-  { label: "Background", href: "/background" },
-  { label: "Work", href: "/work" },
-  { label: "Companies", href: "/companies" },
-  { label: "Pricing", href: "/pricing" },
-  { label: "Contact", href: "/contact" },
+  { id: "background", label: "Background", href: "/background" },
+  { id: "work", label: "Work", href: "/work" },
+  { id: "companies", label: "Malera Studio", href: "/companies" },
+  { id: "pricing", label: "Crypto Analysis", href: "/pricing" },
+  { id: "contact", label: "Contact", href: "/contact" },
 ] as const;
 
 export const identity = {
