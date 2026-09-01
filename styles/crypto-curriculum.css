@@ -193,8 +193,10 @@
 
 .knowledge-spine__tracks::before {
   position: absolute;
-  z-index: 1;
-  inset: 0 auto 0 0;
+  z-index: 3;
+  top: -1px;
+  bottom: -1px;
+  left: 0;
   width: 3px;
   background: linear-gradient(
     to bottom,

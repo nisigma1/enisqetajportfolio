@@ -546,11 +546,6 @@ html[data-magicui-theme-vt="active"]::view-transition-group(root) {
 .button .action-mark,
 .form-submit .action-mark {
   margin-left: auto;
-  width: 1.7rem;
-  height: 1.7rem;
-  border: 1px solid currentColor;
-  border-radius: 50%;
-  background: color-mix(in srgb, currentColor 10%, transparent) !important;
 }
 
 .action-mark::before,
