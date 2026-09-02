@@ -10,12 +10,10 @@ type FieldErrors = Partial<Record<FieldName, string>>;
 type ApiResponse = {
   ok?: boolean;
   message?: string;
-  mailto?: string;
   errors?: FieldErrors;
 };
 
 const emailAddress = "enisqeta5@gmail.com";
-const gmailComposeHref = "https://mail.google.com/mail/?view=cm&fs=1&to=enisqeta5%40gmail.com";
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function validateField(name: FieldName, value: string): string | undefined {
@@ -54,7 +52,6 @@ export function ContactForm() {
   const [state, setState] = useState<FormState>("idle");
   const [statusMessage, setStatusMessage] = useState("");
   const [errors, setErrors] = useState<FieldErrors>({});
-  const [mailto, setMailto] = useState<string | null>(null);
   const [copyMessage, setCopyMessage] = useState("");
   const projectRef = useRef<HTMLSelectElement>(null);
 
@@ -102,14 +99,13 @@ export function ContactForm() {
     const form = event.currentTarget;
     const clientResult = validateForm(form);
 
-    setMailto(null);
     setStatusMessage("");
     setCopyMessage("");
     setErrors(clientResult.errors);
 
     if (Object.keys(clientResult.errors).length) {
       setState("error");
-      setStatusMessage("Check the highlighted fields. Your draft is still here.");
+      setStatusMessage("Check the highlighted fields. Your message is still here.");
       focusFirstError(form, clientResult.errors);
       return;
     }
@@ -124,21 +120,20 @@ export function ContactForm() {
       });
       const data = await response.json().catch(() => ({})) as ApiResponse;
 
-      if (!response.ok || !data.ok || !data.mailto) {
+      if (!response.ok || !data.ok) {
         const serverErrors = data.errors ?? {};
         setErrors(serverErrors);
         setState("error");
-        setStatusMessage(data.message || "The email draft could not be prepared. Your message has not been sent.");
+        setStatusMessage(data.message || "The email could not be sent. Your message has not been sent.");
         focusFirstError(form, serverErrors);
         return;
       }
 
-      setMailto(data.mailto);
       setState("ready");
-      setStatusMessage(data.message || "Your draft is ready. Continue in email to review and send it.");
+      setStatusMessage(data.message || "Message sent. Enis will receive it by email.");
     } catch {
       setState("error");
-      setStatusMessage("The email draft could not be prepared. Your message has not been sent; you can email Enis directly.");
+      setStatusMessage("The email could not be sent. Your message has not been sent; you can email Enis directly.");
     }
   }
 
@@ -152,7 +147,6 @@ export function ContactForm() {
   function handleInput(event: FormEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     const name = event.currentTarget.name as FieldName;
     if (state === "ready") {
-      setMailto(null);
       setState("idle");
       setStatusMessage("");
     } else if (state === "error") {
@@ -261,7 +255,7 @@ export function ContactForm() {
 
       <div className="form-actions wide">
         <button className="form-submit" type="submit" disabled={state === "loading"}>
-          {state === "loading" ? "Preparing…" : "Prepare email draft"}
+          {state === "loading" ? "Sending…" : "Send email"}
           <ActionMark direction="forward" />
         </button>
         <button className="quiet-action" type="button" onClick={copyEmail}>Copy email</button>
@@ -273,18 +267,15 @@ export function ContactForm() {
           role={state === "error" ? "alert" : "status"}
         >
           <span>{statusMessage}</span>
-          {state === "ready" && mailto && (
-            <a href={mailto} target="_blank" rel="noreferrer">Continue in Gmail <ActionMark direction="external" /></a>
-          )}
           {state === "error" && (
-            <a href={gmailComposeHref} target="_blank" rel="noreferrer">Email Enis in Gmail</a>
+            <a href={`mailto:${emailAddress}`}>Email Enis directly</a>
           )}
         </div>
       )}
 
       {copyMessage && <p className="copy-status wide" role="status">{copyMessage}</p>}
       <p className="form-privacy wide">
-        This form only validates your note and prepares an email draft. Nothing is sent or stored here.
+        This form sends your message directly to Enis by email. It is not stored by this website.
       </p>
     </form>
   );

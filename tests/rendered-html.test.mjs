@@ -294,39 +294,62 @@ test("contact separates research and digital-work pathways while preserving the 
   assert.match(html, /enisqeta5@gmail\.com/);
 });
 
-test("contact endpoint validates input and returns a mail fallback", async () => {
+test("contact endpoint validates input and delivers email through Resend", async () => {
+  const previousApiKey = process.env.RESEND_API_KEY;
+  const originalFetch = globalThis.fetch;
+  process.env.RESEND_API_KEY = "re_test_key";
+  let resendRequest;
+  globalThis.fetch = async (input, init) => {
+    resendRequest = { input, init };
+    return new Response(JSON.stringify({ id: "email_test" }), { status: 200 });
+  };
   const worker = await getWorker();
-  const valid = await worker.fetch(
-    new Request("http://localhost/api/contact", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        name: "Test User",
-        email: "test@example.com",
-        project: "A booking website",
-        message: "A sufficiently detailed project description for validation.",
-        website: "",
+  try {
+    const valid = await worker.fetch(
+      new Request("http://localhost/api/contact", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          name: "Test User",
+          email: "test@example.com",
+          project: "A booking website",
+          message: "A sufficiently detailed project description for validation.",
+          website: "",
+        }),
       }),
-    }),
-    env,
-    ctx,
-  );
-  assert.equal(valid.status, 200);
-  assert.match((await valid.json()).mailto, /^https:\/\/mail\.google\.com\/mail\/\?view=cm&fs=1&to=enisqeta5%40gmail\.com/);
+      env,
+      ctx,
+    );
+    assert.equal(valid.status, 200);
+    assert.equal((await valid.json()).ok, true);
+    assert.equal(resendRequest.input, "https://api.resend.com/emails");
+    assert.equal(resendRequest.init.headers.Authorization, "Bearer re_test_key");
+    assert.deepEqual(JSON.parse(resendRequest.init.body), {
+      from: "Enis Qetaj Website <website@enisqetaj.com>",
+      to: ["enisqeta5@gmail.com"],
+      reply_to: "test@example.com",
+      subject: "[Website] A booking website — Test User",
+      text: "Name: Test User\nEmail: test@example.com\nWorking on: A booking website\n\nA sufficiently detailed project description for validation.",
+    });
 
-  const invalid = await worker.fetch(
-    new Request("http://localhost/api/contact", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        name: "X",
-        email: "bad",
-        project: "No",
-        message: "short",
+    const invalid = await worker.fetch(
+      new Request("http://localhost/api/contact", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          name: "X",
+          email: "bad",
+          project: "No",
+          message: "short",
+        }),
       }),
-    }),
-    env,
-    ctx,
-  );
-  assert.equal(invalid.status, 422);
+      env,
+      ctx,
+    );
+    assert.equal(invalid.status, 422);
+  } finally {
+    globalThis.fetch = originalFetch;
+    if (previousApiKey === undefined) delete process.env.RESEND_API_KEY;
+    else process.env.RESEND_API_KEY = previousApiKey;
+  }
 });

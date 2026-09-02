@@ -56,7 +56,7 @@ export default function ContactPage() {
               <a href={identity.phoneHref}><span>Phone</span><strong>{identity.phone}</strong></a>
               <a href={malera.url} target="_blank" rel="noreferrer"><span>Company</span><strong>Malera Studio <ActionMark direction="external" /></strong></a>
             </div>
-            <small>This form prepares an email draft. It does not send or store your message.</small>
+            <small>This form sends your message directly to Enis by email. It is not stored by this website.</small>
           </aside>
           <ContactForm />
         </section>

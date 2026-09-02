@@ -13,7 +13,8 @@ type FieldErrors = Partial<Record<FieldName, string>>;
 
 const maxRequestBytes = 16_384;
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const gmailComposeUrl = "https://mail.google.com/mail/?view=cm&fs=1&to=enisqeta5%40gmail.com";
+const recipient = "enisqeta5@gmail.com";
+const sender = "Enis Qetaj Website <website@enisqetaj.com>";
 
 function stringValue(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
@@ -47,7 +48,7 @@ export async function POST(request: Request) {
   const declaredLength = Number(request.headers.get("content-length") ?? 0);
   if (Number.isFinite(declaredLength) && declaredLength > maxRequestBytes) {
     return NextResponse.json(
-      { ok: false, message: "The draft is too large to prepare." },
+      { ok: false, message: "The message is too large to send." },
       { status: 413 },
     );
   }
@@ -57,14 +58,14 @@ export async function POST(request: Request) {
     raw = await request.text();
   } catch {
     return NextResponse.json(
-      { ok: false, message: "The draft could not be read. Nothing was sent." },
+      { ok: false, message: "The message could not be read. Nothing was sent." },
       { status: 400 },
     );
   }
 
   if (new TextEncoder().encode(raw).byteLength > maxRequestBytes) {
     return NextResponse.json(
-      { ok: false, message: "The draft is too large to prepare." },
+      { ok: false, message: "The message is too large to send." },
       { status: 413 },
     );
   }
@@ -76,7 +77,7 @@ export async function POST(request: Request) {
     payload = parsed as Payload;
   } catch {
     return NextResponse.json(
-      { ok: false, message: "The draft could not be read. Nothing was sent." },
+      { ok: false, message: "The message could not be read. Nothing was sent." },
       { status: 400 },
     );
   }
@@ -84,8 +85,7 @@ export async function POST(request: Request) {
   if (stringValue(payload.website)) {
     return NextResponse.json({
       ok: true,
-      message: "Your draft is ready. Continue in email to review and send it.",
-      mailto: gmailComposeUrl,
+      message: "Your message has been sent.",
     });
   }
 
@@ -94,25 +94,61 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         ok: false,
-        message: "Check the highlighted fields. Nothing was sent and your draft remains in the form.",
+        message: "Check the highlighted fields. Nothing was sent and your message remains in the form.",
         errors,
       },
       { status: 422 },
     );
   }
 
-  const subject = encodeURIComponent(`${values.project} — note from ${values.name}`);
-  const body = encodeURIComponent([
+  const resendApiKey = process.env.RESEND_API_KEY?.trim();
+  if (!resendApiKey) {
+    return NextResponse.json(
+      { ok: false, message: "Email delivery is being configured. Please email Enis directly for now." },
+      { status: 503 },
+    );
+  }
+
+  const subject = `[Website] ${values.project} — ${values.name}`;
+  const text = [
     `Name: ${values.name}`,
     `Email: ${values.email}`,
     `Working on: ${values.project}`,
     "",
     values.message,
-  ].join("\n"));
+  ].join("\n");
+
+  try {
+    const resendResponse = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${resendApiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: sender,
+        to: [recipient],
+        reply_to: values.email,
+        subject,
+        text,
+      }),
+    });
+
+    if (!resendResponse.ok) {
+      return NextResponse.json(
+        { ok: false, message: "The email could not be sent. Please try again or email Enis directly." },
+        { status: 502 },
+      );
+    }
+  } catch {
+    return NextResponse.json(
+      { ok: false, message: "The email could not be sent. Please try again or email Enis directly." },
+      { status: 502 },
+    );
+  }
 
   return NextResponse.json({
     ok: true,
-    message: "Your draft is ready. Continue in email to review and send it. Nothing has been sent or stored.",
-    mailto: `${gmailComposeUrl}&su=${subject}&body=${body}`,
+    message: "Message sent. Enis will receive it by email.",
   });
 }
