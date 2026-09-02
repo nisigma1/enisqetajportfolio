@@ -97,42 +97,38 @@ export default function PricingPage() {
           <div className="research-notes__grid">
             {[
               {
-                image: "/images/research-notes/x-susdt-weekly.jpg",
+                image: "/images/research-notes/x-susdt-weekly-dark.webp",
                 alt: "NISIGMA X post with a SUSDT weekly technical analysis chart",
                 label: "SUSDT weekly technical view",
-                width: 1066,
-                height: 1280,
+                width: 1146,
+                height: 1372,
               },
               {
-                image: "/images/research-notes/x-bitcoin-mvrv.jpg",
+                image: "/images/research-notes/x-bitcoin-mvrv-dark.webp",
                 alt: "NISIGMA X post discussing Bitcoin MVRV Z-score market context",
                 label: "Bitcoin MVRV market context",
-                width: 964,
-                height: 1280,
+                width: 1089,
+                height: 1445,
               },
               {
-                image: "/images/research-notes/x-strk-onchain.jpg",
+                image: "/images/research-notes/x-strk-onchain-dark.webp",
                 alt: "NISIGMA X post reviewing Starknet on-chain activity and chart context",
                 label: "Starknet on-chain context",
-                width: 814,
-                height: 1280,
+                width: 1001,
+                height: 1572,
               },
               {
-                image: "/images/research-notes/x-fet-technical.jpg",
+                image: "/images/research-notes/x-fet-technical-dark.webp",
                 alt: "NISIGMA X post outlining FET technical support levels on a market chart",
                 label: "FET technical view",
-                width: 1089,
-                height: 1280,
+                width: 1157,
+                height: 1359,
               },
             ].map((note) => (
               <article key={note.image} className="research-note">
                 <a href="https://x.com/N1sigma" target="_blank" rel="noopener noreferrer" aria-label={`Open ${note.label} on X`}>
-                  <div className="research-note__source">
-                    <span><b>NISIGMA</b><small>@N1sigma</small></span>
-                    <span className="research-note__x" aria-hidden="true">𝕏</span>
-                  </div>
-                  <img src={note.image} alt={note.alt} width={note.width} height={note.height} loading="lazy" decoding="async" />
-                  <span className="research-note__footer">View research on X <ActionMark direction="external" /></span>
+                  <span className="research-note__visual"><img src={note.image} alt={note.alt} width={note.width} height={note.height} loading="lazy" decoding="async" /></span>
+                  <span className="research-note__footer"><span>{note.label}</span><span>Open on X <ActionMark direction="external" /></span></span>
                 </a>
               </article>
             ))}

@@ -826,9 +826,11 @@
 /* Public X research notes: local captures are presented as source-attributed proof, never as a live feed. */
 .research-notes__grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 37rem));
-  justify-content: space-between;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 76rem;
+  margin-inline: auto;
   gap: clamp(1rem, 2.2vw, 2rem);
+  align-items: start;
 }
 
 .research-note {
@@ -838,13 +840,13 @@
 }
 
 .research-note a {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   height: 100%;
   color: #f7f7f4;
   text-decoration: none;
 }
 
-.research-note__source,
 .research-note__footer {
   display: flex;
   align-items: center;
@@ -853,34 +855,17 @@
   padding: 0.8rem 1rem;
 }
 
-.research-note__source {
-  border-bottom: 1px solid color-mix(in srgb, #fff 18%, transparent);
+.research-note__visual {
+  display: grid;
+  aspect-ratio: 3 / 4;
+  place-items: center;
+  background: #050505;
 }
 
-.research-note__source span:first-child {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.5rem;
-}
-
-.research-note__source b {
-  font-size: 0.82rem;
-  letter-spacing: 0.02em;
-}
-
-.research-note__source small {
-  color: #929aa2;
-  font-size: 0.75rem;
-}
-
-.research-note__x {
-  font-size: 1.15rem;
-  line-height: 1;
-}
-
-.research-note img {
+.research-note__visual img {
+  display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
   object-fit: contain;
   image-rendering: auto;
   transition: transform 220ms ease;
@@ -893,8 +878,16 @@
   font-size: var(--text-caption);
 }
 
-.research-note a:hover img,
-.research-note a:focus-visible img {
+.research-note__footer > span:last-child {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: #f7f7f4;
+  white-space: nowrap;
+}
+
+.research-note a:hover .research-note__visual img,
+.research-note a:focus-visible .research-note__visual img {
   transform: scale(1.015);
 }
 
