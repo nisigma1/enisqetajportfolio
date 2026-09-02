@@ -975,6 +975,8 @@
 
 .contact-pathways .button {
   margin-top: auto;
+  min-inline-size: 13rem;
+  white-space: nowrap;
 }
 
 .contact-conversion {
@@ -1040,7 +1042,7 @@
   scroll-margin-top: calc(var(--masthead-height) + var(--space-5));
 }
 
-.inner-page--contact .contact-form :is(input, select, textarea) {
+.inner-page--contact .contact-form :is(input, textarea) {
   width: 100%;
   min-height: 3.25rem;
   padding: 0.8rem 0;
@@ -1052,8 +1054,36 @@
   color: var(--text-primary);
 }
 
+.inner-page--contact .select-control {
+  position: relative;
+  display: block;
+}
+
+.inner-page--contact .select-control::after {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  color: var(--text-secondary);
+  content: "";
+  pointer-events: none;
+  transform: translateY(-65%) rotate(45deg);
+}
+
 .inner-page--contact .contact-form select {
+  width: 100%;
+  min-height: 3.5rem;
+  padding: 0.8rem 3.25rem 0.8rem 1rem;
+  appearance: none;
+  border: var(--border-width) solid var(--border-strong);
+  border-radius: 0;
+  outline: 0;
   cursor: pointer;
+  background: color-mix(in srgb, var(--surface-elevated) 86%, transparent);
+  color: var(--text-primary);
 }
 
 .inner-page--contact .contact-form select option {
@@ -1061,9 +1091,14 @@
   color: var(--text-primary);
 }
 
-.inner-page--contact .contact-form :is(input, select, textarea):focus {
+.inner-page--contact .contact-form :is(input, textarea):focus {
   border-bottom-color: var(--accent);
   box-shadow: 0 2px 0 var(--accent);
+}
+
+.inner-page--contact .contact-form select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-soft);
 }
 
 /* A compact footer for inner routes; the homepage footer keeps its original layout. */
@@ -1361,10 +1396,25 @@ body:has(.inner-page) .social-dock-section {
   }
 
   .contact-pathways article {
-    min-height: 27rem;
+    min-height: 0;
+    padding-block: clamp(3.5rem, 12vw, 5rem);
     padding-inline: 0;
     border-right: 0;
     border-bottom: var(--border-width) solid var(--border);
+  }
+
+  .contact-pathways article > p:not(.inner-section__label) {
+    margin-top: var(--space-4);
+  }
+
+  .contact-pathways ul {
+    margin-top: var(--space-4);
+  }
+
+  .contact-pathways .button {
+    width: 100%;
+    min-inline-size: 0;
+    margin-top: var(--space-6);
   }
 
   .contact-pathways h3,
@@ -1378,12 +1428,27 @@ body:has(.inner-page) .social-dock-section {
 
   .inner-page--contact .contact-form {
     grid-template-columns: 1fr;
-    padding: var(--space-5);
+    gap: var(--space-4);
+    padding: clamp(1rem, 5vw, 1.5rem);
   }
 
   .inner-page--contact .contact-form label.wide,
   .inner-page--contact .contact-form .wide {
     grid-column: 1;
+  }
+
+  .inner-page--contact .form-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .inner-page--contact .form-submit,
+  .inner-page--contact .quiet-action {
+    min-width: 0;
+  }
+
+  .inner-page--contact .form-privacy {
+    line-height: 1.5;
   }
 
   body:has(.inner-page) .footer-navigation-panel {
@@ -1398,5 +1463,16 @@ body:has(.inner-page) .social-dock-section {
     font-size: clamp(1.9rem, 9.5vw, 3.1rem);
     line-height: 0.9;
     white-space: normal;
+  }
+}
+
+@media (max-width: 420px) {
+  .inner-page--contact .form-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .inner-page--contact .form-submit,
+  .inner-page--contact .quiet-action {
+    width: 100%;
   }
 }

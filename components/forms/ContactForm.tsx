@@ -215,24 +215,26 @@ export function ContactForm() {
 
       <label className="wide">
         <span>Inquiry type</span>
-        <select
-          ref={projectRef}
-          name="project"
-          required
-          aria-invalid={Boolean(errors.project)}
-          aria-describedby={describedBy("project")}
-          onBlur={handleBlur}
-          onChange={handleInput}
-          defaultValue=""
-        >
-          <option value="" disabled>Select an inquiry type</option>
-          <option value="Crypto Analysis">Crypto Analysis</option>
-          <option value="Crypto market analysis — Technical plan (€30 / month)">Crypto Analysis — Technical (€30)</option>
-          <option value="Crypto market analysis — Advanced plan (€60 / month)">Crypto Analysis — Advanced (€60)</option>
-          <option value="Crypto market analysis — Complete plan (€100 / month)">Crypto Analysis — Complete (€100)</option>
-          <option value="Digital Project">Digital Project / Malera Studio</option>
-          <option value="Other Inquiry">Other Inquiry</option>
-        </select>
+        <span className="select-control">
+          <select
+            ref={projectRef}
+            name="project"
+            required
+            aria-invalid={Boolean(errors.project)}
+            aria-describedby={describedBy("project")}
+            onBlur={handleBlur}
+            onChange={handleInput}
+            defaultValue=""
+          >
+            <option value="" disabled>Select an inquiry type</option>
+            <option value="Crypto Analysis">Crypto Analysis</option>
+            <option value="Crypto market analysis — Technical plan (€30 / month)">Crypto Analysis — Technical (€30)</option>
+            <option value="Crypto market analysis — Advanced plan (€60 / month)">Crypto Analysis — Advanced (€60)</option>
+            <option value="Crypto market analysis — Complete plan (€100 / month)">Crypto Analysis — Complete (€100)</option>
+            <option value="Digital Project">Digital Project / Malera Studio</option>
+            <option value="Other Inquiry">Other Inquiry</option>
+          </select>
+        </span>
         {errors.project && <small id="project-error" className="field-error">{errors.project}</small>}
       </label>
 
