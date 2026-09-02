@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { InnerPageShell } from "@/components/layout/InnerPageShell";
 import { Build, Malera } from "@/components/sections/DefinitiveSections";
+import { BesianaPhotographyArtwork } from "@/components/showcase/BesianaPhotographyArtwork";
 import { ActionMark } from "@/components/ui/ActionMark";
 import { barberProject, besianaProject, hixhameProject, malera } from "@/data/site";
 import { baseStructuredData, routeSeo } from "@/lib/seo";
@@ -31,7 +32,7 @@ export default function CompaniesPage() {
   const proof = [
     { project: barberProject, image: "/projects/barber-brothers/barber-brothers-cover.webp", alt: "Barber Brothers website and booking experience", width: 1600, height: 900 },
     { project: hixhameProject, image: "/projects/hixhame-tina/hixhame-tina-case-study.webp", alt: "Hixhame Tina responsive website case study", width: 1672, height: 941 },
-    { project: besianaProject, image: "/projects/besiana-photography/besiana-photography-og.jpg", alt: "Besiana Photography website preview", width: 1200, height: 630 },
+    { project: besianaProject, image: null, alt: "Besiana Photography website preview", width: 0, height: 0 },
   ] as const;
 
   return (
@@ -82,7 +83,7 @@ export default function CompaniesPage() {
                 <Link href={`/work#${project.slug}`}>
                   <span>{String(index + 1).padStart(2, "0")} / {project.category}</span>
                   <strong>{project.title}</strong>
-                  <figure><img src={image} alt={alt} width={width} height={height} loading="lazy" decoding="async" /></figure>
+                  <figure>{project.slug === besianaProject.slug ? <BesianaPhotographyArtwork compact /> : <img src={image!} alt={alt} width={width} height={height} loading="lazy" decoding="async" />}</figure>
                   <span>View project <ActionMark direction="forward" /></span>
                 </Link>
               </li>

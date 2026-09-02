@@ -27,14 +27,236 @@
 .besiana-preview .button--primary { color: #211712; border-color: var(--besiana-accent); background: var(--besiana-accent); }
 .besiana-preview__art { position: relative; display: block; overflow: hidden; border: 1px solid var(--besiana-border); border-radius: 0.7rem; background: #090a0a; box-shadow: 0 1rem 3rem rgb(0 0 0 / 28%); }
 .besiana-preview__art::after { position: absolute; inset: 0; background: linear-gradient(135deg, rgb(246 212 178 / 10%), transparent 44%, rgb(0 0 0 / 18%)); content: ""; pointer-events: none; }
-.besiana-preview__art img { display: block; width: 100%; aspect-ratio: 1200 / 630; object-fit: cover; transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1), filter 500ms ease; }
+.besiana-preview__art > .besiana-artwork { border: 0; border-radius: 0; box-shadow: none; }
 .besiana-preview__art-label { position: absolute; z-index: 1; right: var(--space-4); bottom: var(--space-4); display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.5rem 0.7rem; background: rgb(12 14 15 / 84%); color: var(--besiana-text); font-size: var(--text-meta); letter-spacing: 0.08em; text-transform: uppercase; }
 .besiana-preview__meta { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: var(--space-5); border: 1px solid var(--besiana-border); border-radius: 0.7rem; background: var(--besiana-border); gap: 1px; overflow: hidden; }
 .besiana-preview__meta > div { min-width: 0; padding: var(--space-4) var(--space-5); background: var(--besiana-surface); }
 .besiana-preview__meta dt { color: var(--besiana-accent); font-size: var(--text-meta); letter-spacing: 0.12em; text-transform: uppercase; }
 .besiana-preview__meta dd { margin: 0.55rem 0 0; color: var(--besiana-secondary); font-size: var(--text-caption); line-height: 1.4; }
 .case-study__hero-image { display: block; width: 100%; height: auto; max-height: min(70vh, 52rem); object-fit: cover; border: 1px solid var(--border-strong); background: var(--surface); }
-@media (hover: hover) and (pointer: fine) { .besiana-preview__art:hover img, .besiana-preview__art:focus-visible img { filter: saturate(1.08); transform: scale(1.025); } }
+
+/* A live, component-level rendition of the real Besiana Photography interface. */
+.besiana-artwork {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: 1px solid rgb(239 127 172 / 42%);
+  border-radius: 0.7rem;
+  background: #12233f;
+  box-shadow: 0 1.1rem 3rem rgb(0 0 0 / 32%);
+  isolation: isolate;
+}
+
+.besiana-artwork__site {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background: #12233f;
+  color: #fff4f8;
+}
+
+.besiana-artwork__nav,
+.besiana-artwork__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding-inline: clamp(0.75rem, 2vw, 1.35rem);
+}
+
+.besiana-artwork__nav {
+  min-height: clamp(2.25rem, 4vw, 3.35rem);
+  border-bottom: 1px solid rgb(255 244 248 / 20%);
+}
+
+.besiana-artwork__brand {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: clamp(0.5rem, 1.25vw, 0.82rem);
+  letter-spacing: -0.02em;
+}
+
+.besiana-artwork__brand img {
+  width: clamp(1.3rem, 2.5vw, 2rem);
+  height: clamp(1.3rem, 2.5vw, 2rem);
+  flex: 0 0 auto;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.besiana-artwork__links {
+  display: inline-flex;
+  gap: clamp(0.45rem, 1.5vw, 1.25rem);
+  color: rgb(255 244 248 / 78%);
+  font-size: clamp(0.38rem, 0.9vw, 0.65rem);
+  font-style: normal;
+}
+
+.besiana-artwork__links i { font-style: normal; }
+
+.besiana-artwork__locale {
+  padding: 0.28rem 0.42rem;
+  border: 1px solid rgb(255 244 248 / 44%);
+  border-radius: 999px;
+  color: #fff4f8;
+  font-size: clamp(0.38rem, 0.8vw, 0.58rem);
+}
+
+.besiana-artwork__hero {
+  display: grid;
+  grid-template-columns: 1.02fr 0.98fr;
+  min-height: 0;
+}
+
+.besiana-artwork__copy {
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: clamp(0.35rem, 1.2vw, 0.8rem);
+  padding: clamp(0.85rem, 3vw, 2.5rem);
+}
+
+.besiana-artwork__copy > span {
+  color: #ef7fac;
+  font-size: clamp(0.38rem, 0.85vw, 0.62rem);
+  font-weight: 750;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.besiana-artwork__copy h4 {
+  max-width: 10ch;
+  color: #fff4f8;
+  font-family: var(--font-editorial);
+  font-size: clamp(1.05rem, 3.3vw, 3rem);
+  font-weight: 430;
+  letter-spacing: -0.06em;
+  line-height: 0.86;
+}
+
+.besiana-artwork__copy p {
+  max-width: 29ch;
+  color: rgb(255 244 248 / 76%);
+  font-size: clamp(0.45rem, 0.95vw, 0.74rem);
+  line-height: 1.4;
+}
+
+.besiana-artwork__copy em {
+  padding: 0.45rem 0.65rem;
+  border-radius: 999px;
+  background: #ef7fac;
+  color: #12233f;
+  font-size: clamp(0.4rem, 0.85vw, 0.62rem);
+  font-style: normal;
+  font-weight: 800;
+}
+
+.besiana-artwork__photo {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.besiana-artwork__photo::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #12233f 0%, transparent 28%), linear-gradient(0deg, rgb(18 35 63 / 54%), transparent 42%);
+  content: "";
+  pointer-events: none;
+}
+
+.besiana-artwork__photo > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 47%;
+  transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.besiana-artwork__photo > span {
+  position: absolute;
+  z-index: 1;
+  right: clamp(0.6rem, 1.5vw, 1rem);
+  bottom: clamp(0.55rem, 1.5vw, 1rem);
+  color: #fff4f8;
+  font-size: clamp(0.38rem, 0.8vw, 0.6rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.besiana-artwork__footer {
+  min-height: clamp(1.8rem, 3vw, 2.6rem);
+  border-top: 1px solid rgb(255 244 248 / 20%);
+  color: rgb(255 244 248 / 65%);
+  font-size: clamp(0.35rem, 0.75vw, 0.55rem);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.besiana-artwork__phone {
+  position: absolute;
+  z-index: 2;
+  right: clamp(0.8rem, 4%, 2.25rem);
+  bottom: clamp(1.8rem, 7%, 3.25rem);
+  width: clamp(3.25rem, 11vw, 8.5rem);
+  aspect-ratio: 0.52;
+  overflow: hidden;
+  border: clamp(2px, 0.35vw, 4px) solid #10182b;
+  border-radius: clamp(0.45rem, 1vw, 0.9rem);
+  background: #12233f;
+  box-shadow: 0 0.8rem 1.6rem rgb(0 0 0 / 36%);
+}
+
+.besiana-artwork__phone > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 45%;
+}
+
+.besiana-artwork__phone::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgb(18 35 63 / 90%), transparent 60%);
+  content: "";
+}
+
+.besiana-artwork__phone > span:last-child {
+  position: absolute;
+  z-index: 1;
+  right: 12%;
+  bottom: 10%;
+  color: #fff4f8;
+  font-family: var(--font-editorial);
+  font-size: clamp(0.5rem, 1.5vw, 1.05rem);
+  line-height: 0.82;
+}
+
+.besiana-artwork__notch {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 50%;
+  width: 40%;
+  height: 0.3rem;
+  border-radius: 0 0 0.35rem 0.35rem;
+  background: #10182b;
+  transform: translateX(-50%);
+}
+
+.besiana-artwork--compact .besiana-artwork__copy p,
+.besiana-artwork--compact .besiana-artwork__links { display: none; }
+
+@media (hover: hover) and (pointer: fine) {
+  .besiana-preview__art:hover .besiana-artwork__photo > img,
+  .besiana-preview__art:focus-visible .besiana-artwork__photo > img { transform: scale(1.035); }
+}
 @media (max-width: 767px) {
   .besiana-preview { margin-top: clamp(3rem, 12vw, 5rem); }
   .besiana-preview__header { font-size: 0.58rem; }
@@ -43,9 +265,9 @@
   .besiana-preview__lead > div:first-child > p { max-width: 19rem; font-size: clamp(1.35rem, 6.8vw, 1.9rem); }
   .besiana-preview__summary { gap: var(--space-4); }
   .besiana-preview__summary .button { width: 100%; min-height: 3rem; }
-  .besiana-preview__art img { aspect-ratio: 4 / 3; object-position: center; }
+  .besiana-preview__art > .besiana-artwork { aspect-ratio: 4 / 3; }
   .besiana-preview__meta { grid-template-columns: 1fr 1fr; margin-top: 1rem; }
   .besiana-preview__meta > div { padding: 0.9rem; }
   .besiana-preview__meta > div:nth-child(3), .besiana-preview__meta > div:nth-child(4) { border-top: 1px solid var(--besiana-border); }
 }
-@media (prefers-reduced-motion: reduce) { .besiana-preview__art img { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .besiana-preview__art .besiana-artwork__photo > img { transition: none; } }

@@ -171,7 +171,8 @@ test("work keeps all three real project proofs on the dedicated work route", asy
     assert.match(html, new RegExp(project));
   }
   assert.match(html, /class="meteors/);
-  assert.match(html, /besiana-photography-og\.jpg/);
+  assert.match(html, /besiana-hero-live\.webp/);
+  assert.match(html, /besiana-nav-mark-live\.webp/);
 });
 
 test("publishes project metadata and correct intrinsic media dimensions", async () => {

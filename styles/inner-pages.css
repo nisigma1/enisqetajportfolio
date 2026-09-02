@@ -451,9 +451,8 @@
   margin-inline: auto;
 }
 
-.work-project--besiana .besiana-preview__art img {
+.work-project--besiana .besiana-preview__art > .besiana-artwork {
   max-height: 42rem;
-  object-position: center 62%;
 }
 
 /* Malera Studio: company identity, systems and proof. */
@@ -597,13 +596,18 @@
   transition: transform var(--motion-base) var(--ease);
 }
 
-.malera-proof li:nth-child(3) img {
+.malera-proof li:nth-child(3) figure > img {
   object-position: center 60%;
 }
 
-.malera-proof a:hover img,
-.malera-proof a:focus-visible img {
+.malera-proof a:hover figure > img,
+.malera-proof a:focus-visible figure > img {
   transform: scale(1.025);
+}
+
+.malera-proof a:hover .besiana-artwork__photo > img,
+.malera-proof a:focus-visible .besiana-artwork__photo > img {
+  transform: scale(1.03);
 }
 
 .malera-cta__actions {
@@ -1303,9 +1307,8 @@ body:has(.inner-page) .social-dock-section {
     font-size: clamp(2.4rem, 11vw, 3.35rem);
   }
 
-  .work-project--besiana .besiana-preview__art img {
+  .work-project--besiana .besiana-preview__art > .besiana-artwork {
     aspect-ratio: 4 / 3;
-    object-position: center 60%;
   }
 
   .malera-identity,

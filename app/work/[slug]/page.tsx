@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BarberBrothersShowcase } from "@/components/showcase/BarberBrothersShowcase";
 import { HixhameTinaCaseStudy } from "@/components/showcase/HixhameTinaCaseStudy";
+import { BesianaPhotographyArtwork } from "@/components/showcase/BesianaPhotographyArtwork";
 import { ProjectMedia } from "@/components/media/ProjectMedia";
 import { ActionMark } from "@/components/ui/ActionMark";
 import { StructuredData } from "@/components/seo/StructuredData";
@@ -170,7 +171,7 @@ function BesianaCaseStudy() {
           </a>
         </div>
       </header>
-      <img className="case-study__hero-image" src="/projects/besiana-photography/besiana-photography-og.jpg" alt="Besiana Photography website preview" width={1200} height={630} />
+      <BesianaPhotographyArtwork priority />
       <section className="case-study__chapter">
         <div><p>02 / Website direction</p><h2>Let the work lead the story.</h2></div>
         <div><p>The experience gives photography room to breathe while keeping services and contact paths clear across devices.</p><ul>{besianaProject.knownFeatures.map((item) => <li key={item}>{item}</li>)}</ul></div>

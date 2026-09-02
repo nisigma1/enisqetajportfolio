@@ -1,6 +1,6 @@
-/* eslint-disable @next/next/no-img-element -- The project cover is a locally cached, art-directed social preview. */
 import { ActionMark } from "@/components/ui/ActionMark";
 import { besianaProject } from "@/data/site";
+import { BesianaPhotographyArtwork } from "@/components/showcase/BesianaPhotographyArtwork";
 
 type BesianaPhotographyPreviewProps = {
   variant?: "homepage" | "archive";
@@ -27,7 +27,7 @@ export function BesianaPhotographyPreview({ variant = "archive" }: BesianaPhotog
         </div>
       </div>
       <a className="besiana-preview__art" href={besianaProject.url} target="_blank" rel="noopener noreferrer" aria-label="Visit Besiana Photography website">
-        <img src="/projects/besiana-photography/besiana-photography-og.jpg" alt="Besiana Photography website preview" width={1200} height={630} loading="lazy" decoding="async" />
+        <BesianaPhotographyArtwork />
         <span className="besiana-preview__art-label">besianaphotography.com <ActionMark direction="external" /></span>
       </a>
       <dl className="besiana-preview__meta" aria-label="Project summary">
