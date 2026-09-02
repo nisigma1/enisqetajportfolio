@@ -91,24 +91,38 @@ export default function PricingPage() {
         <section className="inner-section research-notes" aria-labelledby="research-notes-title">
           <header className="inner-section__header">
             <p className="inner-section__label">04 / Research notes</p>
-            <h2 id="research-notes-title">Selected market observations.</h2>
-            <p>Two public research notes shared through NISIGMA on X. These are examples of market context, not trade signals or financial advice.</p>
+            <h2 id="research-notes-title">Analiza të tregut, të publikuara në X.</h2>
+            <p>Nëse doni analiza teknike, fundamentale, on-chain dhe pamje makro, më ndiqni në X. Aty shpërndaj analiza të ndryshme të tregut.</p>
           </header>
           <div className="research-notes__grid">
             {[
               {
-                image: "/images/research-notes/susdt-weekly-note-4k.webp",
-                alt: "NISIGMA X post outlining a possible SUSDT weekly market scenario",
-                label: "SUSDT weekly scenario",
-                width: 3840,
-                height: 2936,
+                image: "/images/research-notes/x-susdt-weekly.jpg",
+                alt: "NISIGMA X post with a SUSDT weekly technical analysis chart",
+                label: "SUSDT weekly technical view",
+                width: 1066,
+                height: 1280,
               },
               {
-                image: "/images/research-notes/bitcoin-mvrv-note-4k.webp",
+                image: "/images/research-notes/x-bitcoin-mvrv.jpg",
                 alt: "NISIGMA X post discussing Bitcoin MVRV Z-score market context",
-                label: "Bitcoin MVRV context",
-                width: 3840,
-                height: 3389,
+                label: "Bitcoin MVRV market context",
+                width: 964,
+                height: 1280,
+              },
+              {
+                image: "/images/research-notes/x-strk-onchain.jpg",
+                alt: "NISIGMA X post reviewing Starknet on-chain activity and chart context",
+                label: "Starknet on-chain context",
+                width: 814,
+                height: 1280,
+              },
+              {
+                image: "/images/research-notes/x-fet-technical.jpg",
+                alt: "NISIGMA X post outlining FET technical support levels on a market chart",
+                label: "FET technical view",
+                width: 1089,
+                height: 1280,
               },
             ].map((note) => (
               <article key={note.image} className="research-note">
