@@ -5,6 +5,7 @@ import { InnerPageShell } from "@/components/layout/InnerPageShell";
 import { Build, Malera } from "@/components/sections/DefinitiveSections";
 import { BesianaPhotographyArtwork } from "@/components/showcase/BesianaPhotographyArtwork";
 import { ActionMark } from "@/components/ui/ActionMark";
+import { FoldText } from "@/components/ui/FoldText";
 import { barberProject, besianaProject, hixhameProject, malera } from "@/data/site";
 import { baseStructuredData, routeSeo } from "@/lib/seo";
 
@@ -40,7 +41,7 @@ export default function CompaniesPage() {
       <InnerPageShell
         variant="malera"
         eyebrow="Digital building practice"
-        title="Malera Studio"
+        title={<FoldText text="Malera Studio" className="malera-fold-heading" />}
         summary="Digital products, websites and AI systems built around real business needs."
         meta={["Founded by Enis Qetaj", "Digital product practice", "malera.studio"]}
       >
