@@ -91,8 +91,8 @@ export default function PricingPage() {
         <section className="inner-section research-notes" aria-labelledby="research-notes-title">
           <header className="inner-section__header">
             <p className="inner-section__label">04 / Research notes</p>
-            <h2 id="research-notes-title">Analiza të tregut, të publikuara në X.</h2>
-            <p>Nëse doni analiza teknike, fundamentale, on-chain dhe pamje makro, më ndiqni në X. Aty shpërndaj analiza të ndryshme të tregut.</p>
+            <h2 id="research-notes-title">Market analysis, published on X.</h2>
+            <p>For technical, fundamental, on-chain and macro market views, follow me on X. I share a range of market analysis there.</p>
           </header>
           <div className="research-notes__grid">
             {[
