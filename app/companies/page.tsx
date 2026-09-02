@@ -5,6 +5,7 @@ import { InnerPageShell } from "@/components/layout/InnerPageShell";
 import { Build, Malera } from "@/components/sections/DefinitiveSections";
 import { BesianaPhotographyArtwork } from "@/components/showcase/BesianaPhotographyArtwork";
 import { ActionMark } from "@/components/ui/ActionMark";
+import { Ferrofluid } from "@/components/ui/Ferrofluid";
 import { FoldText } from "@/components/ui/FoldText";
 import { barberProject, besianaProject, hixhameProject, malera } from "@/data/site";
 import { baseStructuredData, routeSeo } from "@/lib/seo";
@@ -44,6 +45,7 @@ export default function CompaniesPage() {
         title={<FoldText text="Malera Studio" className="malera-fold-heading" />}
         summary="Digital products, websites and AI systems built around real business needs."
         meta={["Founded by Enis Qetaj", "Digital product practice", "malera.studio"]}
+        mastheadDecoration={<Ferrofluid className="malera-ferrofluid" dpr={1.2} colors={["#3d5bd8", "#6f91ff", "#dce8ff"]} speed={0.1} scale={1.45} turbulence={0.68} fluidity={0.12} rimWidth={0.22} sharpness={2.3} shimmer={0.7} glow={1.15} flowDirection="right" opacity={0.72} mouseInteraction={false} />}
       >
         <section className="inner-section malera-identity" aria-labelledby="malera-identity-title">
           <p className="inner-section__label">01 / Identity</p>

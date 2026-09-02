@@ -489,9 +489,33 @@
 
 /* Malera Studio: company identity, systems and proof. */
 .inner-page--malera .inner-masthead {
+  position: relative;
+  overflow: hidden;
   background:
     linear-gradient(90deg, color-mix(in srgb, var(--accent) 7%, transparent), transparent 42%),
     radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 28%);
+}
+
+.ferrofluid-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.malera-ferrofluid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.46;
+  mix-blend-mode: screen;
+  mask-image: radial-gradient(ellipse 75% 110% at 68% 48%, #000 0%, rgb(0 0 0 / 58%) 48%, transparent 80%);
+}
+
+.inner-page--malera .inner-masthead > :not(.malera-ferrofluid) {
+  position: relative;
+  z-index: 1;
 }
 
 .fold-text {
