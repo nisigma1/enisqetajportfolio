@@ -344,6 +344,38 @@
   z-index: 1;
 }
 
+.stroke-text {
+  display: block;
+  width: 100%;
+  line-height: 0;
+}
+
+.stroke-text--hover {
+  cursor: pointer;
+}
+
+.stroke-text__svg {
+  display: block;
+  width: 100%;
+  height: var(--stroke-text-height, 6rem);
+  overflow: visible;
+}
+
+.stroke-text__stroke,
+.stroke-text__fill {
+  user-select: none;
+}
+
+.work-stroke-heading {
+  display: grid;
+  width: min(100%, 10.8ch);
+  gap: 0.08em;
+}
+
+.inner-page--work .inner-masthead h1:has(.work-stroke-heading) {
+  max-width: none;
+}
+
 @keyframes work-meteor {
   0% { opacity: 0; translate: 0 0; }
   8% { opacity: 0.52; }

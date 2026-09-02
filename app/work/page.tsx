@@ -7,6 +7,7 @@ import { BesianaPhotographyPreview } from "@/components/showcase/BesianaPhotogra
 import { StructuredData } from "@/components/seo/StructuredData";
 import { ActionMark } from "@/components/ui/ActionMark";
 import { Meteors } from "@/components/ui/Meteors";
+import { StrokeText } from "@/components/ui/StrokeText";
 import { barberProject, besianaProject, hixhameProject, siteConfig } from "@/data/site";
 import { baseStructuredData, ogImage, routeSeo } from "@/lib/seo";
 
@@ -30,7 +31,13 @@ export default function WorkArchive() {
       <InnerPageShell
         variant="work"
         eyebrow="Work / Selected digital products"
-        title={<>Built for real businesses.</>}
+        title={
+          <span className="work-stroke-heading">
+            <span className="visually-hidden">Built for real businesses.</span>
+            <StrokeText text="Built for real" height="clamp(4.35rem, 6.9vw, 6.1rem)" />
+            <StrokeText text="businesses." height="clamp(4.35rem, 6.9vw, 6.1rem)" drawDuration={0.95} reverse />
+          </span>
+        }
         summary="Three live digital experiences, shown through their actual interfaces, journeys and visual systems."
         meta={["Websites", "Service journeys", "Responsive systems"]}
         mastheadDecoration={<Meteors />}
