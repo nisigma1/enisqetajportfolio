@@ -831,13 +831,14 @@
 .research-notes__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  max-width: 76rem;
+  max-width: 64rem;
   margin-inline: auto;
-  gap: clamp(1rem, 2.2vw, 2rem);
-  align-items: start;
+  gap: clamp(0.9rem, 1.8vw, 1.4rem);
+  align-items: stretch;
 }
 
 .research-note {
+  aspect-ratio: 4 / 5;
   overflow: hidden;
   border: var(--border-width) solid var(--border-strong);
   background: #050505;
@@ -856,12 +857,15 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-  padding: 0.8rem 1rem;
+  flex: 0 0 auto;
+  min-height: 2.8rem;
+  padding: 0.65rem 0.8rem;
 }
 
 .research-note__visual {
   display: grid;
-  aspect-ratio: 3 / 4;
+  min-height: 0;
+  flex: 1 1 auto;
   place-items: center;
   background: #050505;
 }
