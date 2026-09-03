@@ -95,7 +95,7 @@ export function Hero() {
           </p>
           <div className="dispatch-hero__actions">
             <Magnetic intensity={0.32} range={135}>
-              <a className="button button--primary" href="#work">View selected work <ActionMark direction="down" /></a>
+              <Link className="button button--primary" href="/work">View selected work <ActionMark direction="forward" /></Link>
             </Magnetic>
             <Link className="button button--quiet" href="/about">About Enis Qetaj <ActionMark direction="forward" /></Link>
             <a className="button button--quiet" href="#research">Explore research <ActionMark direction="down" /></a>
@@ -333,7 +333,7 @@ export function Contact() {
   return (
     <section id="contact" className="site-section contact-chapter" aria-labelledby="contact-title">
       <div className="contact-chapter__intro">
-        <SectionLabel>07 / Start a conversation</SectionLabel>
+        <SectionLabel>03 / Start a conversation</SectionLabel>
         <h2 id="contact-title">Bring the context.<br />We’ll find the useful form.</h2>
         <p>For selected freelance projects, digital products, websites, automation and research interfaces.</p>
       </div>

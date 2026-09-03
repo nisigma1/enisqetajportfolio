@@ -915,6 +915,50 @@
   margin-top: var(--space-5);
 }
 
+.analysis-membership-flow {
+  display: grid;
+  grid-template-columns: 4fr 8fr;
+  gap: var(--space-7);
+  align-items: start;
+  border-top: var(--border-width) solid var(--border);
+}
+
+.analysis-membership-flow > ol {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: var(--border-width) solid var(--border-strong);
+  border-left: var(--border-width) solid var(--border);
+}
+
+.analysis-membership-flow > ol li {
+  min-height: 14rem;
+  padding: var(--space-5);
+  border-right: var(--border-width) solid var(--border);
+  border-bottom: var(--border-width) solid var(--border);
+}
+
+.analysis-membership-flow > ol span {
+  color: var(--accent);
+  font-size: var(--text-meta);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.analysis-membership-flow > ol h3 {
+  margin-top: var(--space-6);
+  font-family: var(--font-editorial);
+  font-size: clamp(1.65rem, 2.25vw, 2.25rem);
+  font-weight: 430;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.analysis-membership-flow > ol p {
+  margin-top: var(--space-4);
+  color: var(--text-secondary);
+  font-size: var(--text-caption);
+}
+
 .analysis-support {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1505,6 +1549,21 @@ body:has(.inner-page) .social-dock-section {
 
   .analysis-plan__layers li {
     font-size: 0.65rem;
+  }
+
+  .analysis-membership-flow {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  .analysis-membership-flow > ol {
+    grid-template-columns: 1fr;
+  }
+
+  .analysis-membership-flow > ol li {
+    min-height: 0;
+    padding-inline: 0;
+    border-right: 0;
   }
 
   .research-notes__grid {

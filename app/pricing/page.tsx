@@ -59,20 +59,45 @@ export default function PricingPage() {
                     {plan.liveSessions !== "—" && <li><span aria-hidden="true">✓</span>{plan.liveSessions} live research session{plan.liveSessions.startsWith("2") ? "s" : ""}</li>}
                   </ul>
                 </div>
-                <Link className="button button--primary" href={`/contact?service=crypto-analysis&plan=${plan.id}`}>Select {plan.name} <ActionMark direction="forward" /></Link>
+                <Link className="button button--primary" href={`/contact?service=crypto-analysis&plan=${plan.id}`}>Choose plan & payment <ActionMark direction="forward" /></Link>
               </li>
             ))}
           </ol>
         </section>
 
+        <section className="inner-section analysis-membership-flow" aria-labelledby="analysis-membership-flow-title">
+          <header className="inner-section__header">
+            <p className="inner-section__label">02 / Start membership</p>
+            <h2 id="analysis-membership-flow-title">Clear from plan to Discord.</h2>
+            <p>Choose a scope first. Payment details are then shared privately by email, with access following confirmation.</p>
+          </header>
+          <ol>
+            <li>
+              <span>01</span>
+              <h3>Choose your scope.</h3>
+              <p>Select the monthly framework that matches the depth of analysis you need.</p>
+            </li>
+            <li>
+              <span>02</span>
+              <h3>Choose payment.</h3>
+              <p>In the contact form, choose bank transfer (Raiffeisen) or crypto payment.</p>
+            </li>
+            <li>
+              <span>03</span>
+              <h3>Receive your invite.</h3>
+              <p>Once payment is confirmed, Enis shares the Discord invite by email.</p>
+            </li>
+          </ol>
+        </section>
+
         <section className="inner-section analysis-support" aria-label="Service details">
           <article>
-            <p className="inner-section__label">02 / Research assistance</p>
+            <p className="inner-section__label">03 / Research assistance</p>
             <h2>Understand the analysis, not only the conclusion.</h2>
             <p>Research assistance helps you understand the analysis, important market variables and the analytical framework during your active subscription.</p>
           </article>
           <article>
-            <p className="inner-section__label">03 / Live research sessions</p>
+            <p className="inner-section__label">04 / Live research sessions</p>
             <h2>Discuss the current context.</h2>
             <p>Advanced includes 1 live research session per week. Complete includes 2 live research sessions per week.</p>
             <ul>
@@ -90,7 +115,7 @@ export default function PricingPage() {
 
         <section className="inner-section research-notes" aria-labelledby="research-notes-title">
           <header className="inner-section__header">
-            <p className="inner-section__label">04 / Research notes</p>
+            <p className="inner-section__label">05 / Research notes</p>
             <h2 id="research-notes-title">Market analysis, published on X.</h2>
             <p>For technical, fundamental, on-chain and macro market views, follow me on X. I share a range of market analysis there.</p>
           </header>

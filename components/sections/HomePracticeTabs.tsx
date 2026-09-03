@@ -4,65 +4,88 @@ import Link from "next/link";
 import { Tabs } from "@/components/ui/tabs";
 import { ActionMark } from "@/components/ui/ActionMark";
 
-const tabs = [
+type PracticeTab = {
+  title: string;
+  value: string;
+  eyebrow: string;
+  heading: string;
+  summary: string;
+  items: readonly string[];
+  href: string;
+  cta: string;
+  image: string;
+  alt: string;
+  width: number;
+  height: number;
+  tone: "analysis" | "malera" | "work";
+};
+
+const practiceTabs: readonly PracticeTab[] = [
   {
     title: "Crypto Analysis",
     value: "analysis",
-    content: (
-      <article className="home-practice-tabs__panel" data-tone="analysis">
-        <div>
-          <p>01 / Market research</p>
-          <h3>Read the market through more than price.</h3>
-          <p>Technical structure, fundamentals, on-chain signals and macro context brought together in a clear monthly research framework.</p>
-        </div>
-        <ul aria-label="Crypto analysis coverage">
-          <li>Technical structure</li>
-          <li>Fundamental research</li>
-          <li>On-chain context</li>
-        </ul>
-        <Link className="button button--primary" href="/pricing">Explore analysis plans <ActionMark direction="forward" /></Link>
-      </article>
-    ),
+    eyebrow: "01 / Market research",
+    heading: "Read the market through more than price.",
+    summary: "Technical structure, fundamentals, on-chain signals and macro context brought together in a clear monthly research framework.",
+    items: ["Technical structure", "Fundamental research", "On-chain context"],
+    href: "/pricing",
+    cta: "Explore analysis plans",
+    image: "/images/research-notes/x-bitcoin-mvrv-dark.webp",
+    alt: "NISIGMA X post discussing Bitcoin MVRV Z-score market context",
+    width: 1089,
+    height: 1445,
+    tone: "analysis",
   },
   {
     title: "Malera Studio",
     value: "malera",
-    content: (
-      <article className="home-practice-tabs__panel" data-tone="malera">
-        <div>
-          <p>02 / Digital building</p>
-          <h3>Build the useful form.</h3>
-          <p>Websites, digital products and AI systems designed around the real business need, then made responsive and practical.</p>
-        </div>
-        <ul aria-label="Malera Studio capabilities">
-          <li>Websites &amp; journeys</li>
-          <li>AI product systems</li>
-          <li>Automation</li>
-        </ul>
-        <Link className="button button--primary" href="/malera">Meet Malera Studio <ActionMark direction="forward" /></Link>
-      </article>
-    ),
+    eyebrow: "02 / Digital building",
+    heading: "Build the useful form.",
+    summary: "Websites, digital products and AI systems designed around the real business need, then made responsive and practical.",
+    items: ["Websites & journeys", "AI product systems", "Automation"],
+    href: "/companies",
+    cta: "Meet Malera Studio",
+    image: "/projects/hixhame-tina/hixhame-tina-case-study.webp",
+    alt: "Hixhame Tina website shown across desktop and mobile",
+    width: 1672,
+    height: 941,
+    tone: "malera",
   },
   {
     title: "Selected Work",
     value: "work",
-    content: (
-      <article className="home-practice-tabs__panel" data-tone="work">
-        <div>
-          <p>03 / Real projects</p>
-          <h3>Working experiences for real businesses.</h3>
-          <p>Selected interface work across booking, women’s wellness and photography—shown through the actual systems, not abstract mock-ups.</p>
-        </div>
-        <ul aria-label="Selected digital projects">
-          <li>Barber Brothers</li>
-          <li>Hixhame Tina</li>
-          <li>Besiana Photography</li>
-        </ul>
-        <Link className="button button--primary" href="/work">View selected work <ActionMark direction="forward" /></Link>
-      </article>
-    ),
+    eyebrow: "03 / Real projects",
+    heading: "Working experiences for real businesses.",
+    summary: "Selected interface work across booking, women’s wellness and photography—shown through the actual systems, not abstract mock-ups.",
+    items: ["Barber Brothers", "Hixhame Tina", "Besiana Photography"],
+    href: "/work",
+    cta: "View selected work",
+    image: "/projects/barber-brothers/barber-brothers-cover.webp",
+    alt: "Barber Brothers booking website interface",
+    width: 1600,
+    height: 900,
+    tone: "work",
   },
-] as const;
+];
+
+function PracticePanel({ tab }: { tab: PracticeTab }) {
+  return (
+    <article className="home-practice-tabs__panel" data-tone={tab.tone}>
+      <div className="home-practice-tabs__copy">
+        <p>{tab.eyebrow}</p>
+        <h3>{tab.heading}</h3>
+        <p className="home-practice-tabs__summary">{tab.summary}</p>
+        <ul aria-label={`${tab.title} coverage`}>
+          {tab.items.map((item) => <li key={item}>{item}</li>)}
+        </ul>
+        <Link className="button button--primary" href={tab.href}>{tab.cta} <ActionMark direction="forward" /></Link>
+      </div>
+      <figure className="home-practice-tabs__proof">
+        <img src={tab.image} alt={tab.alt} width={tab.width} height={tab.height} loading="lazy" decoding="async" />
+      </figure>
+    </article>
+  );
+}
 
 export function HomePracticeTabs() {
   return (
@@ -74,7 +97,11 @@ export function HomePracticeTabs() {
           <p>Research, digital building and selected work sit in one practice—each with a distinct way in.</p>
         </div>
       </header>
-      <Tabs tabs={tabs} />
+      <Tabs tabs={practiceTabs.map((tab) => ({
+        title: tab.title,
+        value: tab.value,
+        content: <PracticePanel tab={tab} />,
+      }))} />
     </section>
   );
 }

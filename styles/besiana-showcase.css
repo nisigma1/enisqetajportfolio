@@ -24,6 +24,7 @@
 .besiana-preview__lead h3 { max-width: 9ch; color: var(--besiana-text); font-family: var(--font-editorial); font-size: clamp(3.25rem, 5.8vw, 6.25rem); font-weight: 400; letter-spacing: -0.055em; line-height: 0.9; text-wrap: balance; }
 .besiana-preview__lead > div:first-child > p { max-width: 24rem; margin-top: var(--space-4); color: var(--besiana-accent); font-family: var(--font-editorial); font-size: var(--text-h3); line-height: 1.08; }
 .besiana-preview__summary { display: grid; align-content: end; gap: var(--space-5); color: var(--besiana-secondary); }
+.besiana-preview__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
 .besiana-preview .button--primary { color: #211712; border-color: var(--besiana-accent); background: var(--besiana-accent); }
 .besiana-preview__art { position: relative; display: block; overflow: hidden; border: 1px solid var(--besiana-border); border-radius: 0.7rem; background: #090a0a; box-shadow: 0 1rem 3rem rgb(0 0 0 / 28%); }
 .besiana-preview__art::after { position: absolute; inset: 0; background: linear-gradient(135deg, rgb(246 212 178 / 10%), transparent 44%, rgb(0 0 0 / 18%)); content: ""; pointer-events: none; }
@@ -264,6 +265,7 @@
   .besiana-preview__lead h3 { max-width: 10ch; font-size: clamp(2.55rem, 12vw, 3.7rem); }
   .besiana-preview__lead > div:first-child > p { max-width: 19rem; font-size: clamp(1.35rem, 6.8vw, 1.9rem); }
   .besiana-preview__summary { gap: var(--space-4); }
+  .besiana-preview__actions { display: grid; grid-template-columns: 1fr; }
   .besiana-preview__summary .button { width: 100%; min-height: 3rem; }
   .besiana-preview__art > .besiana-artwork { aspect-ratio: 4 / 3; }
   .besiana-preview__meta { grid-template-columns: 1fr 1fr; margin-top: 1rem; }

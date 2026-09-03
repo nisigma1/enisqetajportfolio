@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ActionMark } from "@/components/ui/ActionMark";
 import { besianaProject } from "@/data/site";
 import { BesianaPhotographyArtwork } from "@/components/showcase/BesianaPhotographyArtwork";
@@ -20,10 +21,15 @@ export function BesianaPhotographyPreview({ variant = "archive" }: BesianaPhotog
         </div>
         <div className="besiana-preview__summary">
           <p>{besianaProject.description}</p>
-          <a className="button button--primary" href={besianaProject.url} target="_blank" rel="noopener noreferrer">
-            Visit live website <ActionMark direction="external" />
-            <span className="visually-hidden"> (opens in a new tab)</span>
-          </a>
+          <div className="besiana-preview__actions">
+            <Link className="button button--primary" href={`/work/${besianaProject.slug}`}>
+              Open case study <ActionMark direction="forward" />
+            </Link>
+            <a className="button button--quiet" href={besianaProject.url} target="_blank" rel="noopener noreferrer">
+              Visit live website <ActionMark direction="external" />
+              <span className="visually-hidden"> (opens in a new tab)</span>
+            </a>
+          </div>
         </div>
       </div>
       <a className="besiana-preview__art" href={besianaProject.url} target="_blank" rel="noopener noreferrer" aria-label="Visit Besiana Photography website">

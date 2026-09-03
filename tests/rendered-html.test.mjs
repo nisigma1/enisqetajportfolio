@@ -39,12 +39,10 @@ test("server-renders the complete identity homepage", async () => {
   assert.match(html, /data-text-repel=""[^>]*aria-label="Enis Qetaj"/);
   assert.doesNotMatch(html, /class="visually-hidden">Enis Qetaj<\/span>/);
   assert.match(html, /<ol class="dispatch-hero__proof" aria-label="Core professional focus">/);
-  assert.match(html, /Marketing \/ Finance \/ Crypto/);
   assert.match(html, /Choose the lens you need\./);
   assert.match(html, /Crypto Analysis/);
   assert.match(html, /Selected Work/);
-  assert.match(html, /Crypto market analysis from €30 \/ month/);
-  assert.match(html, /href="\/background"/);
+  assert.match(html, /href="\/work"/);
   assert.match(html, /href="\/pricing"/);
   assert.match(html, /href="\/companies"/);
   assert.match(html, /Research/);
@@ -53,6 +51,7 @@ test("server-renders the complete identity homepage", async () => {
   assert.match(html, /Research and Analysis/);
   assert.match(html, /Macroeconomics and Geopolitics/);
   assert.match(html, /Malera Studio/);
+  assert.ok(html.indexOf("Evidence before narrative.") < html.indexOf("Choose the lens you need."));
   assert.match(html, /\+383 44 857 227/);
   assert.match(html, /application\/ld\+json/);
   assert.match(html, /action-mark/);
@@ -176,6 +175,7 @@ test("work keeps all three real project proofs on the dedicated work route", asy
   assert.match(html, /class="meteors/);
   assert.match(html, /besiana-hero-live\.webp/);
   assert.match(html, /besiana-nav-mark-live\.webp/);
+  assert.match(html, /href="\/work\/besiana-photography"/);
 });
 
 test("publishes project metadata and correct intrinsic media dimensions", async () => {
@@ -274,6 +274,9 @@ test("publishes three factual monthly pricing plans and request links", async ()
     assert.match(html, new RegExp(`href="/contact\\?service=crypto-analysis&amp;plan=${plan}"`));
   }
   assert.match(html, /Research assistance helps you understand the analysis/);
+  assert.match(html, /Clear from plan to Discord\./);
+  assert.match(html, /bank transfer \(Raiffeisen\) or crypto payment/i);
+  assert.match(html, /Once payment is confirmed, Enis shares the Discord invite by email\./);
   assert.match(html, /1 live research session per week/);
   assert.match(html, /2 live research sessions per week/);
   assert.match(html, /Market research and educational analysis only/);
