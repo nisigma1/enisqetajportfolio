@@ -81,7 +81,21 @@ function PracticePanel({ tab }: { tab: PracticeTab }) {
         <Link className="button button--primary" href={tab.href}>{tab.cta} <ActionMark direction="forward" /></Link>
       </div>
       <figure className="home-practice-tabs__proof">
-        <img src={tab.image} alt={tab.alt} width={tab.width} height={tab.height} loading="lazy" decoding="async" />
+        {tab.tone === "analysis" ? (
+          <div className="x-research-card">
+            <div className="x-research-card__header">
+              <span className="x-research-card__identity"><strong>NISIGMA</strong><small>@N1sigma</small></span>
+              <span aria-hidden="true">𝕏</span>
+            </div>
+            <p className="x-research-card__label">Public research note / Bitcoin market context</p>
+            <div className="x-research-card__image">
+              <img src={tab.image} alt={tab.alt} width={tab.width} height={tab.height} loading="lazy" decoding="async" />
+            </div>
+            <div className="x-research-card__footer"><span>Market research, published on X</span><ActionMark direction="external" /></div>
+          </div>
+        ) : (
+          <img src={tab.image} alt={tab.alt} width={tab.width} height={tab.height} loading="lazy" decoding="async" />
+        )}
       </figure>
     </article>
   );
