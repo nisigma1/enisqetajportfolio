@@ -1132,6 +1132,60 @@ button:hover .action-mark--up {
   margin-left: auto;
 }
 
+.footer-back-to-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: var(--text-primary);
+  font-size: var(--text-caption);
+  text-decoration: none;
+}
+
+.footer-back-to-top__icon {
+  position: relative;
+  display: inline-block;
+  width: 1.85rem;
+  height: 1.85rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  transition: border-color 180ms ease, background-color 180ms ease, transform 180ms ease;
+}
+
+.footer-back-to-top__icon::before,
+.footer-back-to-top__icon::after {
+  position: absolute;
+  content: "";
+}
+
+.footer-back-to-top__icon::before {
+  top: 0.56rem;
+  left: calc(50% - 0.5px);
+  width: 1px;
+  height: 0.7rem;
+  background: currentColor;
+}
+
+.footer-back-to-top__icon::after {
+  top: 0.46rem;
+  left: calc(50% - 0.21rem);
+  width: 0.42rem;
+  height: 0.42rem;
+  border-top: 1px solid currentColor;
+  border-left: 1px solid currentColor;
+  transform: rotate(45deg);
+}
+
+.footer-back-to-top:hover .footer-back-to-top__icon {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  transform: translateY(-0.12rem);
+}
+
+.footer-back-to-top:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 0.25rem;
+}
+
 @media (max-width: 767px) {
   .masthead-nav a {
     min-width: 2.75rem;

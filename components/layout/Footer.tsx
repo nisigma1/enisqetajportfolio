@@ -1,6 +1,5 @@
 import { identity, navigation } from "@/data/site";
 import Link from "next/link";
-import { ActionMark } from "@/components/ui/ActionMark";
 import { SocialDock } from "@/components/layout/SocialDock";
 import { DeferredLineSidebar } from "@/components/performance/DeferredIslands";
 
@@ -27,7 +26,7 @@ export function Footer() {
         <span>Kosovo</span>
         <Link href="/about">About Enis Qetaj</Link>
         <a href={identity.emailHref} target="_blank" rel="noreferrer">{identity.email}</a>
-        <Link href="/#index">Back to top <ActionMark direction="up" /></Link>
+        <Link className="footer-back-to-top" href="/#index">Back to top <span className="footer-back-to-top__icon" aria-hidden="true" /></Link>
       </div>
     </footer>
   );
