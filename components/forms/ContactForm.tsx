@@ -4,7 +4,7 @@ import { FocusEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { ActionMark } from "@/components/ui/ActionMark";
 
 type FormState = "idle" | "loading" | "ready" | "error";
-type FieldName = "name" | "email" | "project" | "message";
+type FieldName = "name" | "email" | "project" | "paymentMethod" | "message";
 type FieldErrors = Partial<Record<FieldName, string>>;
 
 type ApiResponse = {
@@ -30,6 +30,9 @@ function validateField(name: FieldName, value: string): string | undefined {
     if (clean.length < 3) return "Tell Enis what you are working on.";
     if (clean.length > 240) return "Keep this description under 240 characters.";
   }
+  if (name === "paymentMethod") {
+    if (!clean) return "Choose how you would like to pay.";
+  }
   if (name === "message") {
     if (clean.length < 20) return "Add a little more context—at least 20 characters.";
     if (clean.length > 4000) return "Keep your message under 4,000 characters.";
@@ -43,6 +46,7 @@ function readValues(form: HTMLFormElement) {
     name: String(data.get("name") ?? ""),
     email: String(data.get("email") ?? ""),
     project: String(data.get("project") ?? ""),
+    paymentMethod: String(data.get("paymentMethod") ?? ""),
     message: String(data.get("message") ?? ""),
     website: String(data.get("website") ?? ""),
   };
@@ -139,7 +143,7 @@ export function ContactForm() {
 
   function handleBlur(event: FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     const name = event.currentTarget.name as FieldName;
-    if (!(name in { name: true, email: true, project: true, message: true })) return;
+    if (!(name in { name: true, email: true, project: true, paymentMethod: true, message: true })) return;
     const error = validateField(name, event.currentTarget.value);
     setErrors((current) => ({ ...current, [name]: error }));
   }
@@ -233,6 +237,28 @@ export function ContactForm() {
       </label>
 
       <label className="wide">
+        <span>Payment method</span>
+        <span className="select-control">
+          <select
+            name="paymentMethod"
+            required
+            aria-invalid={Boolean(errors.paymentMethod)}
+            aria-describedby={describedBy("paymentMethod")}
+            onBlur={handleBlur}
+            onChange={handleInput}
+            defaultValue=""
+          >
+            <option value="" disabled>Choose a payment method</option>
+            <option value="Bank transfer (Raiffeisen)">Bank transfer (Raiffeisen)</option>
+            <option value="Crypto payment">Crypto payment</option>
+            <option value="Discuss payment first">Discuss payment first</option>
+          </select>
+        </span>
+        {errors.paymentMethod && <small id="paymentMethod-error" className="field-error">{errors.paymentMethod}</small>}
+        <small className="payment-note">For crypto-analysis subscriptions, choose bank transfer or crypto. Payment details are shared by email, and the Discord invite follows once payment is confirmed.</small>
+      </label>
+
+      <label className="wide">
         <span>Message</span>
         <textarea
           name="message"
@@ -275,7 +301,7 @@ export function ContactForm() {
 
       {copyMessage && <p className="copy-status wide" role="status">{copyMessage}</p>}
       <p className="form-privacy wide">
-        This form sends your message directly to Enis by email. It is not stored by this website.
+        This form sends your message and payment preference directly to Enis by email. It is not stored by this website.
       </p>
     </form>
   );

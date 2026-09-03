@@ -4,17 +4,23 @@ type Payload = {
   name?: unknown;
   email?: unknown;
   project?: unknown;
+  paymentMethod?: unknown;
   message?: unknown;
   website?: unknown;
 };
 
-type FieldName = "name" | "email" | "project" | "message";
+type FieldName = "name" | "email" | "project" | "paymentMethod" | "message";
 type FieldErrors = Partial<Record<FieldName, string>>;
 
 const maxRequestBytes = 16_384;
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const recipient = "enisqeta5@gmail.com";
 const sender = "Enis Qetaj Website <website@enisqetaj.com>";
+const paymentMethods = new Set([
+  "Bank transfer (Raiffeisen)",
+  "Crypto payment",
+  "Discuss payment first",
+]);
 
 function stringValue(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
@@ -25,6 +31,7 @@ function validate(payload: Payload) {
     name: stringValue(payload.name),
     email: stringValue(payload.email),
     project: stringValue(payload.project),
+    paymentMethod: stringValue(payload.paymentMethod),
     message: stringValue(payload.message),
   };
   const errors: FieldErrors = {};
@@ -37,6 +44,8 @@ function validate(payload: Payload) {
 
   if (values.project.length < 3) errors.project = "Tell Enis what you are working on.";
   else if (values.project.length > 240) errors.project = "Keep this description under 240 characters.";
+
+  if (!paymentMethods.has(values.paymentMethod)) errors.paymentMethod = "Choose how you would like to pay.";
 
   if (values.message.length < 20) errors.message = "Add a little more context—at least 20 characters.";
   else if (values.message.length > 4000) errors.message = "Keep your message under 4,000 characters.";
@@ -114,6 +123,7 @@ export async function POST(request: Request) {
     `Name: ${values.name}`,
     `Email: ${values.email}`,
     `Working on: ${values.project}`,
+    `Payment method: ${values.paymentMethod}`,
     "",
     values.message,
   ].join("\n");
@@ -149,6 +159,6 @@ export async function POST(request: Request) {
 
   return NextResponse.json({
     ok: true,
-    message: "Message sent. Enis will receive it by email.",
+    message: "Message sent. Enis will receive your selected payment method by email.",
   });
 }

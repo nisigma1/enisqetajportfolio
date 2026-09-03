@@ -861,6 +861,13 @@ button:hover .action-mark--up {
   font-size: var(--text-caption);
 }
 
+.payment-note {
+  max-width: 68ch;
+  color: var(--text-muted);
+  font-size: var(--text-caption);
+  line-height: 1.5;
+}
+
 .site-footer {
   padding: var(--space-8) var(--gutter) var(--space-6);
   border-top: var(--border-width) solid var(--border-strong);

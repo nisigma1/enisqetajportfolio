@@ -290,6 +290,9 @@ test("contact separates research and digital-work pathways while preserving the 
   assert.match(html, /Discuss a digital project/);
   assert.match(html, /id="contact-form"/);
   assert.match(html, /name="project"/);
+  assert.match(html, /name="paymentMethod"/);
+  assert.match(html, /Bank transfer \(Raiffeisen\)/);
+  assert.match(html, /Crypto payment/);
   assert.match(html, /Crypto Analysis — Advanced \(€60\)/);
   assert.match(html, /enisqeta5@gmail\.com/);
 });
@@ -313,6 +316,7 @@ test("contact endpoint validates input and delivers email through Resend", async
           name: "Test User",
           email: "test@example.com",
           project: "A booking website",
+          paymentMethod: "Bank transfer (Raiffeisen)",
           message: "A sufficiently detailed project description for validation.",
           website: "",
         }),
@@ -329,7 +333,7 @@ test("contact endpoint validates input and delivers email through Resend", async
       to: ["enisqeta5@gmail.com"],
       reply_to: "test@example.com",
       subject: "[Website] A booking website — Test User",
-      text: "Name: Test User\nEmail: test@example.com\nWorking on: A booking website\n\nA sufficiently detailed project description for validation.",
+      text: "Name: Test User\nEmail: test@example.com\nWorking on: A booking website\nPayment method: Bank transfer (Raiffeisen)\n\nA sufficiently detailed project description for validation.",
     });
 
     const invalid = await worker.fetch(

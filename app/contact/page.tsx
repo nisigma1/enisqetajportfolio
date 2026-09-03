@@ -56,7 +56,7 @@ export default function ContactPage() {
               <a href={identity.phoneHref}><span>Phone</span><strong>{identity.phone}</strong></a>
               <a href={malera.url} target="_blank" rel="noreferrer"><span>Company</span><strong>Malera Studio <ActionMark direction="external" /></strong></a>
             </div>
-            <small>This form sends your message directly to Enis by email. It is not stored by this website.</small>
+            <small>For crypto-analysis subscriptions, clients can choose bank transfer or crypto. Enis sends the payment details by email; the Discord invite follows after payment is confirmed.</small>
           </aside>
           <ContactForm />
         </section>
