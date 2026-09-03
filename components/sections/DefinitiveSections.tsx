@@ -346,7 +346,7 @@ export function Contact() {
           <a href={identity.emailHref} target="_blank" rel="noreferrer">{identity.email}</a>
           <a href={identity.phoneHref}>{identity.phone}</a>
           <a href={malera.url} target="_blank" rel="noreferrer">Malera Studio <ActionMark direction="external" /></a>
-          <small>The form prepares an email draft. Nothing is sent or stored by this site.</small>
+          <small>This form sends your message directly to Enis by email. For crypto-analysis subscriptions, choose bank transfer or crypto; Discord access follows after payment is confirmed.</small>
         </aside>
         <DeferredContactForm />
       </div>

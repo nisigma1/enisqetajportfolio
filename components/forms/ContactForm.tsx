@@ -211,7 +211,7 @@ export function ContactForm() {
         {errors.email && <small id="email-error" className="field-error">{errors.email}</small>}
       </label>
 
-      <label className="wide">
+      <label>
         <span>Inquiry type</span>
         <span className="select-control">
           <select
@@ -236,7 +236,7 @@ export function ContactForm() {
         {errors.project && <small id="project-error" className="field-error">{errors.project}</small>}
       </label>
 
-      <label className="wide">
+      <label>
         <span>Payment method</span>
         <span className="select-control">
           <select

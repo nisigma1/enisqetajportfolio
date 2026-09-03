@@ -774,7 +774,8 @@ button:hover .action-mark--up {
 }
 
 .contact-form input,
-.contact-form textarea {
+.contact-form textarea,
+.contact-form select {
   width: 100%;
   min-height: 3.25rem;
   padding: 0.8rem 0;
@@ -783,6 +784,39 @@ button:hover .action-mark--up {
   border-radius: 0;
   outline: 0;
   background: transparent;
+  color: var(--text-primary);
+}
+
+.contact-form .select-control {
+  position: relative;
+  display: block;
+}
+
+.contact-form .select-control::after {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-right: var(--border-width) solid currentColor;
+  border-bottom: var(--border-width) solid currentColor;
+  color: var(--text-secondary);
+  content: "";
+  pointer-events: none;
+  transform: translateY(-65%) rotate(45deg);
+}
+
+.contact-form select {
+  min-height: 3.5rem;
+  padding: 0.8rem 3.25rem 0.8rem 1rem;
+  border: var(--border-width) solid var(--border-strong);
+  appearance: none;
+  background: color-mix(in srgb, var(--surface-elevated) 86%, transparent);
+}
+
+.contact-form select option {
+  background: var(--background);
+  color: var(--text-primary);
 }
 
 .contact-form textarea {
@@ -791,9 +825,15 @@ button:hover .action-mark--up {
 }
 
 .contact-form input:focus,
-.contact-form textarea:focus {
+.contact-form textarea:focus,
+.contact-form select:focus {
   border-bottom-color: var(--accent);
   box-shadow: 0 2px 0 var(--accent);
+}
+
+.contact-form select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-soft);
 }
 
 .contact-form [aria-invalid="true"] {
