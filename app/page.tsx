@@ -6,6 +6,7 @@ import {
   PortfolioPixelField,
 } from "@/components/sections/DefinitiveSections";
 import { HomeRouteTeasers } from "@/components/sections/HomeRouteTeasers";
+import { HomePracticeTabs } from "@/components/sections/HomePracticeTabs";
 import { siteConfig } from "@/data/site";
 import { baseStructuredData, ogImage, routeSeo } from "@/lib/seo";
 
@@ -40,6 +41,7 @@ export default function Home() {
         <PortfolioPixelField />
         <Hero />
         <About />
+        <HomePracticeTabs />
         <HomeRouteTeasers />
         <Contact />
       </main>

@@ -40,6 +40,9 @@ test("server-renders the complete identity homepage", async () => {
   assert.doesNotMatch(html, /class="visually-hidden">Enis Qetaj<\/span>/);
   assert.match(html, /<ol class="dispatch-hero__proof" aria-label="Core professional focus">/);
   assert.match(html, /Marketing \/ Finance \/ Crypto/);
+  assert.match(html, /Choose the lens you need\./);
+  assert.match(html, /Crypto Analysis/);
+  assert.match(html, /Selected Work/);
   assert.match(html, /Crypto market analysis from €30 \/ month/);
   assert.match(html, /href="\/background"/);
   assert.match(html, /href="\/pricing"/);
