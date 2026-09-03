@@ -40,8 +40,8 @@ export default function Home() {
       <main id="main" className="portfolio-pixel-host">
         <PortfolioPixelField />
         <Hero />
-        <About />
         <HomePracticeTabs />
+        <About />
         <HomeRouteTeasers />
         <Contact />
       </main>
