@@ -255,7 +255,6 @@ export function ContactForm() {
           </select>
         </span>
         {errors.paymentMethod && <small id="paymentMethod-error" className="field-error">{errors.paymentMethod}</small>}
-        <small className="payment-note">For crypto-analysis subscriptions, choose bank transfer or crypto. Payment details are shared by email, and the Discord invite follows once payment is confirmed.</small>
       </label>
 
       <label className="wide">
