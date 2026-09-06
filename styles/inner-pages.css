@@ -1427,6 +1427,18 @@ body:has(.inner-page) .social-dock-section {
     gap: var(--space-7);
   }
 
+  /* The desktop split workspace is intentionally replaced by one reading
+     column here. Without this override, the desktop detail column claims
+     most of the phone width and compresses each curriculum module. */
+  .inner-page--background .knowledge-spine__workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .inner-page--background .knowledge-spine__tracks,
+  .inner-page--background .curriculum-module__mobile-detail {
+    width: 100%;
+  }
+
   .inner-page--background .curriculum-introduction > h2 {
     max-width: 12ch;
     font-size: clamp(2.45rem, 11vw, 3.4rem);

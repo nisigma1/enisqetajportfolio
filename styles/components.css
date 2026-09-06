@@ -1206,6 +1206,13 @@ button:hover .action-mark--up {
   .footer-meta a:last-child {
     margin-left: 0;
   }
+
+  /* A footer return action costs space on a phone and competes with the
+     browser's native scroll controls. Keep it on desktop, where it remains
+     useful, but remove the cramped mobile treatment. */
+  .footer-back-to-top {
+    display: none !important;
+  }
 }
 
 @media (max-width: 479px) {
