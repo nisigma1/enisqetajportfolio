@@ -405,6 +405,12 @@
   font-size: 0.9rem;
 }
 
+@media (min-width: 1024px) and (max-width: 1359px) {
+  .research-method {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 .research-practice__domains {
   display: grid;
   grid-template-columns: 4fr 8fr;
@@ -1614,7 +1620,7 @@
 
 .case-study__hero {
   display: grid;
-  grid-template-columns: 8fr 4fr;
+  grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
   gap: var(--space-6);
   padding-block: clamp(4rem, 10vw, 8rem);
 }
@@ -1626,6 +1632,8 @@
   letter-spacing: -0.08em;
   line-height: 0.78;
   text-transform: uppercase;
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 
 .case-study__hero > div:last-child {

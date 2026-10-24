@@ -168,6 +168,15 @@ export function DeferredBuildNavigator() {
 }
 
 export function DeferredLetterGlitch() {
+  const [enabled, setEnabled] = useState(false);
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 768px) and (prefers-reduced-motion: no-preference)");
+    const update = () => setEnabled(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+  if (!enabled) return <div className="malera-practice__glitch letter-glitch--deferred" aria-hidden="true" />;
   return (
     <NearViewport
       className="malera-practice__glitch"

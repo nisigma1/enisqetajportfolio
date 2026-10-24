@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element -- Each clipped layer reuses the same pre-compressed local source; this is required for the pixel reveal effect. */
+/* Each clipped layer reuses the same pre-compressed local source for the pixel reveal effect. */
 import type { CSSProperties, HTMLAttributes } from "react";
 
 type Grid = { rows: number; cols: number };
@@ -60,16 +60,18 @@ export function PixelImage({
         ...props.style,
       } as CSSProperties}
     >
+      <picture style={{ display: "contents" }}>
+      {mobileSrc && <source media="(max-width: 767px)" srcSet={mobileSrc} />}
+      {tabletSrc && <source media="(max-width: 1023px)" srcSet={tabletSrc} />}
       <img
         className="pixel-image__source"
         src={src}
-        srcSet={mobileSrc && tabletSrc ? `${mobileSrc} 750w, ${tabletSrc} 900w, ${src} 1125w` : undefined}
-        sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1023px) 48vw, 44vw"
         alt={alt}
         draggable={false}
         decoding="async"
         fetchPriority="high"
       />
+      </picture>
       {pieces.map((piece, index) => (
         <span
           className="pixel-image__piece"

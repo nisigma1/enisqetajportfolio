@@ -31,6 +31,7 @@
 }
 
 .bb-showcase__identity {
+  container-type: inline-size;
   grid-area: identity;
   display: flex;
   flex-direction: column;
@@ -53,7 +54,7 @@
 .bb-showcase__identity h3 {
   margin-top: clamp(0.8rem, 1.7vw, 1.8rem);
   font-family: var(--font-identity);
-  font-size: clamp(2.5rem, 3vw, 3.5rem);
+  font-size: clamp(1.5rem, 18cqi, 3.5rem);
   font-weight: 850;
   letter-spacing: -0.075em;
   line-height: 0.84;
@@ -66,6 +67,10 @@
   color: var(--bb-gold);
   font-family: var(--font-editorial);
   font-style: italic;
+}
+
+.bb-showcase__proof-card > div > p {
+  letter-spacing: 0.14em;
 }
 
 .bb-showcase__subtitle {
@@ -466,6 +471,19 @@
 }
 
 @media (max-width: 1279px) {
+  .bb-showcase__proof-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bb-showcase__proof-card {
+    grid-template-columns: minmax(8.5rem, 0.42fr) minmax(0, 0.58fr);
+  }
+
+  .bb-showcase__proof-card > div > p {
+    letter-spacing: 0.16em;
+    overflow-wrap: anywhere;
+  }
+
   .bb-showcase {
     grid-template-columns: minmax(13rem, 28fr) minmax(24rem, 44fr) minmax(15rem, 28fr);
   }
@@ -653,13 +671,18 @@
   }
 
   .bb-showcase__proof-card {
-    grid-template-columns: minmax(7rem, 0.8fr) minmax(0, 1.2fr);
+    grid-template-columns: minmax(8.5rem, 1fr) minmax(0, 1fr);
     height: 10rem;
     margin: 0;
   }
 
   .bb-showcase__proof-card > div {
     padding: 1.15rem;
+  }
+
+  .bb-showcase__proof-card > div > p {
+    letter-spacing: 0.16em;
+    overflow-wrap: anywhere;
   }
 
   .bb-showcase__proof-card h4 {

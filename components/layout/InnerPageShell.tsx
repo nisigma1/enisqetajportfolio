@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { InnerPageStyles } from "@/components/layout/InnerPageStyles";
 
 type InnerPageShellProps = {
   variant: "background" | "work" | "malera" | "analysis" | "contact";
@@ -21,6 +22,7 @@ export function InnerPageShell({
 }: InnerPageShellProps) {
   return (
     <main id="main" className={`inner-page inner-page--${variant}`}>
+      <InnerPageStyles />
       <header className="inner-masthead">
         {mastheadDecoration}
         <p className="inner-masthead__eyebrow">{eyebrow}</p>

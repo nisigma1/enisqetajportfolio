@@ -1,4 +1,6 @@
+/* eslint-disable @next/next/no-img-element -- Authentic responsive local project photography. */
 import type { Metadata } from "next";
+import { InnerPageStyles } from "@/components/layout/InnerPageStyles";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BarberBrothersShowcase } from "@/components/showcase/BarberBrothersShowcase";
@@ -157,7 +159,7 @@ function BarberCaseStudy() {
 
 function BesianaCaseStudy() {
   return (
-    <main id="main" className="route-page case-study">
+    <main id="main" className="route-page case-study case-study--besiana">
       <header className="case-study__hero">
         <div>
           <p>Selected work / 03</p>
@@ -172,6 +174,16 @@ function BesianaCaseStudy() {
         </div>
       </header>
       <BesianaPhotographyArtwork priority />
+      <div className="besiana-gallery" aria-label="Authentic Besiana Photography project images">
+        <figure>
+          <img src="/projects/besiana-photography/besiana-authentic-portrait.webp" srcSet="/projects/besiana-photography/besiana-authentic-portrait-480.webp 480w, /projects/besiana-photography/besiana-authentic-portrait.webp 768w" sizes="(max-width: 767px) calc(100vw - 32px), 36rem" width="768" height="1024" loading="lazy" decoding="async" alt="Couple photographed among trees by Besiana Photography" />
+          <figcaption>01 / Photography from the live project</figcaption>
+        </figure>
+        <figure>
+          <img src="/projects/besiana-photography/besiana-authentic-couple.webp" srcSet="/projects/besiana-photography/besiana-authentic-couple-480.webp 480w, /projects/besiana-photography/besiana-authentic-couple.webp 768w" sizes="(max-width: 767px) calc(100vw - 32px), 36rem" width="768" height="1024" loading="lazy" decoding="async" alt="Couple looking at each other during an outdoor Besiana Photography session" />
+          <figcaption>02 / Outdoor portrait session</figcaption>
+        </figure>
+      </div>
       <section className="case-study__chapter">
         <div><p>02 / Website direction</p><h2>Let the work lead the story.</h2></div>
         <div><p>The experience gives photography room to breathe while keeping services and contact paths clear across devices.</p><ul>{besianaProject.knownFeatures.map((item) => <li key={item}>{item}</li>)}</ul></div>
@@ -191,6 +203,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <>
+      <InnerPageStyles />
       {slug === barberProject.slug ? <BarberCaseStudy /> : slug === hixhameProject.slug ? <HixhameCaseStudy /> : <BesianaCaseStudy />}
       <StructuredData data={baseStructuredData(project.seo)} />
     </>

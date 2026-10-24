@@ -31,6 +31,8 @@ await writeFile(
       exclude: [
         "/assets/*",
         "/images/*",
+        "/projects/*",
+        "/fonts/*",
         "/favicon.svg",
         "/robots.txt",
         "/sitemap.xml",

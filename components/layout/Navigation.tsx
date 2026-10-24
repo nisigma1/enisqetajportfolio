@@ -124,8 +124,8 @@ export function Navigation() {
       document.body.style.top = bodyStyle.top;
       document.body.style.width = bodyStyle.width;
 
+      window.scrollTo({ top: scrollY, behavior: "instant" });
       if (!transitionFromMenuRef.current) {
-        window.scrollTo({ top: scrollY, behavior: "instant" });
         previousFocusRef.current?.focus();
       }
     };

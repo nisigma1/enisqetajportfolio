@@ -9,7 +9,7 @@
     "dev": "vinext dev",
     "build": "vinext build && node scripts/prepare-cloudflare-pages.mjs",
     "start": "vinext start",
-    "test": "npm run build && node --test tests/rendered-html.test.mjs tests/route-transition.test.mjs",
+    "test": "npm run build && node --test tests/rendered-html.test.mjs tests/route-transition.test.mjs tests/smm-ai-certification.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next"
   },
   "dependencies": {

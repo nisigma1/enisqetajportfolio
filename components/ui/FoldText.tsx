@@ -1,10 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useRef, type CSSProperties, type ReactNode } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
 type SplitBy = "char" | "word" | "line";
 type Hinge = "top" | "bottom" | "left" | "right";
@@ -48,12 +44,12 @@ export function FoldText({
   trigger = "mount",
   fontSize = "clamp(2.6rem, 5.4vw, 5rem)",
   fontWeight = 420,
-  color = "#f1eee6",
+  color = "var(--text-primary)",
   className = "",
   style = {},
 }: FoldTextProps) {
   const rootRef = useRef<HTMLSpanElement>(null);
-  const timelineRef = useRef<gsap.core.Timeline | null>(null);
+  const animationsRef = useRef<Animation[]>([]);
   const activeHinge = hingeConfig[hinge];
   const safeCrease = clamp(creaseShading, 0, 1);
   const safePerspective = Math.max(120, perspective);
@@ -71,32 +67,35 @@ export function FoldText({
 
   useEffect(() => {
     const root = rootRef.current;
-    if (!root) return undefined;
+    if (!root) return;
     const pieces = Array.from(root.querySelectorAll<HTMLElement>(".fold-text__piece"));
-    if (!pieces.length) return undefined;
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const from = { opacity: 0, rotateX: reducedMotion ? 0 : activeHinge.rotateX, rotateY: reducedMotion ? 0 : activeHinge.rotateY, "--fold-crease": reducedMotion ? 0 : safeCrease, transformOrigin: activeHinge.origin, force3D: true };
-    const to = { opacity: 1, rotateX: 0, rotateY: 0, "--fold-crease": 0, duration: reducedMotion ? Math.min(duration, 0.2) : duration, ease: reducedMotion ? "power1.out" : ease, stagger: reducedMotion ? Math.min(stagger, 0.02) : stagger, clearProps: "willChange" };
-    const play = (repeat: boolean) => {
-      timelineRef.current?.kill();
-      gsap.killTweensOf(pieces);
-      timelineRef.current = gsap.timeline({ repeat: repeat ? -1 : 0, repeatDelay: repeat ? 0.75 : 0 }).fromTo(pieces, from, to);
-      return timelineRef.current;
+    if (!pieces.length || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let visible = true;
+    const play = () => {
+      animationsRef.current.forEach((animation) => animation.cancel());
+      animationsRef.current = pieces.map((piece, index) => piece.animate([
+        { opacity: 0, transform: `rotateX(${activeHinge.rotateX}deg) rotateY(${activeHinge.rotateY}deg)`, transformOrigin: activeHinge.origin, "--fold-crease": safeCrease },
+        { opacity: 1, transform: "rotateX(0deg) rotateY(0deg)", transformOrigin: activeHinge.origin, "--fold-crease": 0 },
+      ], { duration: duration * 1000, delay: index * stagger * 1000, easing: ease === "linear" ? "linear" : "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards", iterations: trigger === "loop" ? Infinity : 1 }));
     };
-    let scrollTrigger: ReturnType<typeof ScrollTrigger.create> | undefined;
-    const hover = () => { play(false); };
-    if (trigger === "hover") {
-      gsap.set(pieces, { opacity: 1, rotateX: 0, rotateY: 0, "--fold-crease": 0, transformOrigin: activeHinge.origin });
-      root.addEventListener("mouseenter", hover);
-    } else if (trigger === "scroll") {
-      gsap.set(pieces, from);
-      scrollTrigger = ScrollTrigger.create({ trigger: root, start: "top 82%", once: true, onEnter: () => play(false) });
-    } else play(trigger === "loop");
+    let observer: IntersectionObserver | undefined;
+    if (trigger === "hover") root.addEventListener("pointerenter", play);
+    else if (trigger === "scroll" || trigger === "loop") {
+      observer = new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting;
+        if (visible && animationsRef.current.length === 0) play();
+        else if (trigger === "loop") animationsRef.current.forEach((animation) => visible && !document.hidden ? animation.play() : animation.pause());
+      }, { threshold: 0.1 });
+      observer.observe(root);
+    } else play();
+    const onVisibility = () => animationsRef.current.forEach((animation) => visible && !document.hidden ? animation.play() : animation.pause());
+    document.addEventListener("visibilitychange", onVisibility);
     return () => {
-      root.removeEventListener("mouseenter", hover);
-      scrollTrigger?.kill();
-      timelineRef.current?.kill();
-      gsap.killTweensOf(pieces);
+      observer?.disconnect();
+      root.removeEventListener("pointerenter", play);
+      document.removeEventListener("visibilitychange", onVisibility);
+      animationsRef.current.forEach((animation) => animation.cancel());
+      animationsRef.current = [];
     };
   }, [activeHinge.origin, activeHinge.rotateX, activeHinge.rotateY, duration, ease, safeCrease, stagger, trigger]);
 

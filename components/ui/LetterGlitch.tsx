@@ -88,6 +88,8 @@ export function LetterGlitch({
     let lastGlitch = lastFrame;
     let initialized = false;
     let isVisible = false;
+    let canvasWidth = 0;
+    let canvasHeight = 0;
     const frameInterval = 1000 / 30;
 
     const randomCharacter = () => (
@@ -98,8 +100,7 @@ export function LetterGlitch({
     );
 
     const drawLetters = () => {
-      const bounds = canvas.getBoundingClientRect();
-      context.clearRect(0, 0, bounds.width, bounds.height);
+      context.clearRect(0, 0, canvasWidth, canvasHeight);
       context.font = `${fontSize}px ui-monospace, SFMono-Regular, Consolas, monospace`;
       context.textBaseline = "top";
 
@@ -129,6 +130,8 @@ export function LetterGlitch({
 
     const resizeCanvas = () => {
       const bounds = container.getBoundingClientRect();
+      canvasWidth = bounds.width;
+      canvasHeight = bounds.height;
       const isMobile = bounds.width < 768;
       const ratio = Math.min(
         window.devicePixelRatio || 1,
@@ -148,7 +151,7 @@ export function LetterGlitch({
     };
 
     const updateLetters = () => {
-      const updateFraction = container.clientWidth < 768 ? 0.1 : 0.08;
+      const updateFraction = canvasWidth < 768 ? 0.1 : 0.08;
       const updateCount = Math.max(
         1,
         Math.floor(letters.length * updateFraction),
@@ -207,7 +210,7 @@ export function LetterGlitch({
       if (smooth && updateTransitions(delta)) shouldDraw = true;
       if (shouldDraw) drawLetters();
 
-      animationFrame = isVisible && !reducedMotion.matches
+      animationFrame = isVisible && !document.hidden && !reducedMotion.matches
         ? window.requestAnimationFrame(animate)
         : null;
     };
@@ -216,6 +219,7 @@ export function LetterGlitch({
       if (
         animationFrame !== null
         || !isVisible
+        || document.hidden
         || reducedMotion.matches
       ) {
         return;
@@ -257,12 +261,15 @@ export function LetterGlitch({
     resizeObserver.observe(container);
     visibilityObserver.observe(container);
     reducedMotion.addEventListener("change", handleMotionPreference);
+    const onVisibility = () => document.hidden ? stopAnimation() : startAnimation();
+    document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
       stopAnimation();
       resizeObserver.disconnect();
       visibilityObserver.disconnect();
       reducedMotion.removeEventListener("change", handleMotionPreference);
+      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, [characters, glitchColors, glitchSpeed, smooth]);
 

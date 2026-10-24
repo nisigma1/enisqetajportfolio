@@ -472,6 +472,8 @@
   position: relative;
   z-index: 1;
   min-height: 0;
+  min-width: 0;
+  max-width: 100%;
   overflow: hidden;
   border: var(--border-width) solid color-mix(in srgb, var(--border-strong) 82%, transparent);
   background: color-mix(in srgb, var(--background) 84%, #050505);
@@ -499,11 +501,14 @@
 .x-research-card {
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  width: 100%;
   height: 100%;
   overflow: hidden;
   border: 1px solid rgb(255 255 255 / 20%);
   background: #050505;
   color: #f4f4f1;
+  text-decoration: none;
 }
 
 .x-research-card__header,
@@ -548,10 +553,13 @@
   font-size: 0.67rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  overflow-wrap: anywhere;
 }
 
 .x-research-card__image {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
   min-height: 0;
   flex: 1 1 auto;
   place-items: center;
@@ -640,9 +648,14 @@
 
   .tabs__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); overflow: visible; }
   .tabs__trigger { min-width: 0; padding-inline: 0.65rem; font-size: 0.72rem; }
-  .home-practice-tabs__panel { grid-template-columns: 1fr; min-height: 0; }
+  .home-practice-tabs__panel { grid-template-columns: minmax(0, 1fr); min-height: 0; }
   .home-practice-tabs__proof { min-height: 13rem; aspect-ratio: 16 / 9; }
   .home-practice-tabs__panel .button { width: 100%; margin-top: var(--space-5); }
+  .home-practice-tabs__panel[data-tone="analysis"] .home-practice-tabs__proof { aspect-ratio: auto; min-height: 0; }
+  .x-research-card { height: auto; }
+  .x-research-card__image { flex: none; }
+  .home-practice-tabs__panel[data-tone="analysis"] .x-research-card__image img { height: auto; max-height: 26rem; }
+  .x-research-card__footer { flex-wrap: wrap; padding-block: 0.65rem; }
 
   .pricing-plan { display: grid; grid-template-columns: 1fr; gap: 0; padding: var(--space-5); }
   .pricing-plan__identity, .pricing-plan__price, .pricing-plan__description, .pricing-plan > ul, .pricing-plan__meta, .pricing-plan .button { grid-column: 1; grid-row: auto; }

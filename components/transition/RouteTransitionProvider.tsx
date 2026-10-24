@@ -99,6 +99,7 @@ export function RouteTransitionProvider({ children }: { children: ReactNode }) {
   const navigationTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const previousPathname = useRef(pathname);
   const reducedTarget = useRef<string | null>(null);
+  const restoringHistory = useRef(false);
 
   useEffect(() => {
     stateRef.current = state;
@@ -154,8 +155,15 @@ export function RouteTransitionProvider({ children }: { children: ReactNode }) {
         theme,
       });
 
+      // Fetch/render the destination while the existing visual cover runs.
+      // The previous sequence waited for all tiles before even starting IO.
+      try { router.push(`${destination.pathname}${destination.search}${destination.hash}`); }
+      catch { window.location.assign(destination.href); }
+
       window.requestAnimationFrame(() => {
-        dispatch({ type: "advance", requestId, phase: "covering" });
+        window.requestAnimationFrame(() => {
+          dispatch({ type: "advance", requestId, phase: "covering" });
+        });
       });
       return true;
     },
@@ -171,13 +179,8 @@ export function RouteTransitionProvider({ children }: { children: ReactNode }) {
       const next = stateRef.current;
       if (next.requestId !== requestId || !next.targetHref) return;
       dispatch({ type: "advance", requestId, phase: "navigating" });
-      try {
-        router.push(next.targetHref);
-      } catch {
-        window.location.assign(next.targetHref);
-      }
     });
-  }, [router]);
+  }, []);
 
   const onRevealComplete = useCallback((requestId: number) => {
     const current = stateRef.current;
@@ -241,13 +244,14 @@ export function RouteTransitionProvider({ children }: { children: ReactNode }) {
     const requestId = state.requestId;
     const timeout = window.setTimeout(
       () => finish(requestId, state.phase === "revealing"),
-      850,
+      500,
     );
     return () => window.clearTimeout(timeout);
   }, [finish, state.phase, state.requestId]);
 
   useEffect(() => {
     const onPopState = () => {
+      restoringHistory.current = true;
       const current = stateRef.current;
       if (current.phase !== "idle") recover(current.requestId);
     };
@@ -270,6 +274,10 @@ export function RouteTransitionProvider({ children }: { children: ReactNode }) {
     if (previousPathname.current === pathname) return;
     const previous = previousPathname.current;
     previousPathname.current = pathname;
+    if (restoringHistory.current) {
+      restoringHistory.current = false;
+      return;
+    }
 
     if (stateRef.current.phase === "idle" && previous !== pathname) {
       window.requestAnimationFrame(() => focusDestination(null));

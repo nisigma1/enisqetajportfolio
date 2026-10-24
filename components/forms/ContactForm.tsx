@@ -1,6 +1,7 @@
 "use client";
 
 import { FocusEvent, FormEvent, useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { ActionMark } from "@/components/ui/ActionMark";
 
 type FormState = "idle" | "loading" | "ready" | "error";
@@ -58,9 +59,10 @@ export function ContactForm() {
   const [errors, setErrors] = useState<FieldErrors>({});
   const [copyMessage, setCopyMessage] = useState("");
   const projectRef = useRef<HTMLSelectElement>(null);
+  const query = useSearchParams().toString();
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
+    const params = new URLSearchParams(query);
     const plan = params.get("plan");
     const service = params.get("service");
     const planLabels: Record<string, string> = {
@@ -76,7 +78,7 @@ export function ContactForm() {
     } else if (service === "digital-project") {
       projectRef.current.value = "Digital Project";
     }
-  }, []);
+  }, [query]);
 
   function focusFirstError(form: HTMLFormElement, nextErrors: FieldErrors) {
     const firstName = (Object.keys(nextErrors) as FieldName[])[0];

@@ -256,6 +256,30 @@
   grid-template-columns: minmax(0, 7fr) minmax(18rem, 5fr);
 }
 
+@media (max-width: 1199px) {
+  .inner-page--background .knowledge-spine__workspace { grid-template-columns: minmax(0, 1fr); }
+}
+
+.case-study--besiana .case-study__hero h1 {
+  font-family: var(--font-editorial);
+  font-size: clamp(2.65rem, 6vw, 5.5rem);
+  font-weight: 430;
+  line-height: 1;
+  letter-spacing: -0.045em;
+  text-transform: none;
+}
+
+.inner-page--malera .malera-practice__glitch {
+  opacity: 0.18;
+  contain: paint;
+  pointer-events: none;
+}
+
+.inner-page--malera .malera-practice__relationship > div:not(.malera-practice__bridge) {
+  backdrop-filter: none;
+  background: rgb(4 7 14 / 90%);
+}
+
 .inner-page--background .knowledge-spine__tracks {
   padding-left: 0;
 }
@@ -1328,6 +1352,16 @@ body:has(.inner-page) .social-dock-section {
   .masthead-nav a {
     min-height: 3rem;
     font-size: clamp(0.8125rem, 0.88vw, 0.9rem);
+  }
+}
+
+@media (max-width: 1023px) {
+  /* iOS zooms focused fields whose computed text size is below 16px. Keep
+     native selects and text entry controls readable without disabling zoom. */
+  .inner-page--contact .contact-form :is(input, select, textarea) {
+    font-family: var(--font-ui);
+    font-size: 16px;
+    line-height: 1.5;
   }
 }
 

@@ -67,7 +67,7 @@ export default function WorkArchive() {
               <a className="button button--quiet" href={barberProject.url} target="_blank" rel="noopener noreferrer">Visit live website <ActionMark direction="external" /></a>
             </div>
           </header>
-          <BarberBrothersShowcase priority />
+          <BarberBrothersShowcase />
         </section>
 
         <section id={hixhameProject.slug} className="inner-section work-project work-project--hixhame" aria-label="Hixhame Tina project">

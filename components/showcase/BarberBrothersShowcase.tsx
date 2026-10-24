@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element -- Authenticated, pre-compressed project captures are art-directed locally. */
 
 import { ActionMark } from "@/components/ui/ActionMark";
+import "@/styles/barber-showcase.css";
 import { barberProject } from "@/data/site";
 
 type BarberBrothersShowcaseProps = {

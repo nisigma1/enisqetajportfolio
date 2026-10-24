@@ -1,14 +1,20 @@
+@import "../styles/fonts.css";
 @import "../styles/tokens.css";
 @import "../styles/themes.css";
 @import "../styles/foundation.css";
 @import "../styles/layout.css";
 @import "../styles/components.css";
 @import "../styles/sections.css";
-@import "../styles/barber-showcase.css";
-@import "../styles/hixhame-case-study.css";
-@import "../styles/besiana-showcase.css";
-@import "../styles/crypto-curriculum.css";
 @import "../styles/audit-upgrades.css";
 @import "../styles/ia-update.css";
-@import "../styles/inner-pages.css";
 @import "../styles/utilities.css";
+
+/* Shared navigation metrics stay identical when inner-page styles are split
+   into their own route bundles. */
+@media (min-width: 1024px) {
+  .masthead-nav { gap: clamp(1rem, 1.65vw, 2rem); }
+  .masthead-nav a { min-height: 3rem; font-size: clamp(0.8125rem, 0.88vw, 0.9rem); }
+}
+@media (max-width: 767px) {
+  .mobile-navigation__label { white-space: normal; font-size: clamp(1.9rem, 9.5vw, 3.1rem); line-height: 0.9; }
+}

@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element -- Source-attributed local captures retain their original content and intrinsic dimensions. */
+
 import Link from "next/link";
 import { Tabs } from "@/components/ui/tabs";
 import { ActionMark } from "@/components/ui/ActionMark";
@@ -82,7 +84,7 @@ function PracticePanel({ tab }: { tab: PracticeTab }) {
       </div>
       <figure className="home-practice-tabs__proof">
         {tab.tone === "analysis" ? (
-          <div className="x-research-card">
+          <a className="x-research-card" href="https://x.com/N1sigma" target="_blank" rel="noopener noreferrer" aria-label="View NISIGMA research on X">
             <div className="x-research-card__header">
               <span className="x-research-card__identity"><strong>NISIGMA</strong><small>@N1sigma</small></span>
               <span aria-hidden="true">𝕏</span>
@@ -92,7 +94,7 @@ function PracticePanel({ tab }: { tab: PracticeTab }) {
               <img src={tab.image} alt={tab.alt} width={tab.width} height={tab.height} loading="lazy" decoding="async" />
             </div>
             <div className="x-research-card__footer"><span>Market research, published on X</span><ActionMark direction="external" /></div>
-          </div>
+          </a>
         ) : (
           <img src={tab.image} alt={tab.alt} width={tab.width} height={tab.height} loading="lazy" decoding="async" />
         )}

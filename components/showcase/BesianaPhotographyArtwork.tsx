@@ -1,4 +1,5 @@
-/* eslint-disable @next/next/no-img-element -- These are locally cached assets from the live Besiana Photography website. */
+/* eslint-disable @next/next/no-img-element -- Authentic local project photography and browser-captured interface. */
+import "@/styles/besiana-showcase.css";
 
 type BesianaPhotographyArtworkProps = {
   compact?: boolean;
@@ -11,45 +12,20 @@ export function BesianaPhotographyArtwork({
 }: BesianaPhotographyArtworkProps) {
   return (
     <figure className={`besiana-artwork${compact ? " besiana-artwork--compact" : ""}`}>
-      <div className="besiana-artwork__site">
-        <header className="besiana-artwork__nav">
-          <span className="besiana-artwork__brand">
-            <img src="/projects/besiana-photography/besiana-nav-mark-live.webp" alt="" width={256} height={256} loading="lazy" decoding="async" />
-            <b>Besiana Photography</b>
-          </span>
-          <span className="besiana-artwork__links" aria-hidden="true"><i>Home</i><i>Portfolio</i><i>Services</i><i>Book</i></span>
-          <span className="besiana-artwork__locale" aria-hidden="true">AL / EN</span>
-        </header>
-
-        <div className="besiana-artwork__hero">
-          <div className="besiana-artwork__copy">
-            <span>Besiana Photography · Kosovo</span>
-            <h4>Moments that feel.<br />Photographs that remain.</h4>
-            <p>A live photography experience for weddings, portraits, celebrations and businesses.</p>
-            <em>Book on WhatsApp</em>
-          </div>
-          <div className="besiana-artwork__photo">
-            <img
-              src="/projects/besiana-photography/besiana-hero-live.webp"
-              alt="Couple photographed for Besiana Photography"
-              width={1200}
-              height={1600}
-              loading={priority ? "eager" : "lazy"}
-              fetchPriority={priority ? "high" : "auto"}
-              decoding={priority ? "sync" : "async"}
-            />
-            <span>Weddings · portraits · stories</span>
-          </div>
-        </div>
-
-        <footer className="besiana-artwork__footer" aria-hidden="true"><span>Portfolio</span><span>Light · rhythm · detail</span><span>01 / 03</span></footer>
-      </div>
-
-      <div className="besiana-artwork__phone" aria-hidden="true">
-        <span className="besiana-artwork__notch" />
-        <img src="/projects/besiana-photography/besiana-hero-live.webp" alt="" width={1200} height={1600} loading="lazy" decoding="async" />
-        <span>Moments<br />that feel.</span>
-      </div>
+      <img
+        className="besiana-artwork__authentic"
+        src={compact ? "/projects/besiana-photography/besiana-authentic-portrait.webp" : "/projects/besiana-photography/besiana-interface-1440.webp"}
+        srcSet={compact
+          ? "/projects/besiana-photography/besiana-authentic-portrait-480.webp 480w, /projects/besiana-photography/besiana-authentic-portrait.webp 768w"
+          : "/projects/besiana-photography/besiana-interface-768.webp 768w, /projects/besiana-photography/besiana-interface-1440.webp 1440w"}
+        sizes={compact ? "(max-width: 767px) calc(100vw - 80px), 30vw" : "(max-width: 767px) calc(100vw - 32px), (max-width: 1504px) calc(100vw - 64px), 1440px"}
+        alt={compact ? "Couple photographed among trees by Besiana Photography" : "Actual Besiana Photography website, captured in the browser in October 2026"}
+        width={compact ? 768 : 1440}
+        height={compact ? 1024 : 900}
+        loading={priority ? "eager" : "lazy"}
+        fetchPriority={priority ? "high" : "auto"}
+        decoding="async"
+      />
     </figure>
   );
 }

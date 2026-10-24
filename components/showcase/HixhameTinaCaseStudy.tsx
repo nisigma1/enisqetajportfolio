@@ -1,4 +1,5 @@
 import Link from "next/link";
+import "@/styles/hixhame-case-study.css";
 import { HixhameTinaArtwork } from "@/components/showcase/HixhameTinaArtwork";
 import { ActionMark } from "@/components/ui/ActionMark";
 import { hixhameProject } from "@/data/site";

@@ -34,9 +34,8 @@ export function SmmAiCertification() {
       </div>
 
       <div className={`journey-field__experience ${styles.training}`}>
-        <span>Practical training</span>
-        <strong>15 <span>hours</span></strong>
-        <p>5-day program</p>
+        <span>Certification</span>
+        <p>Completed</p>
         <time dateTime="2026-10-23">23 October 2026</time>
       </div>
     </li>

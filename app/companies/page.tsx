@@ -83,7 +83,7 @@ export default function CompaniesPage() {
           <ol>
             {proof.map(({ project, image, alt, width, height }, index) => (
               <li key={project.slug}>
-                <Link href={`/work#${project.slug}`}>
+                <Link href={`/work/${project.slug}`}>
                   <span>{String(index + 1).padStart(2, "0")} / {project.category}</span>
                   <strong>{project.title}</strong>
                   <figure>{project.slug === besianaProject.slug ? <BesianaPhotographyArtwork compact /> : <img src={image!} alt={alt} width={width} height={height} loading="lazy" decoding="async" />}</figure>

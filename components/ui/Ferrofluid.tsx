@@ -245,12 +245,15 @@ export function Ferrofluid({
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (paused || motion.matches || window.matchMedia('(max-width: 767px)').matches) return;
 
-    const renderer = new Renderer({
+    let renderer: Renderer;
+    try { renderer = new Renderer({
       dpr: dpr ?? (typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1),
       alpha: true,
       antialias: true
-    });
+    }); } catch { return; }
     rendererRef.current = renderer;
     const gl = renderer.gl;
     const canvas = gl.canvas as HTMLCanvasElement;
@@ -323,8 +326,14 @@ export function Ferrofluid({
       canvas.addEventListener('pointermove', onPointerMove);
     }
 
+    let visible = false;
+    let previousFrame = 0;
     const loop = (t: number) => {
+      rafRef.current = null;
+      if (!visible || document.hidden || motion.matches) return;
       rafRef.current = requestAnimationFrame(loop);
+      if (t - previousFrame < 1000 / 30) return;
+      previousFrame = t;
       uniforms.iTime.value = t * 0.001;
       if (mouseDampening > 0) {
         if (!lastTimeRef.current) lastTimeRef.current = t;
@@ -348,9 +357,23 @@ export function Ferrofluid({
         }
       }
     };
-    rafRef.current = requestAnimationFrame(loop);
+    const syncAnimation = () => {
+      if (visible && !document.hidden && !motion.matches) {
+        if (rafRef.current === null) rafRef.current = requestAnimationFrame(loop);
+      } else if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+    };
+    const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; syncAnimation(); });
+    observer.observe(container);
+    document.addEventListener('visibilitychange', syncAnimation);
+    motion.addEventListener('change', syncAnimation);
 
     return () => {
+      observer.disconnect();
+      document.removeEventListener('visibilitychange', syncAnimation);
+      motion.removeEventListener('change', syncAnimation);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       if (mouseInteraction) canvas.removeEventListener('pointermove', onPointerMove);
       ro.disconnect();
@@ -367,6 +390,7 @@ export function Ferrofluid({
       callIfFn(geometryRef.current, 'remove');
       callIfFn(meshRef.current, 'remove');
       callIfFn(rendererRef.current, 'destroy');
+      gl.getExtension('WEBGL_lose_context')?.loseContext();
       programRef.current = null;
       geometryRef.current = null;
       meshRef.current = null;

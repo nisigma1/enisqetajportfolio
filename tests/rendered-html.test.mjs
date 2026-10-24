@@ -58,8 +58,8 @@ test("server-renders the complete identity homepage", async () => {
   assert.match(html, /click-spark__canvas/);
   assert.doesNotMatch(html, /class="meteors/);
   assert.match(html, /history\.scrollRestoration='manual'/);
-  assert.match(html, /addEventListener\('pageshow'/);
-  assert.match(html, /if\(!location\.hash\)scrollTo\(0,0\)/);
+  assert.match(html, /type!==&#x27;back_forward&#x27;|type!=='back_forward'/);
+  assert.doesNotMatch(html, /setTimeout\(r,120\)|addEventListener\('pageshow'/);
   assert.doesNotMatch(html, /[↖↗↘↙←→↑↓]/);
   assert.doesNotMatch(html, />EQ</);
   assert.doesNotMatch(html, /Football|C:\/Users|C:%5CUsers|\.vinext\/fonts/i);
@@ -173,8 +173,8 @@ test("work keeps all three real project proofs on the dedicated work route", asy
     assert.match(html, new RegExp(project));
   }
   assert.match(html, /class="meteors/);
-  assert.match(html, /besiana-hero-live\.webp/);
-  assert.match(html, /besiana-nav-mark-live\.webp/);
+  assert.match(html, /besiana-interface-1440\.webp/);
+  assert.doesNotMatch(html, /besiana-artwork__phone/);
   assert.match(html, /href="\/work\/besiana-photography"/);
 });
 

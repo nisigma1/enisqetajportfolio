@@ -1,5 +1,7 @@
 "use client";
 
+import "@/styles/crypto-curriculum.css";
+
 /* eslint-disable @next/next/no-img-element -- The logo is a small pre-compressed local WebP with explicit intrinsic dimensions. */
 import { useMemo, useState } from "react";
 import {

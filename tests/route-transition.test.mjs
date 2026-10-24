@@ -13,6 +13,7 @@ test("maps primary and nested routes to the correct active navigation item", () 
   assert.equal(activeRouteForPathname("/background"), "background");
   assert.equal(activeRouteForPathname("/work/barber-brothers"), "work");
   assert.equal(activeRouteForPathname("/companies"), "companies");
+  assert.equal(activeRouteForPathname("/malera"), "companies");
   assert.equal(activeRouteForPathname("/pricing"), "pricing");
   assert.equal(activeRouteForPathname("/contact"), "contact");
 });
@@ -44,18 +45,18 @@ test("intercepts only an unmodified internal route change", () => {
 
 test("uses a bounded adaptive grid across acceptance viewports", () => {
   for (const [width, height, expectedColumns] of [
-    [320, 720, 9],
-    [390, 844, 9],
-    [430, 932, 9],
-    [768, 1024, 13],
-    [1024, 768, 18],
-    [1366, 768, 18],
-    [1600, 900, 20],
-    [1920, 1080, 20],
+    [320, 720, 6],
+    [390, 844, 6],
+    [430, 932, 6],
+    [768, 1024, 9],
+    [1024, 768, 12],
+    [1366, 768, 12],
+    [1600, 900, 14],
+    [1920, 1080, 14],
   ]) {
     const grid = gridForViewport(width, height);
     assert.equal(grid.columns, expectedColumns, `${width}px columns`);
-    assert.ok(grid.count >= 160 && grid.count <= 260, `${width}px count ${grid.count}`);
+    assert.ok(grid.count >= 40 && grid.count <= 144, `${width}px count ${grid.count}`);
   }
 });
 
