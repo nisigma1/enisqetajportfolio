@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CryptoCurriculumSection } from "@/components/education/CryptoCurriculumSection";
+import { SmmAiCertification } from "@/components/education/SmmAiCertification";
 import { InnerPageShell } from "@/components/layout/InnerPageShell";
 import { ActionMark } from "@/components/ui/ActionMark";
 import { NumberTicker } from "@/components/ui/NumberTicker";
@@ -25,14 +26,14 @@ export default function BackgroundPage() {
         variant="background"
         eyebrow="Background / Knowledge journey"
         title={<>Marketing.<br />Finance.<br />Crypto Markets.</>}
-        summary="Three disciplines that shape how I understand markets, businesses and digital systems."
+        summary="Education and applied training that shape how I understand markets, businesses and digital systems."
         meta={["Education", "Applied learning", "Professional practice"]}
       >
         <section className="inner-section background-journey" aria-labelledby="background-journey-title">
           <header className="inner-section__header">
             <p className="inner-section__label">01 / Progression</p>
             <h2 id="background-journey-title">A connected professional foundation.</h2>
-            <p>Audience understanding leads into financial systems, then into applied crypto-market research.</p>
+            <p>Audience understanding connects financial systems and crypto-market research with AI-assisted social media practice.</p>
           </header>
 
           <ol className="knowledge-journey">
@@ -73,6 +74,7 @@ export default function BackgroundPage() {
                 </div>
               </li>
             ))}
+            <SmmAiCertification />
           </ol>
         </section>
 

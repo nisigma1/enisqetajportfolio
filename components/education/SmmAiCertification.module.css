@@ -1,0 +1,37 @@
+.certification .education {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.25rem;
+}
+
+.provider {
+  display: flex;
+  align-items: center;
+  width: min(100%, 11.5rem);
+  min-height: 3.5rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgb(255 255 255 / 18%);
+  background: #17191b;
+}
+
+.certification .provider img {
+  display: block;
+  width: 100%;
+  height: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.training p,
+.training time {
+  color: var(--text-secondary);
+  font-size: var(--text-caption);
+  line-height: 1.5;
+}
+
+@media (max-width: 767px) {
+  .certification .training {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.65rem;
+  }
+}
