@@ -21,6 +21,8 @@ try{
   await context.addInitScript(t=>localStorage.setItem('enis-theme',t),theme);
   const page=await context.newPage();
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  page.on('console',message=>{if(message.type()==='error')errors.push(message.text());});
+  page.on('requestfailed',request=>console.log(JSON.stringify({device:name,theme,failedRequest:request.url(),failure:request.failure()})));
   await page.goto(origin+'/background',{waitUntil:'networkidle'});
   await page.evaluate(()=>scrollTo({top:700,behavior:'instant'}));
   await page.waitForTimeout(250);
@@ -46,6 +48,8 @@ try{
    await page.waitForFunction(e=>e.getAttribute('aria-expanded')==='true',await module.elementHandle());
    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
   }
+  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+  await page.waitForLoadState('networkidle');
   await page.goto(origin,{waitUntil:'networkidle'});
   for(const title of ['Crypto Analysis','Malera Studio','Selected Work']){
    const tab=page.getByRole('tab',{name:title,exact:true});
@@ -55,6 +59,8 @@ try{
    for(const image of await panel.locator('img').all())await image.evaluate(i=>i.decode());
    assert.equal(await panel.evaluate(e=>e.scrollWidth<=e.clientWidth+1),true);
   }
+  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+  await page.waitForLoadState('networkidle');
   await page.goto(origin+'/contact?service=crypto-analysis&plan=advanced',{waitUntil:'networkidle'});
   await page.locator('form').scrollIntoViewIfNeeded();
   await page.waitForFunction(()=>document.querySelector('[name="project"]').value.includes('Advanced'));
@@ -73,7 +79,7 @@ try{
   await tap(page,page.getByRole('button',{name:/Switch to .* theme/}),{sticky:true});
   await page.waitForFunction(theme=>document.documentElement.dataset.theme!==theme,old);
   assert.equal(errors.length,0,JSON.stringify(errors));
-  results.push({name,theme,menuScrollLock:true,navigation:true,all11CurriculumModules:true,allHomeTabs:true,noTrainingDuration:true,formTextAtLeast16px:true,formValidation:true,formSuccessMock:true,theme:true,errors});
+  results.push({name,theme,menuScrollLock:true,navigation:true,all11CurriculumModules:true,allHomeTabs:true,noTrainingDuration:true,formTextAtLeast16px:true,formValidation:true,formSuccessMock:true,themeToggle:true,errors});
   await context.close();
   console.log(`${name} ${theme}: interactions PASS`);
   await writeFile(`${directory}/safari-interactions.json`,JSON.stringify(results,null,2));

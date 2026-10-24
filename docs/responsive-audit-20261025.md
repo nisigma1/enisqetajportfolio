@@ -66,7 +66,14 @@ Other regressions check long unbroken research titles, 200% CSS zoom, Besiana im
 - Local link/history checks: **19 internal links passed**, Back/Forward restored reading position, footer visible on all 14 routes, reduced-motion navigation passed.
 - Chrome targeted regression checks: seven widths, research long strings/200% CSS zoom, Besiana media, same-route inquiry selection, prices/content and expected 404s passed.
 - WebKit console scan: zero console errors across Home, Background, Work, Malera, Crypto Analysis and Contact.
-- Live publication: pending final result; local results alone do not establish a live fix.
+- Live publication: **Cloudflare Pages deployed application commit `dcaae077b93cc2aef04f20e21442f943e65358e1` successfully**, verified through the GitHub Cloudflare check and https://enisqetaj.com/ itself. Deployment: `bf918656-8f1b-45c9-b337-1aaf8af30fd0`.
+- Live layout: **24/24 passed** on iPhone 15 Pro Max and iPhone 16 Pro profiles, both themes, across Home/Background/Work/Malera/Crypto Analysis/Contact.
+- Live touch-state matrix: **8/8 passed**, iPhone 14, 15 Pro Max, 16 Pro Max and 17 Pro Max, both themes. Final rerun recorded zero console/page errors.
+- Live smoke: all 14 routes and sampled font/authentic-photo assets returned 200; training duration is absent, the Hallakate logo remains, and the authentic Besiana interface is present. Invalid `/api/contact` POST returned 422, without sending an email.
+
+One initial live Safari interaction run logged a fetch/access-control message during full-document switching. A reproduction trace found no redirected/failed RSC response. The harness was updated to let background prefetch settle before forced document changes, and the complete eight-case rerun passed with error capture enabled. This was not treated as evidence of a proven persistent production CORS defect, nor hidden by weakening the error assertion.
+
+The final evidence-only commit updates this report and QA harness metadata, not application code. It uses Cloudflare's [documented `[CF-Pages-Skip]` prefix](https://developers.cloudflare.com/pages/configuration/git-integration/github-integration/#skipping-a-build-via-a-commit-message), so it does not replace the already verified application deployment.
 
 Artifacts are retained locally in `outputs/responsive-20261025/`: baseline live captures, intermediate failures, final JSON and screenshots. Earlier production-build performance experiments are retained in `outputs/audit-20261019/`; they are not field INP or fresh production measurements for this responsive release. No unmeasured “10/10”, universal device guarantee or Lighthouse score is claimed.
 

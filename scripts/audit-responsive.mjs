@@ -6,10 +6,11 @@ const origin=process.argv[3]||'http://127.0.0.1:3089';
 const directory=`outputs/responsive-20261025/${phase}`;
 await mkdir(directory,{recursive:true});
 const baseline=phase==='before';
+const compact=baseline||phase==='live';
 const capture=process.env.AUDIT_SCREENSHOTS!=='0';
-const routes=baseline?['/','/background','/work','/companies','/pricing','/contact']:['/','/background','/work','/work/barber-brothers','/work/hixhame-tina','/work/besiana-photography','/companies','/malera','/pricing','/contact','/about','/research','/markets','/build'];
+const routes=compact?['/','/background','/work','/companies','/pricing','/contact']:['/','/background','/work','/work/barber-brothers','/work/hixhame-tina','/work/besiana-photography','/companies','/malera','/pricing','/contact','/about','/research','/markets','/build'];
 const browsers={chromium:await chromium.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true}),webkit:await webkit.launch({headless:true})};
-const profiles=baseline?[
+const profiles=compact?[
  {engine:'webkit',name:'iPhone 15 Pro Max',options:devices['iPhone 15 Pro Max']},
  {engine:'webkit',name:'iPhone 16 Pro',options:devices['iPhone 16 Pro']},
 ]:[
