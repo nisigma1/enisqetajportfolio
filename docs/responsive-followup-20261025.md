@@ -56,3 +56,24 @@ This is a tested improvement, not a claim that every possible device/state is pe
 - New ambient-animation regression passed: visible animation runs, offscreen animation pauses, and scrolling back resumes it. Three final offscreen three-second samples recorded TaskDuration **0.532/0.361/0.411ms**, zero style recalculations and zero layout duration. Median **0.411ms** versus the controlled pre-fix running samples **812/939ms**. This measures this page's renderer main-thread work under the stated condition, not whole-device battery life or field INP. Raw output: `outputs/responsive-20261025/ambient-animation/results.json`.
 - Lab touch navigation click-to-content-ready (including the existing mosaic), three-run medians: Background 953ms, Work 1011ms, Malera 1046ms, Pricing 942ms, Contact 906ms. This is not field INP and is not claimed as an improved metric without a comparable prior sample.
 - Final production build, all 18 tests, TypeScript and focused lint passed.
+
+## Final publication and remaining performance limit
+
+Application commit `4f43a2dbf2626d69f4b0637a7932004d40233d19` was pushed to GitHub and successfully deployed by Cloudflare Pages, deployment `55d022a4-ed39-4fd3-9b42-1fc20a5ee842`. Verified at https://enisqetaj.com/ and the Background route: visibility gating is present, original WebP is restored, Experience — 1 year is present, and the issue date is absent. All 14 public route smoke requests returned 200. No DNS/account/hosting changes were made.
+
+The complete final text-resize probe also ran against the deployed domain: **63/63 passed**, including Home and deferred sections after scrolling, with no measured overflowing text/container or vertically fragmented wordmark.
+
+The final live ambient test passed pause/resume assertions. Three offscreen samples recorded **1.638/0.481/1.039ms** renderer TaskDuration per three seconds (median **1.039ms**), with zero style recalculations and zero layout duration. This confirms the large reduction in offscreen work on the actual deployed application.
+
+Three final live mobile Lighthouse runs, same setup as baseline:
+
+| Home metric | Baseline median | Final median |
+|---|---:|---:|
+| Performance score | 80 | 82 |
+| FCP | 2.38s | 2.47s |
+| LCP | 3.97s | 4.13s |
+| TBT | 157ms | 155ms |
+| CLS | 0 | 0 |
+| Speed Index | 2.44s | 2.47s |
+
+Raw final reports: `outputs/audit-20261019/followup-live-final/`. **Initial-load speed is not demonstrated to have improved meaningfully. LCP <=2.5s and consistent mobile Lighthouse >=90 are not achieved.** The offscreen runtime improvement must not be presented as an initial-load improvement. Startup still transfers approximately 448KB including the original 193KB portrait, 84KB fonts and 129KB scripts; further critical-path profiling remains an open performance item, not a verified repaired defect. No field INP measurement is available.
