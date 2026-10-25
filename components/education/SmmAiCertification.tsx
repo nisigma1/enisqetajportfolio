@@ -35,7 +35,7 @@ export function SmmAiCertification() {
 
       <div className="journey-field__experience">
         <span>Experience</span>
-        <strong>1 <span>year</span></strong>
+        <strong>2+ <span>years</span></strong>
       </div>
     </li>
   );

@@ -18,7 +18,7 @@ test("background publishes the verified Hallakate training without the certifica
   assert.doesNotMatch(html, /6afa6172|HKT 2310-02|AppData|codex-clipboard/);
   assert.doesNotMatch(html, /5-day program|15<!-- -->|>hours<|Practical training/);
   assert.doesNotMatch(html, /23 October 2026|2026-10-23/);
-  assert.match(html, /<strong>1\s*<span>year<\/span><\/strong>/);
+  assert.match(html, /<strong>2\+\s*<span>years<\/span><\/strong>/);
 });
 
 test("Hallakate addition does not alter the homepage content", async () => {
