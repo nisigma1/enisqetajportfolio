@@ -9,11 +9,15 @@ try {
  for(const width of [320,390,430]) {
   const context=await browser.newContext({...devices['iPhone 15 Pro Max'],viewport:{width,height:844}});
   const page=await context.newPage();
-  for(const route of ['/background','/work','/companies','/pricing','/contact','/work/besiana-photography']) {
+  for(const route of ['/','/background','/work','/companies','/pricing','/contact','/work/besiana-photography']) {
    await page.goto(origin+route,{waitUntil:'networkidle'});
    await page.evaluate(()=>document.fonts.ready);
    for(const scale of [1,1.3,2]) {
     await page.evaluate(scale=>document.documentElement.style.fontSize=`${scale*100}%`,scale);
+    await page.evaluate(async()=>{
+     for(let y=0;y<document.documentElement.scrollHeight;y+=700){scrollTo({top:y,behavior:'instant'});await new Promise(r=>setTimeout(r,20));}
+     scrollTo({top:0,behavior:'instant'});
+    });
     await page.waitForTimeout(100);
     const measurement=await page.evaluate(()=>{
      const width=document.documentElement.clientWidth;

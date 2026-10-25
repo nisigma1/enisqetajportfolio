@@ -436,7 +436,6 @@ export const media = {
     role: "IDENTITY_PORTRAIT",
     desktop: {
       src: "/images/enis/enis-desktop.webp",
-      avifSrc: "/images/enis/enis-desktop.avif",
       width: 1125,
       height: 1500,
       aspectRatio: "3 / 4",
@@ -448,7 +447,6 @@ export const media = {
     },
     tablet: {
       src: "/images/enis/enis-tablet.webp",
-      avifSrc: "/images/enis/enis-tablet.avif",
       width: 900,
       height: 1200,
       aspectRatio: "3 / 4",
@@ -460,7 +458,6 @@ export const media = {
     },
     mobile: {
       src: "/images/enis/enis-mobile.webp",
-      avifSrc: "/images/enis/enis-mobile.avif",
       width: 750,
       height: 1000,
       aspectRatio: "3 / 4",

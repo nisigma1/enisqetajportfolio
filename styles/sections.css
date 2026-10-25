@@ -236,6 +236,10 @@
   animation: portrait-border-orbit 5.4s linear infinite;
 }
 
+.author-artifact[data-animation-visible="false"] {
+  animation-play-state: paused;
+}
+
 .author-artifact::before {
   content: "PORTRAIT / 2026";
   position: absolute;
@@ -2302,5 +2306,22 @@
     --portrait-border-angle: 315deg;
 
     animation: none;
+  }
+}
+
+/* Reflow enlarged phone text instead of letting the hero's decorative clip
+   conceal a min-content overflow. Normal-size typography is unchanged. */
+@media (max-width: 479px) {
+  .dispatch-hero,
+  .site-section {
+    overflow-wrap: anywhere;
+  }
+
+  .dispatch-hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dispatch-hero h1 {
+    font-size: min(clamp(4.1rem, 19.5vw, 5.35rem), 26vw);
   }
 }

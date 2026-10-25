@@ -21,9 +21,7 @@ try {
    const pieces=[...e.querySelectorAll('.pixel-image__piece')];
    return {currentSrc:e.querySelector('img').currentSrc,pieces:pieces.length,areaRatio:pieces.reduce((sum,p)=>{const b=p.getBoundingClientRect();return sum+b.width*b.height;},0)/(r.width*r.height),imageRequests:performance.getEntriesByType('resource').filter(r=>/images\/enis\//.test(r.name)).map(r=>r.name)};
   });
-  // Windows WebKit lacks some image codecs present in physical iOS Safari;
-  // its original WebP fallback is deliberately retained and tested too.
-  assert.match(result.currentSrc,engine==='chromium'?/\.avif$/:/\.(avif|webp)$/);
+  assert.match(result.currentSrc,/\.webp$/);
   assert.equal(result.pieces,24);
   assert.ok(Math.abs(result.areaRatio-1)<0.002);
   assert.equal(result.imageRequests.length,1,JSON.stringify({engine,width,...result}));

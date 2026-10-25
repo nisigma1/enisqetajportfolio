@@ -7,9 +7,6 @@ type PixelImageProps = Omit<HTMLAttributes<HTMLDivElement>, "children"> & {
   src: string;
   tabletSrc?: string;
   mobileSrc?: string;
-  avifSrc?: string;
-  tabletAvifSrc?: string;
-  mobileAvifSrc?: string;
   alt: string;
   customGrid?: Grid;
   grayscaleAnimation?: boolean;
@@ -26,9 +23,6 @@ export function PixelImage({
   src,
   tabletSrc,
   mobileSrc,
-  avifSrc,
-  tabletAvifSrc,
-  mobileAvifSrc,
   alt,
   customGrid = { rows: 6, cols: 4 },
   grayscaleAnimation = true,
@@ -54,10 +48,6 @@ export function PixelImage({
     return { row, col, delay };
   });
 
-  const backgroundSource = (fallback: string, avif?: string) => avif
-    ? `image-set(url("${avif}") type("image/avif"), url("${fallback}") type("image/webp"))`
-    : `url("${fallback}")`;
-
   return (
     <div
       {...props}
@@ -65,18 +55,15 @@ export function PixelImage({
       style={{
         "--pixel-aspect": aspectRatio,
         "--pixel-object-position": objectPosition,
-        "--pixel-source": backgroundSource(src, avifSrc),
-        "--pixel-source-tablet": backgroundSource(tabletSrc ?? src, tabletAvifSrc ?? avifSrc),
-        "--pixel-source-mobile": backgroundSource(mobileSrc ?? tabletSrc ?? src, mobileAvifSrc ?? tabletAvifSrc ?? avifSrc),
+        "--pixel-source": `url("${src}")`,
+        "--pixel-source-tablet": `url("${tabletSrc ?? src}")`,
+        "--pixel-source-mobile": `url("${mobileSrc ?? tabletSrc ?? src}")`,
         ...props.style,
       } as CSSProperties}
     >
       <picture style={{ display: "contents" }}>
-      {mobileAvifSrc && <source media="(max-width: 767px)" type="image/avif" srcSet={mobileAvifSrc} />}
       {mobileSrc && <source media="(max-width: 767px)" srcSet={mobileSrc} />}
-      {tabletAvifSrc && <source media="(max-width: 1023px)" type="image/avif" srcSet={tabletAvifSrc} />}
       {tabletSrc && <source media="(max-width: 1023px)" srcSet={tabletSrc} />}
-      {avifSrc && <source type="image/avif" srcSet={avifSrc} />}
       <img
         className="pixel-image__source"
         src={src}

@@ -13,6 +13,7 @@ import { ProjectMedia } from "@/components/media/ProjectMedia";
 import { ActionMark } from "@/components/ui/ActionMark";
 import { PixelImage } from "@/components/ui/PixelImage";
 import { TextRepel } from "@/components/ui/TextRepel";
+import { VisibilityFigure } from "@/components/performance/VisibilityFigure";
 import { Magnetic } from "@/components/core/magnetic";
 import {
   DeferredBuildNavigator,
@@ -69,14 +70,11 @@ export function Hero() {
           </p>
         </div>
 
-        <figure className="author-artifact">
+        <VisibilityFigure className="author-artifact">
           <PixelImage
             src={media.portrait.desktop.src}
             tabletSrc={media.portrait.tablet.src}
             mobileSrc={media.portrait.mobile.src}
-            avifSrc={media.portrait.desktop.avifSrc}
-            tabletAvifSrc={media.portrait.tablet.avifSrc}
-            mobileAvifSrc={media.portrait.mobile.avifSrc}
             alt="Enis Qetaj, financial-markets researcher and AI product builder from Kosovo"
             customGrid={{ rows: 6, cols: 4 }}
             grayscaleAnimation
@@ -90,7 +88,7 @@ export function Hero() {
             <span>Author / researcher / builder</span>
             <span>Kosovo, 2026</span>
           </figcaption>
-        </figure>
+        </VisibilityFigure>
 
         <div className="dispatch-hero__pitch">
           <p className="dispatch-hero__thesis">
