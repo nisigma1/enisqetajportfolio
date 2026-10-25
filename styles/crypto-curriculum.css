@@ -413,7 +413,7 @@
   font-weight: 400;
   letter-spacing: -0.05em;
   line-height: 0.96;
-  overflow-wrap: normal;
+  overflow-wrap: anywhere;
   text-wrap: balance;
 }
 

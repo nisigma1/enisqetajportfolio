@@ -74,6 +74,9 @@ export function Hero() {
             src={media.portrait.desktop.src}
             tabletSrc={media.portrait.tablet.src}
             mobileSrc={media.portrait.mobile.src}
+            avifSrc={media.portrait.desktop.avifSrc}
+            tabletAvifSrc={media.portrait.tablet.avifSrc}
+            mobileAvifSrc={media.portrait.mobile.avifSrc}
             alt="Enis Qetaj, financial-markets researcher and AI product builder from Kosovo"
             customGrid={{ rows: 6, cols: 4 }}
             grayscaleAnimation

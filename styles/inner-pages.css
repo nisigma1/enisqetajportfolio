@@ -5,6 +5,20 @@
   width: min(100%, var(--container));
   margin-inline: auto;
   padding-inline: var(--gutter);
+  /* Long names and enlarged text must contribute a shrinkable min-content
+     width to nested grid tracks, rather than widening the whole page. */
+  overflow-wrap: anywhere;
+}
+
+.case-study {
+  overflow-wrap: anywhere;
+}
+
+.inner-page .button,
+.case-study .button {
+  max-width: 100%;
+  min-width: 0;
+  white-space: normal;
 }
 
 .inner-masthead {
@@ -842,6 +856,7 @@
 
 .analysis-plan__heading {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--space-3);
 }
@@ -1421,7 +1436,7 @@ body:has(.inner-page) .social-dock-section {
   }
 
   .journey-field__identity {
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto minmax(0, 1fr);
     gap: var(--space-4);
     align-items: start;
   }
@@ -1685,7 +1700,7 @@ body:has(.inner-page) .social-dock-section {
 
   .inner-page--contact .form-actions {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
   }
 
   .inner-page--contact .form-submit,
@@ -1708,6 +1723,28 @@ body:has(.inner-page) .social-dock-section {
   .mobile-navigation__label {
     font-size: clamp(1.9rem, 9.5vw, 3.1rem);
     line-height: 0.9;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 479px) {
+  .journey-field__education {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .journey-field__experience {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 7rem), 1fr));
+  }
+
+  .analysis-plan__layers {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 5.5rem), 1fr));
+  }
+
+  .analysis-plan__price {
+    flex-wrap: wrap;
+  }
+
+  .contact-pathways .button {
     white-space: normal;
   }
 }

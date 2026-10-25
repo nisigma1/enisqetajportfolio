@@ -1360,15 +1360,23 @@ html[data-route-transition="active"] {
 @media (max-width: 599px) {
   .masthead {
     min-height: 4rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    column-gap: 0.5rem;
+    row-gap: 0.5rem;
   }
 
   .masthead-name {
     gap: var(--space-2);
+    flex: 0 0 auto;
+    white-space: nowrap;
   }
 
   .masthead-actions {
     gap: var(--space-2);
     flex: none;
+    margin-inline-start: auto;
   }
 
   .masthead-actions .theme-toggle {

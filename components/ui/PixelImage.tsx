@@ -7,6 +7,9 @@ type PixelImageProps = Omit<HTMLAttributes<HTMLDivElement>, "children"> & {
   src: string;
   tabletSrc?: string;
   mobileSrc?: string;
+  avifSrc?: string;
+  tabletAvifSrc?: string;
+  mobileAvifSrc?: string;
   alt: string;
   customGrid?: Grid;
   grayscaleAnimation?: boolean;
@@ -23,6 +26,9 @@ export function PixelImage({
   src,
   tabletSrc,
   mobileSrc,
+  avifSrc,
+  tabletAvifSrc,
+  mobileAvifSrc,
   alt,
   customGrid = { rows: 6, cols: 4 },
   grayscaleAnimation = true,
@@ -42,10 +48,15 @@ export function PixelImage({
   const pieces = Array.from({ length: total }, (_, index) => {
     const row = Math.floor(index / grid.cols);
     const col = index % grid.cols;
-    const clipPath = `polygon(${col * (100 / grid.cols)}% ${row * (100 / grid.rows)}%, ${(col + 1) * (100 / grid.cols)}% ${row * (100 / grid.rows)}%, ${(col + 1) * (100 / grid.cols)}% ${(row + 1) * (100 / grid.rows)}%, ${col * (100 / grid.cols)}% ${(row + 1) * (100 / grid.rows)}%)`;
     const delay = ((row * 13 + col * 7) % total) / Math.max(1, total - 1) * maxAnimationDelay;
-    return { clipPath, delay };
+    // Real tile bounds preserve the reveal but avoid 24 full-portrait layers
+    // with clip paths, especially expensive on high-DPR phone screens.
+    return { row, col, delay };
   });
+
+  const backgroundSource = (fallback: string, avif?: string) => avif
+    ? `image-set(url("${avif}") type("image/avif"), url("${fallback}") type("image/webp"))`
+    : `url("${fallback}")`;
 
   return (
     <div
@@ -54,15 +65,18 @@ export function PixelImage({
       style={{
         "--pixel-aspect": aspectRatio,
         "--pixel-object-position": objectPosition,
-        "--pixel-source": `url(\"${src}\")`,
-        "--pixel-source-tablet": `url(\"${tabletSrc ?? src}\")`,
-        "--pixel-source-mobile": `url(\"${mobileSrc ?? tabletSrc ?? src}\")`,
+        "--pixel-source": backgroundSource(src, avifSrc),
+        "--pixel-source-tablet": backgroundSource(tabletSrc ?? src, tabletAvifSrc ?? avifSrc),
+        "--pixel-source-mobile": backgroundSource(mobileSrc ?? tabletSrc ?? src, mobileAvifSrc ?? tabletAvifSrc ?? avifSrc),
         ...props.style,
       } as CSSProperties}
     >
       <picture style={{ display: "contents" }}>
+      {mobileAvifSrc && <source media="(max-width: 767px)" type="image/avif" srcSet={mobileAvifSrc} />}
       {mobileSrc && <source media="(max-width: 767px)" srcSet={mobileSrc} />}
+      {tabletAvifSrc && <source media="(max-width: 1023px)" type="image/avif" srcSet={tabletAvifSrc} />}
       {tabletSrc && <source media="(max-width: 1023px)" srcSet={tabletSrc} />}
+      {avifSrc && <source type="image/avif" srcSet={avifSrc} />}
       <img
         className="pixel-image__source"
         src={src}
@@ -78,7 +92,13 @@ export function PixelImage({
           key={`${grid.rows}-${grid.cols}-${index}`}
           aria-hidden="true"
           style={{
-            clipPath: piece.clipPath,
+            inset: "auto",
+            left: `${piece.col * 100 / grid.cols}%`,
+            top: `${piece.row * 100 / grid.rows}%`,
+            width: `${100 / grid.cols}%`,
+            height: `${100 / grid.rows}%`,
+            backgroundSize: `${grid.cols * 100}% ${grid.rows * 100}%`,
+            backgroundPosition: `${grid.cols > 1 ? piece.col * 100 / (grid.cols - 1) : 0}% ${grid.rows > 1 ? piece.row * 100 / (grid.rows - 1) : 0}%`,
             animationDelay: `${colorRevealDelay + piece.delay}ms`,
             animationDuration: `${pixelFadeInDuration}ms`,
           }}

@@ -8,7 +8,7 @@ Starting production commit: `823729b` (Hallakate certification). The `checkpoint
 
 The approved homepage's copy, portrait, font families and primary composition are retained. Its research preview and intermediate-width grid are corrected where reproducible defects were found. All three real projects, university degrees/statuses, Crypto School's 11 modules and the €30/€60/€100 monthly crypto-research plans remain.
 
-Hallakate: training hours and the five-day duration are removed. Provider, course name, completed status and issue date remain. The private certificate photograph, signature and credential number are not published.
+Hallakate: training hours and the five-day duration are removed. Follow-up at the user's request: the final column now reads “Experience — 1 year” (user-provided), replacing certification status and the issue date. Provider, course name and completed course status remain. The private certificate photograph, signature and credential number are not published.
 
 ## Verified defects and repairs
 

@@ -21,17 +21,3 @@
   border: 0;
   background: transparent;
 }
-
-.training p,
-.training time {
-  color: var(--text-secondary);
-  font-size: var(--text-caption);
-  line-height: 1.5;
-}
-
-@media (max-width: 767px) {
-  .certification .training {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0.65rem;
-  }
-}
