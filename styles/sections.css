@@ -191,20 +191,18 @@
   margin-top: var(--space-5);
 }
 
-@property --portrait-border-angle {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
-}
-
 @keyframes portrait-border-orbit {
-  to {
-    --portrait-border-angle: 360deg;
-  }
+  to { transform: rotate(1turn); }
 }
 
 .author-artifact {
   --portrait-border-angle: 0deg;
+  --portrait-orbit-gradient: conic-gradient(
+    from var(--portrait-border-angle),
+    color-mix(in srgb, var(--border-strong) 76%, transparent) 0% 67%,
+    rgb(47 91 255 / 34%) 74%, #315bff 82%, #a9bdff 88%, #eef2ff 90%,
+    #315bff 94%, color-mix(in srgb, var(--border-strong) 76%, transparent) 100%
+  );
 
   grid-column: 7 / 13;
   grid-row: 1 / 3;
@@ -217,27 +215,44 @@
   border: 1px solid transparent;
   background:
     linear-gradient(var(--surface-elevated), var(--surface-elevated)) padding-box,
-    conic-gradient(
-        from var(--portrait-border-angle),
-        color-mix(in srgb, var(--border-strong) 76%, transparent) 0%,
-        color-mix(in srgb, var(--border-strong) 76%, transparent) 67%,
-        rgb(47 91 255 / 34%) 74%,
-        #315bff 82%,
-        #a9bdff 88%,
-        #eef2ff 90%,
-        #315bff 94%,
-        color-mix(in srgb, var(--border-strong) 76%, transparent) 100%
-      )
-      border-box;
+    var(--portrait-orbit-gradient) border-box;
   box-shadow:
     0 0 0 1px rgb(75 112 255 / 10%),
     0 0 1.75rem rgb(49 91 255 / 12%);
   transform: rotate(-0.6deg);
-  animation: portrait-border-orbit 5.4s linear infinite;
 }
 
-.author-artifact[data-animation-visible="false"] {
-  animation-play-state: paused;
+.author-artifact__orbit { display: none; }
+
+@supports (mask-composite: exclude) {
+  .author-artifact {
+    background: linear-gradient(var(--surface-elevated), var(--surface-elevated)) padding-box;
+  }
+
+  /* Rotate an already-painted gradient under a one-pixel ring, rather than
+     recalculating the figure's gradient and styles on every animation frame. */
+  .author-artifact__orbit {
+    position: absolute;
+    display: block;
+    inset: -1px;
+    padding: 1px;
+    overflow: hidden;
+    pointer-events: none;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+  }
+
+  .author-artifact__orbit::before {
+    content: "";
+    position: absolute;
+    inset: -60%;
+    background: var(--portrait-orbit-gradient);
+    animation: portrait-border-orbit 5.4s linear infinite;
+  }
+
+  .author-artifact[data-animation-visible="false"] .author-artifact__orbit::before {
+    animation-play-state: paused;
+  }
 }
 
 .author-artifact::before {
@@ -311,6 +326,10 @@
 
 @media (max-width: 767px) {
   .pixel-image__piece { background-image: var(--pixel-source-mobile); }
+}
+
+@media (max-width: 479px) {
+  .pixel-image__piece { background-image: var(--pixel-source-compact); }
 }
 
 @supports (content-visibility: auto) {
@@ -2304,9 +2323,9 @@
 @media (prefers-reduced-motion: reduce) {
   .author-artifact {
     --portrait-border-angle: 315deg;
-
-    animation: none;
   }
+
+  .author-artifact__orbit::before { animation: none; }
 }
 
 /* Reflow enlarged phone text instead of letting the hero's decorative clip

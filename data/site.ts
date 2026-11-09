@@ -458,6 +458,7 @@ export const media = {
     },
     mobile: {
       src: "/images/enis/enis-mobile.webp",
+      compactSrc: "/images/enis/enis-compact.webp",
       width: 750,
       height: 1000,
       aspectRatio: "3 / 4",

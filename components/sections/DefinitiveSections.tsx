@@ -71,10 +71,12 @@ export function Hero() {
         </div>
 
         <VisibilityFigure className="author-artifact">
+          <span className="author-artifact__orbit" aria-hidden="true" />
           <PixelImage
             src={media.portrait.desktop.src}
             tabletSrc={media.portrait.tablet.src}
             mobileSrc={media.portrait.mobile.src}
+            compactSrc={media.portrait.mobile.compactSrc}
             alt="Enis Qetaj, financial-markets researcher and AI product builder from Kosovo"
             customGrid={{ rows: 6, cols: 4 }}
             grayscaleAnimation

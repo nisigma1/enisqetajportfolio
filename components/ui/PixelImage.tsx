@@ -7,6 +7,7 @@ type PixelImageProps = Omit<HTMLAttributes<HTMLDivElement>, "children"> & {
   src: string;
   tabletSrc?: string;
   mobileSrc?: string;
+  compactSrc?: string;
   alt: string;
   customGrid?: Grid;
   grayscaleAnimation?: boolean;
@@ -23,6 +24,7 @@ export function PixelImage({
   src,
   tabletSrc,
   mobileSrc,
+  compactSrc,
   alt,
   customGrid = { rows: 6, cols: 4 },
   grayscaleAnimation = true,
@@ -58,10 +60,12 @@ export function PixelImage({
         "--pixel-source": `url("${src}")`,
         "--pixel-source-tablet": `url("${tabletSrc ?? src}")`,
         "--pixel-source-mobile": `url("${mobileSrc ?? tabletSrc ?? src}")`,
+        "--pixel-source-compact": `url("${compactSrc ?? mobileSrc ?? tabletSrc ?? src}")`,
         ...props.style,
       } as CSSProperties}
     >
       <picture style={{ display: "contents" }}>
+      {compactSrc && <source media="(max-width: 479px)" srcSet={compactSrc} />}
       {mobileSrc && <source media="(max-width: 767px)" srcSet={mobileSrc} />}
       {tabletSrc && <source media="(max-width: 1023px)" srcSet={tabletSrc} />}
       <img
