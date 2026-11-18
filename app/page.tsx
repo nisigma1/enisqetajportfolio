@@ -1,11 +1,5 @@
 import type { Metadata } from "next";
-import {
-  About,
-  Contact,
-  Hero,
-  PortfolioPixelField,
-} from "@/components/sections/DefinitiveSections";
-import { HomePracticeTabs } from "@/components/sections/HomePracticeTabs";
+import { Hero, HomePortfolioLinks, PortfolioPixelField } from "@/components/sections/DefinitiveSections";
 import { siteConfig } from "@/data/site";
 import { baseStructuredData, ogImage, routeSeo } from "@/lib/seo";
 
@@ -39,9 +33,7 @@ export default function Home() {
       <main id="main" className="portfolio-pixel-host">
         <PortfolioPixelField />
         <Hero />
-        <About />
-        <HomePracticeTabs />
-        <Contact />
+        <HomePortfolioLinks />
       </main>
       <script
         type="application/ld+json"

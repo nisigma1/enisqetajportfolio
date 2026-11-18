@@ -41,23 +41,22 @@ test("server-renders the complete identity homepage", async () => {
   );
   assert.match(html, /data-text-repel=""[^>]*aria-label="Enis Qetaj"/);
   assert.doesNotMatch(html, /class="visually-hidden">Enis Qetaj<\/span>/);
-  assert.match(html, /<ol class="dispatch-hero__proof" aria-label="Core professional focus">/);
-  assert.match(html, /Choose the lens you need\./);
-  assert.match(html, /Crypto Analysis/);
-  assert.match(html, /Selected Work/);
-  assert.match(html, /href="\/work"/);
-  assert.match(html, /href="\/pricing"/);
+  const main = html.match(/<main\b[\s\S]*?<\/main>/)?.[0];
+  assert.ok(main);
+  assert.match(main, /I build websites and software through Malera Studio\./);
+  assert.match(main, /href="\/work"[^>]*>View selected work/);
+  assert.match(main, /href="\/pricing"[^>]*>Crypto Analysis/);
+  assert.match(main, /href="\/research"[^>]*>Read my research approach/);
+  assert.match(main, /href="\/contact"[^>]*>Contact Enis/);
+  assert.doesNotMatch(main, /<form\b|href="\/work\/|home-practice-tabs|dispatch-hero__proof/);
+  assert.doesNotMatch(html, /Context first\. Then build\.|Portfolio index/);
+  assert.match(html, /href="#app-shell"[^>]*>Back to top/);
   assert.match(html, /href="\/companies"/);
   assert.match(html, /Research/);
   assert.match(html, /Markets/);
   assert.match(html, /On-chain/);
-  assert.match(html, /Research and Analysis/);
-  assert.match(html, /Macroeconomics and Geopolitics/);
   assert.match(html, /Malera Studio/);
-  assert.ok(html.indexOf("Evidence before narrative.") < html.indexOf("Choose the lens you need."));
-  assert.match(html, /\+383 44 857 227/);
   assert.match(html, /application\/ld\+json/);
-  assert.match(html, /action-mark/);
   assert.match(html, /click-spark__canvas/);
   assert.doesNotMatch(html, /class="meteors/);
   assert.match(html, /history\.scrollRestoration='manual'/);
@@ -119,9 +118,9 @@ test("renders indexed public routes with route-specific canonicals", async () =>
     ["/about", "About Enis Qetaj"],
     ["/research", "Research by Enis Qetaj"],
     ["/markets", "Crypto markets, macro"],
-    ["/work", "Built for real businesses"],
+    ["/work", "Selected work"],
     ["/build", "AI products, websites and automation"],
-    ["/contact", "Why are you contacting me"],
+    ["/contact", "Send a message"],
   ]) {
     const response = await worker.fetch(
       new Request(`http://localhost${route}`, { headers: { accept: "text/html" } }),
@@ -144,7 +143,7 @@ test("renders indexed public routes with route-specific canonicals", async () =>
   }
 });
 
-test("companies restores the building method and Malera relationship chapters", async () => {
+test("companies explains the studio and renders an accessible binary fallback without repeating the gallery", async () => {
   const worker = await getWorker();
   const response = await worker.fetch(
     new Request("http://localhost/companies", { headers: { accept: "text/html" } }),
@@ -153,16 +152,16 @@ test("companies restores the building method and Malera relationship chapters", 
   );
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /Start with the need\. Find the useful form\./);
+  assert.match(html, /What Malera builds/);
   assert.match(html, /Relationship between Enis Qetaj and Malera Studio/);
-  assert.match(html, /When the problem needs a wider practice\./);
-  assert.match(html, /03 \/ How Malera works/);
-  assert.match(html, /05 \/ Company relationship/);
+  assert.match(html, /Founder and studio/);
+  assert.match(html, /Company relationship/);
   assert.match(html, /class="letter-glitch letter-glitch--deferred" aria-hidden="true"/);
   assert.doesNotMatch(html, /<canvas[^>]*class="letter-glitch__canvas"/);
   assert.match(html, /Websites/);
-  assert.match(html, /AI agents/);
-  assert.match(html, /Selected proof/);
+  assert.match(html, /AI and automation/);
+  assert.match(html, /href="\/work"[^>]*>See the case studies/);
+  assert.doesNotMatch(html, /malera-proof|\/projects\/(barber-brothers|hixhame-tina|besiana-photography|duo-bar)\//);
 });
 
 test("work keeps all four real project proofs on the dedicated work route", async () => {
@@ -174,14 +173,18 @@ test("work keeps all four real project proofs on the dedicated work route", asyn
   );
   assert.equal(response.status, 200);
   const html = await response.text();
-  for (const project of ["Barber Brothers", "Hixhame Tina", "Besiana Photography", "DUO Bar"]) {
-    assert.match(html, new RegExp(project));
+  const main = html.match(/<main\b[\s\S]*?<\/main>/)?.[0];
+  assert.ok(main);
+  for (const [title, slug] of [["Barber Brothers", "barber-brothers"], ["Hixhame Tina", "hixhame-tina"], ["Besiana Photography", "besiana-photography"], ["DUO Bar", "duo-bar"]]) {
+    assert.equal([...main.matchAll(new RegExp(`<h2 id="${slug}-title">${title}<\\/h2>`, "g"))].length, 1, title);
+    assert.equal([...main.matchAll(new RegExp(`href="/work/${slug}"`, "g"))].length, 1, slug);
+    assert.match(main, new RegExp(`id="${slug}"`));
   }
-  assert.match(html, /class="meteors/);
+  assert.equal([...main.matchAll(/<img\b/g)].length, 4);
+  assert.doesNotMatch(main, /project-index|class="meteors/);
   assert.match(html, /besiana-interface-1440\.webp/);
   assert.doesNotMatch(html, /besiana-artwork__phone/);
   assert.match(html, /href="\/work\/besiana-photography"/);
-  assert.match(html, /href="#duo-bar"/);
   assert.match(html, /href="\/work\/duo-bar"/);
   assert.match(html, /\/projects\/duo-bar\/terminal-720\.webp/);
   assert.doesNotMatch(html, /\/projects\/duo-bar\/(orders|at-the-bar)\.webp/);
@@ -298,7 +301,7 @@ test("publishes three factual monthly pricing plans and request links", async ()
   for (const [name, price, plan] of [["Technical", "30", "technical"], ["Advanced", "60", "advanced"], ["Complete", "100", "complete"]]) {
     assert.match(html, new RegExp(name));
     assert.match(html, new RegExp(`€(?:<!-- -->)?${price}`));
-    assert.match(html, new RegExp(`href="/contact\\?service=crypto-analysis&amp;plan=${plan}"`));
+    assert.match(html, new RegExp(`href="/contact\\?service=crypto-analysis&amp;plan=${plan}#contact-form"`));
   }
   assert.match(html, /Research assistance helps you understand the analysis/);
   assert.match(html, /Clear from plan to Discord\./);
@@ -307,10 +310,10 @@ test("publishes three factual monthly pricing plans and request links", async ()
   assert.match(html, /1 live research session per week/);
   assert.match(html, /2 live research sessions per week/);
   assert.match(html, /Market research and educational analysis only/);
-  assert.doesNotMatch(html, /guaranteed|risk-free|best value|most popular/i);
+  assert.doesNotMatch(html, /guaranteed|risk-free|best value|most popular|most selected/i);
 });
 
-test("contact separates research and digital-work pathways while preserving the existing mail flow", async () => {
+test("contact renders one compact form and direct contact links without unrelated payment fields", async () => {
   const worker = await getWorker();
   const response = await worker.fetch(
     new Request("http://localhost/contact?service=crypto-analysis&plan=advanced", { headers: { accept: "text/html" } }),
@@ -319,55 +322,59 @@ test("contact separates research and digital-work pathways while preserving the 
   );
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /Request market analysis/);
-  assert.match(html, /Discuss a digital project/);
+  assert.match(html, /Send a message/);
+  assert.equal([...html.matchAll(/<form\b/g)].length, 1);
   assert.match(html, /id="contact-form"/);
   assert.match(html, /name="project"/);
-  assert.match(html, /name="paymentMethod"/);
-  assert.match(html, /Bank transfer \(Raiffeisen\)/);
-  assert.match(html, /Crypto payment/);
-  assert.match(html, /Crypto Analysis — Advanced \(€60\)/);
-  assert.match(html, /enisqeta5@gmail\.com/);
+  assert.doesNotMatch(html, /name="paymentMethod"/);
+  assert.match(html, /Advanced \(€60\/month\)/);
+  assert.match(html, /href="mailto:enisqeta5@gmail\.com"/);
+  assert.match(html, /href="tel:\+38344857227"/);
+  assert.match(html, /href="https:\/\/malera\.studio\/?"/);
 });
 
 test("contact endpoint validates input and delivers email through Resend", async () => {
   const previousApiKey = process.env.RESEND_API_KEY;
   const originalFetch = globalThis.fetch;
   process.env.RESEND_API_KEY = "re_test_key";
-  let resendRequest;
+  const resendRequests = [];
   globalThis.fetch = async (input, init) => {
-    resendRequest = { input, init };
+    resendRequests.push({ input, init });
     return new Response(JSON.stringify({ id: "email_test" }), { status: 200 });
   };
   const worker = await getWorker();
   try {
-    const valid = await worker.fetch(
-      new Request("http://localhost/api/contact", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          name: "Test User",
-          email: "test@example.com",
-          project: "A booking website",
-          paymentMethod: "Bank transfer (Raiffeisen)",
-          message: "A sufficiently detailed project description for validation.",
-          website: "",
-        }),
-      }),
-      env,
-      ctx,
-    );
+    const message = "A sufficiently detailed project description for validation.";
+    const send = payload => worker.fetch(new Request("http://localhost/api/contact", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ name: "Test User", email: "test@example.com", message, ...payload }),
+    }), env, ctx);
+    const valid = await send({ project: "Digital Project" });
     assert.equal(valid.status, 200);
     assert.equal((await valid.json()).ok, true);
-    assert.equal(resendRequest.input, "https://api.resend.com/emails");
-    assert.equal(resendRequest.init.headers.Authorization, "Bearer re_test_key");
-    assert.deepEqual(JSON.parse(resendRequest.init.body), {
+    assert.equal(resendRequests[0].input, "https://api.resend.com/emails");
+    assert.equal(resendRequests[0].init.headers.Authorization, "Bearer re_test_key");
+    assert.deepEqual(JSON.parse(resendRequests[0].init.body), {
       from: "Enis Qetaj Website <website@enisqetaj.com>",
       to: ["enisqeta5@gmail.com"],
       reply_to: "test@example.com",
-      subject: "[Website] A booking website — Test User",
-      text: "Name: Test User\nEmail: test@example.com\nWorking on: A booking website\nPayment method: Bank transfer (Raiffeisen)\n\nA sufficiently detailed project description for validation.",
+      subject: "[Website] Digital Project — Test User",
+      text: `Name: Test User\nEmail: test@example.com\nWorking on: Digital Project\n\n${message}`,
     });
+    const project = "Crypto market analysis — Advanced plan (€60 / month)";
+    for (const paymentMethod of [undefined, "Not a payment method"]) {
+      const invalidPayment = await send({ project, paymentMethod });
+      assert.equal(invalidPayment.status, 422);
+      assert.match((await invalidPayment.json()).errors.paymentMethod, /Choose/);
+    }
+    assert.equal(resendRequests.length, 1, "invalid requests never reach Resend");
+    for (const paymentMethod of ["Bank transfer (Raiffeisen)", "Crypto payment", "Discuss payment first"]) {
+      assert.equal((await send({ project, paymentMethod })).status, 200);
+      assert.ok(JSON.parse(resendRequests.at(-1).init.body).text.includes(`Payment method: ${paymentMethod}\n`));
+    }
+    assert.equal((await send({ project: "Other Inquiry", paymentMethod: "Crypto payment" })).status, 200);
+    assert.doesNotMatch(JSON.parse(resendRequests.at(-1).init.body).text, /Payment method:/);
 
     const invalid = await worker.fetch(
       new Request("http://localhost/api/contact", {

@@ -1,8 +1,9 @@
 "use client";
 
-import { FocusEvent, FormEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FocusEvent, FormEvent, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { ActionMark } from "@/components/ui/ActionMark";
+import { identity } from "@/data/site";
+import { contactPaymentMethods, cryptoInquiry, cryptoPlanInquiries, digitalInquiry, getInquiryFromQuery, isContactPaymentMethod, isCryptoInquiry } from "@/lib/contact-inquiries";
 
 type FormState = "idle" | "loading" | "ready" | "error";
 type FieldName = "name" | "email" | "project" | "paymentMethod" | "message";
@@ -14,7 +15,6 @@ type ApiResponse = {
   errors?: FieldErrors;
 };
 
-const emailAddress = "enisqeta5@gmail.com";
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function validateField(name: FieldName, value: string): string | undefined {
@@ -28,14 +28,14 @@ function validateField(name: FieldName, value: string): string | undefined {
     if (clean.length > 200) return "Keep your email under 200 characters.";
   }
   if (name === "project") {
-    if (clean.length < 3) return "Tell Enis what you are working on.";
+    if (clean.length < 3) return "Select an inquiry type.";
     if (clean.length > 240) return "Keep this description under 240 characters.";
   }
   if (name === "paymentMethod") {
-    if (!clean) return "Choose how you would like to pay.";
+    if (!isContactPaymentMethod(clean)) return "Choose how you would like to pay.";
   }
   if (name === "message") {
-    if (clean.length < 20) return "Add a little more context—at least 20 characters.";
+    if (clean.length < 20) return "Write at least 20 characters.";
     if (clean.length > 4000) return "Keep your message under 4,000 characters.";
   }
   return undefined;
@@ -57,27 +57,13 @@ export function ContactForm() {
   const [state, setState] = useState<FormState>("idle");
   const [statusMessage, setStatusMessage] = useState("");
   const [errors, setErrors] = useState<FieldErrors>({});
-  const [copyMessage, setCopyMessage] = useState("");
-  const projectRef = useRef<HTMLSelectElement>(null);
+  const [inquiry, setInquiry] = useState("");
   const query = useSearchParams().toString();
+  const needsPayment = isCryptoInquiry(inquiry);
 
   useEffect(() => {
-    const params = new URLSearchParams(query);
-    const plan = params.get("plan");
-    const service = params.get("service");
-    const planLabels: Record<string, string> = {
-      technical: "Crypto market analysis — Technical plan (€30 / month)",
-      advanced: "Crypto market analysis — Advanced plan (€60 / month)",
-      complete: "Crypto market analysis — Complete plan (€100 / month)",
-    };
-    if (!projectRef.current) return;
-    if (plan && planLabels[plan]) {
-      projectRef.current.value = planLabels[plan];
-    } else if (service === "crypto-analysis") {
-      projectRef.current.value = "Crypto Analysis";
-    } else if (service === "digital-project") {
-      projectRef.current.value = "Digital Project";
-    }
+    setInquiry(getInquiryFromQuery(query));
+    setErrors(current => ({ ...current, project: undefined, paymentMethod: undefined }));
   }, [query]);
 
   function focusFirstError(form: HTMLFormElement, nextErrors: FieldErrors) {
@@ -92,8 +78,10 @@ export function ContactForm() {
   function validateForm(form: HTMLFormElement) {
     const values = readValues(form);
     const nextErrors: FieldErrors = {};
+    const requiresPayment = isCryptoInquiry(values.project);
+    if (!requiresPayment) values.paymentMethod = "";
     (Object.keys(values) as Array<keyof typeof values>).forEach((name) => {
-      if (name === "website") return;
+      if (name === "website" || (name === "paymentMethod" && !requiresPayment)) return;
       const error = validateField(name, values[name]);
       if (error) nextErrors[name] = error;
     });
@@ -102,11 +90,11 @@ export function ContactForm() {
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (state === "loading" || state === "ready") return;
     const form = event.currentTarget;
     const clientResult = validateForm(form);
 
     setStatusMessage("");
-    setCopyMessage("");
     setErrors(clientResult.errors);
 
     if (Object.keys(clientResult.errors).length) {
@@ -135,8 +123,9 @@ export function ContactForm() {
         return;
       }
 
+      form.reset();
       setState("ready");
-      setStatusMessage(data.message || "Message sent. Enis will receive it by email.");
+      setStatusMessage(data.message || "Message sent to Enis.");
     } catch {
       setState("error");
       setStatusMessage("The email could not be sent. Your message has not been sent; you can email Enis directly.");
@@ -164,13 +153,11 @@ export function ContactForm() {
     if (!error) setErrors((current) => ({ ...current, [name]: undefined }));
   }
 
-  async function copyEmail() {
-    try {
-      await navigator.clipboard.writeText(emailAddress);
-      setCopyMessage("Email copied.");
-    } catch {
-      setCopyMessage("Copy was unavailable. Select the email address instead.");
-    }
+  function changeInquiry(event: ChangeEvent<HTMLSelectElement>) {
+    const value = event.currentTarget.value;
+    setInquiry(value);
+    handleInput(event);
+    if (!isCryptoInquiry(value)) setErrors(current => ({ ...current, paymentMethod: undefined }));
   }
 
   function describedBy(name: FieldName) {
@@ -178,7 +165,8 @@ export function ContactForm() {
   }
 
   return (
-    <form id="contact-form" className="contact-form" onSubmit={submit} noValidate aria-busy={state === "loading"}>
+    <form id="contact-form" className="contact-form" action="/api/contact" method="post" onSubmit={submit} noValidate aria-labelledby="contact-form-title" aria-busy={state === "loading"}>
+      <h2 id="contact-form-title" className="wide">Send a message</h2>
       <label>
         <span>Name</span>
         <input
@@ -213,51 +201,49 @@ export function ContactForm() {
         {errors.email && <small id="email-error" className="field-error">{errors.email}</small>}
       </label>
 
-      <label>
+      <label className={needsPayment ? undefined : "wide"}>
         <span>Inquiry type</span>
         <span className="select-control">
           <select
-            ref={projectRef}
             name="project"
             required
             aria-invalid={Boolean(errors.project)}
             aria-describedby={describedBy("project")}
             onBlur={handleBlur}
-            onChange={handleInput}
-            defaultValue=""
+            onChange={changeInquiry}
+            value={inquiry}
           >
             <option value="" disabled>Select an inquiry type</option>
-            <option value="Crypto Analysis">Crypto Analysis</option>
-            <option value="Crypto market analysis — Technical plan (€30 / month)">Crypto Analysis — Technical (€30)</option>
-            <option value="Crypto market analysis — Advanced plan (€60 / month)">Crypto Analysis — Advanced (€60)</option>
-            <option value="Crypto market analysis — Complete plan (€100 / month)">Crypto Analysis — Complete (€100)</option>
-            <option value="Digital Project">Digital Project / Malera Studio</option>
-            <option value="Other Inquiry">Other Inquiry</option>
+            <option value={digitalInquiry}>Digital project</option>
+            <option value={cryptoInquiry}>Crypto analysis</option>
+            <optgroup label="Crypto analysis plans">
+              {cryptoPlanInquiries.map(({ id, value, label }) => <option key={id} value={value}>{label}</option>)}
+            </optgroup>
+            <option value="Other Inquiry">Other inquiry</option>
           </select>
         </span>
         {errors.project && <small id="project-error" className="field-error">{errors.project}</small>}
       </label>
 
-      <label>
+      {needsPayment && <label>
         <span>Payment method</span>
         <span className="select-control">
           <select
             name="paymentMethod"
             required
             aria-invalid={Boolean(errors.paymentMethod)}
-            aria-describedby={describedBy("paymentMethod")}
+            aria-describedby={errors.paymentMethod ? "paymentMethod-error payment-note" : "payment-note"}
             onBlur={handleBlur}
             onChange={handleInput}
             defaultValue=""
           >
             <option value="" disabled>Choose a payment method</option>
-            <option value="Bank transfer (Raiffeisen)">Bank transfer (Raiffeisen)</option>
-            <option value="Crypto payment">Crypto payment</option>
-            <option value="Discuss payment first">Discuss payment first</option>
+            {contactPaymentMethods.map(method => <option key={method} value={method}>{method}</option>)}
           </select>
         </span>
         {errors.paymentMethod && <small id="paymentMethod-error" className="field-error">{errors.paymentMethod}</small>}
-      </label>
+      </label>}
+      {needsPayment && <p id="payment-note" className="form-privacy wide">Enis emails the payment details. You’ll receive the Discord invite once payment is confirmed.</p>}
 
       <label className="wide">
         <span>Message</span>
@@ -281,11 +267,9 @@ export function ContactForm() {
       </label>
 
       <div className="form-actions wide">
-        <button className="form-submit" type="submit" disabled={state === "loading"}>
+        <button className="button button--primary" type="submit" disabled={state === "loading" || state === "ready"}>
           {state === "loading" ? "Sending…" : "Send email"}
-          <ActionMark direction="forward" />
         </button>
-        <button className="quiet-action" type="button" onClick={copyEmail}>Copy email</button>
       </div>
 
       {statusMessage && (
@@ -295,14 +279,13 @@ export function ContactForm() {
         >
           <span>{statusMessage}</span>
           {state === "error" && (
-            <a href={`mailto:${emailAddress}`}>Email Enis directly</a>
+            <a href={`mailto:${identity.email}`}>Email Enis directly</a>
           )}
         </div>
       )}
 
-      {copyMessage && <p className="copy-status wide" role="status">{copyMessage}</p>}
       <p className="form-privacy wide">
-        This form sends your message and payment preference directly to Enis by email. It is not stored by this website.
+        Your message goes to Enis by email and isn’t stored on this site.
       </p>
     </form>
   );

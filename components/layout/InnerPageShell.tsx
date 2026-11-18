@@ -3,7 +3,7 @@ import { InnerPageStyles } from "@/components/layout/InnerPageStyles";
 
 type InnerPageShellProps = {
   variant: "background" | "work" | "malera" | "analysis" | "contact";
-  eyebrow: string;
+  eyebrow?: string;
   title: ReactNode;
   summary: string;
   meta?: readonly string[];
@@ -25,13 +25,13 @@ export function InnerPageShell({
       <InnerPageStyles />
       <header className="inner-masthead">
         {mastheadDecoration}
-        <p className="inner-masthead__eyebrow">{eyebrow}</p>
+        {eyebrow && <p className="inner-masthead__eyebrow">{eyebrow}</p>}
         <div className="inner-masthead__lead">
           <h1>{title}</h1>
           <p>{summary}</p>
         </div>
         {meta.length > 0 && (
-          <ul className="inner-masthead__meta" aria-label={`${eyebrow} overview`}>
+          <ul className="inner-masthead__meta" aria-label={eyebrow ? `${eyebrow} overview` : "Page overview"}>
             {meta.map((item) => <li key={item}>{item}</li>)}
           </ul>
         )}

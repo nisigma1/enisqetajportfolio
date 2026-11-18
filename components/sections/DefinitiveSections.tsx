@@ -14,10 +14,8 @@ import { ActionMark } from "@/components/ui/ActionMark";
 import { PixelImage } from "@/components/ui/PixelImage";
 import { TextRepel } from "@/components/ui/TextRepel";
 import { VisibilityFigure } from "@/components/performance/VisibilityFigure";
-import { Magnetic } from "@/components/core/magnetic";
 import {
   DeferredBuildNavigator,
-  DeferredContactForm,
   DeferredContextCircuit,
   DeferredLetterGlitch,
   DeferredTextRoll,
@@ -33,23 +31,11 @@ export function PortfolioPixelField() {
 }
 
 export function Hero() {
-  const focus = [
-    ["01", "Crypto markets"],
-    ["02", "Financial market research"],
-    ["03", "Macro & geopolitics"],
-    ["04", "AI product building"],
-  ] as const;
-
   return (
-    <section id="index" className="dispatch-hero" aria-labelledby="identity-title">
-      <div className="dispatch-hero__meta">
-        <p>Kosovo <span>/</span> Independent practice</p>
-        <p><span aria-hidden="true" /> Open for selected projects</p>
-      </div>
-
+    <section id="index" className="dispatch-hero dispatch-hero--portfolio" aria-labelledby="identity-title">
       <div className="dispatch-hero__primary">
         <div className="dispatch-hero__identity">
-          <p className="dispatch-hero__issue"><span>The Research Dispatch</span></p>
+          <p className="portfolio-kicker">Based in {identity.location}</p>
           <h1 id="identity-title">
             <TextRepel
               text="Enis Qetaj"
@@ -63,11 +49,11 @@ export function Hero() {
               disableOnCoarsePointer
             />
           </h1>
-          <p className="dispatch-hero__entity-copy">
-            Enis Qetaj is a Kosovo-based crypto trader, financial-markets researcher, Research and Analysis practitioner and AI product builder.
-            His work focuses on technical and fundamental analysis, Macroeconomics and Geopolitics, liquidity,
-            on-chain research and building useful digital products through Malera Studio.
-          </p>
+          <p className="dispatch-hero__entity-copy">I build websites and software through Malera Studio. I also research crypto markets and publish analysis.</p>
+          <div className="dispatch-hero__actions" id="work">
+            <Link className="button button--primary" href="/work">View selected work</Link>
+            <Link className="button button--quiet" href="/pricing">Crypto Analysis</Link>
+          </div>
         </div>
 
         <VisibilityFigure className="author-artifact">
@@ -86,33 +72,9 @@ export function Hero() {
             aspectRatio={media.portrait.desktop.aspectRatio}
             objectPosition={media.portrait.desktop.objectPosition}
           />
-          <figcaption>
-            <span>Author / researcher / builder</span>
-            <span>Kosovo, 2026</span>
-          </figcaption>
+          <figcaption>Enis Qetaj</figcaption>
         </VisibilityFigure>
-
-        <div className="dispatch-hero__pitch">
-          <p className="dispatch-hero__thesis">
-            I research what moves markets—from structure and liquidity to macro and geopolitics—then build useful digital products from what becomes clear.
-          </p>
-          <div className="dispatch-hero__actions">
-            <Magnetic intensity={0.32} range={135}>
-              <Link className="button button--primary" href="/work">View selected work <ActionMark direction="forward" /></Link>
-            </Magnetic>
-            <Link className="button button--quiet" href="/about">About Enis Qetaj <ActionMark direction="forward" /></Link>
-            <a className="button button--quiet" href="#research">Explore research <ActionMark direction="down" /></a>
-          </div>
-        </div>
       </div>
-
-      <ol className="dispatch-hero__proof" aria-label="Core professional focus">
-        {focus.map(([number, label]) => (
-          <li key={number}><span>{number}</span><strong>{label}</strong></li>
-        ))}
-      </ol>
-
-      <p className="dispatch-hero__principle">Context changes the decision.</p>
     </section>
   );
 }
@@ -295,65 +257,51 @@ export function Build({
 }
 
 export function Malera({
-  sectionLabel = "06 / Professional practice",
+  sectionLabel = "Company relationship",
   headingId = "malera-title",
 }: ReusableSectionProps = {}) {
   return (
     <section id="malera" className="site-section malera-practice" aria-labelledby={headingId}>
       <DeferredLetterGlitch />
-      <SectionLabel>{sectionLabel}</SectionLabel>
+      <header className="malera-practice__intro">
+        <p className="portfolio-kicker">{sectionLabel}</p>
+        <h2 id={headingId}>Founder and studio</h2>
+      </header>
       <div className="malera-practice__relationship" aria-label="Relationship between Enis Qetaj and Malera Studio">
         <div>
-          <span>Person</span>
-          <strong>Enis Qetaj</strong>
-          <p>Research, markets, geopolitics and independent perspective.</p>
+          <span>Founder</span>
+          <h3>Enis Qetaj</h3>
+          <p>I founded Malera Studio. My crypto market research is independent of the studio.</p>
         </div>
         <div className="malera-practice__bridge" aria-hidden="true">
-          <span>Expands into</span>
+          <span>Founded</span>
           <i />
         </div>
         <div>
-          <span>Practice</span>
-          <strong>Malera Studio</strong>
-          <p>Professional digital-building practice for products and experiences.</p>
-        </div>
-      </div>
-      <div className="malera-practice__close">
-        <h2 id={headingId}>When the problem needs a wider practice.</h2>
-        <div>
-          <p>{malera.line}</p>
-          <a className="button button--quiet" href={malera.url} target="_blank" rel="noreferrer">
-            Visit Malera Studio <ActionMark direction="external" />
-            <span className="visually-hidden"> (opens in a new tab)</span>
-          </a>
+          <span>Company</span>
+          <h3>Malera Studio</h3>
+          <p>The studio is where I design and build software for businesses.</p>
+          <a className="portfolio-text-link" href={malera.url}>Visit malera.studio</a>
         </div>
       </div>
     </section>
   );
 }
 
-export function Contact() {
+export function HomePortfolioLinks() {
   return (
-    <section id="contact" className="site-section contact-chapter" aria-labelledby="contact-title">
-      <div className="contact-chapter__intro">
-        <SectionLabel>03 / Start a conversation</SectionLabel>
-        <h2 id="contact-title">Bring the context.<br />We’ll find the useful form.</h2>
-        <p>For selected freelance projects, digital products, websites, automation and research interfaces.</p>
-      </div>
-
-      <div className="contact-chapter__layout">
-        <aside>
-          <span>Direct contact</span>
-          <strong>{identity.name}</strong>
-          <p>{identity.location}<br />Independent practice</p>
-          <a href={identity.emailHref} target="_blank" rel="noreferrer">{identity.email}</a>
-          <a href={identity.phoneHref}>{identity.phone}</a>
-          <a href={malera.url} target="_blank" rel="noreferrer">Malera Studio <ActionMark direction="external" /></a>
-          <small>This form sends your message directly to Enis by email. For crypto-analysis subscriptions, choose bank transfer or crypto; Discord access follows after payment is confirmed.</small>
-        </aside>
-        <DeferredContactForm />
-      </div>
-    </section>
+    <div className="home-portfolio-links">
+      <section id="research" aria-labelledby="home-research-title">
+        <h2 id="home-research-title">How I research markets</h2>
+        <p>I look at liquidity, macroeconomics and on-chain data alongside price.</p>
+        <Link className="portfolio-text-link" href="/research">Read my research approach</Link>
+      </section>
+      <section id="contact" aria-labelledby="home-contact-title">
+        <h2 id="home-contact-title">Get in touch</h2>
+        <p>Have a project in mind or a question about the research?</p>
+        <Link className="portfolio-text-link" href="/contact">Contact Enis</Link>
+      </section>
+    </div>
   );
 }
 

@@ -51,14 +51,11 @@ try{
   await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
   await page.waitForLoadState('networkidle');
   await page.goto(origin,{waitUntil:'networkidle'});
-  for(const title of ['Crypto Analysis','Malera Studio','Selected Work']){
-   const tab=page.getByRole('tab',{name:title,exact:true});
-   await tap(page,tab);
-   await page.waitForFunction(e=>e.getAttribute('aria-selected')==='true',await tab.elementHandle());
-   const panel=page.getByRole('tabpanel');
-   for(const image of await panel.locator('img').all())await image.evaluate(i=>i.decode());
-   assert.equal(await panel.evaluate(e=>e.scrollWidth<=e.clientWidth+1),true);
-  }
+  const main=page.getByRole('main');
+  assert.equal(await main.locator('form').count(),0);
+  assert.equal(await main.getByRole('link',{name:'View selected work',exact:true}).getAttribute('href'),'/work');
+  assert.equal(await main.getByRole('link',{name:'Crypto Analysis',exact:true}).getAttribute('href'),'/pricing');
+  assert.equal(await main.getByRole('link',{name:'Contact Enis',exact:true}).getAttribute('href'),'/contact');
   await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
   await page.waitForLoadState('networkidle');
   await page.goto(origin+'/contact?service=crypto-analysis&plan=advanced',{waitUntil:'networkidle'});
@@ -68,18 +65,32 @@ try{
   await tap(page,page.getByRole('button',{name:'Send email',exact:true}));
   await page.locator('[aria-invalid="true"]').first().waitFor();
   assert.equal(await page.locator('[aria-invalid="true"]').count(),4);
-  await page.route('**/api/contact',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({ok:true,message:'Safari QA simulated delivery; no email sent.'})}));
+  const sent=[];
+  await page.route('**/api/contact',route=>{
+   sent.push(route.request().postDataJSON());
+   return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({ok:true,message:'Safari QA simulated delivery; no email sent.'})});
+  });
   await page.locator('[name="name"]').fill('Safari QA');
   await page.locator('[name="email"]').fill('qa@example.com');
   await page.locator('[name="paymentMethod"]').selectOption('Crypto payment');
   await page.locator('[name="message"]').fill('Simulated Safari contact form regression test.');
   await tap(page,page.getByRole('button',{name:'Send email',exact:true}));
   await page.getByRole('status').filter({hasText:'Safari QA simulated delivery'}).waitFor();
+  assert.equal(sent[0].paymentMethod,'Crypto payment');
+  await page.locator('[name="project"]').selectOption('Digital Project');
+  assert.equal(await page.locator('[name="paymentMethod"]').count(),0);
+  await page.locator('[name="name"]').fill('Safari QA');
+  await page.locator('[name="email"]').fill('qa@example.com');
+  await page.locator('[name="message"]').fill('Simulated inquiry about a digital project.');
+  await tap(page,page.getByRole('button',{name:'Send email',exact:true}));
+  await page.getByRole('status').filter({hasText:'Safari QA simulated delivery'}).waitFor();
+  assert.equal(sent[1].project,'Digital Project');
+  assert.equal(sent[1].paymentMethod,'');
   const old=await page.locator('html').getAttribute('data-theme');
   await tap(page,page.getByRole('button',{name:/Switch to .* theme/}),{sticky:true});
   await page.waitForFunction(theme=>document.documentElement.dataset.theme!==theme,old);
   assert.equal(errors.length,0,JSON.stringify(errors));
-  results.push({name,theme,menuScrollLock:true,navigation:true,all11CurriculumModules:true,allHomeTabs:true,noTrainingDuration:true,formTextAtLeast16px:true,formValidation:true,formSuccessMock:true,themeToggle:true,errors});
+  results.push({name,theme,menuScrollLock:true,navigation:true,all11CurriculumModules:true,homeLinks:true,noTrainingDuration:true,formTextAtLeast16px:true,formValidation:true,cryptoAndDigitalMockDelivery:true,themeToggle:true,errors});
   await context.close();
   console.log(`${name} ${theme}: interactions PASS`);
   await writeFile(`${directory}/safari-interactions.json`,JSON.stringify(results,null,2));

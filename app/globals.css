@@ -8,6 +8,7 @@
 @import "../styles/audit-upgrades.css";
 @import "../styles/ia-update.css";
 @import "../styles/utilities.css";
+@import "../styles/portfolio-polish.css";
 
 /* Shared navigation metrics stay identical when inner-page styles are split
    into their own route bundles. */

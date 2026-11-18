@@ -1,0 +1,418 @@
+/* The portfolio uses its existing serif, sans and blue accent with fewer
+   section treatments. Keep the type comfortable at phone widths and zoom. */
+.portfolio-kicker {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.035em;
+  line-height: 1.4;
+}
+
+.portfolio-text-link {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  color: inherit;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 0.28em;
+}
+
+.portfolio-text-link:hover {
+  text-decoration-thickness: 2px;
+}
+
+.dispatch-hero.dispatch-hero--portfolio {
+  display: block;
+  padding-block: clamp(2.25rem, 5vw, 5.5rem);
+}
+
+.dispatch-hero--portfolio .dispatch-hero__primary {
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(2rem, 6vw, 6rem);
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.dispatch-hero--portfolio .dispatch-hero__identity {
+  grid-area: 1 / 1;
+}
+
+.dispatch-hero--portfolio h1 {
+  margin-top: clamp(1.35rem, 3vw, 2.4rem);
+  font-size: clamp(4rem, 8.8vw, 8.75rem);
+  letter-spacing: -0.034em;
+  line-height: 0.88;
+}
+
+.dispatch-hero--portfolio .dispatch-hero__entity-copy {
+  max-width: 41ch;
+  margin-top: 1.5rem;
+  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  line-height: 1.55;
+}
+
+.dispatch-hero--portfolio .dispatch-hero__actions {
+  display: flex;
+  gap: 0.65rem;
+  margin-top: clamp(1.3rem, 3vw, 2rem);
+}
+
+.dispatch-hero--portfolio .dispatch-hero__actions .button {
+  min-height: 3rem;
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+.dispatch-hero--portfolio .author-artifact {
+  grid-area: 1 / 2;
+  align-self: center;
+  width: min(100%, 32rem, 56svh);
+  margin: 0;
+}
+
+.dispatch-hero--portfolio .author-artifact figcaption {
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+}
+
+.home-portfolio-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.5rem, 4vw, 4rem);
+  width: min(calc(100% - 2 * var(--gutter)), calc(var(--container) - 2 * var(--gutter)));
+  margin-inline: auto;
+  padding-block: clamp(1.75rem, 4vw, 3.25rem);
+  border-top: 1px solid var(--border-strong);
+}
+
+.home-portfolio-links h2,
+.studio-services h2,
+.studio-inquiry h2,
+.work-entry h2,
+.contact-conversion .contact-details h2,
+.contact-conversion .contact-form h2,
+.malera-practice__intro h2,
+.malera-practice__relationship h3 {
+  max-width: none;
+  margin: 0;
+  font-family: var(--font-editorial);
+  font-size: clamp(1.85rem, 3vw, 3rem);
+  font-weight: 520;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+  text-wrap: pretty;
+}
+
+.home-portfolio-links p,
+.studio-inquiry p {
+  margin-top: 0.5rem;
+  color: var(--text-secondary);
+}
+
+.home-portfolio-links .portfolio-text-link {
+  margin-top: 0.35rem;
+}
+
+/* Two routes need a compact masthead so the first project or form is visible. */
+.inner-page.inner-page--work .inner-masthead,
+.inner-page.inner-page--contact .inner-masthead {
+  grid-template-columns: minmax(0, 1fr);
+  min-height: auto;
+  padding-block: clamp(2.25rem, 5vw, 4.5rem) clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.inner-page.inner-page--work .inner-masthead h1,
+.inner-page.inner-page--contact .inner-masthead h1,
+.inner-page.inner-page--malera .inner-masthead h1 {
+  max-width: none;
+  font-size: clamp(3rem, 6vw, 5.25rem);
+  font-weight: 510;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+}
+
+.inner-page.inner-page--work .inner-masthead__lead {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: end;
+}
+
+.inner-page.inner-page--contact .inner-masthead__lead {
+  gap: 0.65rem;
+}
+
+.work-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.75rem, 3vw, 3.5rem);
+  padding-block: clamp(1.5rem, 3vw, 3rem) clamp(2rem, 5vw, 5rem);
+}
+
+.work-entry {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--border);
+}
+
+.work-entry__image {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+}
+
+.work-entry__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#duo-bar .work-entry__image img { object-position: center 74%; }
+
+:is(#barber-brothers, #hixhame-tina) .work-entry__image { background: #10100e; }
+:is(#barber-brothers, #hixhame-tina) .work-entry__image img { object-fit: contain; }
+
+.work-entry__copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: start;
+  gap: 0.45rem;
+  padding-block: clamp(1rem, 2vw, 1.5rem) 0.65rem;
+}
+
+.work-entry__copy > p:not(.portfolio-kicker) {
+  max-width: 53ch;
+  color: var(--text-secondary);
+}
+
+.work-entry__copy .portfolio-text-link {
+  margin-top: auto;
+}
+
+.inner-page.inner-page--malera .inner-masthead {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+  min-height: clamp(17rem, 33svh, 23rem);
+  padding-block: clamp(2.75rem, 6vw, 5rem);
+}
+
+.studio-services,
+.studio-inquiry {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: clamp(1.5rem, 5vw, 5rem);
+  padding-block: clamp(2rem, 5vw, 4.5rem);
+}
+
+.studio-services .portfolio-text-link { margin-top: 0.7rem; }
+
+.studio-services dl > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.65fr);
+  gap: 0.4rem clamp(0.85rem, 2vw, 1.6rem);
+  padding-block: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.studio-services dt { font-weight: 750; }
+.studio-services dd { color: var(--text-secondary); }
+
+.studio-inquiry { align-items: center; }
+.studio-inquiry .button { justify-self: end; }
+
+/* Strong blue digits in the gaps, solid surfaces behind all real text. */
+.inner-page.inner-page--malera .malera-practice {
+  --accent: #a8bfff;
+  --focus-ring: #a8bfff;
+  padding: clamp(1.1rem, 3.8vw, 3.5rem);
+  background: radial-gradient(ellipse at 52% 36%, #112763, #050a1a 76%);
+  border: 1px solid #254376;
+  contain-intrinsic-size: auto 27rem;
+}
+
+.inner-page.inner-page--malera .malera-practice__glitch {
+  opacity: 0.78;
+}
+
+.inner-page--malera .malera-practice::after {
+  background: linear-gradient(145deg, rgb(3 8 22 / 25%), transparent 46%, rgb(2 6 16 / 24%));
+}
+
+.inner-page--malera .malera-practice .letter-glitch { background-color: transparent; }
+.inner-page--malera .malera-practice .letter-glitch--deferred {
+  background: url('/images/malera-binary.svg') 0 0 / 240px 144px repeat;
+}
+
+.malera-practice__intro {
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.9rem 1.2rem 0.8rem;
+  border-left: 2px solid #789cff;
+  background: #0a1328;
+}
+
+.malera-practice__intro .portfolio-kicker { color: #b1c6fa; margin-bottom: 0.3rem; }
+.malera-practice__intro h2 { font-size: clamp(1.85rem, 3vw, 2.7rem); }
+
+.inner-page--malera .malera-practice__relationship {
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  margin-top: clamp(1.25rem, 3vw, 2.5rem);
+}
+
+.inner-page.inner-page--malera .malera-practice__relationship > div:not(.malera-practice__bridge) {
+  min-height: 0;
+  align-content: start;
+  gap: 0.65rem;
+  padding: clamp(1.2rem, 3vw, 2.75rem);
+  border-color: #526fbd;
+  background: #0a1328;
+  box-shadow: none;
+}
+
+.malera-practice__relationship > div > span { color: #b1c6fa; font-size: 0.8125rem; letter-spacing: 0.055em; }
+.malera-practice__relationship h3 { font-size: clamp(1.7rem, 2.8vw, 2.55rem); }
+.malera-practice__relationship p { color: #d3dcee; }
+.malera-practice__relationship .portfolio-text-link { color: #dce6ff; }
+.malera-practice__bridge span { background: #08122b; }
+.malera-practice__bridge i { background: #7698ee; }
+
+.inner-page--contact .contact-conversion {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.75fr);
+  gap: clamp(1.5rem, 6vw, 6rem);
+  padding-block: clamp(1.5rem, 4vw, 3.5rem) clamp(2rem, 5vw, 5rem);
+}
+
+.contact-conversion .contact-details h2,
+.contact-conversion .contact-form h2 { font-size: clamp(1.7rem, 2.5vw, 2.5rem); }
+
+.contact-details .contact-direct { margin-top: 1rem; }
+.contact-details .contact-direct a { min-height: 3.75rem; padding-block: 0.5rem; }
+.contact-details .contact-direct a span { font-size: 0.875rem; color: var(--text-secondary); }
+.contact-details .contact-direct a strong { display: block; font-weight: 700; }
+.contact-details a:hover strong { text-decoration: underline; text-underline-offset: 0.2em; }
+
+.inner-page.inner-page--contact .contact-form {
+  gap: clamp(0.95rem, 2.05vw, 1.6rem);
+  min-width: 0;
+  padding: clamp(1rem, 2.75vw, 2.25rem);
+  border-color: var(--border-strong);
+  background: color-mix(in srgb, var(--surface-elevated) 82%, var(--background));
+  /* Global scroll-padding accounts for the sticky masthead already. */
+  scroll-margin-top: 0.35rem;
+}
+
+.inner-page--contact .contact-form label {
+  min-width: 0;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.inner-page.inner-page--contact .contact-form :is(input, select, textarea) {
+  font: 500 1rem/1.45 var(--font-ui);
+}
+
+.inner-page.inner-page--contact .contact-form select {
+  min-height: 3rem;
+  padding: 0.65rem 2.1rem 0.65rem 0.7rem;
+  text-overflow: ellipsis;
+}
+
+.inner-page.inner-page--contact .select-control::after { right: 0.75rem; }
+.inner-page.inner-page--contact .contact-form textarea { min-height: 7.5rem; }
+.inner-page.inner-page--contact .contact-form .form-honeypot { display: none; }
+.inner-page.inner-page--contact .contact-form [aria-invalid="true"] { border-color: #b33134; }
+.inner-page--contact .contact-form .field-error { color: #b33134; font-size: 0.875rem; }
+[data-theme="dark"] .inner-page.inner-page--contact .contact-form [aria-invalid="true"] { border-color: #ffa4a4; }
+[data-theme="dark"] .inner-page--contact .contact-form .field-error { color: #ffa4a4; }
+.inner-page--contact .contact-form .form-privacy { font-size: 0.875rem; color: var(--text-secondary); }
+.inner-page--contact .contact-form .form-status { align-items: start; flex-wrap: wrap; }
+.inner-page--contact .contact-form button { justify-content: center; font-size: 0.9375rem; }
+.inner-page--contact .contact-form button:disabled { cursor: default; opacity: 0.72; }
+
+#app-shell .site-footer {
+  padding-block: 0.9rem;
+  content-visibility: visible;
+  contain-intrinsic-size: none;
+}
+
+.portfolio-footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0 1rem;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.portfolio-footer-inner nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 clamp(0.65rem, 2vw, 1.65rem);
+}
+
+.portfolio-footer-inner a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+}
+
+.portfolio-footer-inner a:hover { color: var(--text-primary); text-decoration: underline; text-underline-offset: 0.24em; }
+
+@media (max-width: 767px) {
+  .dispatch-hero--portfolio .dispatch-hero__primary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dispatch-hero--portfolio h1 { font-size: min(clamp(3.55rem, 17vw, 6rem), 18vw); }
+
+  .dispatch-hero--portfolio .author-artifact {
+    grid-area: 2 / 1;
+    width: min(100%, 30rem);
+    justify-self: start;
+  }
+
+  .inner-page.inner-page--malera .inner-masthead,
+  .studio-services,
+  .studio-inquiry,
+  .inner-page--malera .malera-practice__relationship,
+  .inner-page--contact .contact-conversion {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .inner-page.inner-page--malera .inner-masthead { min-height: auto; gap: 0.65rem; }
+  .studio-inquiry { gap: 1rem; }
+  .studio-inquiry .button { justify-self: start; }
+  .inner-page--malera .malera-practice__relationship { gap: 0.8rem; }
+  .malera-practice__relationship > div.malera-practice__bridge { min-height: 2.75rem; }
+  .contact-details .contact-direct a {
+    display: flex;
+    gap: 0.55rem;
+    min-height: 3rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .contact-details .contact-direct a strong { text-align: end; }
+}
+
+@media (max-width: 639px) {
+  .home-portfolio-links,
+  .inner-page.inner-page--work .inner-masthead__lead,
+  .work-gallery,
+  .studio-services dl > div {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .home-portfolio-links { gap: 1rem; }
+  .home-portfolio-links > section + section { padding-top: 1rem; border-top: 1px solid var(--border); }
+  .portfolio-footer-inner nav { order: 1; flex-basis: 100%; }
+}

@@ -171,7 +171,7 @@ export function DeferredLetterGlitch() {
   const [enabled, setEnabled] = useState(false);
   const fallback = <div className="letter-glitch letter-glitch--deferred" aria-hidden="true" />;
   useEffect(() => {
-    const query = window.matchMedia("(min-width: 768px) and (prefers-reduced-motion: no-preference)");
+    const query = window.matchMedia("(min-width: 768px) and (pointer: fine) and (prefers-reduced-motion: no-preference)");
     const update = () => setEnabled(query.matches);
     update();
     query.addEventListener("change", update);
@@ -184,8 +184,8 @@ export function DeferredLetterGlitch() {
       fallback={fallback}
     >
       <LazyLetterGlitch
-        glitchColors={["#315df2", "#5f7cff", "#8facff", "#dce5ff"]}
-        glitchSpeed={64}
+        glitchColors={["#213f91", "#315bd5", "#507aff", "#93adff"]}
+        glitchSpeed={128}
         outerVignette
         smooth
         characters="01"

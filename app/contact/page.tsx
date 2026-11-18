@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { InnerPageShell } from "@/components/layout/InnerPageShell";
-import { ActionMark } from "@/components/ui/ActionMark";
 import { identity, malera, siteConfig } from "@/data/site";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { baseStructuredData, ogImage, routeSeo } from "@/lib/seo";
@@ -24,42 +22,20 @@ export default function ContactPage() {
     <>
       <InnerPageShell
         variant="contact"
-        eyebrow="Contact / Choose the right path"
-        title="Why are you contacting me?"
-        summary="Select the context first so the conversation can begin with the right information."
-        meta={["Crypto analysis", "Digital work", "Direct contact"]}
+        title="Contact"
+        summary="Tell me about a project or ask a question about crypto analysis."
       >
-        <section className="inner-section contact-pathways" aria-labelledby="contact-pathways-title">
-          <h2 id="contact-pathways-title" className="visually-hidden">Contact pathways</h2>
-          <article>
-            <p className="inner-section__label">01 / Crypto analysis</p>
-            <h3>Request market analysis.</h3>
-            <p>For technical analysis, fundamental analysis, on-chain analysis, subscription plans and crypto research.</p>
-            <ul><li>Technical</li><li>Fundamental</li><li>On-chain</li><li>Subscriptions</li></ul>
-            <Link className="button button--primary" href="/contact?service=crypto-analysis#contact-form">Request analysis <ActionMark direction="forward" /></Link>
-          </article>
-          <article>
-            <p className="inner-section__label">02 / Malera · Digital work</p>
-            <h3>Discuss a digital project.</h3>
-            <p>For websites, applications, AI products, automation, AI agents and digital systems.</p>
-            <ul><li>Websites</li><li>Applications</li><li>AI products</li><li>Automation</li></ul>
-            <Link className="button button--quiet" href="/contact?service=digital-project#contact-form">Discuss a project <ActionMark direction="forward" /></Link>
-          </article>
-        </section>
-
-        <section className="inner-section contact-conversion" aria-labelledby="contact-form-title">
-          <aside>
-            <p className="inner-section__label">03 / Direct contact</p>
-            <h2 id="contact-form-title">Send the context.</h2>
+        <div className="contact-conversion">
+          <section className="contact-details" aria-labelledby="direct-contact-title">
+            <h2 id="direct-contact-title">Direct contact</h2>
             <div className="contact-direct">
-              <a href={identity.emailHref} target="_blank" rel="noreferrer"><span>Email</span><strong>{identity.email}</strong></a>
+              <a href={`mailto:${identity.email}`}><span>Email</span><strong>{identity.email}</strong></a>
               <a href={identity.phoneHref}><span>Phone</span><strong>{identity.phone}</strong></a>
-              <a href={malera.url} target="_blank" rel="noreferrer"><span>Company</span><strong>Malera Studio <ActionMark direction="external" /></strong></a>
+              <a href={malera.url}><span>Studio</span><strong>malera.studio</strong></a>
             </div>
-            <small>For crypto-analysis subscriptions, clients can choose bank transfer or crypto. Enis sends the payment details by email; the Discord invite follows after payment is confirmed.</small>
-          </aside>
+          </section>
           <ContactForm />
-        </section>
+        </div>
       </InnerPageShell>
       <StructuredData data={baseStructuredData(routeSeo.contact)} />
     </>

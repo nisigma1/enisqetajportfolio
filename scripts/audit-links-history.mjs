@@ -7,13 +7,13 @@ const directory=process.argv[3]||'outputs/audit-20261019/after';
 await mkdir(directory,{recursive:true});
 const browser=await chromium.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true});
 const page=await browser.newPage({viewport:{width:390,height:844}});
-const routes=['/','/background','/work','/work/barber-brothers','/work/hixhame-tina','/work/besiana-photography','/companies','/malera','/pricing','/contact','/about','/research','/markets','/build'];
+const routes=['/','/background','/work','/work/barber-brothers','/work/hixhame-tina','/work/besiana-photography','/work/duo-bar','/companies','/malera','/pricing','/contact','/about','/research','/markets','/build'];
 const links=new Set();
 for(const route of routes){
   await page.goto(origin+route,{waitUntil:'networkidle'});
   for(const href of await page.locator('a[href^="/"]').evaluateAll(es=>es.map(e=>e.getAttribute('href'))))links.add(href);
   await page.locator('.site-footer').scrollIntoViewIfNeeded();
-  await page.getByText('Context first. Then build.',{exact:true}).waitFor({state:'visible'});
+  await page.getByRole('link',{name:'Back to top',exact:true}).waitFor({state:'visible'});
 }
 const checked=[];
 for(const href of links){
@@ -52,14 +52,15 @@ await page.locator('#app-shell[aria-busy="false"]').waitFor();
 for(const width of [390,430])for(const theme of ['light','dark']){
   await page.setViewportSize({width,height:width===390?844:932});
   await page.addInitScript(theme=>localStorage.setItem('enis-theme',theme),theme);
-  await page.goto(origin+'/companies',{waitUntil:'networkidle'});
-  const besiana=page.locator('.malera-proof li').filter({hasText:'Besiana Photography'});
+  await page.goto(origin+'/work',{waitUntil:'networkidle'});
+  const besiana=page.locator('.work-entry').filter({hasText:'Besiana Photography'});
   await besiana.locator('img').evaluate(async i=>{i.scrollIntoView();await i.decode();});
   await besiana.screenshot({path:`${directory}/besiana-proof-${width}-${theme}.png`});
-  await page.goto(origin,{waitUntil:'networkidle'});
-  await page.locator('.home-practice-tabs').scrollIntoViewIfNeeded();
-  await page.locator('.x-research-card img').evaluate(async i=>i.decode());
-  await page.locator('.home-practice-tabs').screenshot({path:`${directory}/research-contained-${width}-${theme}.png`});
+  await page.goto(origin+'/pricing',{waitUntil:'networkidle'});
+  const note=page.locator('.research-note').first();
+  await note.scrollIntoViewIfNeeded();
+  await note.locator('img').evaluate(async i=>i.decode());
+  await note.screenshot({path:`${directory}/research-contained-${width}-${theme}.png`});
   await page.goto(origin+'/work/besiana-photography',{waitUntil:'networkidle'});
   await page.locator('.site-footer').scrollIntoViewIfNeeded();
   await page.locator('.site-footer').screenshot({path:`${directory}/footer-${width}-${theme}.png`});

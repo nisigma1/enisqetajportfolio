@@ -41,7 +41,6 @@ export default function PricingPage() {
                   <div className="analysis-plan__heading">
                     <span className="analysis-plan__number">{plan.number}</span>
                     <h3>{plan.name}</h3>
-                    {plan.id === "advanced" && <span className="analysis-plan__badge">Most selected</span>}
                   </div>
                   <p className="analysis-plan__description">{plan.description}</p>
                   <p className="analysis-plan__price"><strong>€{plan.price}</strong><span>/ month</span></p>
@@ -59,7 +58,7 @@ export default function PricingPage() {
                     {plan.liveSessions !== "—" && <li><span aria-hidden="true">✓</span>{plan.liveSessions} live research session{plan.liveSessions.startsWith("2") ? "s" : ""}</li>}
                   </ul>
                 </div>
-                <Link className="button button--primary" href={`/contact?service=crypto-analysis&plan=${plan.id}`}>Choose plan & payment <ActionMark direction="forward" /></Link>
+                <Link className="button button--primary" href={`/contact?service=crypto-analysis&plan=${plan.id}#contact-form`}>Choose plan & payment <ActionMark direction="forward" /></Link>
               </li>
             ))}
           </ol>

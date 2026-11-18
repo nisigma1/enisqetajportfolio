@@ -1,14 +1,8 @@
+/* eslint-disable @next/next/no-img-element -- Published, size-checked project imagery. */
 import type { Metadata } from "next";
 import Link from "next/link";
 import { InnerPageShell } from "@/components/layout/InnerPageShell";
-import { BarberBrothersShowcase } from "@/components/showcase/BarberBrothersShowcase";
-import { HixhameTinaPreview } from "@/components/showcase/HixhameTinaPreview";
-import { BesianaPhotographyPreview } from "@/components/showcase/BesianaPhotographyPreview";
-import { DuoBarPreview } from "@/components/showcase/DuoBarProject";
 import { StructuredData } from "@/components/seo/StructuredData";
-import { ActionMark } from "@/components/ui/ActionMark";
-import { Meteors } from "@/components/ui/Meteors";
-import { StrokeText } from "@/components/ui/StrokeText";
 import { barberProject, besianaProject, hixhameProject, siteConfig } from "@/data/site";
 import { duoBarProject } from "@/data/duo-bar";
 import { baseStructuredData, ogImage, routeSeo } from "@/lib/seo";
@@ -25,62 +19,83 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title: routeSeo.work.title, description, images: ["/og.png"] },
 };
 
+type WorkEntry = {
+  project: { slug: string; title: string };
+  category: string;
+  summary: string;
+  image: { src: string; srcSet?: string; avif?: string; width: number; height: number; alt: string };
+};
+
+const terminal = duoBarProject.photos.terminal;
+const projects: WorkEntry[] = [
+  {
+    project: duoBarProject,
+    category: "Hospitality software",
+    summary: "An offline point-of-sale system for tables, orders, stock and reports. Malera POS is available by monthly subscription.",
+    image: { ...terminal, srcSet: `${terminal.small} 720w, ${terminal.src} ${terminal.width}w` },
+  },
+  {
+    project: barberProject,
+    category: "Website and booking",
+    summary: "A bilingual site where clients can choose a service, barber and appointment time.",
+    image: { src: "/projects/barber-brothers/barber-brothers-cover.webp", width: 1600, height: 900, alt: "Barber Brothers website and appointment booking screens" },
+  },
+  {
+    project: hixhameProject,
+    category: "Wellness website",
+    summary: "A multilingual site with direct booking for a women-only hijama service in Prishtina.",
+    image: { src: "/projects/hixhame-tina/hixhame-tina-case-study.webp", avif: "/projects/hixhame-tina/hixhame-tina-case-study.avif", width: 1672, height: 941, alt: "The Hixhame Tina website on desktop and mobile" },
+  },
+  {
+    project: besianaProject,
+    category: "Photography website",
+    summary: "A site for exploring Besiana’s wedding and portrait photography and getting in touch about a session.",
+    image: {
+      src: "/projects/besiana-photography/besiana-interface-1440.webp",
+      srcSet: "/projects/besiana-photography/besiana-interface-768.webp 768w, /projects/besiana-photography/besiana-interface-1440.webp 1440w",
+      width: 1440, height: 900,
+      alt: "Besiana Photography’s live website with a couple pictured among trees",
+    },
+  },
+];
+
 export default function WorkArchive() {
-  const projects = [barberProject, hixhameProject, besianaProject, duoBarProject] as const;
 
   return (
     <>
       <InnerPageShell
         variant="work"
-        eyebrow="Work / Selected digital products"
-        title={
-          <span className="work-stroke-heading">
-            <span className="visually-hidden">Built for real businesses.</span>
-            <StrokeText text="Built for real" height="clamp(4.35rem, 6.9vw, 6.1rem)" />
-            <StrokeText text="businesses." height="clamp(4.35rem, 6.9vw, 6.1rem)" drawDuration={0.95} reverse />
-          </span>
-        }
-        summary="Four digital products built for real businesses, from booking and photography websites to an offline point-of-sale system."
-        meta={["Websites", "Service journeys", "Point of sale"]}
-        mastheadDecoration={<Meteors />}
+        title="Selected work"
+        summary="Websites, online booking and point-of-sale software I built for businesses in Kosovo."
       >
-        <nav className="inner-section project-index" aria-label="Selected project index">
-          <p className="inner-section__label">01 / Project index</p>
-          <ol>
-            {projects.map((project, index) => (
-              <li key={project.slug}>
-                <a href={`#${project.slug}`}>
-                  <span className="project-index__number">{String(index + 1).padStart(2, "0")}</span>
-                  <strong>{project.title}</strong>
-                  <span>{project.category}</span>
-                  <ActionMark direction="down" />
-                </a>
-              </li>
-            ))}
-          </ol>
-        </nav>
-
-        <section id={barberProject.slug} className="inner-section work-project work-project--barber" aria-labelledby="barber-work-title">
-          <header className="work-project__header">
-            <div><p>02 / Project 01</p><h2 id="barber-work-title">{barberProject.title}</h2></div>
-            <div><p>{barberProject.description}</p><span>{barberProject.category} / {barberProject.location}</span></div>
-            <div className="work-project__actions">
-              <Link className="button button--primary" href={`/work/${barberProject.slug}`}>Open case study <ActionMark direction="forward" /></Link>
-              <a className="button button--quiet" href={barberProject.url} target="_blank" rel="noopener noreferrer">Visit live website <ActionMark direction="external" /></a>
-            </div>
-          </header>
-          <BarberBrothersShowcase />
-        </section>
-
-        <section id={hixhameProject.slug} className="inner-section work-project work-project--hixhame" aria-label="Hixhame Tina project">
-          <HixhameTinaPreview />
-        </section>
-
-        <section id={besianaProject.slug} className="inner-section work-project work-project--besiana" aria-label="Besiana Photography project">
-          <BesianaPhotographyPreview />
-        </section>
-
-        <DuoBarPreview />
+        <ul className="work-gallery" aria-label="Project case studies">
+          {projects.map(({ project, category, summary, image }, index) => (
+            <li key={project.slug} id={project.slug}>
+              <article className="work-entry" aria-labelledby={`${project.slug}-title`}>
+                <picture className="work-entry__image">
+                  {image.avif && <source type="image/avif" srcSet={image.avif} />}
+                  <img
+                    src={image.src}
+                    srcSet={image.srcSet}
+                    sizes={image.srcSet ? "(max-width: 639px) calc(100vw - 2rem), (max-width: 1792px) 46vw, 50rem" : undefined}
+                    width={image.width}
+                    height={image.height}
+                    alt={image.alt}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    fetchPriority={index === 0 ? "high" : undefined}
+                    decoding="async"
+                  />
+                </picture>
+                <div className="work-entry__copy">
+                  <p className="portfolio-kicker">{category}</p>
+                  <h2 id={`${project.slug}-title`}>{project.title}</h2>
+                  <p>{summary}</p>
+                  <Link className="portfolio-text-link" href={`/work/${project.slug}`} aria-label={`Read the ${project.title} case study`}>View case study</Link>
+                </div>
+              </article>
+            </li>
+          ))}
+        </ul>
       </InnerPageShell>
       <StructuredData data={baseStructuredData(routeSeo.work)} />
     </>
