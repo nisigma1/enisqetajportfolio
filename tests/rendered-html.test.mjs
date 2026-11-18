@@ -31,8 +31,8 @@ test("server-renders the complete identity homepage", async () => {
   );
   assert.match(html, /Kosovo-based crypto trader, financial-markets researcher and AI product builder/);
   assert.equal((html.match(/alt="Enis Qetaj, financial-markets researcher and AI product builder from Kosovo"/g) ?? []).length, 1);
-  assert.match(html, /<source media="\(max-width: 479px\)" srcSet="\/images\/enis\/enis-compact\.webp"/i);
-  assert.match(html, /--pixel-source-compact:url\([^)]*\/images\/enis\/enis-compact\.webp[^)]*\)/);
+  assert.match(html, /<source media="\(max-width: 479px\)" srcSet="\/images\/enis\/enis-portrait-purple-compact\.webp"/i);
+  assert.match(html, /--pixel-source-compact:url\([^)]*\/images\/enis\/enis-portrait-purple-compact\.webp[^)]*\)/);
   assert.match(html, /class="author-artifact__orbit" aria-hidden="true"/);
   assert.equal((html.match(/data-text-repel=""/g) ?? []).length, 1);
   assert.equal(

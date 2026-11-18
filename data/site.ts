@@ -435,9 +435,9 @@ export const media = {
   portrait: {
     role: "IDENTITY_PORTRAIT",
     desktop: {
-      src: "/images/enis/enis-desktop.webp",
-      width: 1125,
-      height: 1500,
+      src: "/images/enis/enis-portrait-purple-desktop.webp",
+      width: 936,
+      height: 1248,
       aspectRatio: "3 / 4",
       displayMode: "contain",
       mobileDisplayMode: "contain",
@@ -446,7 +446,7 @@ export const media = {
       loadingPriority: "high",
     },
     tablet: {
-      src: "/images/enis/enis-tablet.webp",
+      src: "/images/enis/enis-portrait-purple-tablet.webp",
       width: 900,
       height: 1200,
       aspectRatio: "3 / 4",
@@ -457,8 +457,8 @@ export const media = {
       loadingPriority: "high",
     },
     mobile: {
-      src: "/images/enis/enis-mobile.webp",
-      compactSrc: "/images/enis/enis-compact.webp",
+      src: "/images/enis/enis-portrait-purple-mobile.webp",
+      compactSrc: "/images/enis/enis-portrait-purple-compact.webp",
       width: 750,
       height: 1000,
       aspectRatio: "3 / 4",
