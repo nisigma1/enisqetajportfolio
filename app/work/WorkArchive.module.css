@@ -37,6 +37,7 @@
 
 .venueFrame img {
   object-position: center 72%;
+  filter: contrast(1.06) brightness(1.04);
 }
 
 .venue figcaption,

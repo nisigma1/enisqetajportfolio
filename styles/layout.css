@@ -12,13 +12,12 @@
   top: 0;
   z-index: var(--z-masthead);
   display: grid;
-  grid-template-columns: minmax(12rem, 1fr) auto minmax(12rem, 1fr);
+  grid-template-columns: minmax(max-content, 1fr) minmax(0, max-content) minmax(max-content, 1fr);
   align-items: center;
   min-height: var(--masthead-height);
   padding-inline: var(--gutter);
   border-bottom: var(--border-width) solid var(--border);
-  background: color-mix(in srgb, var(--background) 92%, transparent);
-  backdrop-filter: blur(18px);
+  background: var(--background);
 }
 
 .site-section {

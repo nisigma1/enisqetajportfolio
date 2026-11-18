@@ -4,15 +4,16 @@
   --surface: #e7e3d8;
   --surface-elevated: #fbf8f0;
   --text-primary: #151712;
-  --text-secondary: #474a43;
-  --text-muted: #64695e;
+  --text-secondary: #3e433a;
+  --text-muted: #565a51;
+  --text-error: #791c24;
   --border: rgba(21, 23, 18, 0.18);
   --border-strong: rgba(21, 23, 18, 0.46);
-  --accent: #315df2;
+  --accent: #2852da;
   --accent-contrast: #ffffff;
-  --accent-soft: rgba(49, 93, 242, 0.12);
-  --focus-ring: #315df2;
-  --status: #315df2;
+  --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
+  --focus-ring: var(--accent);
+  --status: var(--accent);
   --shadow: 0 24px 64px rgba(24, 26, 21, 0.12);
   --nav-text: #5b5e56;
   --nav-text-active: #151712;
@@ -28,8 +29,9 @@
   --surface: #1a1d17;
   --surface-elevated: #20231c;
   --text-primary: #f0ede4;
-  --text-secondary: #b9bcb2;
-  --text-muted: #858a80;
+  --text-secondary: #c8cbc1;
+  --text-muted: #a4a89e;
+  --text-error: #ffbfc3;
   --border: rgba(240, 237, 228, 0.16);
   --border-strong: rgba(240, 237, 228, 0.42);
   --accent: #819cff;
@@ -46,8 +48,8 @@
   --transition-focus: #f0ede4;
 }
 
-/* Paper and Night retain the site's original colors. The six additional
-   backgrounds are sampled from the supplied video, with readable ink and accents. */
+/* Keep the six reference backgrounds saturated, but give text-heavy surfaces
+   softer shades and their own darker ink. */
 :root[data-vibe]:not([data-vibe="paper"], [data-vibe="night"]) {
   --border: color-mix(in srgb, var(--text-primary) 22%, transparent);
   --border-strong: color-mix(in srgb, var(--text-primary) 52%, transparent);
@@ -63,66 +65,67 @@
 
 :root[data-vibe="mint"] {
   --background: #00ff7f;
-  --surface: #35ed93;
-  --surface-elevated: #83ffb9;
+  --surface: #9aeec0;
+  --surface-elevated: #d9fce8;
   --text-primary: #102816;
-  --text-secondary: #183f2a;
-  --text-muted: #224833;
+  --text-secondary: #183522;
+  --text-muted: #25402e;
   --accent: #442177;
   --accent-contrast: #ffffff;
 }
 
 :root[data-vibe="amber"] {
   --background: #ffa500;
-  --surface: #f09b08;
-  --surface-elevated: #ffc861;
+  --surface: #f5ce87;
+  --surface-elevated: #ffedca;
   --text-primary: #241805;
-  --text-secondary: #482f08;
-  --text-muted: #533a10;
+  --text-secondary: #3c2a0d;
+  --text-muted: #4c3510;
   --accent: #292669;
   --accent-contrast: #ffffff;
 }
 
 :root[data-vibe="lime"] {
   --background: #6fd747;
-  --surface: #63c640;
-  --surface-elevated: #a0eb7d;
+  --surface: #afe197;
+  --surface-elevated: #e4f7d8;
   --text-primary: #152412;
-  --text-secondary: #243d1d;
-  --text-muted: #2b421e;
+  --text-secondary: #1d3216;
+  --text-muted: #264017;
   --accent: #401968;
   --accent-contrast: #ffffff;
 }
 
 :root[data-vibe="lilac"] {
   --background: #a785cf;
-  --surface: #aa8dcc;
-  --surface-elevated: #cbb0eb;
-  --text-primary: #21142e;
-  --text-secondary: #281b39;
-  --text-muted: #2d203e;
-  --accent: #32124f;
+  --surface: #ccb8e2;
+  --surface-elevated: #efe5f7;
+  --text-primary: #1b1026;
+  --text-secondary: #261735;
+  --text-muted: #2b1c3b;
+  --accent: #2c1147;
   --accent-contrast: #ffffff;
 }
 
 :root[data-vibe="peach"] {
   --background: #ffdaba;
-  --surface: #f7c69d;
-  --surface-elevated: #ffead6;
+  --surface: #f8d6bc;
+  --surface-elevated: #fff0e4;
   --text-primary: #2b1714;
-  --text-secondary: #5a3632;
-  --text-muted: #6c3b39;
+  --text-secondary: #492c28;
+  --text-muted: #613835;
   --accent: #81244d;
   --accent-contrast: #ffffff;
 }
 
 :root[data-vibe="slate"] {
   --background: #6b6b6b;
-  --surface: #595959;
-  --surface-elevated: #535353;
+  --surface: #535355;
+  --surface-elevated: #424246;
   --text-primary: #ffffff;
-  --text-secondary: #faf8f2;
+  --text-secondary: #fdfbf7;
   --text-muted: #f7f5ef;
+  --text-error: #fff0f0;
   --accent: #fff6c7;
   --accent-contrast: #202020;
 }

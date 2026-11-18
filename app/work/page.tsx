@@ -28,6 +28,7 @@ type WorkEntry = {
 };
 
 const { terminal, venue } = duoBarProject.photos;
+const venuePreview = "/projects/duo-bar/at-the-bar-clear";
 const projects: WorkEntry[] = [
   {
     project: barberProject,
@@ -67,7 +68,16 @@ export default function WorkArchive() {
             <article className={`work-entry ${styles.feature}`} aria-labelledby="duo-bar-title">
               <figure className={styles.venue}>
                 <div className={styles.venueFrame}>
-                  <img src={venue.src} width={venue.width} height={venue.height} alt={venue.alt} fetchPriority="high" decoding="async" />
+                  <img
+                    src={`${venuePreview}-720.webp`}
+                    srcSet={`${venuePreview}-720.webp 720w, ${venuePreview}-1440.webp 1440w`}
+                    sizes="(max-width: 719px) calc(100vw - 2rem), (max-width: 1792px) 57vw, 1060px"
+                    width={venue.width}
+                    height={venue.height}
+                    alt={venue.alt}
+                    fetchPriority="high"
+                    decoding="async"
+                  />
                 </div>
                 <figcaption>Malera POS on the counter at DUO Bar.</figcaption>
               </figure>

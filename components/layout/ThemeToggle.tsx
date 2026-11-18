@@ -63,6 +63,13 @@ export function ThemeToggle() {
       }
     }
 
+    // Without view snapshots, don't interpolate between opposite light/dark ink.
+    // A direct update keeps that pair readable, while same-mode colors still ease.
+    if (root.dataset.theme !== next.theme) {
+      apply();
+      return;
+    }
+
     root.dataset.vibeTransition = "fallback";
     // Resolve the original color before changing its token so older browsers can interpolate it.
     void window.getComputedStyle(root).backgroundColor;

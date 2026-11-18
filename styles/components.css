@@ -292,8 +292,10 @@
 
 .masthead-nav {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: clamp(1.25rem, 2.4vw, 2.75rem);
+  justify-content: center;
+  gap: 0.25rem clamp(1.25rem, 2.4vw, 2.75rem);
 }
 
 .masthead-nav a {
@@ -460,21 +462,25 @@
 html[data-vibe-transition="active"]::view-transition-old(root) {
   animation: none;
   mix-blend-mode: normal;
+  opacity: 1;
 }
 
 html[data-vibe-transition="active"]::view-transition-new(root) {
   z-index: 1;
-  animation: vibe-dissolve 480ms ease-in-out both;
+  animation: vibe-reveal 420ms cubic-bezier(0.65, 0, 0.35, 1) both;
   mix-blend-mode: normal;
+  opacity: 1;
 }
 
 html[data-vibe-transition="active"]::view-transition-group(root) {
-  animation-duration: 480ms;
+  animation-duration: 420ms;
 }
 
-@keyframes vibe-dissolve {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* An opaque reveal keeps the ink attached to its own background. Blending the
+   two snapshots made dark and light text wash out during the midpoint. */
+@keyframes vibe-reveal {
+  from { clip-path: inset(0 0 0 100%); }
+  to { clip-path: inset(0 0 0 0); }
 }
 
 html[data-vibe-transition="fallback"],

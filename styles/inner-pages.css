@@ -266,14 +266,6 @@
   font-size: clamp(2.6rem, 3.8vw, 4.25rem);
 }
 
-.inner-page--background .knowledge-spine__workspace {
-  grid-template-columns: minmax(0, 7fr) minmax(18rem, 5fr);
-}
-
-@media (max-width: 1199px) {
-  .inner-page--background .knowledge-spine__workspace { grid-template-columns: minmax(0, 1fr); }
-}
-
 .case-study--besiana .case-study__hero h1 {
   font-family: var(--font-editorial);
   font-size: clamp(2.65rem, 6vw, 5.5rem);
@@ -309,10 +301,6 @@
 
 .inner-page--background .curriculum-module button {
   min-height: 4.25rem;
-}
-
-.inner-page--background .curriculum-detail {
-  min-height: 29rem;
 }
 
 .inner-final-cta {
@@ -788,6 +776,18 @@
 }
 
 /* Crypto Analysis: browse the monthly scope, then read the supporting evidence. */
+.inner-page--analysis {
+  /* Keep the selected vibe visible around the content, but make reading
+     surfaces substantially less saturated than the full-page background. */
+  --analysis-neutral: #fcfaf5;
+  --analysis-panel: color-mix(in srgb, var(--surface-elevated) 36%, var(--analysis-neutral));
+  --analysis-divider: color-mix(in srgb, var(--text-primary) 30%, transparent);
+}
+
+:root[data-theme="dark"] .inner-page--analysis {
+  --analysis-neutral: #222521;
+}
+
 .inner-page--analysis .inner-masthead {
   grid-template-columns: minmax(9rem, 1fr) minmax(0, 3fr);
   align-items: start;
@@ -801,6 +801,11 @@
 
 .inner-page--analysis .inner-masthead__eyebrow {
   margin-top: 0.5rem;
+}
+
+.inner-page--analysis :is(.inner-masthead__eyebrow, .inner-section__label, .analysis-plan__number) {
+  color: var(--text-primary);
+  font-size: 0.875rem;
 }
 
 .inner-page--analysis .inner-masthead h1 {
@@ -853,8 +858,9 @@
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0.08rem 0.35rem;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   font-size: 0.875rem;
+  font-weight: 550;
 }
 
 .analysis-plan-overview__price strong {
@@ -867,8 +873,9 @@
 }
 
 .analysis-plan-overview__scope {
-  color: var(--text-secondary);
+  color: var(--text-primary);
   font-size: clamp(0.875rem, 1vw, 1rem);
+  font-weight: 520;
   line-height: 1.42;
 }
 
@@ -896,7 +903,7 @@
   flex-direction: column;
   padding: clamp(1.35rem, 2vw, 2rem);
   border: var(--border-width) solid var(--border-strong);
-  background: linear-gradient(145deg, color-mix(in srgb, var(--surface-elevated) 94%, transparent), color-mix(in srgb, var(--surface) 95%, transparent));
+  background: var(--analysis-panel);
   scroll-margin-top: var(--space-3);
 }
 
@@ -906,7 +913,7 @@
 
 .analysis-plan[data-featured="true"] {
   border-color: color-mix(in srgb, var(--accent) 76%, var(--border-strong));
-  background: linear-gradient(145deg, color-mix(in srgb, var(--accent) 10%, var(--surface-elevated)), var(--surface));
+  background: color-mix(in srgb, var(--accent) 5%, var(--analysis-panel));
 }
 
 .analysis-plan__identity {
@@ -931,8 +938,9 @@
 
 .analysis-plan__description {
   min-height: 4.65em;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   font-size: var(--text-body);
+  font-weight: 520;
   line-height: 1.55;
 }
 
@@ -951,32 +959,39 @@
 }
 
 .analysis-plan__price span {
-  color: var(--text-muted);
-  font-size: var(--text-caption);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 550;
 }
 
 .analysis-plan__layers {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 6.5rem), 1fr));
-  gap: 0.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem var(--space-4);
   margin-block: var(--space-5);
 }
 
 .analysis-plan__layers li {
   display: grid;
-  grid-template-columns: 0.85rem minmax(0, 1fr);
-  gap: 0.3rem;
+  grid-template-columns: 0.95rem minmax(0, 1fr);
+  gap: 0.35rem;
+  min-width: 0;
+  max-width: 100%;
   color: var(--text-secondary);
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
+  font-weight: 550;
+  line-height: 1.4;
 }
 
 .analysis-plan__layers li[data-included="true"] {
   color: var(--text-primary);
+  font-weight: 700;
 }
 
 .analysis-plan__layers li[data-included="true"] > span:first-child,
 .analysis-plan__scope > ul li span {
   color: var(--accent);
+  font-weight: 750;
 }
 
 .analysis-plan__scope {
@@ -986,7 +1001,7 @@
 .analysis-plan__scope > ul {
   display: grid;
   gap: 0;
-  border-top: var(--border-width) solid var(--border);
+  border-top: var(--border-width) solid var(--analysis-divider);
 }
 
 .analysis-plan__scope > ul li {
@@ -994,14 +1009,17 @@
   grid-template-columns: 1rem minmax(0, 1fr);
   gap: var(--space-2);
   padding-block: 0.6rem;
-  border-bottom: var(--border-width) solid var(--border);
-  color: var(--text-secondary);
-  font-size: 0.875rem;
+  border-bottom: var(--border-width) solid var(--analysis-divider);
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 550;
+  line-height: 1.45;
 }
 
 .analysis-plan > .button {
   width: 100%;
   margin-top: var(--space-5);
+  font-size: 0.9375rem;
 }
 
 .analysis-membership-flow {
@@ -1032,7 +1050,7 @@
 }
 
 .analysis-membership-flow > ol span {
-  color: var(--text-secondary);
+  color: var(--text-primary);
   font-size: 0.875rem;
   font-weight: 700;
   letter-spacing: 0.14em;
@@ -1049,8 +1067,9 @@
 .analysis-membership-flow > ol p {
   grid-column: 2;
   max-width: 52ch;
-  color: var(--text-secondary);
-  font-size: 0.9375rem;
+  color: var(--text-primary);
+  font-size: 1rem;
+  line-height: 1.55;
 }
 
 .analysis-support {
@@ -1081,7 +1100,7 @@
 .analysis-support article > p:not(.inner-section__label) {
   max-width: 54ch;
   margin-top: var(--space-5);
-  color: var(--text-secondary);
+  color: var(--text-primary);
 }
 
 .analysis-support ul {
@@ -1094,8 +1113,9 @@
 .analysis-support li {
   padding-block: var(--space-3);
   border-bottom: var(--border-width) solid var(--border);
-  color: var(--text-secondary);
-  font-size: 0.875rem;
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 550;
 }
 
 /* Public X research notes: local captures are presented as source-attributed proof, never as a live feed. */
@@ -1111,7 +1131,7 @@
   gap: clamp(1.75rem, 5vw, 5rem);
   border-block: var(--border-width) solid var(--border-strong);
   padding: clamp(1.2rem, 3vw, 3rem);
-  background: var(--surface-elevated);
+  background: var(--analysis-panel);
 }
 
 .research-note__intro {
@@ -1124,12 +1144,18 @@
   max-width: 49ch;
 }
 
-.research-note__intro > p:not(.inner-section__label) {
-  color: var(--text-secondary);
+.research-note__intro > p:not(.inner-section__label, .research-note__meta) {
+  color: var(--text-primary);
+  font-size: var(--text-body);
+  font-weight: 520;
+  line-height: 1.6;
 }
 
 .research-note__meta {
-  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+  font-weight: 550;
+  line-height: 1.55;
 }
 
 .research-note__intro > a {
@@ -1169,9 +1195,10 @@
   align-content: center;
   min-height: 2.8rem;
   padding: 0.65rem 0.8rem;
-  color: #c6cbd0;
+  color: #e1e5e8;
   border-top: 1px solid color-mix(in srgb, #fff 18%, transparent);
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
+  font-weight: 550;
 }
 
 .inner-page--analysis .research-notes--sample {
@@ -1206,14 +1233,14 @@
 }
 
 .analysis-disclaimer strong {
-  color: var(--accent);
-  font-size: var(--text-caption);
+  color: var(--text-primary);
+  font-size: 0.875rem;
   letter-spacing: 0.03em;
 }
 
 .analysis-disclaimer p {
   max-width: 72ch;
-  color: var(--text-secondary);
+  color: var(--text-primary);
 }
 
 /* Contact: intent first, then a compact conversion surface. */
@@ -1550,13 +1577,6 @@ body:has(.inner-page) .social-dock-section {
 
   .inner-page--background .crypto-curriculum {
     gap: var(--space-7);
-  }
-
-  /* The desktop split workspace is intentionally replaced by one reading
-     column here. Without this override, the desktop detail column claims
-     most of the phone width and compresses each curriculum module. */
-  .inner-page--background .knowledge-spine__workspace {
-    grid-template-columns: minmax(0, 1fr);
   }
 
   .inner-page--background .knowledge-spine__tracks,

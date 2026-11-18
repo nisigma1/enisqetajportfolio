@@ -1,10 +1,17 @@
 .crypto-curriculum {
+  --curriculum-panel: color-mix(in srgb, var(--surface-elevated) 58%, #faf8f1);
+  --curriculum-ink: var(--text-primary);
+  --curriculum-meta-size: 0.8125rem;
   display: grid;
   grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
   gap: clamp(3rem, 5vw, 6rem);
   padding-block: clamp(6rem, 9vw, 9rem);
   border-top: var(--border-width) solid var(--border-strong);
   border-bottom: var(--border-width) solid var(--border-strong);
+}
+
+:root[data-theme="dark"] .crypto-curriculum {
+  --curriculum-panel: color-mix(in srgb, var(--surface-elevated) 78%, #121614);
 }
 
 .curriculum-introduction {
@@ -21,6 +28,12 @@
   background: #070707;
 }
 
+.curriculum-introduction > .section-label {
+  color: var(--curriculum-ink);
+  font-size: var(--curriculum-meta-size);
+  letter-spacing: 0.075em;
+}
+
 .curriculum-introduction > h2 {
   max-width: 13ch;
   margin-top: var(--space-4);
@@ -35,12 +48,13 @@
 .curriculum-introduction__copy,
 .curriculum-introduction__relevance {
   max-width: 52ch;
-  color: var(--text-secondary);
+  color: var(--curriculum-ink);
 }
 
 .curriculum-introduction__copy {
   margin-top: var(--space-5);
-  font-size: clamp(0.98rem, 1.15vw, 1.08rem);
+  font-size: clamp(1rem, 1.15vw, 1.08rem);
+  font-weight: 500;
   line-height: 1.6;
 }
 
@@ -52,9 +66,9 @@
   min-height: 2.75rem;
   margin-top: var(--space-6);
   color: var(--text-primary);
-  font-size: var(--text-meta);
+  font-size: var(--curriculum-meta-size);
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
 }
 
@@ -87,9 +101,10 @@
 }
 
 .curriculum-introduction__facts dt {
-  color: var(--text-muted);
-  font-size: 0.62rem;
-  letter-spacing: 0.11em;
+  color: var(--curriculum-ink);
+  font-size: var(--curriculum-meta-size);
+  font-weight: 650;
+  letter-spacing: 0.035em;
   text-transform: uppercase;
 }
 
@@ -110,6 +125,7 @@
 }
 
 .knowledge-spine {
+  container: curriculum-workspace / inline-size;
   min-width: 0;
 }
 
@@ -137,16 +153,18 @@
 }
 
 .knowledge-spine__progression span {
-  color: var(--accent);
-  font-size: var(--text-meta);
+  color: var(--curriculum-ink);
+  font-size: var(--curriculum-meta-size);
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
 }
 
 .knowledge-spine__progression strong {
   min-width: 0;
-  color: var(--text-secondary);
-  font-size: clamp(0.66rem, 0.65vw, 0.76rem);
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  color: var(--curriculum-ink);
+  font-size: var(--curriculum-meta-size);
+  font-weight: 700;
+  letter-spacing: 0.045em;
   text-transform: uppercase;
 }
 
@@ -170,7 +188,7 @@
 
 .knowledge-spine__workspace {
   display: grid;
-  grid-template-columns: minmax(0, 8fr) minmax(18rem, 5fr);
+  grid-template-columns: minmax(0, 7fr) minmax(18rem, 5fr);
   gap: clamp(1.25rem, 2vw, 2rem);
   align-items: start;
 }
@@ -239,14 +257,15 @@
 
 .curriculum-track > header > span,
 .curriculum-track > header > p {
-  color: var(--text-muted);
-  font-size: var(--text-meta);
+  color: var(--curriculum-ink);
+  font-size: var(--curriculum-meta-size);
+  font-weight: 600;
 }
 
 .curriculum-track > header h3 {
-  font-size: clamp(0.68rem, 0.7vw, 0.8rem);
+  font-size: clamp(0.875rem, 0.75vw, 1rem);
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.065em;
   text-transform: uppercase;
 }
 
@@ -261,8 +280,8 @@
 
 .curriculum-module button {
   display: grid;
-  grid-template-columns: 2.5rem minmax(0, 1fr) minmax(7rem, auto) 0.75rem;
-  gap: var(--space-3);
+  grid-template-columns: 2rem minmax(0, 1.35fr) minmax(5rem, 1fr) 0.75rem;
+  gap: clamp(0.42rem, 0.7vw, 0.75rem);
   width: 100%;
   min-height: 4.85rem;
   align-items: center;
@@ -280,7 +299,7 @@
 }
 
 .curriculum-module button:hover {
-  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  background: color-mix(in srgb, var(--curriculum-panel) 45%, var(--background));
 }
 
 .curriculum-module button:focus-visible {
@@ -291,34 +310,32 @@
 }
 
 .curriculum-module[data-active="true"] button {
-  background:
-    linear-gradient(
-      90deg,
-      color-mix(in srgb, var(--accent) 16%, transparent),
-      color-mix(in srgb, var(--accent) 6%, transparent)
-    );
+  background: var(--curriculum-panel);
   box-shadow: inset 3px 0 0 var(--accent);
   transform: none;
 }
 
 .curriculum-module__number {
-  color: var(--accent);
-  font-size: 0.7rem;
+  color: var(--curriculum-ink);
+  font-size: var(--curriculum-meta-size);
+  font-weight: 650;
   font-variant-numeric: tabular-nums;
 }
 
 .curriculum-module__title {
   min-width: 0;
-  font-size: clamp(0.96rem, 0.92vw, 1.08rem);
+  font-size: clamp(1rem, 0.92vw, 1.08rem);
   font-weight: 650;
+  overflow-wrap: anywhere;
 }
 
 .curriculum-module__track {
-  color: var(--text-muted);
-  font-size: 0.62rem;
-  letter-spacing: 0.08em;
+  color: var(--curriculum-ink);
+  font-size: var(--curriculum-meta-size);
+  font-weight: 550;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
   text-align: right;
-  text-transform: uppercase;
 }
 
 .curriculum-module__state {
@@ -343,17 +360,11 @@
 .curriculum-detail {
   position: relative;
   min-width: 0;
-  min-height: 36rem;
+  min-height: 29rem;
   overflow: hidden;
   padding: clamp(1.75rem, 2.6vw, 2.75rem);
   border: 1px solid var(--border-strong);
-  background:
-    linear-gradient(
-      145deg,
-      color-mix(in srgb, var(--accent) 12%, transparent),
-      transparent 42%
-    ),
-    var(--surface);
+  background: var(--curriculum-panel);
 }
 
 .curriculum-detail::before {
@@ -366,32 +377,20 @@
   background: var(--accent);
 }
 
-.curriculum-detail::after {
-  content: attr(data-track);
-  position: absolute;
-  right: -0.25rem;
-  bottom: -0.4rem;
-  color: color-mix(in srgb, var(--text-primary) 3%, transparent);
-  font-size: clamp(4rem, 6vw, 7rem);
-  font-weight: 800;
-  letter-spacing: -0.08em;
-  line-height: 0.8;
-  text-transform: uppercase;
-  pointer-events: none;
-}
-
 .curriculum-detail__identity {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   gap: var(--space-3);
-  color: var(--text-muted);
-  font-size: 0.65rem;
-  letter-spacing: 0.1em;
+  color: var(--curriculum-ink);
+  font-size: var(--curriculum-meta-size);
+  font-weight: 650;
+  letter-spacing: 0.045em;
   text-transform: uppercase;
 }
 
 .curriculum-detail__identity span:first-child {
-  color: var(--accent);
+  font-weight: 750;
 }
 
 .curriculum-detail__title {
@@ -415,17 +414,18 @@
 }
 
 .curriculum-detail > div:not(.curriculum-detail__identity) > p:first-child {
-  color: var(--accent);
-  font-size: var(--text-meta);
+  color: var(--curriculum-ink);
+  font-size: var(--curriculum-meta-size);
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
 }
 
 .curriculum-detail > div:not(.curriculum-detail__identity) > p:last-child {
   margin-top: var(--space-3);
-  color: var(--text-secondary);
-  font-size: clamp(0.92rem, 1vw, 1.04rem);
+  color: var(--curriculum-ink);
+  font-size: clamp(1rem, 1vw, 1.04rem);
+  font-weight: 500;
   line-height: 1.55;
 }
 
@@ -445,7 +445,7 @@
   margin-top: clamp(1rem, 3vw, 3rem);
   padding-top: var(--space-5);
   border-top: 1px solid var(--border);
-  color: var(--text-secondary);
+  color: var(--curriculum-ink);
   font-family: var(--font-editorial);
   font-size: clamp(1.55rem, 2.35vw, 2.5rem);
   line-height: 1.1;
@@ -596,10 +596,6 @@
     background: color-mix(in srgb, var(--text-primary) 2.5%, transparent);
   }
 
-  .curriculum-track > header > p {
-    font-size: 0.62rem;
-  }
-
   .curriculum-module button {
     min-height: 4.75rem;
     padding-inline: var(--space-4);
@@ -635,12 +631,6 @@
     transform: translate(-50%, -50%) rotate(0deg);
   }
 
-  .curriculum-module[data-active="true"] button {
-    background: color-mix(in srgb, var(--accent) 11%, transparent);
-    box-shadow: inset 3px 0 0 var(--accent);
-    transform: none;
-  }
-
   .curriculum-detail {
     display: none;
   }
@@ -649,13 +639,7 @@
     display: block;
     padding: var(--space-5) var(--space-4) var(--space-6);
     border-top: 1px solid color-mix(in srgb, var(--accent) 35%, var(--border));
-    background:
-      linear-gradient(
-        145deg,
-        color-mix(in srgb, var(--accent) 9%, transparent),
-        transparent 58%
-      ),
-      var(--surface);
+    background: var(--curriculum-panel);
   }
 
   .curriculum-module__mobile-detail[hidden] {
@@ -674,16 +658,17 @@
   }
 
   .curriculum-module__mobile-detail > div > p:first-child {
-    color: var(--accent);
-    font-size: 0.65rem;
+    color: var(--curriculum-ink);
+    font-size: var(--curriculum-meta-size);
     font-weight: 700;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.07em;
     text-transform: uppercase;
   }
 
   .curriculum-module__mobile-detail > div > p:last-child {
     margin-top: var(--space-3);
-    color: var(--text-secondary);
+    color: var(--curriculum-ink);
+    font-weight: 500;
     line-height: 1.55;
   }
 
@@ -709,7 +694,6 @@
 
   .curriculum-track > header > p {
     grid-column: 2;
-    font-size: 0.64rem;
   }
 }
 
@@ -735,5 +719,32 @@
 
   .curriculum-module[data-active="true"] button {
     transform: none;
+  }
+}
+
+/* Use the space available to the module list in text units, not just the
+   viewport width. At enlarged text sizes the two panels need to stack sooner. */
+@container curriculum-workspace (max-width: 42rem) {
+  .knowledge-spine__workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .curriculum-detail {
+    position: static;
+    min-height: 0;
+  }
+
+  .knowledge-spine__progression i {
+    display: none;
+  }
+}
+
+@container curriculum-workspace (max-width: 26rem) {
+  .knowledge-spine__progression {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .knowledge-spine__progression li + li {
+    border-top: 1px solid var(--border);
   }
 }
