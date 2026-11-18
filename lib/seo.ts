@@ -1,4 +1,5 @@
 import { barberProject, besianaProject, hixhameProject, identity, malera, marketInterests, media, siteConfig } from "@/data/site";
+import { duoBarProject } from "@/data/duo-bar";
 
 export const canonicalOrigin = siteConfig.url;
 
@@ -35,7 +36,7 @@ export const routeSeo = {
     path: "/work",
     title: "Selected Work | Enis Qetaj",
     description:
-      "Selected digital work by Enis Qetaj, including Barber Brothers, Hixhame Tina, Besiana Photography and products built through Malera Studio.",
+      "Selected digital work by Enis Qetaj, including Barber Brothers, Hixhame Tina, Besiana Photography and the Malera POS installation at DUO Bar.",
   },
   barber: {
     path: `/work/${barberProject.slug}`,
@@ -67,6 +68,11 @@ export const routeSeo = {
     path: `/work/${besianaProject.slug}`,
     title: "Besiana Photography Website | Enis Qetaj",
     description: besianaProject.description,
+  },
+  duoBar: {
+    path: `/work/${duoBarProject.slug}`,
+    title: "DUO Bar — Malera POS Case Study | Enis Qetaj",
+    description: "An offline point-of-sale system built for DUO Bar, with a visual floor plan, table orders, stock management and business reports.",
   },
   build: {
     path: "/build",
@@ -175,6 +181,7 @@ export const publicRoutes = [
   routeSeo.hixhame,
   routeSeo.malera,
   routeSeo.besiana,
+  routeSeo.duoBar,
   routeSeo.build,
   routeSeo.contact,
 ] as const;

@@ -6,10 +6,12 @@ import { notFound } from "next/navigation";
 import { BarberBrothersShowcase } from "@/components/showcase/BarberBrothersShowcase";
 import { HixhameTinaCaseStudy } from "@/components/showcase/HixhameTinaCaseStudy";
 import { BesianaPhotographyArtwork } from "@/components/showcase/BesianaPhotographyArtwork";
+import { DuoBarCaseStudy } from "@/components/showcase/DuoBarProject";
 import { ProjectMedia } from "@/components/media/ProjectMedia";
 import { ActionMark } from "@/components/ui/ActionMark";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { barberProject, besianaProject, hixhameProject, media, siteConfig } from "@/data/site";
+import { duoBarProject } from "@/data/duo-bar";
 import { baseStructuredData, ogImage, routeSeo } from "@/lib/seo";
 
 type ProjectPageProps = { params: Promise<{ slug: string }> };
@@ -33,6 +35,11 @@ const projects = {
     seo: routeSeo.besiana,
     number: "03",
   },
+  [duoBarProject.slug]: {
+    data: duoBarProject,
+    seo: routeSeo.duoBar,
+    number: "04",
+  },
 } as const;
 
 export function generateStaticParams() {
@@ -50,7 +57,9 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
       ? [{ url: "/projects/hixhame-tina/hixhame-tina-case-study.webp", width: 1672, height: 941, alt: "Hixhame Tina women-only Hijama website shown on desktop and mobile" }]
       : slug === besianaProject.slug
         ? [{ url: "/projects/besiana-photography/besiana-photography-og.jpg", width: 1200, height: 630, alt: "Besiana Photography website preview" }]
-        : [ogImage()];
+        : slug === duoBarProject.slug
+          ? [{ url: duoBarProject.photos.terminal.src, width: duoBarProject.photos.terminal.width, height: duoBarProject.photos.terminal.height, alt: duoBarProject.photos.terminal.alt }]
+          : [ogImage()];
   const socialTitle = slug === hixhameProject.slug
     ? "Hixhame Tina — Website Case Study"
     : slug === besianaProject.slug
@@ -201,10 +210,15 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const project = projects[slug as keyof typeof projects];
   if (!project) notFound();
 
+  const CaseStudy = slug === barberProject.slug ? BarberCaseStudy
+    : slug === hixhameProject.slug ? HixhameCaseStudy
+      : slug === duoBarProject.slug ? DuoBarCaseStudy
+        : BesianaCaseStudy;
+
   return (
     <>
       <InnerPageStyles />
-      {slug === barberProject.slug ? <BarberCaseStudy /> : slug === hixhameProject.slug ? <HixhameCaseStudy /> : <BesianaCaseStudy />}
+      <CaseStudy />
       <StructuredData data={baseStructuredData(project.seo)} />
     </>
   );

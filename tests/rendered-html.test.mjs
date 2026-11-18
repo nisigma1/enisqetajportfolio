@@ -165,7 +165,7 @@ test("companies restores the building method and Malera relationship chapters", 
   assert.match(html, /Selected proof/);
 });
 
-test("work keeps all three real project proofs on the dedicated work route", async () => {
+test("work keeps all four real project proofs on the dedicated work route", async () => {
   const worker = await getWorker();
   const response = await worker.fetch(
     new Request("http://localhost/work", { headers: { accept: "text/html" } }),
@@ -174,13 +174,35 @@ test("work keeps all three real project proofs on the dedicated work route", asy
   );
   assert.equal(response.status, 200);
   const html = await response.text();
-  for (const project of ["Barber Brothers", "Hixhame Tina", "Besiana Photography"]) {
+  for (const project of ["Barber Brothers", "Hixhame Tina", "Besiana Photography", "DUO Bar"]) {
     assert.match(html, new RegExp(project));
   }
   assert.match(html, /class="meteors/);
   assert.match(html, /besiana-interface-1440\.webp/);
   assert.doesNotMatch(html, /besiana-artwork__phone/);
   assert.match(html, /href="\/work\/besiana-photography"/);
+  assert.match(html, /href="#duo-bar"/);
+  assert.match(html, /href="\/work\/duo-bar"/);
+  assert.match(html, /\/projects\/duo-bar\/terminal-720\.webp/);
+  assert.doesNotMatch(html, /\/projects\/duo-bar\/(orders|at-the-bar)\.webp/);
+});
+
+test("DUO Bar publishes the offline POS workflow and three venue photos without pricing", async () => {
+  const worker = await getWorker();
+  const response = await worker.fetch(new Request(`${publicOrigin}/work/duo-bar`), env, ctx);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /<h1>DUO Bar<\/h1>/);
+  assert.match(html, /rel="canonical" href="https:\/\/enisqetaj\.com\/work\/duo-bar"/);
+  for (const detail of ["monthly subscription", "visual floor plan", "Coffee stock is deducted automatically", "PINs", "sales, expenses and profit", "SQLite", "GitHub"]) {
+    assert.ok(html.includes(detail), detail);
+  }
+  for (const path of ["terminal.webp", "orders.webp", "at-the-bar.webp"]) {
+    assert.match(html, new RegExp(`<img[^>]+src="/projects/duo-bar/${path.replace(".", "\\.")}"`));
+  }
+  const visibleCaseStudy = html.match(/<main\b[\s\S]*?<\/main>/)?.[0];
+  assert.ok(visibleCaseStudy);
+  assert.doesNotMatch(visibleCaseStudy, /[€£$]\s*\d+|\d+\s*(?:EUR|USD)\b/);
 });
 
 test("publishes project metadata and correct intrinsic media dimensions", async () => {

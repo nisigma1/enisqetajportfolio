@@ -4,11 +4,13 @@ import { InnerPageShell } from "@/components/layout/InnerPageShell";
 import { BarberBrothersShowcase } from "@/components/showcase/BarberBrothersShowcase";
 import { HixhameTinaPreview } from "@/components/showcase/HixhameTinaPreview";
 import { BesianaPhotographyPreview } from "@/components/showcase/BesianaPhotographyPreview";
+import { DuoBarPreview } from "@/components/showcase/DuoBarProject";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { ActionMark } from "@/components/ui/ActionMark";
 import { Meteors } from "@/components/ui/Meteors";
 import { StrokeText } from "@/components/ui/StrokeText";
 import { barberProject, besianaProject, hixhameProject, siteConfig } from "@/data/site";
+import { duoBarProject } from "@/data/duo-bar";
 import { baseStructuredData, ogImage, routeSeo } from "@/lib/seo";
 
 const description = routeSeo.work.description;
@@ -24,7 +26,7 @@ export const metadata: Metadata = {
 };
 
 export default function WorkArchive() {
-  const projects = [barberProject, hixhameProject, besianaProject] as const;
+  const projects = [barberProject, hixhameProject, besianaProject, duoBarProject] as const;
 
   return (
     <>
@@ -38,8 +40,8 @@ export default function WorkArchive() {
             <StrokeText text="businesses." height="clamp(4.35rem, 6.9vw, 6.1rem)" drawDuration={0.95} reverse />
           </span>
         }
-        summary="Three live digital experiences, shown through their actual interfaces, journeys and visual systems."
-        meta={["Websites", "Service journeys", "Responsive systems"]}
+        summary="Four digital products built for real businesses, from booking and photography websites to an offline point-of-sale system."
+        meta={["Websites", "Service journeys", "Point of sale"]}
         mastheadDecoration={<Meteors />}
       >
         <nav className="inner-section project-index" aria-label="Selected project index">
@@ -77,6 +79,8 @@ export default function WorkArchive() {
         <section id={besianaProject.slug} className="inner-section work-project work-project--besiana" aria-label="Besiana Photography project">
           <BesianaPhotographyPreview />
         </section>
+
+        <DuoBarPreview />
       </InnerPageShell>
       <StructuredData data={baseStructuredData(routeSeo.work)} />
     </>
