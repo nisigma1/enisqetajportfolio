@@ -68,16 +68,20 @@ export default function WorkArchive() {
             <article className={`work-entry ${styles.feature}`} aria-labelledby="duo-bar-title">
               <figure className={styles.venue}>
                 <div className={styles.venueFrame}>
-                  <img
-                    src={`${venuePreview}-720.webp`}
-                    srcSet={`${venuePreview}-720.webp 720w, ${venuePreview}-1440.webp 1440w`}
-                    sizes="(max-width: 719px) calc(100vw - 2rem), (max-width: 1792px) 57vw, 1060px"
-                    width={venue.width}
-                    height={venue.height}
-                    alt={venue.alt}
-                    fetchPriority="high"
-                    decoding="async"
-                  />
+                  <picture>
+                    <source media="(max-width: 719px)" type="image/avif" srcSet={`${venuePreview}-720.avif`} />
+                    <source media="(max-width: 719px)" type="image/webp" srcSet={`${venuePreview}-720.webp`} />
+                    <img
+                      src={`${venuePreview}-720.webp`}
+                      srcSet={`${venuePreview}-720.webp 720w, ${venuePreview}-1440.webp 1440w`}
+                      sizes="(max-width: 719px) calc(100vw - 2rem), (max-width: 1792px) 57vw, 1060px"
+                      width={venue.width}
+                      height={venue.height}
+                      alt={venue.alt}
+                      fetchPriority="high"
+                      decoding="async"
+                    />
+                  </picture>
                 </div>
                 <figcaption>Malera POS on the counter at DUO Bar.</figcaption>
               </figure>

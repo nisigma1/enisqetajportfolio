@@ -195,6 +195,8 @@ test("work keeps all four real project proofs on the dedicated work route", asyn
   assert.match(html, /href="\/work\/duo-bar"/);
   assert.match(main, /View DUO Bar case study/);
   assert.match(main, /srcSet="\/projects\/duo-bar\/at-the-bar-clear-720\.webp 720w, \/projects\/duo-bar\/at-the-bar-clear-1440\.webp 1440w"/i);
+  assert.match(main, /<source media="\(max-width: 719px\)" type="image\/avif" srcSet="\/projects\/duo-bar\/at-the-bar-clear-720\.avif"/i);
+  assert.match(main, /<source media="\(max-width: 719px\)" type="image\/webp" srcSet="\/projects\/duo-bar\/at-the-bar-clear-720\.webp"/i);
   assert.match(main, /\/projects\/duo-bar\/terminal-720\.webp/);
   assert.doesNotMatch(main, /\/projects\/duo-bar\/orders\.webp/);
 });
