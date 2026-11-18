@@ -1,0 +1,21 @@
+.background-journey .journey-field__identity {
+  align-content: center;
+  gap: var(--space-4);
+}
+
+.background-journey .journey-field__education .journey-field__status {
+  grid-column: auto;
+  margin-top: var(--space-2);
+  color: var(--text-primary);
+  letter-spacing: 0.035em;
+  text-transform: none;
+}
+
+.background-journey .journey-field__status > span {
+  flex: none;
+}
+
+.background-journey .journey-field__status[data-in-progress] > span {
+  border: 1px solid var(--accent);
+  background: transparent;
+}

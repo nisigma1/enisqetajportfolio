@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element -- Responsive derivatives of the supplied venue photographs. */
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { duoBarProject as project } from "@/data/duo-bar";
 import styles from "./DuoBarProject.module.css";
@@ -9,14 +10,14 @@ type Photo = {
   width: number;
   height: number;
   alt: string;
-  caption: string;
 };
 
-function DuoPhoto({ photo, className, priority = false, sizes }: {
+function DuoPhoto({ photo, className, priority = false, sizes, children }: {
   photo: Photo;
   className: string;
   priority?: boolean;
   sizes?: string;
+  children: ReactNode;
 }) {
   return (
     <figure className={styles.photo}>
@@ -33,56 +34,82 @@ function DuoPhoto({ photo, className, priority = false, sizes }: {
           decoding="async"
         />
       </div>
-      <figcaption>{photo.caption}</figcaption>
+      <figcaption className={styles.caption}>{children}</figcaption>
     </figure>
   );
 }
 
-const widePhotoSizes = "(max-width: 767px) calc(100vw - 32px), (max-width: 1800px) 94vw, 105rem";
-
-export function DuoBarPreview() {
-  return (
-    <section id={project.slug} className="inner-section work-project" aria-labelledby="duo-bar-work-title">
-      <header className="work-project__header">
-        <div><p>Project 04 / Malera POS</p><h2 id="duo-bar-work-title">{project.title}</h2></div>
-        <div><p>{project.description}</p><span>{project.category}</span></div>
-        <div className="work-project__actions">
-          <Link className="button button--primary" href={`/work/${project.slug}`}>Open case study</Link>
-        </div>
-      </header>
-      <DuoPhoto photo={project.photos.terminal} className={styles.lead} sizes={widePhotoSizes} />
-    </section>
-  );
-}
+const detailSizes = "(max-width: 767px) calc(100vw - 2rem), (max-width: 1792px) 40vw, 45rem";
 
 export function DuoBarCaseStudy() {
   return (
     <main id="main" className="route-page case-study">
-      <header className="case-study__hero">
-        <div><p>Selected work / Malera POS</p><h1>{project.title}</h1></div>
-        <div><p>{project.description}</p></div>
+      <header className={styles.masthead}>
+        <div>
+          <p className="portfolio-kicker">Selected work / Malera POS</p>
+          <h1>{project.title}</h1>
+          <p className={styles.lede}>I built the point-of-sale app used at DUO Bar. Staff select a table, take an order and close the bill, even without an internet connection.</p>
+        </div>
+        <dl className={styles.credits}>
+          <div><dt>Role</dt><dd>Application development</dd></div>
+          <div><dt>Product</dt><dd>Malera POS</dd></div>
+        </dl>
       </header>
 
-      <DuoPhoto photo={project.photos.terminal} className={styles.lead} sizes={widePhotoSizes} priority />
+      <section id="duo-shift" className={styles.story} aria-labelledby="duo-shift-title">
+        <header className={styles.chapterHeading}>
+          <div>
+            <p className="portfolio-kicker">01 / Behind the counter</p>
+            <h2 id="duo-shift-title">A shift at DUO Bar</h2>
+          </div>
+          <p>These photos show separate examples from DUO Bar rather than one recorded order.</p>
+        </header>
 
-      <section className="case-study__chapter">
-        <div><p>Day-to-day operations</p><h2>From the floor plan to the final bill.</h2></div>
-        <ul className={styles.features}>
-          <li><strong>Tables and orders.</strong> Staff use a visual floor plan to select a table, take orders and close the bill.</li>
-          <li><strong>Products and stock.</strong> The app manages products, prices and inventory. Coffee stock is deducted automatically as orders are placed.</li>
-          <li><strong>PIN access and reports.</strong> The owner and employees sign in with PINs and have access based on their roles. Reports track sales, expenses and profit.</li>
-          <li><strong>Offline operation.</strong> The app works without internet, stores data locally in SQLite and receives updates through GitHub.</li>
-        </ul>
+        <div className={styles.stage}>
+          <DuoPhoto photo={project.photos.venue} className={styles.venue} priority>
+            <p className={styles.marker}>At the bar</p>
+            <p>Malera POS on the counter at DUO Bar.</p>
+          </DuoPhoto>
+
+          <DuoPhoto photo={project.photos.terminal} className={styles.terminal} sizes={detailSizes}>
+            <h3><span className={styles.step}>01</span> Select a table</h3>
+            <p>Staff tap a table on the visual floor plan to open its order. I kept the floor plan and order panel side by side so staff can still see the room.</p>
+          </DuoPhoto>
+        </div>
+
+        <div className={styles.workflow}>
+          <DuoPhoto photo={project.photos.orders} className={styles.orders} sizes="(max-width: 767px) calc(100vw - 2rem), (max-width: 1792px) 54vw, 61rem">
+            <h3><span className={styles.step}>02</span> Add to the order</h3>
+            <p>Staff add products to the selected table and review its order in the same view.</p>
+          </DuoPhoto>
+
+          <section className={styles.bill} aria-labelledby="duo-bill-title">
+            <p className={styles.marker}>End of the order</p>
+            <h3 id="duo-bill-title"><span className={styles.step}>03</span> Close the bill</h3>
+            <p>Staff close the bill for the selected table in Malera POS. The owner can check reports for sales, expenses and profit.</p>
+          </section>
+        </div>
       </section>
 
-      <section className={styles.gallery} aria-label="Malera POS at DUO Bar">
-        <DuoPhoto photo={project.photos.orders} className={styles.orders} sizes="(max-width: 767px) calc(100vw - 32px), 50vw" />
-        <DuoPhoto photo={project.photos.venue} className={styles.venue} />
+      <section className={styles.operations} aria-labelledby="duo-operations-title">
+        <header>
+          <p className="portfolio-kicker">02 / How it works</p>
+          <h2 id="duo-operations-title">Built to run offline.</h2>
+        </header>
+        <dl>
+          <div><dt>Local operation</dt><dd>The app works without internet, stores data locally in SQLite and receives updates through GitHub.</dd></div>
+          <div><dt>Products and stock</dt><dd>The app manages products, prices and inventory. Coffee stock is deducted automatically as orders are placed.</dd></div>
+          <div><dt>Staff access</dt><dd>The owner and employees sign in with PINs and get access based on their roles.</dd></div>
+        </dl>
       </section>
 
-      <section className="case-study__close">
-        <div><p>Malera POS</p><h2>Interested in Malera POS for your venue?</h2></div>
-        <div><Link className="button button--primary" href="/contact?service=digital-project#contact-form">Ask about Malera POS</Link></div>
+      <section className={styles.close} aria-labelledby="duo-contact-title">
+        <div>
+          <p className="portfolio-kicker">03 / Malera POS</p>
+          <h2 id="duo-contact-title">Interested in Malera POS for your venue?</h2>
+          <p>Malera POS is available to bars and restaurants by monthly subscription.</p>
+        </div>
+        <Link className="button button--primary" href="/contact?service=digital-project#contact-form">Ask about Malera POS</Link>
       </section>
     </main>
   );

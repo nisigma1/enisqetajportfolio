@@ -18,7 +18,7 @@
 
 .hixhame-artwork figcaption {
   padding: var(--space-3) var(--space-4);
-  color: var(--text-muted);
+  color: #cdbfba;
   border-top: 1px solid var(--border);
   font-size: var(--text-caption);
   letter-spacing: 0.08em;
@@ -181,7 +181,18 @@
 
 .hixhame-study {
   --hixhame-burgundy: #8d2437;
-  --hixhame-ivory: #e8d8ca;
+  --hixhame-step-text: var(--hixhame-burgundy);
+  --hixhame-metadata: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .hixhame-study {
+  --hixhame-metadata: #e8d8ca;
+  --hixhame-step-text: #e08c9b;
+}
+
+:root[data-vibe]:not([data-vibe="paper"], [data-vibe="night"]) .hixhame-study {
+  --hixhame-metadata: var(--text-secondary);
+  --hixhame-step-text: var(--accent);
 }
 
 .hixhame-study__hero {
@@ -231,7 +242,7 @@
 .hixhame-study__paired section > p:first-child,
 .hixhame-study__features header > p,
 .hixhame-study__close > div > p {
-  color: var(--hixhame-ivory);
+  color: var(--hixhame-metadata);
   font-size: var(--text-meta);
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -316,7 +327,7 @@
 
 .hixhame-study__journey li > span,
 .hixhame-study__features li > span {
-  color: var(--hixhame-burgundy);
+  color: var(--hixhame-step-text);
   font-size: var(--text-meta);
 }
 
@@ -370,7 +381,7 @@
 
 .hixhame-study__paired li {
   padding: 0.55rem 0.8rem;
-  color: var(--hixhame-ivory);
+  color: var(--hixhame-metadata);
   border: 1px solid var(--border-strong);
   font-size: var(--text-caption);
 }

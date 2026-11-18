@@ -48,9 +48,9 @@ for(const mobile of [false,true]){
  await page.getByRole('button',{name:'Send email',exact:true}).click();await page.getByRole('status').filter({hasText:'Audit mock delivery'}).waitFor();
  results.checks.push({mobile,formValidation:true,formSuccessMock:true,planPrefill:true});
  if(mobile){await page.getByRole('button',{name:'Menu',exact:true}).click();await page.getByRole('button',{name:'Close navigation'}).click();await page.getByRole('dialog').waitFor({state:'hidden'});assert.notEqual(await page.evaluate(()=>document.body.style.position),'fixed');}
- const themeBefore=await page.locator('html').getAttribute('data-theme');
- await page.getByRole('button',{name:/Switch to .* theme/}).click();
- assert.notEqual(await page.locator('html').getAttribute('data-theme'),themeBefore);
+ const vibeBefore=await page.locator('html').getAttribute('data-vibe');
+ await page.getByRole('button',{name:'Switch the vibe',exact:true}).click();
+ await page.waitForFunction(vibe=>document.documentElement.dataset.vibe!==vibe,vibeBefore);
  results.checks.push({mobile,theme:true,menuClose:true});
  await context.close();
 }

@@ -6,6 +6,7 @@ import { StructuredData } from "@/components/seo/StructuredData";
 import { barberProject, besianaProject, hixhameProject, siteConfig } from "@/data/site";
 import { duoBarProject } from "@/data/duo-bar";
 import { baseStructuredData, ogImage, routeSeo } from "@/lib/seo";
+import styles from "./WorkArchive.module.css";
 
 const description = routeSeo.work.description;
 
@@ -26,14 +27,8 @@ type WorkEntry = {
   image: { src: string; srcSet?: string; avif?: string; width: number; height: number; alt: string };
 };
 
-const terminal = duoBarProject.photos.terminal;
+const { terminal, venue } = duoBarProject.photos;
 const projects: WorkEntry[] = [
-  {
-    project: duoBarProject,
-    category: "Hospitality software",
-    summary: "An offline point-of-sale system for tables, orders, stock and reports. Malera POS is available by monthly subscription.",
-    image: { ...terminal, srcSet: `${terminal.small} 720w, ${terminal.src} ${terminal.width}w` },
-  },
   {
     project: barberProject,
     category: "Website and booking",
@@ -60,7 +55,6 @@ const projects: WorkEntry[] = [
 ];
 
 export default function WorkArchive() {
-
   return (
     <>
       <InnerPageShell
@@ -68,8 +62,30 @@ export default function WorkArchive() {
         title="Selected work"
         summary="Websites, online booking and point-of-sale software I built for businesses in Kosovo."
       >
-        <ul className="work-gallery" aria-label="Project case studies">
-          {projects.map(({ project, category, summary, image }, index) => (
+        <ul className={`work-gallery ${styles.gallery}`} aria-label="Project case studies">
+          <li id={duoBarProject.slug} className={styles.featureItem}>
+            <article className={`work-entry ${styles.feature}`} aria-labelledby="duo-bar-title">
+              <figure className={styles.venue}>
+                <div className={styles.venueFrame}>
+                  <img src={venue.src} width={venue.width} height={venue.height} alt={venue.alt} fetchPriority="high" decoding="async" />
+                </div>
+                <figcaption>Malera POS on the counter at DUO Bar.</figcaption>
+              </figure>
+              <div className={styles.featureInfo}>
+                <p className="portfolio-kicker">Featured case study / Hospitality software</p>
+                <h2 id="duo-bar-title">{duoBarProject.title}</h2>
+                <p className={styles.featureSummary}>Staff use Malera POS to take orders, close bills and track stock, even when the internet is down.</p>
+                <Link className="button button--primary" href={`/work/${duoBarProject.slug}`}>View DUO Bar case study</Link>
+                <figure className={styles.detail}>
+                  <div className={styles.detailFrame}>
+                    <img src={terminal.src} srcSet={`${terminal.small} 720w, ${terminal.src} ${terminal.width}w`} sizes="(max-width: 639px) 88vw, 22rem" width={terminal.width} height={terminal.height} alt={terminal.alt} loading="lazy" decoding="async" />
+                  </div>
+                  <figcaption>The floor plan stays visible beside the order.</figcaption>
+                </figure>
+              </div>
+            </article>
+          </li>
+          {projects.map(({ project, category, summary, image }) => (
             <li key={project.slug} id={project.slug}>
               <article className="work-entry" aria-labelledby={`${project.slug}-title`}>
                 <picture className="work-entry__image">
@@ -77,12 +93,11 @@ export default function WorkArchive() {
                   <img
                     src={image.src}
                     srcSet={image.srcSet}
-                    sizes={image.srcSet ? "(max-width: 639px) calc(100vw - 2rem), (max-width: 1792px) 46vw, 50rem" : undefined}
+                    sizes={image.srcSet ? "(max-width: 639px) calc(100vw - 2rem), (max-width: 959px) 46vw, (max-width: 1792px) 31vw, 34rem" : undefined}
                     width={image.width}
                     height={image.height}
                     alt={image.alt}
-                    loading={index === 0 ? "eager" : "lazy"}
-                    fetchPriority={index === 0 ? "high" : undefined}
+                    loading="lazy"
                     decoding="async"
                   />
                 </picture>
@@ -90,7 +105,7 @@ export default function WorkArchive() {
                   <p className="portfolio-kicker">{category}</p>
                   <h2 id={`${project.slug}-title`}>{project.title}</h2>
                   <p>{summary}</p>
-                  <Link className="portfolio-text-link" href={`/work/${project.slug}`} aria-label={`Read the ${project.title} case study`}>View case study</Link>
+                  <Link className="portfolio-text-link" href={`/work/${project.slug}`} aria-label={`View case study: ${project.title}`}>View case study</Link>
                 </div>
               </article>
             </li>

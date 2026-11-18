@@ -32,7 +32,7 @@ for(const width of [320,360,390,430,768,1440,1920]){
 const page=await browser.newPage({viewport:{width:390,height:844}});
 for(const [index,name]of ['Technical','Advanced','Complete'].entries()){
  await page.goto(origin+'/pricing',{waitUntil:'networkidle'});
- await page.getByRole('link',{name:'Choose plan & payment',exact:true}).nth(index).click();
+ await page.getByRole('link',{name:'Request this plan',exact:true}).nth(index).click();
  await page.waitForURL(/\/contact\?.*#contact-form$/);
  await page.waitForFunction(plan=>document.querySelector('[name="project"]').value.includes(plan),name);
  await page.locator('[name="paymentMethod"]').waitFor();

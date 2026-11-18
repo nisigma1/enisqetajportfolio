@@ -9,7 +9,6 @@ export function SmmAiCertification() {
       <div className="journey-field__identity">
         <span className="journey-field__number">04</span>
         <h3>SMM + AI</h3>
-        <p className="journey-field__status"><span aria-hidden="true" />Completed</p>
       </div>
 
       <div className={`journey-field__education ${styles.education}`}>
@@ -20,6 +19,7 @@ export function SmmAiCertification() {
           <p>Certificate of Achievement</p>
           <strong>AI Social Media Marketing</strong>
           <span>Hallakate · BËHU AI SMM 2026</span>
+          <p className="journey-field__status"><span aria-hidden="true" />Completed</p>
         </div>
       </div>
 
@@ -34,7 +34,7 @@ export function SmmAiCertification() {
       </div>
 
       <div className="journey-field__experience">
-        <span>Experience</span>
+        <span>Applied experience</span>
         <strong>2+ <span>years</span></strong>
       </div>
     </li>

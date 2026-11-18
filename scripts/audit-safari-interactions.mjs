@@ -62,7 +62,7 @@ try{
   await page.locator('form').scrollIntoViewIfNeeded();
   await page.waitForFunction(()=>document.querySelector('[name="project"]').value.includes('Advanced'));
   for(const field of await page.locator('form input:not([name="website"]),form select,form textarea').all())assert.ok(await field.evaluate(e=>parseFloat(getComputedStyle(e).fontSize)>=16),'iOS form text >=16px');
-  await tap(page,page.getByRole('button',{name:'Send email',exact:true}));
+  await tap(page,page.getByRole('button',{name:'Send request',exact:true}));
   await page.locator('[aria-invalid="true"]').first().waitFor();
   assert.equal(await page.locator('[aria-invalid="true"]').count(),4);
   const sent=[];
@@ -74,7 +74,7 @@ try{
   await page.locator('[name="email"]').fill('qa@example.com');
   await page.locator('[name="paymentMethod"]').selectOption('Crypto payment');
   await page.locator('[name="message"]').fill('Simulated Safari contact form regression test.');
-  await tap(page,page.getByRole('button',{name:'Send email',exact:true}));
+  await tap(page,page.getByRole('button',{name:'Send request',exact:true}));
   await page.getByRole('status').filter({hasText:'Safari QA simulated delivery'}).waitFor();
   assert.equal(sent[0].paymentMethod,'Crypto payment');
   await page.locator('[name="project"]').selectOption('Digital Project');
@@ -86,9 +86,9 @@ try{
   await page.getByRole('status').filter({hasText:'Safari QA simulated delivery'}).waitFor();
   assert.equal(sent[1].project,'Digital Project');
   assert.equal(sent[1].paymentMethod,'');
-  const old=await page.locator('html').getAttribute('data-theme');
-  await tap(page,page.getByRole('button',{name:/Switch to .* theme/}),{sticky:true});
-  await page.waitForFunction(theme=>document.documentElement.dataset.theme!==theme,old);
+  const old=await page.locator('html').getAttribute('data-vibe');
+  await tap(page,page.getByRole('button',{name:'Switch the vibe',exact:true}),{sticky:true});
+  await page.waitForFunction(vibe=>document.documentElement.dataset.vibe!==vibe,old);
   assert.equal(errors.length,0,JSON.stringify(errors));
   results.push({name,theme,menuScrollLock:true,navigation:true,all11CurriculumModules:true,homeLinks:true,noTrainingDuration:true,formTextAtLeast16px:true,formValidation:true,cryptoAndDigitalMockDelivery:true,themeToggle:true,errors});
   await context.close();

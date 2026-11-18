@@ -32,15 +32,6 @@
   text-wrap: balance;
 }
 
-.curriculum-introduction__title {
-  max-width: 20ch;
-  margin-top: var(--space-5);
-  color: var(--text-secondary);
-  font-family: var(--font-editorial);
-  font-size: clamp(1.4rem, 2vw, 2rem);
-  line-height: 1.08;
-}
-
 .curriculum-introduction__copy,
 .curriculum-introduction__relevance {
   max-width: 52ch;
@@ -538,11 +529,6 @@
     max-width: 8ch;
     font-size: clamp(3rem, 15vw, 4.6rem);
     line-height: 1;
-  }
-
-  .curriculum-introduction__title {
-    max-width: 16ch;
-    font-size: clamp(1.5rem, 7vw, 2rem);
   }
 
   .curriculum-introduction__copy {

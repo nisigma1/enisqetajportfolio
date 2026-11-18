@@ -49,10 +49,13 @@ export function Hero() {
               disableOnCoarsePointer
             />
           </h1>
-          <p className="dispatch-hero__entity-copy">I build websites and software through Malera Studio. I also research crypto markets and publish analysis.</p>
+          <div className="dispatch-hero__proposition">
+            <p className="dispatch-hero__line">From booking a chair to closing a tab.</p>
+            <p className="dispatch-hero__entity-copy">Through Malera Studio, I build websites, booking systems, and offline point-of-sale software for businesses.</p>
+          </div>
           <div className="dispatch-hero__actions" id="work">
             <Link className="button button--primary" href="/work">View selected work</Link>
-            <Link className="button button--quiet" href="/pricing">Crypto Analysis</Link>
+            <Link className="portfolio-text-link dispatch-hero__research-link" href="/pricing">Crypto Analysis</Link>
           </div>
         </div>
 
@@ -63,7 +66,7 @@ export function Hero() {
             tabletSrc={media.portrait.tablet.src}
             mobileSrc={media.portrait.mobile.src}
             compactSrc={media.portrait.mobile.compactSrc}
-            alt="Enis Qetaj, financial-markets researcher and AI product builder from Kosovo"
+            alt="Portrait of Enis Qetaj"
             customGrid={{ rows: 6, cols: 4 }}
             grayscaleAnimation
             pixelFadeInDuration={720}

@@ -32,10 +32,12 @@
 }
 
 .dispatch-hero--portfolio .dispatch-hero__primary {
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.14fr) minmax(0, 0.86fr);
   align-items: center;
-  gap: clamp(2rem, 6vw, 6rem);
+  gap: clamp(2rem, 4vw, 4.5rem);
+  max-width: 80rem;
   margin-top: 0;
+  margin-inline: auto;
   padding-top: 0;
 }
 
@@ -44,22 +46,42 @@
 }
 
 .dispatch-hero--portfolio h1 {
-  margin-top: clamp(1.35rem, 3vw, 2.4rem);
-  font-size: clamp(4rem, 8.8vw, 8.75rem);
+  margin-top: clamp(1.1rem, 2.5vw, 2rem);
+  font-size: clamp(3.5rem, 7.7vw, 7.5rem);
   letter-spacing: -0.034em;
   line-height: 0.88;
 }
 
+.dispatch-hero--portfolio .dispatch-hero__proposition {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: clamp(1.4rem, 3vw, 2.5rem);
+  padding-inline-start: clamp(0.85rem, 1.5vw, 1.35rem);
+  border-inline-start: 2px solid var(--accent);
+}
+
+.dispatch-hero--portfolio .dispatch-hero__line {
+  max-width: 22ch;
+  margin: 0;
+  color: var(--text-primary);
+  font-family: var(--font-editorial);
+  font-size: clamp(1.75rem, 3.35vw, 3.25rem);
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
 .dispatch-hero--portfolio .dispatch-hero__entity-copy {
-  max-width: 41ch;
-  margin-top: 1.5rem;
-  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  max-width: 45ch;
+  margin: 0;
+  font-size: clamp(1rem, 1.3vw, 1.1875rem);
   line-height: 1.55;
 }
 
 .dispatch-hero--portfolio .dispatch-hero__actions {
   display: flex;
-  gap: 0.65rem;
+  align-items: center;
+  gap: 0.35rem clamp(0.8rem, 2vw, 1.5rem);
   margin-top: clamp(1.3rem, 3vw, 2rem);
 }
 
@@ -67,6 +89,10 @@
   min-height: 3rem;
   font-size: 0.9375rem;
   font-weight: 700;
+}
+
+.dispatch-hero--portfolio .dispatch-hero__research-link {
+  font-weight: 600;
 }
 
 .dispatch-hero--portfolio .author-artifact {

@@ -32,7 +32,7 @@ function validateField(name: FieldName, value: string): string | undefined {
     if (clean.length > 240) return "Keep this description under 240 characters.";
   }
   if (name === "paymentMethod") {
-    if (!isContactPaymentMethod(clean)) return "Choose how you would like to pay.";
+    if (!isContactPaymentMethod(clean)) return "Choose a payment preference or select ‘Discuss payment first’.";
   }
   if (name === "message") {
     if (clean.length < 20) return "Write at least 20 characters.";
@@ -226,24 +226,25 @@ export function ContactForm() {
       </label>
 
       {needsPayment && <label>
-        <span>Payment method</span>
+        <span id="payment-method-label">Payment preference</span>
         <span className="select-control">
           <select
             name="paymentMethod"
             required
+            aria-labelledby="payment-method-label"
             aria-invalid={Boolean(errors.paymentMethod)}
             aria-describedby={errors.paymentMethod ? "paymentMethod-error payment-note" : "payment-note"}
             onBlur={handleBlur}
             onChange={handleInput}
             defaultValue=""
           >
-            <option value="" disabled>Choose a payment method</option>
+            <option value="" disabled>Choose a payment preference</option>
             {contactPaymentMethods.map(method => <option key={method} value={method}>{method}</option>)}
           </select>
         </span>
         {errors.paymentMethod && <small id="paymentMethod-error" className="field-error">{errors.paymentMethod}</small>}
       </label>}
-      {needsPayment && <p id="payment-note" className="form-privacy wide">Enis emails the payment details. You’ll receive the Discord invite once payment is confirmed.</p>}
+      {needsPayment && <p id="payment-note" className="form-privacy wide">No payment is taken here. Enis emails the payment details and sends the Discord invite once payment is confirmed.</p>}
 
       <label className="wide">
         <span>Message</span>
@@ -268,7 +269,7 @@ export function ContactForm() {
 
       <div className="form-actions wide">
         <button className="button button--primary" type="submit" disabled={state === "loading" || state === "ready"}>
-          {state === "loading" ? "Sending…" : "Send email"}
+          {state === "loading" ? "Sending…" : needsPayment ? "Send request" : "Send email"}
         </button>
       </div>
 

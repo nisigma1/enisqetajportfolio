@@ -25,13 +25,10 @@ function CurriculumIntroduction() {
       />
       <p className="section-label">02 / Applied learning</p>
       <h2 id="crypto-curriculum-title">Crypto Markets Curriculum</h2>
-      <p className="curriculum-introduction__title">
-        A structured foundation in crypto markets.
-      </p>
       <p className="curriculum-introduction__copy">
-        Completed a practical Crypto School curriculum covering blockchain
-        technology, major crypto networks, security, market analysis, risk
-        management, decentralized finance and investor behavior.
+        At Crypto School I studied blockchain networks and security, technical
+        and fundamental analysis, risk management, decentralized finance and
+        investor behavior.
       </p>
       <p className="curriculum-introduction__status">
         <span aria-hidden="true" />

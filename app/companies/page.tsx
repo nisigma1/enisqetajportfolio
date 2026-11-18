@@ -4,6 +4,8 @@ import { InnerPageShell } from "@/components/layout/InnerPageShell";
 import { Malera } from "@/components/sections/DefinitiveSections";
 import { Ferrofluid } from "@/components/ui/Ferrofluid";
 import { FoldText } from "@/components/ui/FoldText";
+import { duoBarProject } from "@/data/duo-bar";
+import { barberProject } from "@/data/site";
 import { baseStructuredData, routeSeo } from "@/lib/seo";
 
 export const dynamic = "force-static";
@@ -17,9 +19,21 @@ export const metadata: Metadata = {
 };
 
 const capabilities = [
-  ["Websites and booking", "Service websites, portfolios and online booking for customers."],
-  ["Business software", "Web apps, point-of-sale systems and interfaces for working with data."],
-  ["AI and automation", "AI applications, assistants and bots for work that would otherwise be done by hand."],
+  {
+    name: "Websites and booking",
+    description: "A booking website where clients choose a service, barber and appointment time in Albanian or English.",
+    project: barberProject,
+  },
+  {
+    name: "Business software",
+    description: "An offline point-of-sale system that bar staff use to take orders by table, track stock and check reports.",
+    project: duoBarProject,
+  },
+  {
+    name: "AI and automation",
+    description: "Custom tools for repetitive work, such as sorting inquiries or moving information between apps.",
+    project: null,
+  },
 ] as const;
 
 export default function CompaniesPage() {
@@ -38,8 +52,14 @@ export default function CompaniesPage() {
             <Link className="portfolio-text-link" href="/work">See the case studies</Link>
           </div>
           <dl>
-            {capabilities.map(([name, description]) => (
-              <div key={name}><dt>{name}</dt><dd>{description}</dd></div>
+            {capabilities.map(({ name, description, project }) => (
+              <div key={name}>
+                <dt>{name}</dt>
+                <dd>
+                  <p>{description}</p>
+                  {project && <Link className="portfolio-text-link" href={`/work/${project.slug}`}>{project.title} case study</Link>}
+                </dd>
+              </div>
             ))}
           </dl>
         </section>

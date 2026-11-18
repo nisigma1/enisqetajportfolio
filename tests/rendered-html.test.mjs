@@ -30,10 +30,14 @@ test("server-renders the complete identity homepage", async () => {
     new RegExp(`rel="canonical" href="${publicOrigin.replaceAll(".", "\\.")}/"`),
   );
   assert.match(html, /Kosovo-based crypto trader, financial-markets researcher and AI product builder/);
-  assert.equal((html.match(/alt="Enis Qetaj, financial-markets researcher and AI product builder from Kosovo"/g) ?? []).length, 1);
+  assert.equal((html.match(/alt="Portrait of Enis Qetaj"/g) ?? []).length, 1);
   assert.match(html, /<source media="\(max-width: 479px\)" srcSet="\/images\/enis\/enis-portrait-purple-compact\.webp"/i);
   assert.match(html, /--pixel-source-compact:url\([^)]*\/images\/enis\/enis-portrait-purple-compact\.webp[^)]*\)/);
   assert.match(html, /class="author-artifact__orbit" aria-hidden="true"/);
+  assert.match(html, /<button[^>]*class="theme-toggle"[^>]*>Switch the vibe<\/button>/);
+  assert.match(html, /localStorage\.getItem\('enis-vibe'\)/);
+  assert.match(html, /dataset\.vibe=/);
+  assert.doesNotMatch(html, /animated-theme-toggler__icons/);
   assert.equal((html.match(/data-text-repel=""/g) ?? []).length, 1);
   assert.equal(
     (html.match(/class="pixel-canvas portfolio-pixel-field"/g) ?? []).length,
@@ -43,7 +47,8 @@ test("server-renders the complete identity homepage", async () => {
   assert.doesNotMatch(html, /class="visually-hidden">Enis Qetaj<\/span>/);
   const main = html.match(/<main\b[\s\S]*?<\/main>/)?.[0];
   assert.ok(main);
-  assert.match(main, /I build websites and software through Malera Studio\./);
+  assert.match(main, /From booking a chair to closing a tab\./);
+  assert.match(main, /Through Malera Studio, I build websites, booking systems, and offline point-of-sale software for businesses\./);
   assert.match(main, /href="\/work"[^>]*>View selected work/);
   assert.match(main, /href="\/pricing"[^>]*>Crypto Analysis/);
   assert.match(main, /href="\/research"[^>]*>Read my research approach/);
@@ -112,7 +117,7 @@ test("publishes Crypto School learning without false credential claims", async (
 test("renders indexed public routes with route-specific canonicals", async () => {
   const worker = await getWorker();
   for (const [route, expected] of [
-    ["/background", "A connected professional foundation"],
+    ["/background", "Education and applied experience"],
     ["/companies", "Malera Studio"],
     ["/pricing", "Monthly research plans"],
     ["/about", "About Enis Qetaj"],
@@ -161,6 +166,8 @@ test("companies explains the studio and renders an accessible binary fallback wi
   assert.match(html, /Websites/);
   assert.match(html, /AI and automation/);
   assert.match(html, /href="\/work"[^>]*>See the case studies/);
+  assert.match(html, /href="\/work\/barber-brothers"[^>]*>Barber Brothers(?:<!-- -->)? case study/);
+  assert.match(html, /href="\/work\/duo-bar"[^>]*>DUO Bar(?:<!-- -->)? case study/);
   assert.doesNotMatch(html, /malera-proof|\/projects\/(barber-brothers|hixhame-tina|besiana-photography|duo-bar)\//);
 });
 
@@ -180,14 +187,16 @@ test("work keeps all four real project proofs on the dedicated work route", asyn
     assert.equal([...main.matchAll(new RegExp(`href="/work/${slug}"`, "g"))].length, 1, slug);
     assert.match(main, new RegExp(`id="${slug}"`));
   }
-  assert.equal([...main.matchAll(/<img\b/g)].length, 4);
+  assert.equal([...main.matchAll(/<img\b/g)].length, 5, "one project cover each plus the DUO detail");
   assert.doesNotMatch(main, /project-index|class="meteors/);
   assert.match(html, /besiana-interface-1440\.webp/);
   assert.doesNotMatch(html, /besiana-artwork__phone/);
   assert.match(html, /href="\/work\/besiana-photography"/);
   assert.match(html, /href="\/work\/duo-bar"/);
-  assert.match(html, /\/projects\/duo-bar\/terminal-720\.webp/);
-  assert.doesNotMatch(html, /\/projects\/duo-bar\/(orders|at-the-bar)\.webp/);
+  assert.match(main, /View DUO Bar case study/);
+  assert.match(main, /\/projects\/duo-bar\/at-the-bar\.webp/);
+  assert.match(main, /\/projects\/duo-bar\/terminal-720\.webp/);
+  assert.doesNotMatch(main, /\/projects\/duo-bar\/orders\.webp/);
 });
 
 test("DUO Bar publishes the offline POS workflow and three venue photos without pricing", async () => {
@@ -205,6 +214,11 @@ test("DUO Bar publishes the offline POS workflow and three venue photos without 
   }
   const visibleCaseStudy = html.match(/<main\b[\s\S]*?<\/main>/)?.[0];
   assert.ok(visibleCaseStudy);
+  for (const step of ["A shift at DUO Bar", "Select a table", "Add to the order", "Close the bill", "Application development"]) {
+    assert.ok(visibleCaseStudy.includes(step), step);
+  }
+  assert.match(visibleCaseStudy, /separate examples/);
+  assert.doesNotMatch(visibleCaseStudy, /<video\b|<iframe\b/);
   assert.doesNotMatch(visibleCaseStudy, /[€£$]\s*\d+|\d+\s*(?:EUR|USD)\b/);
 });
 
@@ -304,7 +318,11 @@ test("publishes three factual monthly pricing plans and request links", async ()
     assert.match(html, new RegExp(`href="/contact\\?service=crypto-analysis&amp;plan=${plan}#contact-form"`));
   }
   assert.match(html, /Research assistance helps you understand the analysis/);
-  assert.match(html, /Clear from plan to Discord\./);
+  assert.match(html, /From request to Discord/);
+  assert.match(html, /Monthly plan overview/);
+  assert.equal((html.match(/>Request this plan</g) ?? []).length, 3);
+  assert.match(html, /Bitcoin MVRV market context/);
+  assert.match(html, /href="https:\/\/x\.com\/N1sigma"[^>]*>View NISIGMA’s profile on X/);
   assert.match(html, /bank transfer \(Raiffeisen\) or crypto payment/i);
   assert.match(html, /Once payment is confirmed, Enis shares the Discord invite by email\./);
   assert.match(html, /1 live research session per week/);

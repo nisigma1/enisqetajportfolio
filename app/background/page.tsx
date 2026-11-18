@@ -8,6 +8,7 @@ import { ActionMark } from "@/components/ui/ActionMark";
 import { NumberTicker } from "@/components/ui/NumberTicker";
 import { backgroundChapters } from "@/data/site";
 import { baseStructuredData, routeSeo } from "@/lib/seo";
+import "@/styles/background-journey.css";
 
 export const dynamic = "force-static";
 
@@ -24,16 +25,15 @@ export default function BackgroundPage() {
     <>
       <InnerPageShell
         variant="background"
-        eyebrow="Background / Knowledge journey"
+        eyebrow="Background"
         title={<>Marketing.<br />Finance.<br />Crypto Markets.</>}
-        summary="Education and applied training that shape how I understand markets, businesses and digital systems."
-        meta={["Education", "Applied learning", "Professional practice"]}
+        summary="I studied marketing, am pursuing a master’s in banking and finance, and completed training in crypto markets and AI-assisted social media."
+        meta={["University of Prishtina", "Crypto School", "Hallakate"]}
       >
         <section className="inner-section background-journey" aria-labelledby="background-journey-title">
           <header className="inner-section__header">
-            <p className="inner-section__label">01 / Progression</p>
-            <h2 id="background-journey-title">A connected professional foundation.</h2>
-            <p>Audience understanding connects financial systems and crypto-market research with AI-assisted social media practice.</p>
+            <p className="inner-section__label">01 / Background</p>
+            <h2 id="background-journey-title">Education and applied experience</h2>
           </header>
 
           <ol className="knowledge-journey">
@@ -42,7 +42,6 @@ export default function BackgroundPage() {
                 <div className="journey-field__identity">
                   <span className="journey-field__number">{chapter.number}</span>
                   <h3>{chapter.field}</h3>
-                  <p className="journey-field__status"><span aria-hidden="true" />{chapter.status}</p>
                 </div>
 
                 <div className="journey-field__education">
@@ -55,6 +54,9 @@ export default function BackgroundPage() {
                     <p>{chapter.degree}</p>
                     <strong>{chapter.institution}</strong>
                     <span>{chapter.faculty}</span>
+                    <p className="journey-field__status" data-in-progress={chapter.status === "In progress" ? "true" : undefined}>
+                      <span aria-hidden="true" />{chapter.status}
+                    </p>
                   </div>
                 </div>
 
@@ -66,7 +68,7 @@ export default function BackgroundPage() {
                 </div>
 
                 <div className="journey-field__experience">
-                  <span>Experience</span>
+                  <span>Applied experience</span>
                   <strong>
                     <NumberTicker value={Number.parseInt(chapter.experience, 10)} suffix="+" />
                     <span>years</span>
@@ -81,7 +83,7 @@ export default function BackgroundPage() {
         <CryptoCurriculumSection />
 
         <section className="inner-section inner-final-cta">
-          <div><p className="inner-section__label">03 / Continue</p><h2>See how the foundation becomes working products.</h2></div>
+          <div><p className="inner-section__label">03 / Continue</p><h2>See the software I’ve built.</h2></div>
           <div><Link className="button button--primary" href="/work">View selected work <ActionMark direction="forward" /></Link></div>
         </section>
       </InnerPageShell>

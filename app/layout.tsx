@@ -5,6 +5,7 @@ import { Footer } from "@/components/layout/Footer";
 import { RouteTransitionProvider } from "@/components/transition/RouteTransitionProvider";
 import { ConsentAnalytics } from "@/components/analytics/ConsentAnalytics";
 import { ogImage } from "@/lib/seo";
+import { themeBootstrap } from "@/lib/vibes";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -56,8 +57,6 @@ export const viewport: Viewport = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const themeScript =
-    "try{var t=localStorage.getItem('enis-theme');var d=t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.dataset.theme=d}catch(e){}";
   const scrollScript =
     "(()=>{try{history.scrollRestoration='manual';if(!location.hash&&performance.getEntriesByType('navigation')[0]?.type!=='back_forward')scrollTo(0,0)}catch(e){}})();";
   const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim();
@@ -69,7 +68,7 @@ export default function RootLayout({
       <head>
         <link rel="preload" href="/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preload" href="/fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: themeBootstrap }} />
         <script dangerouslySetInnerHTML={{ __html: scrollScript }} />
       </head>
       <body>
