@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="144" viewBox="0 0 240 144">
+  <g font-family="monospace" font-size="12" letter-spacing="2.8" fill="#749aff">
+    <text x="3" y="17" opacity=".78">010011 101100 001011</text>
+    <text x="18" y="41" opacity=".52">110010 001101 101010</text>
+    <text x="-4" y="65" opacity=".84">001101 110010 010101</text>
+    <text x="12" y="89" opacity=".63">101100 010011 111000</text>
+    <text x="5" y="113" opacity=".75">011010 101001 000101</text>
+    <text x="23" y="137" opacity=".55">100110 010110 110001</text>
+  </g>
+</svg>

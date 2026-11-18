@@ -169,6 +169,7 @@ export function DeferredBuildNavigator() {
 
 export function DeferredLetterGlitch() {
   const [enabled, setEnabled] = useState(false);
+  const fallback = <div className="letter-glitch letter-glitch--deferred" aria-hidden="true" />;
   useEffect(() => {
     const query = window.matchMedia("(min-width: 768px) and (prefers-reduced-motion: no-preference)");
     const update = () => setEnabled(query.matches);
@@ -176,18 +177,18 @@ export function DeferredLetterGlitch() {
     query.addEventListener("change", update);
     return () => query.removeEventListener("change", update);
   }, []);
-  if (!enabled) return <div className="malera-practice__glitch letter-glitch--deferred" aria-hidden="true" />;
+  if (!enabled) return <div className="malera-practice__glitch">{fallback}</div>;
   return (
     <NearViewport
       className="malera-practice__glitch"
-      fallback={<div className="letter-glitch letter-glitch--deferred" aria-hidden="true" />}
+      fallback={fallback}
     >
       <LazyLetterGlitch
         glitchColors={["#315df2", "#5f7cff", "#8facff", "#dce5ff"]}
         glitchSpeed={64}
         outerVignette
         smooth
-        characters="MALERASTUDIO0123456789+-/[]{}<>"
+        characters="01"
       />
     </NearViewport>
   );

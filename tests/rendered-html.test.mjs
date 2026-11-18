@@ -158,6 +158,8 @@ test("companies restores the building method and Malera relationship chapters", 
   assert.match(html, /When the problem needs a wider practice\./);
   assert.match(html, /03 \/ How Malera works/);
   assert.match(html, /05 \/ Company relationship/);
+  assert.match(html, /class="letter-glitch letter-glitch--deferred" aria-hidden="true"/);
+  assert.doesNotMatch(html, /<canvas[^>]*class="letter-glitch__canvas"/);
   assert.match(html, /Websites/);
   assert.match(html, /AI agents/);
   assert.match(html, /Selected proof/);
