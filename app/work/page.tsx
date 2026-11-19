@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { InnerPageShell } from "@/components/layout/InnerPageShell";
+import { DuoVenueFullSizeLink, DuoVenueImage } from "@/components/media/DuoVenueImage";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { barberProject, besianaProject, hixhameProject, siteConfig } from "@/data/site";
 import { duoBarProject } from "@/data/duo-bar";
@@ -27,8 +28,7 @@ type WorkEntry = {
   image: { src: string; srcSet?: string; avif?: string; width: number; height: number; alt: string };
 };
 
-const { terminal, venue } = duoBarProject.photos;
-const venuePreview = "/projects/duo-bar/at-the-bar-clear";
+const { terminal } = duoBarProject.photos;
 const projects: WorkEntry[] = [
   {
     project: barberProject,
@@ -68,22 +68,12 @@ export default function WorkArchive() {
             <article className={`work-entry ${styles.feature}`} aria-labelledby="duo-bar-title">
               <figure className={styles.venue}>
                 <div className={styles.venueFrame}>
-                  <picture>
-                    <source media="(max-width: 719px)" type="image/avif" srcSet={`${venuePreview}-720.avif`} />
-                    <source media="(max-width: 719px)" type="image/webp" srcSet={`${venuePreview}-720.webp`} />
-                    <img
-                      src={`${venuePreview}-720.webp`}
-                      srcSet={`${venuePreview}-720.webp 720w, ${venuePreview}-1440.webp 1440w`}
-                      sizes="(max-width: 719px) calc(100vw - 2rem), (max-width: 1792px) 57vw, 1060px"
-                      width={venue.width}
-                      height={venue.height}
-                      alt={venue.alt}
-                      fetchPriority="high"
-                      decoding="async"
-                    />
-                  </picture>
+                  <DuoVenueImage sizes="(max-width: 719px) calc(100vw - 2rem), 57vw" />
                 </div>
-                <figcaption>Malera POS on the counter at DUO Bar.</figcaption>
+                <figcaption>
+                  <span>Malera POS on the counter at DUO Bar.</span>
+                  <DuoVenueFullSizeLink />
+                </figcaption>
               </figure>
               <div className={styles.featureInfo}>
                 <p className="portfolio-kicker">Featured case study / Hospitality software</p>

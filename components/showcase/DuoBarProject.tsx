@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element -- Responsive derivatives of the supplied venue photographs. */
 import type { ReactNode } from "react";
 import Link from "next/link";
+import { DuoVenueFullSizeLink, DuoVenueImage } from "@/components/media/DuoVenueImage";
 import { duoBarProject as project } from "@/data/duo-bar";
 import styles from "./DuoBarProject.module.css";
 
@@ -12,10 +13,9 @@ type Photo = {
   alt: string;
 };
 
-function DuoPhoto({ photo, className, priority = false, sizes, children }: {
+function DuoPhoto({ photo, className, sizes, children }: {
   photo: Photo;
   className: string;
-  priority?: boolean;
   sizes?: string;
   children: ReactNode;
 }) {
@@ -29,8 +29,7 @@ function DuoPhoto({ photo, className, priority = false, sizes, children }: {
           width={photo.width}
           height={photo.height}
           alt={photo.alt}
-          loading={priority ? "eager" : "lazy"}
-          fetchPriority={priority ? "high" : undefined}
+          loading="lazy"
           decoding="async"
         />
       </div>
@@ -66,10 +65,18 @@ export function DuoBarCaseStudy() {
         </header>
 
         <div className={styles.stage}>
-          <DuoPhoto photo={project.photos.venue} className={styles.venue} priority>
-            <p className={styles.marker}>At the bar</p>
-            <p>Malera POS on the counter at DUO Bar.</p>
-          </DuoPhoto>
+          <figure className={styles.photo}>
+            <div className={`${styles.frame} ${styles.venue}`}>
+              <DuoVenueImage sizes="(max-width: 767px) calc(100vw - 2rem), 54vw" />
+            </div>
+            <figcaption className={styles.caption}>
+              <p className={styles.marker}>At the bar</p>
+              <div className={styles.venueCaption}>
+                <p>Malera POS on the counter at DUO Bar.</p>
+                <DuoVenueFullSizeLink />
+              </div>
+            </figcaption>
+          </figure>
 
           <DuoPhoto photo={project.photos.terminal} className={styles.terminal} sizes={detailSizes}>
             <h3><span className={styles.step}>01</span> Select a table</h3>

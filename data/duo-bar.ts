@@ -24,7 +24,16 @@ export const duoBarProject = {
       caption: "The floor plan shows open orders and reserved tables at a glance.",
     },
     venue: {
-      src: `${mediaRoot}/at-the-bar.webp`,
+      src: `${mediaRoot}/at-the-bar-clear-720.webp`,
+      compact: `${mediaRoot}/at-the-bar-clear-720.avif`,
+      large: `${mediaRoot}/at-the-bar-clear-1440.webp`,
+      // UHD export of the authentic venue photo, not a native UHD capture.
+      uhd: {
+        src: `${mediaRoot}/at-the-bar-uhd.webp`,
+        avif: `${mediaRoot}/at-the-bar-uhd.avif`,
+        width: 3840,
+        height: 2160,
+      },
       width: 720,
       height: 1280,
       alt: "Malera POS installed on the counter inside DUO Bar",

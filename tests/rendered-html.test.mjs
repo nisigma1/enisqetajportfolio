@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { stat } from "node:fs/promises";
 import test from "node:test";
 
 async function getWorker() {
@@ -12,6 +13,19 @@ const env = {
 };
 const ctx = { waitUntil() {}, passThroughOnException() {} };
 const publicOrigin = "https://enisqetaj.com";
+
+function assertDuoVenuePicture(main) {
+  const picture = main.match(/<picture>[^<]*<source[^>]+at-the-bar-uhd\.avif[^>]*>[\s\S]*?<\/picture>/)?.[0];
+  assert.ok(picture, "visible responsive venue picture");
+  assert.match(picture, /<source media="\(min-width: 1024px\)" type="image\/avif" srcSet="\/projects\/duo-bar\/at-the-bar-uhd\.avif" width="3840" height="2160"/i);
+  assert.match(picture, /<source media="\(min-width: 1024px\)" type="image\/webp" srcSet="\/projects\/duo-bar\/at-the-bar-uhd\.webp" width="3840" height="2160"/i);
+  assert.match(picture, /<source media="\(max-width: 719px\)" type="image\/avif" srcSet="\/projects\/duo-bar\/at-the-bar-clear-720\.avif"/i);
+  assert.match(picture, /<source media="\(max-width: 719px\)" type="image\/webp" srcSet="\/projects\/duo-bar\/at-the-bar-clear-720\.webp"/i);
+  assert.match(picture, /srcSet="\/projects\/duo-bar\/at-the-bar-clear-720\.webp 720w, \/projects\/duo-bar\/at-the-bar-clear-1440\.webp 1440w"/i);
+  assert.match(picture, /<img[^>]+src="\/projects\/duo-bar\/at-the-bar-clear-720\.webp"/i);
+  assert.match(main, /<a[^>]+href="\/projects\/duo-bar\/at-the-bar-uhd\.webp"[^>]*>View 4K photo<\/a>/);
+  assert.doesNotMatch(main, /\/projects\/duo-bar\/at-the-bar\.webp/);
+}
 
 test("server-renders the complete identity homepage", async () => {
   const worker = await getWorker();
@@ -194,9 +208,7 @@ test("work keeps all four real project proofs on the dedicated work route", asyn
   assert.match(html, /href="\/work\/besiana-photography"/);
   assert.match(html, /href="\/work\/duo-bar"/);
   assert.match(main, /View DUO Bar case study/);
-  assert.match(main, /srcSet="\/projects\/duo-bar\/at-the-bar-clear-720\.webp 720w, \/projects\/duo-bar\/at-the-bar-clear-1440\.webp 1440w"/i);
-  assert.match(main, /<source media="\(max-width: 719px\)" type="image\/avif" srcSet="\/projects\/duo-bar\/at-the-bar-clear-720\.avif"/i);
-  assert.match(main, /<source media="\(max-width: 719px\)" type="image\/webp" srcSet="\/projects\/duo-bar\/at-the-bar-clear-720\.webp"/i);
+  assertDuoVenuePicture(main);
   assert.match(main, /\/projects\/duo-bar\/terminal-720\.webp/);
   assert.doesNotMatch(main, /\/projects\/duo-bar\/orders\.webp/);
 });
@@ -211,17 +223,27 @@ test("DUO Bar publishes the offline POS workflow and three venue photos without 
   for (const detail of ["monthly subscription", "visual floor plan", "Coffee stock is deducted automatically", "PINs", "sales, expenses and profit", "SQLite", "GitHub"]) {
     assert.ok(html.includes(detail), detail);
   }
-  for (const path of ["terminal.webp", "orders.webp", "at-the-bar.webp"]) {
+  for (const path of ["terminal.webp", "orders.webp"]) {
     assert.match(html, new RegExp(`<img[^>]+src="/projects/duo-bar/${path.replace(".", "\\.")}"`));
   }
   const visibleCaseStudy = html.match(/<main\b[\s\S]*?<\/main>/)?.[0];
   assert.ok(visibleCaseStudy);
+  assertDuoVenuePicture(visibleCaseStudy);
+  assert.equal([...visibleCaseStudy.matchAll(/<img\b/g)].length, 3, "only the three authentic story photos");
   for (const step of ["A shift at DUO Bar", "Select a table", "Add to the order", "Close the bill", "Application development"]) {
     assert.ok(visibleCaseStudy.includes(step), step);
   }
   assert.match(visibleCaseStudy, /separate examples/);
   assert.doesNotMatch(visibleCaseStudy, /<video\b|<iframe\b/);
   assert.doesNotMatch(visibleCaseStudy, /[€£$]\s*\d+|\d+\s*(?:EUR|USD)\b/);
+});
+
+test("DUO Bar packages both UHD files within the image transfer budget", async () => {
+  for (const [format, budget] of [["avif", 200_000], ["webp", 350_000]]) {
+    const asset = new URL(`../dist/projects/duo-bar/at-the-bar-uhd.${format}`, import.meta.url);
+    const { size } = await stat(asset);
+    assert.ok(size > 0 && size <= budget, `${format}: ${size} bytes (budget ${budget})`);
+  }
 });
 
 test("publishes project metadata and correct intrinsic media dimensions", async () => {

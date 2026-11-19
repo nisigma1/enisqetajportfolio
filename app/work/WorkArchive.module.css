@@ -37,7 +37,6 @@
 
 .venueFrame img {
   object-position: center 72%;
-  filter: contrast(1.06) brightness(1.04);
 }
 
 .venue figcaption,
@@ -48,8 +47,17 @@
 }
 
 .venue figcaption {
-  padding: 0.7rem clamp(0.85rem, 2.1vw, 1.75rem);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 1rem;
+  padding: 0.3rem clamp(0.85rem, 2.1vw, 1.75rem);
   border-top: 1px solid var(--border);
+}
+
+.venue figcaption span {
+  padding-block: 0.35rem;
 }
 
 .featureInfo {
