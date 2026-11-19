@@ -201,16 +201,43 @@ test("work keeps all four real project proofs on the dedicated work route", asyn
     assert.equal([...main.matchAll(new RegExp(`href="/work/${slug}"`, "g"))].length, 1, slug);
     assert.match(main, new RegExp(`id="${slug}"`));
   }
-  assert.equal([...main.matchAll(/<img\b/g)].length, 5, "one project cover each plus the DUO detail");
+  assert.equal([...main.matchAll(/<img\b/g)].length, 4, "one authentic cover per project");
   assert.doesNotMatch(main, /project-index|class="meteors/);
   assert.match(html, /besiana-interface-1440\.webp/);
   assert.doesNotMatch(html, /besiana-artwork__phone/);
   assert.match(html, /href="\/work\/besiana-photography"/);
   assert.match(html, /href="\/work\/duo-bar"/);
   assert.match(main, /View DUO Bar case study/);
-  assertDuoVenuePicture(main);
-  assert.match(main, /\/projects\/duo-bar\/terminal-720\.webp/);
-  assert.doesNotMatch(main, /\/projects\/duo-bar\/orders\.webp/);
+  assert.match(main, /<source type="image\/avif" srcSet="\/projects\/duo-bar\/malera-pos-at-duo-720\.avif 720w,[^"]+malera-pos-at-duo-3024\.avif 3024w"/i);
+  assert.match(main, /<img[^>]+src="\/projects\/duo-bar\/malera-pos-at-duo-1440\.webp"[^>]*width="3024" height="2184" alt="Malera POS on the DUO Bar terminal/);
+  assert.doesNotMatch(main, /View 4K photo|Malera POS on the counter at DUO Bar|\/projects\/duo-bar\/(?:at-the-bar|terminal|orders)[^"]*\.webp/);
+});
+
+test("publishes the single DUO cover and official Malera logo in optimized formats", async () => {
+  const entries = [["images/education/malera-studio-logo.webp", 20_000]];
+  for (const [width, avif, webp] of [[720, 45_000, 55_000], [1440, 105_000, 145_000], [2160, 190_000, 270_000], [3024, 370_000, 480_000]]) {
+    entries.push(["projects/duo-bar/malera-pos-at-duo-" + width + ".avif", avif]);
+    entries.push(["projects/duo-bar/malera-pos-at-duo-" + width + ".webp", webp]);
+  }
+  for (const [path, max] of entries) {
+    const { size } = await stat(new URL("../dist/" + path, import.meta.url));
+    assert.ok(size > 0 && size <= max, path + ": " + size + " bytes (budget " + max + ")");
+  }
+});
+
+test("Background identifies Malera Studio as professional experience, not a qualification", async () => {
+  const worker = await getWorker();
+  const response = await worker.fetch(new Request(publicOrigin + "/background"), env, ctx);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  const row = html.match(/<li id="malera-studio-experience"[\s\S]*?<\/ul>[\s\S]*?<\/li>/)?.[0];
+  assert.ok(row);
+  for (const detail of ["Malera Studio", "Professional experience", "Founder", "Apps", "Websites", "Workflow automation", "AI agents"]) {
+    assert.ok(row.includes(detail), detail);
+  }
+  assert.match(row, /<img[^>]+src="\/images\/education\/malera-studio-logo\.webp"[^>]+alt="Malera Studio logo"/);
+  assert.match(row, /href="\/companies"/);
+  assert.doesNotMatch(row, /\byears\b|degree|certificate|journey-field__status/i);
 });
 
 test("DUO Bar publishes the offline POS workflow and three venue photos without pricing", async () => {

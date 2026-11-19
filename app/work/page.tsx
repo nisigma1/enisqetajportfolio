@@ -2,7 +2,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { InnerPageShell } from "@/components/layout/InnerPageShell";
-import { DuoVenueFullSizeLink, DuoVenueImage } from "@/components/media/DuoVenueImage";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { barberProject, besianaProject, hixhameProject, siteConfig } from "@/data/site";
 import { duoBarProject } from "@/data/duo-bar";
@@ -28,7 +27,11 @@ type WorkEntry = {
   image: { src: string; srcSet?: string; avif?: string; width: number; height: number; alt: string };
 };
 
-const { terminal } = duoBarProject.photos;
+const duoCover = "/projects/duo-bar/malera-pos-at-duo";
+const duoCoverWidths = [720, 1440, 2160, 3024];
+const duoCoverSizes = "(max-width: 859px) calc(100vw - 2rem), (max-width: 1792px) 57vw, 1012px";
+const duoCoverSources = (format: "avif" | "webp") =>
+  duoCoverWidths.map((width) => `${duoCover}-${width}.${format} ${width}w`).join(", ");
 const projects: WorkEntry[] = [
   {
     project: barberProject,
@@ -66,26 +69,24 @@ export default function WorkArchive() {
         <ul className={`work-gallery ${styles.gallery}`} aria-label="Project case studies">
           <li id={duoBarProject.slug} className={styles.featureItem}>
             <article className={`work-entry ${styles.feature}`} aria-labelledby="duo-bar-title">
-              <figure className={styles.venue}>
-                <div className={styles.venueFrame}>
-                  <DuoVenueImage sizes="(max-width: 719px) calc(100vw - 2rem), 57vw" />
-                </div>
-                <figcaption>
-                  <span>Malera POS on the counter at DUO Bar.</span>
-                  <DuoVenueFullSizeLink />
-                </figcaption>
-              </figure>
+              <picture className={styles.cover}>
+                <source type="image/avif" srcSet={duoCoverSources("avif")} sizes={duoCoverSizes} />
+                <img
+                  src={`${duoCover}-1440.webp`}
+                  srcSet={duoCoverSources("webp")}
+                  sizes={duoCoverSizes}
+                  width={3024}
+                  height={2184}
+                  alt="Malera POS on the DUO Bar terminal, with the floor plan and the order panel for table J10"
+                  fetchPriority="high"
+                  decoding="async"
+                />
+              </picture>
               <div className={styles.featureInfo}>
                 <p className="portfolio-kicker">Featured case study / Hospitality software</p>
                 <h2 id="duo-bar-title">{duoBarProject.title}</h2>
                 <p className={styles.featureSummary}>Staff use Malera POS to take orders, close bills and track stock, even when the internet is down.</p>
                 <Link className="button button--primary" href={`/work/${duoBarProject.slug}`}>View DUO Bar case study</Link>
-                <figure className={styles.detail}>
-                  <div className={styles.detailFrame}>
-                    <img src={terminal.src} srcSet={`${terminal.small} 720w, ${terminal.src} ${terminal.width}w`} sizes="(max-width: 639px) 88vw, 22rem" width={terminal.width} height={terminal.height} alt={terminal.alt} loading="lazy" decoding="async" />
-                  </div>
-                  <figcaption>The floor plan stays visible beside the order.</figcaption>
-                </figure>
               </div>
             </article>
           </li>

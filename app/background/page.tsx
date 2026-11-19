@@ -77,6 +77,37 @@ export default function BackgroundPage() {
               </li>
             ))}
             <SmmAiCertification />
+            <li id="malera-studio-experience" className="journey-field journey-field--studio">
+              <div className="journey-field__identity">
+                <span className="journey-field__number">05</span>
+                <h3>Malera Studio</h3>
+              </div>
+
+              <div className="journey-field__education">
+                <img src="/images/education/malera-studio-logo.webp" width="384" height="384" alt="Malera Studio logo" loading="lazy" decoding="async" />
+                <div>
+                  <p>Professional experience</p>
+                  <strong>Digital product studio</strong>
+                  <span className="journey-field__studio-summary">I developed these skills by building tools for businesses.</span>
+                </div>
+              </div>
+
+              <div className="journey-field__skills">
+                <p>Hands-on practice</p>
+                <ul aria-label="What I learned to build at Malera Studio">
+                  <li>Apps</li>
+                  <li>Websites</li>
+                  <li>Workflow automation</li>
+                  <li>AI agents</li>
+                </ul>
+              </div>
+
+              <div className="journey-field__experience journey-field__studio-role">
+                <span>Role</span>
+                <strong>Founder</strong>
+                <Link className="portfolio-text-link" href="/companies">About the studio</Link>
+              </div>
+            </li>
           </ol>
         </section>
 

@@ -19,3 +19,34 @@
   border: 1px solid var(--accent);
   background: transparent;
 }
+
+.background-journey .journey-field--studio {
+  background-color: var(--background);
+  color: var(--text-primary);
+}
+
+.background-journey .journey-field--studio .journey-field__education img {
+  padding: 0;
+  background: transparent;
+}
+
+.background-journey .journey-field__studio-summary,
+.background-journey .journey-field--studio .journey-field__skills li {
+  font-size: 0.875rem;
+}
+
+.background-journey .journey-field__studio-role strong {
+  font-size: clamp(1.55rem, 2.4vw, 2.65rem);
+}
+
+.background-journey .journey-field__studio-role a {
+  grid-column: 1 / -1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .background-journey .journey-field--studio,
+  .background-journey .journey-field--studio * {
+    /* Switch the row's ink and surface together, including on WebKit. */
+    transition-property: none;
+  }
+}
