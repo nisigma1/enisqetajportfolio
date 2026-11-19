@@ -483,9 +483,13 @@ html[data-vibe-transition="active"]::view-transition-group(root) {
   to { clip-path: inset(0 0 0 0); }
 }
 
-html[data-vibe-transition="fallback"],
-html[data-vibe-transition="fallback"] :is(body, .masthead, .mobile-navigation, .site-footer, .menu-button, .button, .theme-toggle) {
-  transition: background-color 480ms ease-in-out, color 480ms ease-in-out, border-color 480ms ease-in-out;
+/* Do not let per-component transitions blend the foreground and background
+   while capturing a snapshot or applying a palette without the snapshot API. */
+html[data-vibe-transition],
+html[data-vibe-transition] *,
+html[data-vibe-transition] *::before,
+html[data-vibe-transition] *::after {
+  transition: none !important;
 }
 
 .menu-button {
@@ -1361,8 +1365,20 @@ html[data-route-transition="active"] {
 
   .masthead-actions {
     gap: var(--space-2);
-    flex: none;
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: 100%;
+    justify-content: flex-end;
     margin-inline-start: auto;
+  }
+
+  .masthead-actions .theme-toggle,
+  .mobile-navigation__controls .theme-toggle {
+    justify-content: center;
+    min-width: 0;
+    text-align: center;
+    overflow-wrap: anywhere;
+    white-space: normal;
   }
 
   .masthead-actions .menu-button {
@@ -2729,5 +2745,56 @@ html[data-route-transition="active"] {
 
   .mobile-navigation-foot > a {
     min-height: 3.8rem;
+  }
+}
+
+@media (max-width: 599px) {
+  .mobile-navigation__scroll {
+    grid-template-rows: max-content minmax(max-content, 1fr) max-content;
+  }
+
+  .mobile-navigation-top {
+    flex-wrap: wrap;
+  }
+
+  .mobile-navigation-top .mobile-navigation__identity {
+    max-width: 100%;
+  }
+
+  .mobile-navigation__identity strong {
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+
+  .mobile-navigation-top .mobile-navigation__controls {
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: 100%;
+    margin-inline-start: auto;
+  }
+
+  .mobile-navigation__controls .mobile-navigation__close {
+    flex: none;
+  }
+
+  .mobile-navigation__staircase {
+    align-content: start;
+  }
+
+  .mobile-navigation nav .mobile-navigation__route:nth-child(n) {
+    grid-template-columns: min(clamp(2rem, 8vw, 3.25rem), 10vw) minmax(0, 1fr) min(2rem, 10vw);
+    gap: min(clamp(0.5rem, 2.5vw, 1.25rem), 3vw);
+    padding-inline: min(clamp(1rem, 4vw, 2rem), 5vw);
+  }
+
+  .mobile-navigation__route-arrow {
+    width: min(1.7rem, 10vw);
+    height: min(1.7rem, 10vw);
+  }
+
+  .mobile-navigation__label,
+  .mobile-navigation-foot strong {
+    overflow-wrap: anywhere;
+    white-space: normal;
   }
 }

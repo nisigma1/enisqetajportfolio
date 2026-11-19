@@ -53,11 +53,12 @@ function DetailIcon({ type }: DetailIconProps) {
   );
 }
 
-function BarberBrothersIdentity() {
+function BarberBrothersIdentity({ titleLevel }: { titleLevel: "h1" | "h2" }) {
+  const Title = titleLevel;
   return (
     <div className="bb-showcase__identity">
       <p className="bb-showcase__eyebrow">Website design</p>
-      <h3 id="barber-brothers-showcase-title">Barber<br />Brothers</h3>
+      <Title id="barber-brothers-showcase-title" className="bb-showcase__heading">Barber<br />Brothers</Title>
       <p className="bb-showcase__subtitle">Premium barbershop website design</p>
 
       <p className="bb-showcase__philosophy">
@@ -151,12 +152,14 @@ export function BarberBrothersShowcase({
   priority = false,
   variant = "portfolio",
 }: BarberBrothersShowcaseProps) {
+  const cardTitleLevel = variant === "cover" ? "h2" : "h3";
+  const CardTitle = cardTitleLevel;
   return (
     <section
       className={`bb-showcase bb-showcase--${variant}`}
       aria-labelledby="barber-brothers-showcase-title"
     >
-      <BarberBrothersIdentity />
+      <BarberBrothersIdentity titleLevel={variant === "cover" ? "h1" : "h2"} />
 
       <div className="bb-showcase__product">
         <div className="bb-showcase__laptop" aria-label="Barber Brothers homepage">
@@ -171,7 +174,7 @@ export function BarberBrothersShowcase({
 
         <div className="bb-showcase__proof-grid">
           <article className="bb-showcase__proof-card">
-            <div><p>Our Work</p><h4>Real Details</h4><em>Precise cuts. Quiet craft.</em></div>
+            <div><p>Our Work</p><CardTitle className="bb-showcase__card-title">Real Details</CardTitle><em>Precise cuts. Quiet craft.</em></div>
             <ProjectCapture
               asset={projectAssets.work}
               alt="Barber Brothers gallery showing authentic haircut work."
@@ -179,7 +182,7 @@ export function BarberBrothersShowcase({
             />
           </article>
           <article className="bb-showcase__proof-card">
-            <div><p>BROTHERSPACE</p><h4>The Space</h4><em>Quiet light. Controlled detail.</em></div>
+            <div><p>BROTHERSPACE</p><CardTitle className="bb-showcase__card-title">The Space</CardTitle><em>Quiet light. Controlled detail.</em></div>
             <ProjectCapture
               asset={projectAssets.space}
               alt="Barber Brothers shop interior in Fushe Kosove."
@@ -190,7 +193,7 @@ export function BarberBrothersShowcase({
       </div>
 
       <article className="bb-showcase__booking">
-        <header><p>Product proof</p><h4>Book Online</h4><span>Service · Barber · Date · Time · Details</span></header>
+        <header><p>Product proof</p><CardTitle className="bb-showcase__card-title">Book Online</CardTitle><span>Service · Barber · Date · Time · Details</span></header>
         <ProjectCapture
           asset={projectAssets.booking}
           alt="Barber Brothers online booking interface with service, barber, date and customer-detail steps."

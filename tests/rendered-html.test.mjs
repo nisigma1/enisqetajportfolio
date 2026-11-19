@@ -57,8 +57,8 @@ test("server-renders the complete identity homepage", async () => {
     (html.match(/class="pixel-canvas portfolio-pixel-field"/g) ?? []).length,
     1,
   );
-  assert.match(html, /data-text-repel=""[^>]*aria-label="Enis Qetaj"/);
-  assert.doesNotMatch(html, /class="visually-hidden">Enis Qetaj<\/span>/);
+  assert.match(html, /data-text-repel=""[^>]*><span class="visually-hidden">Enis Qetaj<\/span>/);
+  assert.doesNotMatch(html, /data-text-repel=""[^>]*aria-label=/);
   const main = html.match(/<main\b[\s\S]*?<\/main>/)?.[0];
   assert.ok(main);
   assert.match(main, /From booking a chair to closing a tab\./);
@@ -119,6 +119,8 @@ test("publishes Crypto School learning without false credential claims", async (
   assert.match(html, /Crypto School/);
   assert.match(html, /Crypto Markets Curriculum/);
   assert.match(html, /Technical Analysis/);
+  assert.match(html, /<div id="curriculum-active-detail"[^>]*aria-live="polite"/);
+  assert.doesNotMatch(html, /<aside id="curriculum-active-detail"/);
   assert.match(html, /Fundamental Research/);
   assert.match(html, /On-Chain Analytics/);
   assert.equal([...html.matchAll(/class="curriculum-module__mobile-detail"/g)].length, 11);
@@ -126,6 +128,47 @@ test("publishes Crypto School learning without false credential claims", async (
     assert.match(html, new RegExp(moduleTitle));
   }
   assert.doesNotMatch(html, /EducationalOccupationalCredential/);
+});
+
+test("redirects the legacy Malera URL to the one indexable studio page", async () => {
+  const worker = await getWorker();
+  const response = await worker.fetch(new Request(publicOrigin + "/malera"), env, ctx);
+  assert.ok([301, 308].includes(response.status), "expected a permanent HTTP redirect");
+  assert.equal(new URL(response.headers.get("location"), publicOrigin).pathname, "/companies");
+  const destination = await worker.fetch(new Request(publicOrigin + "/companies"), env, ctx);
+  assert.equal(destination.status, 200);
+  assert.match(await destination.text(), /rel="canonical" href="https:\/\/enisqetaj\.com\/companies"/);
+});
+
+test("keeps missing pages out of the index without suggesting the homepage canonical", async () => {
+  const worker = await getWorker();
+  for (const url of ["/audit-missing-page", "/work/audit-missing-case", "/research/audit-missing-note"]) {
+    const response = await worker.fetch(new Request(publicOrigin + url, { headers: { accept: "text/html" } }), env, ctx);
+    assert.equal(response.status, 404, url);
+    assert.match(response.headers.get("x-robots-tag") ?? "", /\bnoindex\b/i, url);
+    const html = await response.text();
+    assert.match(html, /<title>Page not found/i, url);
+    assert.match(html, /<meta name="robots" content="noindex\b/i, url);
+    assert.doesNotMatch(html, /<link[^>]+\brel="canonical"/i, url);
+  }
+  const head = await worker.fetch(new Request(publicOrigin + "/audit-missing-page", { method: "HEAD" }), env, ctx);
+  assert.equal(head.status, 404);
+  assert.match(head.headers.get("x-robots-tag") ?? "", /\bnoindex\b/i);
+  assert.equal(await head.text(), "");
+});
+
+test("Barber Brothers uses the correct headings in its case study and standalone cover", async () => {
+  const worker = await getWorker();
+  const caseStudy = await worker.fetch(new Request(publicOrigin + "/work/barber-brothers"), env, ctx);
+  const cover = await worker.fetch(new Request(publicOrigin + "/work/barber-brothers/cover"), env, ctx);
+  assert.equal(caseStudy.status, 200);
+  assert.equal(cover.status, 200);
+  const caseHtml = await caseStudy.text();
+  const coverHtml = await cover.text();
+  assert.match(caseHtml, /<h2 id="barber-brothers-showcase-title"/);
+  assert.match(caseHtml, /<h3 class="bb-showcase__card-title">Book Online<\/h3>/);
+  assert.match(coverHtml, /<h1 id="barber-brothers-showcase-title"/);
+  assert.match(coverHtml, /<h2 class="bb-showcase__card-title">Book Online<\/h2>/);
 });
 
 test("renders indexed public routes with route-specific canonicals", async () => {

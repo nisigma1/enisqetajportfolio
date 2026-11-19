@@ -42,11 +42,3 @@
 .background-journey .journey-field__studio-role a {
   grid-column: 1 / -1;
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .background-journey .journey-field--studio,
-  .background-journey .journey-field--studio * {
-    /* Switch the row's ink and surface together, including on WebKit. */
-    transition-property: none;
-  }
-}

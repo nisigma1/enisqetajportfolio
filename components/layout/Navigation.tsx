@@ -38,7 +38,6 @@ export function Navigation() {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
-  const previousFocusRef = useRef<HTMLElement | null>(null);
   const transitionFromMenuRef = useRef(false);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -126,7 +125,9 @@ export function Navigation() {
 
       window.scrollTo({ top: scrollY, behavior: "instant" });
       if (!transitionFromMenuRef.current) {
-        previousFocusRef.current?.focus();
+        // Safari does not always focus a tapped opener. Restore the actual
+        // Menu button so the next keyboard action resumes in the right place.
+        triggerRef.current?.focus({ preventScroll: true });
       }
     };
   }, [open]);
@@ -141,16 +142,12 @@ export function Navigation() {
     if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
     transitionFromMenuRef.current = false;
     setClosing(false);
-    previousFocusRef.current = document.activeElement instanceof HTMLElement
-      ? document.activeElement
-      : triggerRef.current;
     setOpen(true);
   }
 
   function closeMenuForTransition() {
     if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
     transitionFromMenuRef.current = true;
-    previousFocusRef.current = null;
     setClosing(false);
     setOpen(false);
   }

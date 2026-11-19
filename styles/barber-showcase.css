@@ -21,7 +21,7 @@
   isolation: isolate;
 }
 
-.bb-showcase :where(h3, h4, p, dl, dd, ul, figure) {
+.bb-showcase :where(h1, h2, h3, p, dl, dd, ul, figure) {
   margin: 0;
 }
 
@@ -51,7 +51,7 @@
   text-transform: uppercase;
 }
 
-.bb-showcase__identity h3 {
+.bb-showcase__identity .bb-showcase__heading {
   margin-top: clamp(0.8rem, 1.7vw, 1.8rem);
   font-family: var(--font-identity);
   font-size: clamp(1.5rem, 18cqi, 3.5rem);
@@ -255,8 +255,8 @@
   padding: clamp(0.6rem, 1.1vw, 1.2rem);
 }
 
-.bb-showcase__proof-card h4,
-.bb-showcase__booking h4 {
+.bb-showcase__proof-card .bb-showcase__card-title,
+.bb-showcase__booking .bb-showcase__card-title {
   margin-top: 0.35rem;
   font-family: var(--font-identity);
   font-size: clamp(1rem, 1.4vw, 1.7rem);
@@ -517,7 +517,7 @@
     border-bottom: 1px solid var(--bb-border);
   }
 
-  .bb-showcase__identity h3,
+  .bb-showcase__identity .bb-showcase__heading,
   .bb-showcase__subtitle,
   .bb-showcase__philosophy {
     grid-column: 1;
@@ -563,7 +563,7 @@
     padding: 1.25rem;
   }
 
-  .bb-showcase__identity h3 {
+  .bb-showcase__identity .bb-showcase__heading {
     font-size: clamp(2.9rem, 15vw, 4.2rem);
   }
 
@@ -658,7 +658,7 @@
     border-left: 0;
   }
 
-  .bb-showcase__booking h4 {
+  .bb-showcase__booking .bb-showcase__card-title {
     font-size: 1.6rem;
   }
 
@@ -685,7 +685,7 @@
     overflow-wrap: anywhere;
   }
 
-  .bb-showcase__proof-card h4 {
+  .bb-showcase__proof-card .bb-showcase__card-title {
     font-size: 1.65rem;
   }
 

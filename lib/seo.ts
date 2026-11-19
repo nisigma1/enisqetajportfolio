@@ -49,11 +49,6 @@ export const routeSeo = {
     description:
       "A responsive website and digital identity for Hixhame Tina, a women-only Hijama service in Prishtina, designed around privacy, trust and direct booking.",
   },
-  malera: {
-    path: "/malera",
-    title: "Malera Studio | Enis Qetaj",
-    description: "Malera Studio builds websites, digital products, automation and AI systems through a focused product practice.",
-  },
   companies: {
     path: "/companies",
     title: "Malera Studio | Enis Qetaj",
@@ -179,7 +174,6 @@ export const publicRoutes = [
   routeSeo.work,
   routeSeo.barber,
   routeSeo.hixhame,
-  routeSeo.malera,
   routeSeo.besiana,
   routeSeo.duoBar,
   routeSeo.build,

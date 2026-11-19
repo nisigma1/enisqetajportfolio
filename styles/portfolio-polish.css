@@ -441,3 +441,56 @@
   .home-portfolio-links > section + section { padding-top: 1rem; border-top: 1px solid var(--border); }
   .portfolio-footer-inner nav { order: 1; flex-basis: 100%; }
 }
+
+@media (min-width: 540px) and (max-width: 1023px) and (max-height: 500px) and (orientation: landscape) {
+  .dispatch-hero.dispatch-hero--portfolio {
+    padding-block: clamp(0.85rem, 3svh, 1.25rem);
+  }
+
+  .dispatch-hero--portfolio .dispatch-hero__primary {
+    grid-template-columns: minmax(0, 1.65fr) minmax(0, 0.85fr);
+    gap: clamp(1rem, 3vw, 2rem);
+  }
+
+  .dispatch-hero.dispatch-hero--portfolio h1 {
+    margin-top: 0.45rem;
+    font-size: clamp(2.45rem, 6vw, 4.1rem);
+  }
+
+  .dispatch-hero--portfolio .dispatch-hero__repel {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 0.18em;
+  }
+
+  .dispatch-hero--portfolio .dispatch-hero__repel .text-repel__word:last-of-type {
+    margin-inline-start: 0;
+  }
+
+  .dispatch-hero--portfolio .dispatch-hero__proposition {
+    gap: 0.4rem;
+    margin-top: 0.65rem;
+    padding-inline-start: 0.65rem;
+  }
+
+  .dispatch-hero--portfolio .dispatch-hero__line {
+    max-width: none;
+    font-size: clamp(1.3rem, 2.7vw, 1.9rem);
+  }
+
+  .dispatch-hero--portfolio .dispatch-hero__entity-copy {
+    font-size: clamp(0.9375rem, 1.8vw, 1.03rem);
+    line-height: 1.42;
+  }
+
+  .dispatch-hero--portfolio .dispatch-hero__actions {
+    flex-wrap: wrap;
+    margin-top: 0.85rem;
+  }
+
+  .dispatch-hero--portfolio .author-artifact {
+    grid-area: 1 / 2;
+    width: min(100%, 16rem, 47svh);
+    justify-self: center;
+  }
+}

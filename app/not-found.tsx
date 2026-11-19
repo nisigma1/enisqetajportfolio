@@ -3,8 +3,9 @@ import Link from "next/link";
 import { ActionMark } from "@/components/ui/ActionMark";
 
 export const metadata: Metadata = {
-  title: "Page not found",
-  robots: { index: false, follow: true },
+  title: "Page not found | Enis Qetaj",
+  alternates: { canonical: null },
+  robots: { index: false, follow: false },
 };
 
 export default function NotFound() {

@@ -107,6 +107,8 @@ img {
     scroll-behavior: auto !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    /* Even a near-zero duration queues inherited-color transitions for frames
+       in WebKit. Reduced motion should swap ink and surfaces atomically. */
+    transition: none !important;
   }
 }

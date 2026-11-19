@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useRouteTransition } from "@/components/transition/RouteTransitionContext";
 import { THEME_KEY, VIBE_KEY, vibes } from "@/lib/vibes";
 
-const TRANSITION_MS = 480;
 type Vibe = (typeof vibes)[number];
 
 function setPalette(root: HTMLElement, vibe: Vibe) {
@@ -63,18 +62,16 @@ export function ThemeToggle() {
       }
     }
 
-    // Without view snapshots, don't interpolate between opposite light/dark ink.
-    // A direct update keeps that pair readable, while same-mode colors still ease.
-    if (root.dataset.theme !== next.theme) {
+    // Even a direct token change triggers existing button/link transitions.
+    // Swap the full palette together when a snapshot reveal isn't available.
+    root.dataset.vibeTransition = "instant";
+    try {
       apply();
-      return;
+      // Resolve the new palette before restoring component hover transitions.
+      void document.body.offsetHeight;
+    } finally {
+      clear();
     }
-
-    root.dataset.vibeTransition = "fallback";
-    // Resolve the original color before changing its token so older browsers can interpolate it.
-    void window.getComputedStyle(root).backgroundColor;
-    apply();
-    window.setTimeout(clear, TRANSITION_MS + 60);
   }
 
   return (

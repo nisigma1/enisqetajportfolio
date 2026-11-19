@@ -165,7 +165,7 @@ function CurriculumModuleDetails({
   track: CryptoCurriculumTrack;
 }) {
   return (
-    <aside
+    <div
       id="curriculum-active-detail"
       className="curriculum-detail"
       data-track={track.id}
@@ -176,7 +176,7 @@ function CurriculumModuleDetails({
         <span>{track.label}</span>
       </div>
       <CurriculumDetailContent module={module} />
-    </aside>
+    </div>
   );
 }
 

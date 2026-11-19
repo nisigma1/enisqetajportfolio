@@ -823,7 +823,7 @@
 
 .analysis-plan-overview {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 6.75rem), 1fr));
   border-bottom: var(--border-width) solid var(--border-strong);
 }
 
@@ -833,10 +833,12 @@
 
 .analysis-plan-overview a {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   align-content: start;
   gap: var(--space-1);
   height: 100%;
   padding: clamp(0.65rem, 1.9vw, 1.75rem);
+  overflow-wrap: anywhere;
 }
 
 .analysis-plan-overview a:hover,
@@ -918,7 +920,9 @@
 
 .analysis-plan__identity {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-4);
+  overflow-wrap: anywhere;
 }
 
 .analysis-plan__heading {
@@ -946,6 +950,7 @@
 
 .analysis-plan__price {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
   gap: 0.35rem;
 }
@@ -1700,6 +1705,10 @@ body:has(.inner-page) .social-dock-section {
   .analysis-plans {
     grid-template-columns: 1fr;
     gap: var(--space-4);
+  }
+
+  .analysis-plan {
+    padding-inline: min(clamp(1.35rem, 2vw, 2rem), 6.25vw);
   }
 
   .analysis-plan__identity h3 {
