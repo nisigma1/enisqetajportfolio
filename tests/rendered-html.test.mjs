@@ -205,7 +205,7 @@ test("renders indexed public routes with route-specific canonicals", async () =>
   }
 });
 
-test("companies explains the studio and renders an accessible binary fallback without repeating the gallery", async () => {
+test("companies leads with real studio work and a compact, static founder note", async () => {
   const worker = await getWorker();
   const response = await worker.fetch(
     new Request("http://localhost/companies", { headers: { accept: "text/html" } }),
@@ -214,18 +214,28 @@ test("companies explains the studio and renders an accessible binary fallback wi
   );
   assert.equal(response.status, 200);
   const html = await response.text();
+  const main = html.match(/<main\b[\s\S]*?<\/main>/)?.[0];
+  assert.ok(main);
+  assert.match(main, /<h1>Malera Studio<\/h1>/);
+  assert.match(main, /Online booking\. Offline POS\./);
+  assert.match(main, /href="\/contact\?service=digital-project#contact-form"[^>]*>Discuss a project/);
+  assert.match(main, /href="#build"[^>]*>Explore services/);
+  assert.equal(main.match(/<img\b/g)?.length, 2, "brand mark and one real project photograph");
+  assert.match(main, /\/images\/education\/malera-studio-logo\.webp/);
+  assert.match(main, /\/projects\/duo-bar\/malera-pos-at-duo-720\.avif/);
   assert.match(html, /What Malera builds/);
-  assert.match(html, /Relationship between Enis Qetaj and Malera Studio/);
   assert.match(html, /Founder and studio/);
-  assert.match(html, /Company relationship/);
-  assert.match(html, /class="letter-glitch letter-glitch--deferred" aria-hidden="true"/);
-  assert.doesNotMatch(html, /<canvas[^>]*class="letter-glitch__canvas"/);
+  assert.match(main, /<h2 id="companies-malera-title">Enis Qetaj<\/h2>/);
+  assert.match(main, /My crypto market research is separate from the studio/);
+  assert.match(main, /data-studio-binary="true" aria-hidden="true"/);
+  assert.doesNotMatch(main, /<canvas|malera-practice__bridge|Company relationship/);
+  assert.match(main, /href="https:\/\/malera\.studio\/"[^>]*>Visit malera\.studio/);
   assert.match(html, /Websites/);
   assert.match(html, /AI and automation/);
   assert.match(html, /href="\/work"[^>]*>See the case studies/);
   assert.match(html, /href="\/work\/barber-brothers"[^>]*>Barber Brothers(?:<!-- -->)? case study/);
   assert.match(html, /href="\/work\/duo-bar"[^>]*>DUO Bar(?:<!-- -->)? case study/);
-  assert.doesNotMatch(html, /malera-proof|\/projects\/(barber-brothers|hixhame-tina|besiana-photography|duo-bar)\//);
+  assert.doesNotMatch(main, /\/projects\/(barber-brothers|hixhame-tina|besiana-photography)\//);
 });
 
 test("work keeps all four real project proofs on the dedicated work route", async () => {
