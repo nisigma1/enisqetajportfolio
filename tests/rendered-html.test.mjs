@@ -205,7 +205,7 @@ test("renders indexed public routes with route-specific canonicals", async () =>
   }
 });
 
-test("companies leads with real studio work and a compact, static founder note", async () => {
+test("companies leads with real studio work and preserves the two-card founder relationship", async () => {
   const worker = await getWorker();
   const response = await worker.fetch(
     new Request("http://localhost/companies", { headers: { accept: "text/html" } }),
@@ -224,12 +224,15 @@ test("companies leads with real studio work and a compact, static founder note",
   assert.match(main, /\/images\/education\/malera-studio-logo\.webp/);
   assert.match(main, /\/projects\/duo-bar\/malera-pos-at-duo-720\.avif/);
   assert.match(html, /What Malera builds/);
-  assert.match(html, /Founder and studio/);
-  assert.match(main, /<h2 id="companies-malera-title">Enis Qetaj<\/h2>/);
-  assert.match(main, /My crypto market research is separate from the studio/);
-  assert.match(main, /data-studio-binary="true" aria-hidden="true"/);
-  assert.doesNotMatch(main, /<canvas|malera-practice__bridge|Company relationship/);
-  assert.match(main, /href="https:\/\/malera\.studio\/"[^>]*>Visit malera\.studio/);
+  const founder = main.match(/<section id="malera"[\s\S]*?<\/section>/)?.[0];
+  assert.ok(founder);
+  assert.match(founder, /Company relationship/);
+  assert.match(founder, /<h2 id="companies-malera-title">Founder and studio<\/h2>/);
+  assert.match(founder, /<span>Founder<\/span><h3>Enis Qetaj<\/h3>/);
+  assert.match(founder, /My crypto market research is independent of the studio/);
+  assert.match(founder, /class="malera-practice__bridge" aria-hidden="true"><span>Founded<\/span>/);
+  assert.match(founder, /<span>Company<\/span><h3>Malera Studio<\/h3>/);
+  assert.match(founder, /href="https:\/\/malera\.studio\/"[^>]*>Visit malera\.studio/);
   assert.match(html, /Websites/);
   assert.match(html, /AI and automation/);
   assert.match(html, /href="\/work"[^>]*>See the case studies/);

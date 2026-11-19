@@ -2,8 +2,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { InnerPageStyles } from "@/components/layout/InnerPageStyles";
+import { Malera } from "@/components/sections/DefinitiveSections";
 import { duoBarProject } from "@/data/duo-bar";
-import { barberProject, malera } from "@/data/site";
+import { barberProject } from "@/data/site";
 import { baseStructuredData, routeSeo } from "@/lib/seo";
 import styles from "./StudioPage.module.css";
 
@@ -106,15 +107,9 @@ export default function CompaniesPage() {
           <Link className="portfolio-text-link" href="/work">See the case studies</Link>
         </section>
 
-        <section id="malera" className={styles.founder} aria-labelledby="companies-malera-title">
-          <div className={styles.founderHeading}>
-            <p className={styles.featureKicker}>Founder and studio</p>
-            <h2 id="companies-malera-title">Enis Qetaj</h2>
-          </div>
-          <p>I founded Malera Studio to build software for businesses. My crypto market research is separate from the studio.</p>
-          <a className="portfolio-text-link" href={malera.url}>Visit malera.studio</a>
-          <div className={styles.binary} data-studio-binary aria-hidden="true" />
-        </section>
+        <div className={`inner-page inner-page--malera ${styles.founderRelationship}`}>
+          <Malera headingId="companies-malera-title" />
+        </div>
 
         <section className={styles.inquiry} aria-labelledby="studio-inquiry-title">
           <div>
