@@ -1,0 +1,208 @@
+:is(.pricing-mobile__sessions, .pricing-mobile__sample-link, .pricing-mobile__capture-link) {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .inner-page.inner-page--analysis .inner-masthead {
+    gap: 0.5rem;
+    padding-block: 1.45rem 1.2rem;
+  }
+
+  .inner-page--analysis .inner-masthead__lead {
+    gap: 0.72rem;
+  }
+
+  .inner-page--analysis .inner-masthead__lead p {
+    margin-block-start: 0;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .inner-page--analysis .analysis-plan-overview {
+    grid-template-columns: minmax(0, 1fr);
+    border: 1px solid var(--border-strong);
+    background: var(--analysis-panel);
+  }
+
+  .inner-page--analysis .analysis-plan-overview > li + li {
+    border-top: 1px solid var(--border);
+    border-left: 0;
+  }
+
+  .inner-page--analysis .analysis-plan-overview > [data-featured="true"] {
+    background: color-mix(in srgb, var(--accent) 5%, var(--analysis-panel));
+  }
+
+  .inner-page--analysis .analysis-plan-overview a {
+    grid-template-columns: minmax(0, 1fr) minmax(0, min(49%, 9.5rem));
+    grid-template-areas: "name price" "scope sessions";
+    align-items: baseline;
+    gap: 0.25rem 0.65rem;
+    min-height: 4.6rem;
+    padding: 0.57rem 0.85rem;
+  }
+
+  .inner-page--analysis .analysis-plan-overview__name {
+    grid-area: name;
+    font-size: 1rem;
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 0.17em;
+  }
+
+  .inner-page--analysis .analysis-plan-overview__price {
+    grid-area: price;
+    justify-content: end;
+    text-align: end;
+  }
+
+  .inner-page--analysis .analysis-plan-overview__price strong {
+    font-size: clamp(1.75rem, 7vw, 2.15rem);
+  }
+
+  .inner-page--analysis .analysis-plan-overview__scope {
+    grid-area: scope;
+    font-size: 0.875rem;
+  }
+
+  .pricing-mobile__sessions {
+    grid-area: sessions;
+    display: block;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    font-weight: 650;
+    line-height: 1.4;
+    text-align: end;
+  }
+
+  .pricing-mobile__sample-link,
+  .pricing-mobile__capture-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    width: fit-content;
+    max-width: 100%;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.22em;
+  }
+
+  .pricing-mobile__sample-link {
+    margin-top: 0.3rem;
+    font-size: 0.9375rem;
+    text-decoration-color: var(--accent);
+  }
+
+  .inner-page--analysis .analysis-depth > .analysis-section-heading {
+    margin-block: 1.55rem 0.85rem;
+  }
+
+  .inner-page--analysis .analysis-plan {
+    padding: 1rem;
+  }
+
+  .inner-page--analysis .analysis-plan__identity {
+    grid-template-columns: minmax(0, 1fr) minmax(0, min(48%, 10rem));
+    grid-template-areas: "name cost" "detail detail";
+    align-items: baseline;
+    gap: 0.7rem 0.5rem;
+  }
+
+  .inner-page--analysis .analysis-plan__heading { grid-area: name; }
+  .inner-page--analysis .analysis-plan__number { display: none; }
+
+  .inner-page--analysis .analysis-plan__identity h3 {
+    font-size: clamp(1.75rem, 7.4vw, 2.35rem);
+  }
+
+  .inner-page--analysis .analysis-plan__description {
+    grid-area: detail;
+    font-size: 1rem;
+    line-height: 1.45;
+  }
+
+  .inner-page--analysis .analysis-plan__price {
+    grid-area: cost;
+    justify-content: end;
+    gap: 0.12rem 0.32rem;
+    text-align: end;
+  }
+
+  .inner-page--analysis .analysis-plan__price strong {
+    font-size: clamp(1.95rem, 8.6vw, 2.65rem);
+  }
+
+  /* Scope is already shown in each plan's feature list and again in the comparison. */
+  .inner-page--analysis .analysis-plan__layers { display: none; }
+  .inner-page--analysis .analysis-plan__scope { margin-top: 0.85rem; }
+  .inner-page--analysis .analysis-plan__scope > ul li { padding-block: 0.4rem; }
+  .inner-page--analysis .analysis-plan > .button { margin-top: 0.9rem; }
+
+  .inner-page--analysis .research-note--featured {
+    gap: 0;
+    padding: 0;
+  }
+
+  .inner-page--analysis .research-note__intro {
+    gap: 0.7rem;
+    padding: 1rem;
+  }
+
+  .inner-page--analysis .research-note__capture {
+    border-inline: 0;
+    border-block-end: 0;
+  }
+
+  .inner-page--analysis .research-note--featured .research-note__visual img {
+    max-block-size: none;
+  }
+
+  .inner-page--analysis .research-note__footer {
+    padding: 0.55rem 0.75rem 0.25rem;
+  }
+
+  .pricing-mobile__capture-link {
+    color: #f5f8fc;
+    font-size: 0.875rem;
+    text-decoration-color: #a6bbff;
+  }
+
+  .pricing-mobile__capture-link:focus-visible {
+    outline-color: #a6bbff;
+    outline-offset: 2px;
+  }
+
+  .inner-page--analysis .research-note--archived {
+    grid-template-columns: minmax(0, min(39%, 7.25rem)) minmax(0, 1fr);
+  }
+
+  .inner-page--analysis .analysis-membership-flow {
+    gap: 0.9rem;
+    padding-block: 2rem;
+  }
+
+  .inner-page--analysis .analysis-membership-flow > .inner-section__header {
+    gap: 0.6rem;
+  }
+
+  .inner-page--analysis .analysis-membership-flow > .inner-section__header > p:not(.inner-section__label) {
+    display: none;
+  }
+
+  .inner-page--analysis .analysis-membership-flow > ol li {
+    grid-template-columns: 1.5rem minmax(0, 1fr);
+    column-gap: 0.7rem;
+    padding-block: 0.75rem;
+  }
+
+  .inner-page--analysis .analysis-membership-flow > ol p { line-height: 1.45; }
+  .inner-page--analysis .analysis-support article { padding-block: 1.75rem; }
+  .inner-page--analysis .analysis-support h2 { margin-top: 0.65rem; }
+  .inner-page--analysis .analysis-support article > p:not(.inner-section__label) { margin-top: 0.7rem; }
+
+  .inner-page--analysis .analysis-support ul {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+    column-gap: 0.9rem;
+    margin-top: 0.95rem;
+  }
+}

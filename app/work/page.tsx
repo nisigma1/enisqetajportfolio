@@ -69,6 +69,12 @@ export default function WorkArchive() {
         <ul className={`work-gallery ${styles.gallery}`} aria-label="Project case studies">
           <li id={duoBarProject.slug} className={styles.featureItem}>
             <article className={`work-entry ${styles.feature}`} aria-labelledby="duo-bar-title">
+              <div className={styles.featureInfo}>
+                <p className="portfolio-kicker">Featured case study / Hospitality software</p>
+                <h2 id="duo-bar-title">{duoBarProject.title}</h2>
+                <p className={styles.featureSummary}>Staff use Malera POS to take orders, close bills and track stock, even when the internet is down.</p>
+                <Link className="button button--primary" href={`/work/${duoBarProject.slug}`}>View DUO Bar case study</Link>
+              </div>
               <picture className={styles.cover}>
                 <source type="image/avif" srcSet={duoCoverSources("avif")} sizes={duoCoverSizes} />
                 <img
@@ -82,12 +88,6 @@ export default function WorkArchive() {
                   decoding="async"
                 />
               </picture>
-              <div className={styles.featureInfo}>
-                <p className="portfolio-kicker">Featured case study / Hospitality software</p>
-                <h2 id="duo-bar-title">{duoBarProject.title}</h2>
-                <p className={styles.featureSummary}>Staff use Malera POS to take orders, close bills and track stock, even when the internet is down.</p>
-                <Link className="button button--primary" href={`/work/${duoBarProject.slug}`}>View DUO Bar case study</Link>
-              </div>
             </article>
           </li>
           {projects.map(({ project, category, summary, image }) => (

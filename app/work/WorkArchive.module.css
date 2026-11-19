@@ -9,12 +9,14 @@
 .feature:global(.work-entry) {
   display: grid;
   grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  grid-template-areas: "cover details";
   border: 1px solid var(--border-strong);
   background: var(--surface-elevated);
   color: var(--text-primary);
 }
 
 .cover {
+  grid-area: cover;
   display: grid;
   align-items: center;
   min-width: 0;
@@ -29,6 +31,7 @@
 }
 
 .featureInfo {
+  grid-area: details;
   display: grid;
   align-content: center;
   justify-items: start;
@@ -57,10 +60,23 @@
 @media (max-width: 859px) {
   .feature:global(.work-entry) {
     grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "cover" "details";
   }
 
   .cover {
     border-inline-end: 0;
     border-bottom: 1px solid var(--border);
+  }
+}
+
+@media (max-width: 639px) {
+  /* Keep the case title and action above the full, uncropped photograph. */
+  .feature:global(.work-entry) {
+    grid-template-areas: "details" "cover";
+  }
+
+  .cover {
+    border-block-start: 1px solid var(--border);
+    border-block-end: 0;
   }
 }

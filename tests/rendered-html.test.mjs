@@ -424,6 +424,14 @@ test("publishes three factual monthly pricing plans and request links", async ()
   assert.match(html, /Research assistance helps you understand the analysis/);
   assert.match(html, /From request to Discord/);
   assert.match(html, /Monthly plan overview/);
+  assert.match(html, /href="#research-example"[^>]*>See a research example/);
+  assert.match(html, /id="research-example"[^>]*tabindex="-1"/i);
+  for (const label of ["No live sessions", "1 live session / week", "2 live sessions / week"]) {
+    assert.ok(html.includes(`class="pricing-mobile__sessions">${label}</span>`));
+  }
+  for (const capture of ["bitcoin-mvrv", "susdt-weekly", "strk-onchain", "fet-technical"]) {
+    assert.match(html, new RegExp(`class="pricing-mobile__capture-link" href="/images/research-notes/x-${capture}-dark\\.webp" target="_blank" rel="noopener noreferrer"`));
+  }
   assert.equal((html.match(/>Request this plan</g) ?? []).length, 3);
   assert.match(html, /Bitcoin MVRV market context/);
   assert.match(html, /href="https:\/\/x\.com\/N1sigma"[^>]*>View NISIGMA’s profile on X/);

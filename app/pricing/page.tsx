@@ -4,6 +4,7 @@ import Link from "next/link";
 import { InnerPageShell } from "@/components/layout/InnerPageShell";
 import { pricingPlans } from "@/data/site";
 import { baseStructuredData, routeSeo } from "@/lib/seo";
+import "@/styles/pricing-mobile.css";
 
 export const dynamic = "force-static";
 
@@ -52,6 +53,14 @@ const archivedNotes = [
   },
 ];
 
+function ResearchCaptureLink({ href, label }: { href: string; label: string }) {
+  return (
+    <a className="pricing-mobile__capture-link" href={href} target="_blank" rel="noopener noreferrer">
+      View full-size capture<span className="visually-hidden">: {label} (opens in a new tab)</span>
+    </a>
+  );
+}
+
 export default function PricingPage() {
   const analysisLayers = ["Technical", "Fundamental", "On-chain"] as const;
 
@@ -67,16 +76,20 @@ export default function PricingPage() {
           <nav aria-label="Monthly plan overview">
             <ul className="analysis-plan-overview" role="list">
               {pricingPlans.map((plan) => (
-                <li key={plan.id}>
+                <li key={plan.id} data-featured={plan.id === "advanced" ? "true" : undefined}>
                   <a href={`#plan-${plan.id}`}>
                     <span className="analysis-plan-overview__name">{plan.name}</span>
                     <span className="analysis-plan-overview__price"><strong>€{plan.price}</strong> <span>/ month</span></span>
                     <span className="analysis-plan-overview__scope">{planOverview[plan.id]}</span>
+                    <span className="pricing-mobile__sessions">
+                      {plan.liveSessions === "—" ? "No live sessions" : `${plan.liveSessions.split(" / ")[0]} live session${plan.liveSessions.startsWith("2") ? "s" : ""} / week`}
+                    </span>
                   </a>
                 </li>
               ))}
             </ul>
           </nav>
+          <a className="pricing-mobile__sample-link" href="#research-example">See a research example</a>
           <h2 id="analysis-depth-title" className="analysis-section-heading">What each plan includes</h2>
           <ol className="analysis-plans" role="list">
             {pricingPlans.map((plan, planIndex) => (
@@ -115,7 +128,7 @@ export default function PricingPage() {
           </ol>
         </section>
 
-        <section className="inner-section research-notes research-notes--sample" aria-labelledby="research-notes-title">
+        <section id="research-example" className="inner-section research-notes research-notes--sample" aria-labelledby="research-notes-title" tabIndex={-1}>
           <div className="research-notes__grid">
             <article className="research-note research-note--featured">
               <header className="research-note__intro">
@@ -127,7 +140,10 @@ export default function PricingPage() {
               </header>
               <figure className="research-note__capture">
                 <div className="research-note__visual"><img src={featuredNote.image} alt={featuredNote.alt} width={featuredNote.width} height={featuredNote.height} loading="lazy" decoding="async" /></div>
-                <figcaption className="research-note__footer"><span>Published on X by NISIGMA</span></figcaption>
+                <figcaption className="research-note__footer">
+                  <span>Published on X by NISIGMA</span>
+                  <ResearchCaptureLink href={featuredNote.image} label="Bitcoin MVRV market context" />
+                </figcaption>
               </figure>
             </article>
           </div>
@@ -187,7 +203,10 @@ export default function PricingPage() {
             {archivedNotes.map((note) => (
               <figure key={note.image} className="research-note research-note--archived">
                 <div className="research-note__visual"><img src={note.image} alt={note.alt} width={note.width} height={note.height} loading="lazy" decoding="async" /></div>
-                <figcaption className="research-note__footer"><span>{note.label}</span></figcaption>
+                <figcaption className="research-note__footer">
+                  <span>{note.label}</span>
+                  <ResearchCaptureLink href={note.image} label={note.label} />
+                </figcaption>
               </figure>
             ))}
           </div>
