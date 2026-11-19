@@ -219,7 +219,6 @@
   box-shadow:
     0 0 0 1px rgb(75 112 255 / 10%),
     0 0 1.75rem rgb(49 91 255 / 12%);
-  transform: rotate(-0.6deg);
 }
 
 .author-artifact__orbit { display: none; }
@@ -2056,7 +2055,6 @@
     justify-self: stretch;
     margin-top: 2.25rem;
     padding: 0;
-    transform: none;
   }
 
   .author-artifact::before {
