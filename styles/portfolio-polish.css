@@ -392,6 +392,18 @@
 
 .portfolio-footer-inner a:hover { color: var(--text-primary); text-decoration: underline; text-underline-offset: 0.24em; }
 
+.portfolio-footer-credit {
+  flex-basis: 100%;
+  font-weight: 500;
+}
+
+.portfolio-footer-inner .portfolio-footer-credit a {
+  color: var(--text-primary);
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
 @media (max-width: 767px) {
   .dispatch-hero--portfolio .dispatch-hero__primary {
     grid-template-columns: minmax(0, 1fr);
@@ -440,6 +452,7 @@
   .home-portfolio-links { gap: 1rem; }
   .home-portfolio-links > section + section { padding-top: 1rem; border-top: 1px solid var(--border); }
   .portfolio-footer-inner nav { order: 1; flex-basis: 100%; }
+  .portfolio-footer-credit { order: 2; }
 }
 
 @media (max-width: 539px) {

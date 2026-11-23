@@ -70,6 +70,10 @@ test("server-renders the complete identity homepage", async () => {
   assert.doesNotMatch(main, /<form\b|href="\/work\/|home-practice-tabs|dispatch-hero__proof/);
   assert.doesNotMatch(html, /Context first\. Then build\.|Portfolio index/);
   assert.match(html, /href="#app-shell"[^>]*>Back to top/);
+  const footer = html.match(/<footer\b[\s\S]*?<\/footer>/)?.[0];
+  assert.ok(footer);
+  assert.match(footer, /©[\s\S]*?Enis Qetaj/);
+  assert.match(footer, /<p class="portfolio-footer-credit">Designed &amp; developed by <a href="https:\/\/www\.malera\.studio\/">Malera Studio<\/a><\/p>/);
   assert.match(html, /href="\/companies"/);
   assert.match(html, /Research/);
   assert.match(html, /Markets/);
