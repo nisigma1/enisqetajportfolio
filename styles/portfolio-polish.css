@@ -109,7 +109,7 @@
 
 .home-portfolio-links {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(1.5rem, 4vw, 4rem);
   width: min(calc(100% - 2 * var(--gutter)), calc(var(--container) - 2 * var(--gutter)));
   margin-inline: auto;
@@ -143,6 +143,12 @@
 
 .home-portfolio-links .portfolio-text-link {
   margin-top: 0.35rem;
+}
+
+.home-portfolio-link-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 /* Two routes need a compact masthead so the first project or form is visible. */

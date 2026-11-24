@@ -1,34 +1,23 @@
-# Enis Qetaj
+# Enis Qetaj (Nisigma)
 
-> Official portfolio and primary online profile of Enis Qetaj, a Kosovo-based financial-markets researcher, crypto trader and AI product builder.
+> Enis Qetaj, known online as Nisigma (@N1sigma), founded Malera Studio in Kosovo. He builds websites, applications and AI automations and researches financial markets using on-chain data.
 
-## Canonical profile
-- https://enisqetaj.com/background
+## Profile
 
-## Research
-- https://enisqetaj.com/research
-- https://enisqetaj.com/markets
+- [About Enis Qetaj](https://enisqetaj.com/about): Biography, project examples and profile links.
+- [GitHub](https://github.com/nisigma1): Public repositories.
+- [LinkedIn](https://www.linkedin.com/in/enis-qetaj/): Professional profile.
+- [X](https://x.com/N1sigma): Market commentary as @N1sigma.
 
-## Education and market training
-- Bachelor’s degree in Marketing
-- Master’s degree in Banking and Finance (first year in progress)
-- Completed Crypto School crypto-markets curriculum
-- Course focus: technical analysis, fundamental analysis and on-chain analysis
+## Projects and research
 
-## Selected work
-- https://enisqetaj.com/work
-- https://enisqetaj.com/work/barber-brothers
-- https://enisqetaj.com/work/hixhame-tina
+- [Barber Brothers](https://enisqetaj.com/work/barber-brothers): Malera Studio's online booking project, with a [public booking page](https://barberbrothers.style/booking).
+- [Malera POS at DUO Bar](https://enisqetaj.com/work/duo-bar): Offline point-of-sale software with table and order management, documented with photos.
+- [Nisigma OnChain](https://enisqetaj.com/research/nisigma-onchain): How Enis Qetaj uses his public [CryptoQuant dashboard](https://cryptoquant.com/community/dashboard/682b36d9f5db9e6f926617c2).
 
-## Professional practice
-- Companies: https://enisqetaj.com/companies
-- Malera Studio: https://malera.studio/
+## More
 
-## Crypto market analysis pricing
-- https://enisqetaj.com/pricing
-- Technical: €30 / month
-- Advanced: €60 / month
-- Complete: €100 / month
-
-## Contact
-- https://enisqetaj.com/contact
+- [Research approach](https://enisqetaj.com/research)
+- [Project archive](https://enisqetaj.com/work)
+- [Malera Studio](https://www.malera.studio/)
+- [Contact](https://enisqetaj.com/contact)

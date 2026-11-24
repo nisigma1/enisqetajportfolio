@@ -5,10 +5,12 @@ import {
   identity,
   malera,
   media,
+  nisigmaOnChain,
   projectMedia,
   researchDomains,
   researchMethod,
 } from "@/data/site";
+import { duoBarProject } from "@/data/duo-bar";
 import { ProjectMedia } from "@/components/media/ProjectMedia";
 import { ActionMark } from "@/components/ui/ActionMark";
 import { PixelImage } from "@/components/ui/PixelImage";
@@ -294,10 +296,21 @@ export function Malera({
 export function HomePortfolioLinks() {
   return (
     <div className="home-portfolio-links">
+      <section id="selected-projects" aria-labelledby="home-projects-title">
+        <h2 id="home-projects-title">Projects built at Malera Studio</h2>
+        <p>Online booking for Barber Brothers and offline table and order management for DUO Bar.</p>
+        <ul className="home-portfolio-link-list">
+          <li><Link className="portfolio-text-link" href={`/work/${barberProject.slug}`}>Barber Brothers booking case study</Link></li>
+          <li><Link className="portfolio-text-link" href={`/work/${duoBarProject.slug}`}>Malera POS at DUO Bar</Link></li>
+        </ul>
+      </section>
       <section id="research" aria-labelledby="home-research-title">
         <h2 id="home-research-title">How I research markets</h2>
         <p>I look at liquidity, macroeconomics and on-chain data alongside price.</p>
-        <Link className="portfolio-text-link" href="/research">Read my research approach</Link>
+        <ul className="home-portfolio-link-list">
+          <li><Link className="portfolio-text-link" href={nisigmaOnChain.path}>Nisigma OnChain dashboard and methodology</Link></li>
+          <li><Link className="portfolio-text-link" href="/research">Read my research approach</Link></li>
+        </ul>
       </section>
       <section id="contact" aria-labelledby="home-contact-title">
         <h2 id="home-contact-title">Get in touch</h2>
