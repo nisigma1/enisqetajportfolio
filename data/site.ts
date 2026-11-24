@@ -1,9 +1,9 @@
 export const siteConfig = {
   name: "Enis Qetaj",
   url: "https://enisqetaj.com",
-  title: "Enis Qetaj | Crypto Markets Research, Geopolitics & AI Products",
+  title: "Enis Qetaj (NISIGMA) | Markets Research & AI Automation",
   description:
-    "Enis Qetaj is a Kosovo-based crypto trader, financial-markets researcher and AI product builder focused on crypto, macroeconomics, geopolitics, on-chain analysis and digital products.",
+    "Enis Qetaj (NISIGMA) researches crypto and financial markets and builds AI automations and web applications through Malera Studio in Kosovo.",
 } as const;
 
 export const navigation = [
@@ -16,13 +16,14 @@ export const navigation = [
 
 export const identity = {
   name: "Enis Qetaj",
+  alternateName: "NISIGMA",
   location: "Kosovo",
   email: "enisqeta5@gmail.com",
   emailHref: "https://mail.google.com/mail/?view=cm&fs=1&to=enisqeta5%40gmail.com",
   phone: "+383 44 857 227",
   phoneHref: "tel:+38344857227",
   social: [
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/enis-qetaj-47a847308" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/enis-qetaj" },
     { label: "Instagram", href: "https://www.instagram.com/enis_qeta/" },
     { label: "Facebook", href: "https://www.facebook.com/enis.qeta/" },
     { label: "X", href: "https://x.com/N1sigma" },
@@ -49,6 +50,13 @@ export const identity = {
       status: "First year in progress",
     },
   ],
+} as const;
+
+export const nisigmaOnChain = {
+  name: "Nisigma OnChain",
+  path: "/research/nisigma-onchain",
+  dashboardUrl: "https://cryptoquant.com/community/dashboard/682b36d9f5db9e6f926617c2",
+  announcementUrl: "https://www.linkedin.com/feed/update/urn:li:activity:7505997268227989504/",
 } as const;
 
 export const cryptoEducation = {

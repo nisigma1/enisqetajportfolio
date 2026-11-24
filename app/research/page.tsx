@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { researchDomains, researchMethod } from "@/data/site";
+import { nisigmaOnChain, researchDomains, researchMethod } from "@/data/site";
 import { ActionMark } from "@/components/ui/ActionMark";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { baseStructuredData, ogImage, routeSeo } from "@/lib/seo";
@@ -23,10 +23,18 @@ export default function ResearchPage() {
         <p>Research practice / Enis Qetaj</p>
         <h1>Research by Enis Qetaj</h1>
         <div>
-          <p>Enis Qetaj studies crypto markets through macroeconomics, liquidity, geopolitics, monetary policy and on-chain behavior. Research is presented here as a working method—not as a fabricated publication archive.</p>
+          <p>Enis Qetaj studies crypto markets through macroeconomics, liquidity, geopolitics, monetary policy and on-chain data.</p>
           <span>Markets / Macro / Geopolitics / On-chain</span>
         </div>
       </header>
+
+      <section className="case-study__chapter" aria-labelledby="onchain-project-title">
+        <div><h2 id="onchain-project-title">{nisigmaOnChain.name}</h2></div>
+        <div>
+          <p>A public CryptoQuant dashboard that brings together the metrics I use to follow network activity, investor behavior and capital flows.</p>
+          <Link className="portfolio-text-link" href={nisigmaOnChain.path}>Read the dashboard case study</Link>
+        </div>
+      </section>
 
       <section className="route-section route-method" aria-labelledby="method-title">
         <div>
