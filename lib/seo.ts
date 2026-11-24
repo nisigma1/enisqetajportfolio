@@ -11,9 +11,9 @@ export const routeSeo = {
   },
   about: {
     path: "/about",
-    title: "About Enis Qetaj | Research, Markets & Malera Studio",
+    title: "About Enis Qetaj (Nisigma) | Malera Studio & On-Chain Research",
     description:
-      "Enis Qetaj (NISIGMA) is a financial markets researcher, creator of Nisigma OnChain on CryptoQuant and founder of Malera Studio in Kosovo.",
+      "Meet Enis Qetaj (Nisigma), founder of Malera Studio in Kosovo. Explore his work on Barber Brothers, Malera POS at DUO Bar and Nisigma OnChain.",
   },
   background: {
     path: "/background",
@@ -131,7 +131,7 @@ export function personJsonLd() {
       "Automation",
     ],
     worksFor: { "@id": `${canonicalOrigin}/#organization` },
-    sameAs: identity.social.map((profile) => profile.href),
+    sameAs: [...identity.social.map((profile) => profile.href), identity.githubUrl],
   };
 }
 
