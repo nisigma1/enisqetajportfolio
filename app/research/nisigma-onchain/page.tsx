@@ -32,7 +32,7 @@ export default function NisigmaOnChainPage() {
           <p>Dashboard case study</p>
           <h1>{nisigmaOnChain.name}</h1>
           <div>
-            <p>I built a public dashboard on CryptoQuant to follow blockchain activity and put price moves in context.</p>
+            <p>Nisigma OnChain is a public CryptoQuant dashboard I built to compare blockchain activity, investor behavior and capital flows with moves in the crypto market.</p>
             <span>By <Link href="/about">{identity.name}</Link></span>
           </div>
         </header>
@@ -49,7 +49,7 @@ export default function NisigmaOnChainPage() {
           <div><h2 id="dashboard-method">How I read the data</h2></div>
           <div>
             <p>I start with a question about a market move, check which on-chain metrics changed over the same period, then compare them with price, liquidity and macroeconomic context.</p>
-            <p>For example, if Bitcoin rises while several on-chain measures stay flat, I check the time window and other indicators before drawing a conclusion about network activity.</p>
+            <p>For example, if Bitcoin rises while on-chain activity stays flat, I first align the time windows. Then I check whether the pattern repeats across several metrics and whether liquidity or a macroeconomic event offers another explanation. If the evidence still points in different directions, I leave the cause open.</p>
             <Link className="portfolio-text-link" href="/research">Read my research method</Link>
           </div>
         </section>
@@ -74,6 +74,8 @@ export default function NisigmaOnChainPage() {
               description: page.description,
               mainEntityOfPage: { "@id": `${url}#webpage` },
               author: { "@id": `${canonicalOrigin}/#person` },
+              publisher: { "@id": `${canonicalOrigin}/#person` },
+              inLanguage: "en",
               citation: [nisigmaOnChain.dashboardUrl, nisigmaOnChain.announcementUrl],
             },
           ],
