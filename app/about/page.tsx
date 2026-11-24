@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ActionMark } from "@/components/ui/ActionMark";
-import { barberProject, buildCapabilities, cryptoEducation, hixhameProject, identity, malera, marketInterests } from "@/data/site";
+import { barberProject, buildCapabilities, cryptoEducation, hixhameProject, identity, malera, marketInterests, nisigmaOnChain } from "@/data/site";
+import { duoBarProject } from "@/data/duo-bar";
+import { StructuredData } from "@/components/seo/StructuredData";
 import { baseStructuredData, routeSeo } from "@/lib/seo";
 
 export const dynamic = "force-static";
@@ -32,7 +34,7 @@ export default function AboutPage() {
     <>
       <main id="main" className="route-page about-route">
         <header className="route-hero">
-          <p>About / Entity profile</p>
+          <p>NISIGMA</p>
           <h1>About Enis Qetaj</h1>
           <div>
             <p>Enis Qetaj, known online as NISIGMA, is a Kosovo-based financial-markets researcher, crypto trader and founder of Malera Studio. He studies markets through technical and fundamental analysis, liquidity, macroeconomics and on-chain data. Through Malera Studio, he builds AI automations and web applications for businesses.</p>
@@ -106,21 +108,18 @@ export default function AboutPage() {
         <section className="case-study__close">
           <div>
             <p>06 / Selected work and contact</p>
-            <h2>Real public projects and direct contact.</h2>
+            <h2>Selected projects</h2>
           </div>
           <div>
-            <Link className="button button--primary" href={`/work/${barberProject.slug}`}>View Barber Brothers <ActionMark direction="forward" /></Link>
+            <p>I created Nisigma OnChain on CryptoQuant to bring the data I use for crypto market research into one dashboard. At Malera Studio, my work includes the Barber Brothers booking flow and <Link className="portfolio-text-link" href={`/work/${duoBarProject.slug}`}>Malera POS for DUO Bar</Link>.</p>
+            <Link className="button button--primary" href={nisigmaOnChain.path}>Explore Nisigma OnChain <ActionMark direction="forward" /></Link>
+            <Link className="button button--quiet" href={`/work/${barberProject.slug}`}>View Barber Brothers <ActionMark direction="forward" /></Link>
             <Link className="button button--quiet" href={`/work/${hixhameProject.slug}`}>View Hixhame Tina <ActionMark direction="forward" /></Link>
             <Link className="button button--quiet" href="/contact">Contact Enis Qetaj <ActionMark direction="forward" /></Link>
           </div>
         </section>
       </main>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
-        }}
-      />
+      <StructuredData data={structuredData} />
     </>
   );
 }
