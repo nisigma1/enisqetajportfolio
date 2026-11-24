@@ -35,7 +35,7 @@ export function Hero() {
     <section id="index" className="dispatch-hero dispatch-hero--portfolio" aria-labelledby="identity-title">
       <div className="dispatch-hero__primary">
         <div className="dispatch-hero__identity">
-          <p className="portfolio-kicker">Based in {identity.location}</p>
+          <p className="portfolio-kicker">{identity.alternateName} · Based in {identity.location}</p>
           <h1 id="identity-title">
             <TextRepel
               text="Enis Qetaj"

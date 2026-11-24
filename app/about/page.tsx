@@ -35,7 +35,7 @@ export default function AboutPage() {
           <p>About / Entity profile</p>
           <h1>About Enis Qetaj</h1>
           <div>
-            <p>Enis Qetaj is a Kosovo-based financial-markets researcher, crypto trader and AI product builder. He studies cryptocurrency markets through technical and fundamental analysis, macroeconomics, liquidity, monetary policy, geopolitics and on-chain activity.</p>
+            <p>Enis Qetaj, known online as NISIGMA, is a Kosovo-based financial-markets researcher, crypto trader and founder of Malera Studio. He studies markets through technical and fundamental analysis, liquidity, macroeconomics and on-chain data. Through Malera Studio, he builds AI automations and web applications for businesses.</p>
             <span>Kosovo / Markets / AI Products / Malera Studio</span>
           </div>
         </header>

@@ -38,12 +38,12 @@ test("server-renders the complete identity homepage", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
-  assert.match(html, /Enis Qetaj \| Crypto Markets Research, Geopolitics &amp; AI Products/);
+  assert.match(html, /Enis Qetaj \(NISIGMA\) \| Markets Research &amp; AI Automation/);
   assert.match(
     html,
     new RegExp(`rel="canonical" href="${publicOrigin.replaceAll(".", "\\.")}/"`),
   );
-  assert.match(html, /Kosovo-based crypto trader, financial-markets researcher and AI product builder/);
+  assert.match(html, /Enis Qetaj \(NISIGMA\) researches crypto and financial markets/);
   assert.equal((html.match(/alt="Portrait of Enis Qetaj"/g) ?? []).length, 1);
   assert.match(html, /<source media="\(max-width: 479px\)" srcSet="\/images\/enis\/enis-portrait-purple-compact\.webp"/i);
   assert.match(html, /--pixel-source-compact:url\([^)]*\/images\/enis\/enis-portrait-purple-compact\.webp[^)]*\)/);
@@ -80,6 +80,12 @@ test("server-renders the complete identity homepage", async () => {
   assert.match(html, /On-chain/);
   assert.match(html, /Malera Studio/);
   assert.match(html, /application\/ld\+json/);
+  const structuredData = JSON.parse(html.match(/<script type="application\/ld\+json">([^<]+)<\/script>/)[1]);
+  const person = structuredData["@graph"].find((entry) => entry["@type"] === "Person");
+  const profile = structuredData["@graph"].find((entry) => entry["@type"] === "ProfilePage");
+  assert.equal(person.alternateName, "NISIGMA");
+  assert.ok(person.sameAs.includes("https://www.linkedin.com/in/enis-qetaj"));
+  assert.equal(profile.mainEntity["@id"], person["@id"]);
   assert.match(html, /click-spark__canvas/);
   assert.doesNotMatch(html, /class="meteors/);
   assert.match(html, /history\.scrollRestoration='manual'/);
@@ -100,6 +106,22 @@ test("server-renders the complete identity homepage", async () => {
     assert.match(primaryNavigation, new RegExp(`>${label}<`));
   }
   assert.doesNotMatch(primaryNavigation, />Research<|>Companies<|>Pricing<|>Index</);
+});
+
+test("publishes the Nisigma OnChain case study with a canonical URL and original source", async () => {
+  const worker = await getWorker();
+  const path = "/research/nisigma-onchain";
+  const response = await worker.fetch(
+    new Request(`http://localhost${path}`, { headers: { accept: "text/html" } }),
+    env,
+    ctx,
+  );
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /<h1>Nisigma OnChain<\/h1>/);
+  assert.ok(html.includes(`rel="canonical" href="${publicOrigin}${path}"`));
+  assert.ok(html.includes('href="https://cryptoquant.com/community/dashboard/682b36d9f5db9e6f926617c2"'));
+  assert.match(html, /"author":\{"@id":"https:\/\/enisqetaj\.com\/#person"\}/);
 });
 
 test("publishes Crypto School learning without false credential claims", async () => {

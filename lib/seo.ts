@@ -1,4 +1,4 @@
-import { barberProject, besianaProject, hixhameProject, identity, malera, marketInterests, media, siteConfig } from "@/data/site";
+import { barberProject, besianaProject, hixhameProject, identity, malera, marketInterests, media, nisigmaOnChain, siteConfig } from "@/data/site";
 import { duoBarProject } from "@/data/duo-bar";
 
 export const canonicalOrigin = siteConfig.url;
@@ -6,7 +6,7 @@ export const canonicalOrigin = siteConfig.url;
 export const routeSeo = {
   home: {
     path: "/",
-    title: "Enis Qetaj | Crypto Markets Research, Geopolitics & AI Products",
+    title: siteConfig.title,
     description: siteConfig.description,
   },
   about: {
@@ -25,6 +25,12 @@ export const routeSeo = {
     title: "Research | Enis Qetaj",
     description:
       "Explore Enis Qetaj's research approach across crypto markets, macroeconomics, liquidity, geopolitics, monetary policy and on-chain activity.",
+  },
+  nisigmaOnChain: {
+    path: nisigmaOnChain.path,
+    title: "Nisigma OnChain | CryptoQuant Dashboard by Enis Qetaj",
+    description:
+      "How Enis Qetaj uses the Nisigma OnChain dashboard on CryptoQuant to interpret network activity, investor behavior and capital flows.",
   },
   markets: {
     path: "/markets",
@@ -101,6 +107,8 @@ export function personJsonLd() {
     "@type": "Person",
     "@id": `${canonicalOrigin}/#person`,
     name: identity.name,
+    alternateName: identity.alternateName,
+    description: siteConfig.description,
     url: `${canonicalOrigin}/`,
     image: {
       "@type": "ImageObject",
@@ -156,6 +164,7 @@ export function baseStructuredData(page?: { path: string; title: string; descrip
         description: selectedPage.description,
         isPartOf: { "@id": `${canonicalOrigin}/#website` },
         about: { "@id": `${canonicalOrigin}/#person` },
+        ...(selectedPage.path === "/" && { mainEntity: { "@id": `${canonicalOrigin}/#person` } }),
         primaryImageOfPage: { "@id": `${canonicalOrigin}/#portrait` },
         inLanguage: "en",
       },
@@ -170,6 +179,7 @@ export const publicRoutes = [
   routeSeo.companies,
   routeSeo.pricing,
   routeSeo.research,
+  routeSeo.nisigmaOnChain,
   routeSeo.markets,
   routeSeo.work,
   routeSeo.barber,
