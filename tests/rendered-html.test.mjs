@@ -67,7 +67,10 @@ test("server-renders the complete identity homepage", async () => {
   assert.match(main, /href="\/pricing"[^>]*>Crypto Analysis/);
   assert.match(main, /href="\/research"[^>]*>Read my research approach/);
   assert.match(main, /href="\/contact"[^>]*>Contact Enis/);
-  assert.doesNotMatch(main, /<form\b|href="\/work\/|home-practice-tabs|dispatch-hero__proof/);
+  assert.match(main, /href="\/work\/barber-brothers"[^>]*>Barber Brothers booking case study/);
+  assert.match(main, /href="\/work\/duo-bar"[^>]*>Malera POS at DUO Bar/);
+  assert.match(main, /href="\/research\/nisigma-onchain"[^>]*>Nisigma OnChain dashboard and methodology/);
+  assert.doesNotMatch(main, /<form\b|home-practice-tabs|dispatch-hero__proof/);
   assert.doesNotMatch(html, /Context first\. Then build\.|Portfolio index/);
   assert.match(html, /href="#app-shell"[^>]*>Back to top/);
   const footer = html.match(/<footer\b[\s\S]*?<\/footer>/)?.[0];
