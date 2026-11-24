@@ -13,7 +13,7 @@ export const routeSeo = {
     path: "/about",
     title: "About Enis Qetaj | Research, Markets & Malera Studio",
     description:
-      "Learn about Enis Qetaj, a Kosovo-based financial-markets researcher, crypto trader, AI product builder who completed the Crypto School curriculum, and founder of Malera Studio.",
+      "Enis Qetaj (NISIGMA) is a financial markets researcher, creator of Nisigma OnChain on CryptoQuant and founder of Malera Studio in Kosovo.",
   },
   background: {
     path: "/background",
@@ -137,6 +137,7 @@ export function personJsonLd() {
 
 export function baseStructuredData(page?: { path: string; title: string; description: string }) {
   const selectedPage = page ?? routeSeo.home;
+  const isProfile = selectedPage.path === routeSeo.home.path || selectedPage.path === routeSeo.about.path;
   return {
     "@context": "https://schema.org",
     "@graph": [
@@ -157,14 +158,14 @@ export function baseStructuredData(page?: { path: string; title: string; descrip
         publisher: { "@id": `${canonicalOrigin}/#person` },
       },
       {
-        "@type": selectedPage.path === "/" ? "ProfilePage" : "WebPage",
+        "@type": isProfile ? "ProfilePage" : "WebPage",
         "@id": `${absoluteUrl(selectedPage.path)}#webpage`,
         url: absoluteUrl(selectedPage.path),
         name: selectedPage.title,
         description: selectedPage.description,
         isPartOf: { "@id": `${canonicalOrigin}/#website` },
         about: { "@id": `${canonicalOrigin}/#person` },
-        ...(selectedPage.path === "/" && { mainEntity: { "@id": `${canonicalOrigin}/#person` } }),
+        ...(isProfile && { mainEntity: { "@id": `${canonicalOrigin}/#person` } }),
         primaryImageOfPage: { "@id": `${canonicalOrigin}/#portrait` },
         inLanguage: "en",
       },
