@@ -84,7 +84,7 @@ test("server-renders the complete identity homepage", async () => {
   const person = structuredData["@graph"].find((entry) => entry["@type"] === "Person");
   const profile = structuredData["@graph"].find((entry) => entry["@type"] === "ProfilePage");
   assert.equal(person.alternateName, "NISIGMA");
-  assert.ok(person.sameAs.includes("https://www.linkedin.com/in/enis-qetaj"));
+  assert.ok(person.sameAs.includes("https://www.linkedin.com/in/enis-qetaj/"));
   assert.equal(profile.mainEntity["@id"], person["@id"]);
   assert.match(html, /click-spark__canvas/);
   assert.doesNotMatch(html, /class="meteors/);

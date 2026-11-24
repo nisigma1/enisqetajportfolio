@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ActionMark } from "@/components/ui/ActionMark";
-import { barberProject, buildCapabilities, cryptoEducation, hixhameProject, identity, malera, marketInterests, nisigmaOnChain } from "@/data/site";
+import { buildCapabilities, cryptoEducation, hixhameProject, identity, malera, marketInterests, nisigmaOnChain } from "@/data/site";
 import { duoBarProject } from "@/data/duo-bar";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { baseStructuredData, routeSeo } from "@/lib/seo";
+import styles from "./About.module.css";
 
 export const dynamic = "force-static";
 
@@ -33,22 +34,45 @@ export default function AboutPage() {
   return (
     <>
       <main id="main" className="route-page about-route">
-        <header className="route-hero">
-          <p>NISIGMA</p>
-          <h1>About Enis Qetaj</h1>
-          <div>
-            <p>Enis Qetaj, known online as NISIGMA, is a Kosovo-based financial-markets researcher, crypto trader and founder of Malera Studio. He studies markets through technical and fundamental analysis, liquidity, macroeconomics and on-chain data. Through Malera Studio, he builds AI automations and web applications for businesses.</p>
-            <span>Kosovo / Markets / AI Products / Malera Studio</span>
-          </div>
+        <header className={styles.intro}>
+          <h1>Enis Qetaj</h1>
+          <p>Enis Qetaj, known online as Nisigma (<a href={identity.social.find((profile) => profile.label === "X")?.href}>@N1sigma</a>), is the founder of <a href={malera.url}>Malera Studio</a> in Kosovo. He builds websites, applications and AI automations and researches financial markets using on-chain data.</p>
         </header>
 
-        <section className="route-section route-domains" aria-labelledby="about-positioning">
-          <div>
-            <p>01 / Positioning</p>
-            <h2 id="about-positioning">Research, markets and useful digital products.</h2>
+        <section className={styles.proofs} aria-labelledby="about-proofs">
+          <h2 id="about-proofs">Selected projects</h2>
+          <div className={styles.grid}>
+            <article className={styles.proof}>
+              <h3>Barber Brothers</h3>
+              <p>Clients needed a way to book online, from choosing a service and barber to picking a date and available time.</p>
+              <p>I helped build the booking flow as part of the Malera Studio team.</p>
+              <a className="portfolio-text-link" href="https://barberbrothers.style/booking">Try the live booking flow</a>
+            </article>
+            <article className={styles.proof}>
+              <h3>DUO Bar POS</h3>
+              <p>DUO Bar needed a way to track tables and orders during service, including when offline.</p>
+              <p>I worked on the DUO Bar application built on Malera POS.</p>
+              <Link className="portfolio-text-link" href={`/work/${duoBarProject.slug}`}>See the system at DUO Bar</Link>
+              <figure>
+                {/* Use the existing optimized venue photo without the image optimizer. */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={duoBarProject.photos.orders.small} width={duoBarProject.photos.orders.width} height={duoBarProject.photos.orders.height} alt={duoBarProject.photos.orders.alt} loading="lazy" decoding="async" />
+                <figcaption>The floor plan and order panel on the DUO Bar terminal.</figcaption>
+              </figure>
+            </article>
+            <article className={styles.proof}>
+              <h3>Nisigma OnChain</h3>
+              <p>I wanted one place to see how active blockchain networks are, how investors behave and where capital is moving.</p>
+              <p>I built a public CryptoQuant dashboard that brings those metrics together.</p>
+              <a className="portfolio-text-link" href={nisigmaOnChain.dashboardUrl}>Open the dashboard on CryptoQuant</a>
+              <Link className="portfolio-text-link" href={nisigmaOnChain.path}>Read my methodology</Link>
+            </article>
           </div>
-          <ul>
-            {identity.roles.map((role) => <li key={role}>{role}</li>)}
+          <ul className={styles.profiles} aria-label="Enis Qetaj profiles">
+            {identity.social.filter((profile) => profile.label === "LinkedIn").map((profile) => (
+              <li key={profile.label}><a href={profile.href}>{profile.label}</a></li>
+            ))}
+            <li><a href={identity.githubUrl}>GitHub</a></li>
           </ul>
         </section>
 
@@ -107,13 +131,10 @@ export default function AboutPage() {
 
         <section className="case-study__close">
           <div>
-            <p>06 / Selected work and contact</p>
-            <h2>Selected projects</h2>
+            <p>06 / Contact</p>
+            <h2>More work and contact</h2>
           </div>
           <div>
-            <p>I created Nisigma OnChain on CryptoQuant to bring the data I use for crypto market research into one dashboard. At Malera Studio, my work includes the Barber Brothers booking flow and <Link className="portfolio-text-link" href={`/work/${duoBarProject.slug}`}>Malera POS for DUO Bar</Link>.</p>
-            <Link className="button button--primary" href={nisigmaOnChain.path}>Explore Nisigma OnChain <ActionMark direction="forward" /></Link>
-            <Link className="button button--quiet" href={`/work/${barberProject.slug}`}>View Barber Brothers <ActionMark direction="forward" /></Link>
             <Link className="button button--quiet" href={`/work/${hixhameProject.slug}`}>View Hixhame Tina <ActionMark direction="forward" /></Link>
             <Link className="button button--quiet" href="/contact">Contact Enis Qetaj <ActionMark direction="forward" /></Link>
           </div>

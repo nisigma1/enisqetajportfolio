@@ -1,0 +1,88 @@
+.intro {
+  padding-block: clamp(2rem, 6vw, 5rem) 1.5rem;
+}
+
+.intro h1 {
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: clamp(2.5rem, 7vw, 5.5rem);
+  line-height: 1;
+  margin: 0 0 1rem;
+}
+
+.intro p {
+  max-width: 66ch;
+  font-size: clamp(1rem, 1.7vw, 1.2rem);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.intro a,
+.profiles a {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.proofs {
+  padding-block: 1rem 2rem;
+}
+
+.proofs h2 {
+  margin: 0 0 0.75rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0 1.75rem;
+}
+
+.proof {
+  border-block-start: 1px solid currentColor;
+  padding-block: 1rem;
+}
+
+.proof h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.15rem;
+}
+
+.proof p {
+  margin: 0 0 0.6rem;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.proof a {
+  display: table;
+  margin-block: 0.5rem;
+}
+
+.proof figure {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 0.75rem 0 0;
+  font-size: 0.875rem;
+}
+
+.proof img {
+  width: 4.5rem;
+  height: 4.5rem;
+  object-fit: cover;
+  flex: none;
+}
+
+.profiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+}
+
+@media (max-width: 45rem) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
