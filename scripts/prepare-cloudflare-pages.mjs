@@ -1,5 +1,6 @@
 import { cp, mkdir, rename, rm, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
+import { prerenderPages } from "./prerender-pages.mjs";
 
 const root = process.cwd();
 const clientDir = resolve(root, "dist/client");
@@ -22,12 +23,14 @@ await cp(resolve(serverDir, "ssr"), resolve(pagesTmpDir, "ssr"), {
   recursive: true,
 });
 
+await prerenderPages(pagesTmpDir);
+
 await writeFile(
   resolve(pagesTmpDir, "_routes.json"),
   `${JSON.stringify(
     {
       version: 1,
-      include: ["/*"],
+      include: ["/api/*"],
       exclude: [
         "/assets/*",
         "/images/*",
