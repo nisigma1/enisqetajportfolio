@@ -6,6 +6,7 @@ import { StructuredData } from "@/components/seo/StructuredData";
 import { barberProject, besianaProject, hixhameProject, siteConfig } from "@/data/site";
 import { duoBarProject } from "@/data/duo-bar";
 import { baseStructuredData, ogImage, routeSeo } from "@/lib/seo";
+import { LiveProjects } from "./LiveProjects";
 import styles from "./WorkArchive.module.css";
 
 const description = routeSeo.work.description;
@@ -116,6 +117,7 @@ export default function WorkArchive() {
             </li>
           ))}
         </ul>
+        <LiveProjects />
       </InnerPageShell>
       <StructuredData data={baseStructuredData(routeSeo.work)} />
     </>

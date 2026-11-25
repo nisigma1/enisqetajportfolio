@@ -1,0 +1,105 @@
+.section {
+  margin-block: clamp(4rem, 8vw, 8rem);
+  padding-block-start: clamp(1.4rem, 3vw, 3rem);
+  border-block-start: 1px solid var(--border-strong);
+}
+
+.intro {
+  display: grid;
+  align-items: end;
+  gap: 0.75rem 2rem;
+  margin-block-end: clamp(2.25rem, 5vw, 5rem);
+}
+
+.intro h2,
+.copy h3 {
+  font-family: var(--font-editorial);
+  font-weight: 520;
+  line-height: 1.03;
+  letter-spacing: -0.043em;
+}
+
+.intro h2 {
+  margin-block-start: 0.35rem;
+  font-size: clamp(2.25rem, 5.3vw, 5rem);
+}
+
+.intro > p,
+.copy > p:last-of-type {
+  max-width: 34ch;
+  color: var(--text-secondary);
+}
+
+.projects {
+  display: grid;
+  gap: clamp(2.4rem, 6vw, 6rem);
+}
+
+.projects > li { min-width: 0; }
+
+.project {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.85rem;
+}
+
+.copy {
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.copy h3 {
+  font-size: clamp(2rem, 4.5vw, 4rem);
+}
+
+.copy > p:last-of-type {
+  margin-block-start: 0.22rem;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  max-inline-size: 100%;
+  min-block-size: 2.75rem;
+  font-size: 0.9375rem;
+  font-weight: 650;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 0.22em;
+}
+
+.link:hover { text-decoration-color: currentColor; }
+
+.preview { min-width: 0; }
+.preview img { width: 100%; height: auto; }
+
+@media (min-width: 768px) {
+  .intro { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); }
+  .intro > p { justify-self: end; }
+
+  .project {
+    grid-template-columns: minmax(0, 0.84fr) minmax(0, 1.4fr);
+    grid-template-areas: "copy preview";
+    align-items: center;
+    gap: clamp(2rem, 6vw, 7rem);
+  }
+
+  .copy { grid-area: copy; }
+  .preview { grid-area: preview; }
+  .projects > li:nth-child(even) .project {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.84fr);
+    grid-template-areas: "preview copy";
+  }
+}
+
+@media (max-width: 767px) {
+  .projects { gap: 2.5rem; }
+  .projects > li + li {
+    border-block-start: 1px solid var(--border);
+    padding-block-start: 1.75rem;
+  }
+}

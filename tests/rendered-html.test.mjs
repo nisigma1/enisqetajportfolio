@@ -287,7 +287,9 @@ test("work keeps all four real project proofs on the dedicated work route", asyn
     assert.equal([...main.matchAll(new RegExp(`href="/work/${slug}"`, "g"))].length, 1, slug);
     assert.match(main, new RegExp(`id="${slug}"`));
   }
-  assert.equal([...main.matchAll(/<img\b/g)].length, 4, "one authentic cover per project");
+  const websites = main.match(/<section[^>]+id="more-websites"[\s\S]*?<\/section>/)?.[0];
+  assert.ok(websites, "supplementary websites are separate from the existing case studies");
+  assert.equal([...main.slice(0, main.indexOf(websites)).matchAll(/<img\b/g)].length, 4, "one authentic cover per case study");
   assert.doesNotMatch(main, /project-index|class="meteors/);
   assert.match(html, /besiana-interface-1440\.webp/);
   assert.doesNotMatch(html, /besiana-artwork__phone/);
@@ -297,6 +299,38 @@ test("work keeps all four real project proofs on the dedicated work route", asyn
   assert.match(main, /<source type="image\/avif" srcSet="\/projects\/duo-bar\/malera-pos-at-duo-720\.avif 720w,[^"]+malera-pos-at-duo-3024\.avif 3024w"/i);
   assert.match(main, /<img[^>]+src="\/projects\/duo-bar\/malera-pos-at-duo-1440\.webp"[^>]*width="3024" height="2184" alt="Malera POS on the DUO Bar terminal/);
   assert.doesNotMatch(main, /View 4K photo|Malera POS on the counter at DUO Bar|\/projects\/duo-bar\/(?:at-the-bar|terminal|orders)[^"]*\.webp/);
+});
+
+test("shows the four live websites with actual mobile and desktop covers and direct links", async () => {
+  const worker = await getWorker();
+  const response = await worker.fetch(new Request(publicOrigin + "/work", { headers: { accept: "text/html" } }), env, ctx);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  const websites = html.match(/<section[^>]+id="more-websites"[\s\S]*?<\/section>/)?.[0];
+  assert.ok(websites);
+  assert.match(websites, /<h2 id="live-projects-title">Websites in use<\/h2>/);
+  const projects = [
+    ["gramoz-shala", "Gramoz Shala", "https://gramozshala.com/"],
+    ["besastore", "BesaStore", "https://besastore.site/"],
+    ["leonita-bajrami", "Leonita Bajrami", "https://leonita.art/"],
+    ["albion-selmanaj", "Albion Selmanaj", "https://www.albionselmanaj.com/"],
+  ];
+  assert.equal([...websites.matchAll(/<article\b/g)].length, projects.length);
+  assert.equal([...websites.matchAll(/<img\b/g)].length, projects.length);
+  for (const [slug, name, href] of projects) {
+    const card = websites.match(new RegExp(`<article[^>]+data-project="${slug}"[\\s\\S]*?<\\/article>`))?.[0];
+    assert.ok(card, slug);
+    assert.ok(card.includes(`<h3 id="${slug}-title">${name}</h3>`));
+    assert.ok(card.includes(`href="${href}"`));
+    const path = `projects/portfolio-editions/${slug}.webp`;
+    const mobilePath = `projects/portfolio-editions/${slug}-mobile.webp`;
+    assert.ok(card.includes(`<source media="(max-width: 767px)" srcSet="/${mobilePath}"`));
+    assert.match(card, new RegExp(`<img[^>]+src="/${path}"[^>]+width="1200" height="750" alt="[^"]+" loading="lazy"`));
+    const { size } = await stat(new URL(`../dist/${path}`, import.meta.url));
+    assert.ok(size > 0 && size <= 140_000, `${path}: ${size} bytes`);
+    const mobile = await stat(new URL(`../dist/${mobilePath}`, import.meta.url));
+    assert.ok(mobile.size > 0 && mobile.size <= 100_000, `${mobilePath}: ${mobile.size} bytes`);
+  }
 });
 
 test("publishes the single DUO cover and official Malera logo in optimized formats", async () => {
