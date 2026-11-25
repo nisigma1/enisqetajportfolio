@@ -65,6 +65,9 @@ export function ContactForm() {
 
   useEffect(() => {
     setInquiry(getInquiryFromQuery(query));
+    setDraft(null);
+    setState("idle");
+    setStatusMessage("");
     setErrors(current => ({ ...current, project: undefined, paymentMethod: undefined }));
   }, [query]);
 
@@ -113,7 +116,7 @@ export function ContactForm() {
     function offerEmailDraft() {
       setDraft(contactEmailDraft(identity.email, clientResult.values));
       setState("error");
-      setStatusMessage("Online delivery is temporarily unavailable. Open the prepared email draft and send it from your email app. Nothing has been sent yet; your message is still here.");
+      setStatusMessage("Online delivery could not be confirmed. Your message is still here. You can open the prepared email draft to send it from your email app; check before resending to avoid duplicates.");
     }
 
     try {
@@ -303,7 +306,7 @@ export function ContactForm() {
             <button className="button button--secondary" type="button" onClick={async () => {
               try {
                 await navigator.clipboard.writeText(draft.text);
-                setStatusMessage("Email text copied. Paste it into your email app and send it to Enis. Nothing has been sent automatically.");
+                setStatusMessage("Email text copied. Paste it into your email app to send it to Enis. Copying does not send an email.");
               } catch {
                 setStatusMessage("Copy is unavailable in this browser. Your message is still in the form; open the prepared draft or copy the fields manually.");
               }
