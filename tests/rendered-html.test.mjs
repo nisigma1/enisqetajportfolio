@@ -310,20 +310,20 @@ test("shows the four live websites with actual mobile and desktop covers and dir
   assert.ok(websites);
   assert.match(websites, /<h2 id="live-projects-title">Websites in use<\/h2>/);
   const projects = [
-    ["gramoz-shala", "Gramoz Shala", "https://gramozshala.com/"],
-    ["besastore", "BesaStore", "https://besastore.site/"],
-    ["leonita-bajrami", "Leonita Bajrami", "https://leonita.art/"],
+    ["gramoz-shala", "Gramoz Shala", "https://gramozshala.com/", "gramoz-shala-hero"],
+    ["besastore", "BesaStore", "https://besastore.site/", "besastore-home"],
+    ["leonita-bajrami", "Leonita Bajrami", "https://leonita.art/", "leonita-bajrami-gallery"],
     ["albion-selmanaj", "Albion Selmanaj", "https://www.albionselmanaj.com/"],
   ];
   assert.equal([...websites.matchAll(/<article\b/g)].length, projects.length);
   assert.equal([...websites.matchAll(/<img\b/g)].length, projects.length);
-  for (const [slug, name, href] of projects) {
+  for (const [slug, name, href, cover = slug] of projects) {
     const card = websites.match(new RegExp(`<article[^>]+data-project="${slug}"[\\s\\S]*?<\\/article>`))?.[0];
     assert.ok(card, slug);
     assert.ok(card.includes(`<h3 id="${slug}-title">${name}</h3>`));
     assert.ok(card.includes(`href="${href}"`));
-    const path = `projects/portfolio-editions/${slug}.webp`;
-    const mobilePath = `projects/portfolio-editions/${slug}-mobile.webp`;
+    const path = `projects/portfolio-editions/${cover}.webp`;
+    const mobilePath = `projects/portfolio-editions/${cover}-mobile.webp`;
     assert.ok(card.includes(`<source media="(max-width: 767px)" srcSet="/${mobilePath}"`));
     assert.match(card, new RegExp(`<img[^>]+src="/${path}"[^>]+width="1200" height="750" alt="[^"]+" loading="lazy"`));
     const { size } = await stat(new URL(`../dist/${path}`, import.meta.url));

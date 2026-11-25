@@ -9,8 +9,9 @@ const projects = [
     description: "Gramoz’s studies, experience and certifications come together around three ideas: sense, control and apply.",
     url: "https://gramozshala.com/",
     domain: "gramozshala.com",
-    alt: "Gramoz Shala’s engineering portfolio with oversized white type and a portrait on a dark background",
-    mobile: { width: 780, height: 900 },
+    cover: "gramoz-shala-hero",
+    alt: "Gramoz Shala’s engineering portfolio with his student role, name and portrait",
+    mobile: { width: 860, height: 1044 },
   },
   {
     slug: "besastore",
@@ -19,8 +20,9 @@ const projects = [
     description: "A secondhand catalog for a Prishtina shop. Browse by category, open an item and ask about it on Instagram.",
     url: "https://besastore.site/",
     domain: "besastore.site",
-    alt: "Photographed dresses in BesaStore’s secondhand catalog",
-    mobile: { width: 780, height: 900 },
+    cover: "besastore-home",
+    alt: "Four garments against a dark backdrop in BesaStore’s interactive homepage showcase",
+    mobile: { width: 780, height: 800 },
   },
   {
     slug: "leonita-bajrami",
@@ -29,8 +31,9 @@ const projects = [
     description: "Visitors can explore Leonita’s paintings across three gallery rooms, browse the collection and ask about a commission.",
     url: "https://leonita.art/",
     domain: "leonita.art",
-    alt: "Leonita Bajrami seated beside one of her paintings",
-    mobile: { width: 390, height: 460 },
+    cover: "leonita-bajrami-gallery",
+    alt: "A waterfall landscape and other paintings on the walls of Leonita Bajrami’s virtual gallery room",
+    mobile: { width: 780, height: 585 },
   },
   {
     slug: "albion-selmanaj",
@@ -69,12 +72,12 @@ export function LiveProjects() {
               <picture className={styles.preview}>
                 <source
                   media="(max-width: 767px)"
-                  srcSet={`/projects/portfolio-editions/${project.slug}-mobile.webp`}
+                  srcSet={`/projects/portfolio-editions/${"cover" in project ? project.cover : project.slug}-mobile.webp`}
                   width={project.mobile.width}
                   height={project.mobile.height}
                 />
                 <img
-                  src={`/projects/portfolio-editions/${project.slug}.webp`}
+                  src={`/projects/portfolio-editions/${"cover" in project ? project.cover : project.slug}.webp`}
                   width={1200}
                   height={750}
                   alt={project.alt}
