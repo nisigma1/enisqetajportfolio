@@ -3,6 +3,7 @@
 import { ChangeEvent, FocusEvent, FormEvent, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { identity } from "@/data/site";
+import { contactEmailDraft } from "@/lib/contact-email";
 import { contactPaymentMethods, cryptoInquiry, cryptoPlanInquiries, digitalInquiry, getInquiryFromQuery, isContactPaymentMethod, isCryptoInquiry } from "@/lib/contact-inquiries";
 
 type FormState = "idle" | "loading" | "ready" | "error";
@@ -58,6 +59,7 @@ export function ContactForm() {
   const [statusMessage, setStatusMessage] = useState("");
   const [errors, setErrors] = useState<FieldErrors>({});
   const [inquiry, setInquiry] = useState("");
+  const [draft, setDraft] = useState<ReturnType<typeof contactEmailDraft> | null>(null);
   const query = useSearchParams().toString();
   const needsPayment = isCryptoInquiry(inquiry);
 
@@ -95,6 +97,7 @@ export function ContactForm() {
     const clientResult = validateForm(form);
 
     setStatusMessage("");
+    setDraft(null);
     setErrors(clientResult.errors);
 
     if (Object.keys(clientResult.errors).length) {
@@ -105,17 +108,29 @@ export function ContactForm() {
     }
 
     setState("loading");
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 10_000);
+    function offerEmailDraft() {
+      setDraft(contactEmailDraft(identity.email, clientResult.values));
+      setState("error");
+      setStatusMessage("Online delivery is temporarily unavailable. Open the prepared email draft and send it from your email app. Nothing has been sent yet; your message is still here.");
+    }
 
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(clientResult.values),
+        signal: controller.signal,
       });
       const data = await response.json().catch(() => ({})) as ApiResponse;
 
       if (!response.ok || !data.ok) {
         const serverErrors = data.errors ?? {};
+        if (!Object.keys(serverErrors).length) {
+          offerEmailDraft();
+          return;
+        }
         setErrors(serverErrors);
         setState("error");
         setStatusMessage(data.message || "The email could not be sent. Your message has not been sent.");
@@ -127,8 +142,9 @@ export function ContactForm() {
       setState("ready");
       setStatusMessage(data.message || "Message sent to Enis.");
     } catch {
-      setState("error");
-      setStatusMessage("The email could not be sent. Your message has not been sent; you can email Enis directly.");
+      offerEmailDraft();
+    } finally {
+      window.clearTimeout(timeout);
     }
   }
 
@@ -140,6 +156,7 @@ export function ContactForm() {
   }
 
   function handleInput(event: FormEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
+    setDraft(null);
     const name = event.currentTarget.name as FieldName;
     if (state === "ready") {
       setState("idle");
@@ -280,7 +297,17 @@ export function ContactForm() {
         >
           <span>{statusMessage}</span>
           {state === "error" && (
-            <a href={`mailto:${identity.email}`}>Email Enis directly</a>
+            <a href={draft?.href ?? `mailto:${identity.email}`}>{draft ? "Open prepared email draft" : "Email Enis directly"}</a>
+          )}
+          {draft && (
+            <button className="button button--secondary" type="button" onClick={async () => {
+              try {
+                await navigator.clipboard.writeText(draft.text);
+                setStatusMessage("Email text copied. Paste it into your email app and send it to Enis. Nothing has been sent automatically.");
+              } catch {
+                setStatusMessage("Copy is unavailable in this browser. Your message is still in the form; open the prepared draft or copy the fields manually.");
+              }
+            }}>Copy email text</button>
           )}
         </div>
       )}
