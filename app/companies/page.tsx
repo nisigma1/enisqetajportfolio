@@ -104,6 +104,7 @@ export default function CompaniesPage() {
               </li>
             ))}
           </ul>
+          <p><Link className="portfolio-text-link" href={routeSeo.build.path}>How I build AI products and automations</Link></p>
           <Link className="portfolio-text-link" href="/work">See the case studies</Link>
         </section>
 
