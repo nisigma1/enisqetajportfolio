@@ -265,6 +265,7 @@ test("companies leads with real studio work and preserves the two-card founder r
   assert.match(html, /Websites/);
   assert.match(html, /AI and automation/);
   assert.match(html, /href="\/work"[^>]*>See the case studies/);
+  assert.match(html, /href="\/build"[^>]*>How I build AI products and automations/);
   assert.match(html, /href="\/work\/barber-brothers"[^>]*>Barber Brothers(?:<!-- -->)? case study/);
   assert.match(html, /href="\/work\/duo-bar"[^>]*>DUO Bar(?:<!-- -->)? case study/);
   assert.doesNotMatch(main, /\/projects\/(barber-brothers|hixhame-tina|besiana-photography)\//);
